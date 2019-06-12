@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2017
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yui_Sandbox2D.Plugins", "Yui_Sandbox2D.Plugins.csproj", "{A79FB3E7-2650-C805-BFF7-FD6760320F4A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yui_Sandbox2D", "Yui_Sandbox2D.csproj", "{248E81F1-476F-111B-5D01-295D8290DEDE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yui_Sandbox2D.Editor.Plugins", "Yui_Sandbox2D.Editor.Plugins.csproj", "{8CC3B688-15BF-A9F3-E39A-0EC76833C040}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A79FB3E7-2650-C805-BFF7-FD6760320F4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A79FB3E7-2650-C805-BFF7-FD6760320F4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A79FB3E7-2650-C805-BFF7-FD6760320F4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A79FB3E7-2650-C805-BFF7-FD6760320F4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{248E81F1-476F-111B-5D01-295D8290DEDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{248E81F1-476F-111B-5D01-295D8290DEDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{248E81F1-476F-111B-5D01-295D8290DEDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{248E81F1-476F-111B-5D01-295D8290DEDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CC3B688-15BF-A9F3-E39A-0EC76833C040}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CC3B688-15BF-A9F3-E39A-0EC76833C040}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CC3B688-15BF-A9F3-E39A-0EC76833C040}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CC3B688-15BF-A9F3-E39A-0EC76833C040}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
