@@ -35,7 +35,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// プレイヤー制御.
 		player->Update();
 
-
 		// 画面を初期化する
 		ClearDrawScreen();
 

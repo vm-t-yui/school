@@ -30,28 +30,28 @@ Player::~Player()
 void Player::Update()
 {
 	// キー入力取得
-	int Key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
+	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 
 	// 上を押していたら上に進む
-	if (Key & PAD_INPUT_UP)
+	if (key & PAD_INPUT_UP)
 	{
 		pos.z += 1;
 	}
 
 	// 下を押していたら下に進む
-	if (Key & PAD_INPUT_DOWN)
+	if (key & PAD_INPUT_DOWN)
 	{
 		pos.z -= 1;
 	}
 
 	// 右を押していたら右に進む
-	if (Key & PAD_INPUT_RIGHT)
+	if (key & PAD_INPUT_RIGHT)
 	{
 		pos.x += 1;
 	}
 
 	// 左を押していたら左に進む
-	if (Key & PAD_INPUT_LEFT)
+	if (key & PAD_INPUT_LEFT)
 	{
 		pos.x -= 1;
 	}

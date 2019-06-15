@@ -15,9 +15,6 @@ public:
 
 	void Update();			// 制御.
 	void Draw();			// 描画.
-
-	int		modelHandle;
-	VECTOR	pos;
 };
 
 #endif // _PLAYER_H_

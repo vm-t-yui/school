@@ -5,7 +5,6 @@
 #include "DxLib.h"
 #include "Player.h"
 #include "Camera.h"
-#include "ObstructBase.h"
 #include "ObstructStatic.h"
 #include "ObstructFloat.h"
 

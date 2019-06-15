@@ -160,11 +160,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ObstructFloat.cpp" />
+    <ClCompile Include="ObstructStatic.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Header.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="ObstructBase.h" />
+    <ClInclude Include="ObstructFloat.h" />
+    <ClInclude Include="ObstructStatic.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
