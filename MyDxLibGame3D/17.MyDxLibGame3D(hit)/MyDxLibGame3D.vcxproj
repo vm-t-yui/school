@@ -22,7 +22,7 @@
     <ProjectGuid>{229C6CCE-D20D-4863-AA78-E2C8A1C45EF6}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>MyDxLibGame3D</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -160,11 +160,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="HitChecker.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ObstructBase.cpp" />
+    <ClCompile Include="ObstructFloat.cpp" />
+    <ClCompile Include="ObstructManager.cpp" />
+    <ClCompile Include="ObstructStatic.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Header.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Hitchecker.h" />
+    <ClInclude Include="ObstructBase.h" />
+    <ClInclude Include="ObstructFloat.h" />
+    <ClInclude Include="ObstructManager.h" />
+    <ClInclude Include="ObstructStatic.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
