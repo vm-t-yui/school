@@ -8,8 +8,8 @@
 #define PI    3.1415926535897932384626433832795f
 
 // スクリーンサイズ.
-#define SCREEN_W 640
-#define SCREEN_H 480
+#define SCREEN_W 1600
+#define SCREEN_H 900
 
 #define LIMIT_TIME_COUNT	30		// ゲームの制限時間.
 #define STATE_CHANGE_WAIT	500		// ステート切り替えウェイト(ミリ秒).
