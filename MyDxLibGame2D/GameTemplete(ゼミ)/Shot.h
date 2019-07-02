@@ -1,9 +1,9 @@
-#pragma once
+ï»¿#pragma once
 
-// ƒvƒƒgƒ^ƒCƒvéŒ¾
+// ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€
 struct GameObject;
 
-// MEMO:ƒVƒ‡ƒbƒg©‘Ì‚ÉGameObject target‚ğì‚Á‚Äˆê’èŠÔ’Ç‚¢‚©‚¯‚³‚¹‚½‚è‚Æ‚©
+// MEMO:ã‚·ãƒ§ãƒƒãƒˆè‡ªä½“ã«GameObject targetã‚’ä½œã£ã¦ä¸€å®šæ™‚é–“è¿½ã„ã‹ã‘ã•ã›ãŸã‚Šã¨ã‹
 struct Shot
 {
 	GameObject	obj;
@@ -11,14 +11,14 @@ struct Shot
 	bool	visibleFlag = false;
 };
 
-// ‰Šú‰».
+// åˆæœŸåŒ–.
 void InitShot(Shot& shot, int shotGraph, int shotW, int shotH, float angle, float speed, int power);
 
-// ƒVƒ‡ƒbƒg‚ÌˆÚ“®.
+// ã‚·ãƒ§ãƒƒãƒˆã®ç§»å‹•.
 void MoveShot(Shot& shot);
 
-// ƒVƒ‡ƒbƒg‚Ì“–‚½‚è”»’èƒ`ƒFƒbƒN
+// ã‚·ãƒ§ãƒƒãƒˆã®å½“ãŸã‚Šåˆ¤å®šãƒã‚§ãƒƒã‚¯
 bool IsHitShot(Shot& shot, GameObject& target);
 
-// •`‰æ.
+// æç”».
 void DrawShot(Shot& shot);

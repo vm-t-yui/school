@@ -1,18 +1,18 @@
-// �V���b�g
+﻿// ショット
 #include "GameObject.h"
 #include "Shot.h"
 #include "Utility.h"
 
 //----------------------------//
-// �V���b�g�֐��Q.
+// ショット関数群.
 //----------------------------//
-// ������.
+// 初期化.
 void InitShot(Shot& shot, int shotGraph, int shotW, int shotH, float angle, float speed, int power)
 {
-	// �V���b�g�̃O���t�B�b�N���������Ƀ��[�h.
+	// ショットのグラフィックをメモリにロード.
 	shot.obj.graph = shotGraph;
 
-	// �e����ʏ�ɑ��݂��Ă��邩�ێ�����ϐ��Ɂw���݂��Ă��Ȃ��x���Ӗ�����false�������Ă���
+	// 弾が画面上に存在しているか保持する変数に『存在していない』を意味するfalseを代入しておく
 	shot.visibleFlag = false;
 	shot.obj.w = shotW;
 	shot.obj.h = shotH;
@@ -21,16 +21,16 @@ void InitShot(Shot& shot, int shotGraph, int shotW, int shotH, float angle, floa
 	shot.power = power;
 }
 
-// �V���b�g�̈ړ�.
+// ショットの移動.
 void MoveShot(Shot& shot)
 {
-	// �e�̈ړ����[�`��( ���ݏ�Ԃ�ێ����Ă���ϐ��̓��e��true(���݂���)�̏ꍇ�̂ݍs�� )
+	// 弾の移動ルーチン( 存在状態を保持している変数の内容がtrue(存在する)の場合のみ行う )
 	if (shot.visibleFlag == true)
 	{
-		// �e���ړ�������
+		// 弾を移動させる
 		MoveGameObject(shot.obj);
 
-		// ��ʊO�ɏo�Ă��܂����ꍇ�͑��ݏ�Ԃ�ێ����Ă���ϐ���false(���݂��Ȃ�)��������
+		// 画面外に出てしまった場合は存在状態を保持している変数にfalse(存在しない)を代入する
 		if (shot.obj.pos.y < 0 - shot.obj.h * 0.5f
 			|| shot.obj.pos.y > SCREEN_H + shot.obj.h * 0.5f
 			|| shot.obj.pos.x < 0 - shot.obj.w * 0.5f
@@ -40,11 +40,11 @@ void MoveShot(Shot& shot)
 		}
 	}
 }
-// �V���b�g�̓����蔻��`�F�b�N
+// ショットの当たり判定チェック
 bool IsHitShot(Shot& shot, GameObject& target)
 {
 	bool isHit = false;
-	// �e�̂����蔻��.
+	// 弾のあたり判定.
 	if (shot.visibleFlag == 1)
 	{
 		float shotLeft = shot.obj.pos.x - shot.obj.w * 0.5f;
@@ -61,22 +61,22 @@ bool IsHitShot(Shot& shot, GameObject& target)
 			((shotTop > targetTop && shotTop < targetBottom) ||
 			(targetTop > shotTop && targetTop < shotBottom)))
 		{
-			// �ڐG���Ă���ꍇ�͓��������e�̑��݂�����
+			// 接触している場合は当たった弾の存在を消す
 			shot.visibleFlag = 0;
 
-			// �������Ă�t���O�����Ă�
+			// あたってるフラグをたてる
 			isHit = true;
 		}
 	}
 	return isHit;
 }
 
-// �`��.
+// 描画.
 void DrawShot(Shot& shot)
 {
 	if (shot.visibleFlag == true)
 	{
-		// ��ʂɒei��`�悷��
+		// 画面に弾iを描画する
 		DrawGameObject(shot.obj, shot.obj.graph);
 	}
 }

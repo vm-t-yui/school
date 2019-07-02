@@ -1,16 +1,16 @@
-//----------------------------//
-// ƒ†[ƒeƒBƒŠƒeƒBi•Ö—˜jŠÖ”ŒQ
+ï»¿//----------------------------//
+// ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£ï¼ˆä¾¿åˆ©ï¼‰é–¢æ•°ç¾¤
 //----------------------------//
 #include "Utility.h"
 #include "DxLib.h"
 
-// w’è‚³‚ê‚½‘S•¶š—ñ‚Ì•‚ğæ“¾.
+// æŒ‡å®šã•ã‚ŒãŸå…¨æ–‡å­—åˆ—ã®å¹…ã‚’å–å¾—.
 int GetDrawStringWidthFull(char* str)
 {
 	return GetDrawStringWidth(str, (int)strlen(str));
 }
 
-// ƒfƒBƒOƒŠ[‚ğƒ‰ƒWƒAƒ“‚É•ÏŠ·
+// ãƒ‡ã‚£ã‚°ãƒªãƒ¼ã‚’ãƒ©ã‚¸ã‚¢ãƒ³ã«å¤‰æ›
 float GetRadian(float degree)
 {
 	return (PI / 180.0f) * degree;

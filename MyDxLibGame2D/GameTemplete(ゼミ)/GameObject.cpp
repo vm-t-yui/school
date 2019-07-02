@@ -1,14 +1,14 @@
-// ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg
+ï»¿// ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 #include "GameObject.h"
 
-// ƒQ[ƒ€ƒIƒuƒWƒFƒNƒgˆÚ“®
+// ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç§»å‹•
 void MoveGameObject(GameObject& obj)
 {
 	VECTOR velocity = VScale(obj.dir, obj.speed);
 	obj.pos = VAdd(obj.pos, velocity);
 }
 
-// ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg•`‰æBˆá‚¤‰æ‘œ‚à•`‰æ‚Å‚«‚é‚æ‚¤‚Égraph‚¾‚¯•ª‚¯‚Ä‚¢‚é
+// ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»ã€‚é•ã†ç”»åƒã‚‚æç”»ã§ãã‚‹ã‚ˆã†ã«graphã ã‘åˆ†ã‘ã¦ã„ã‚‹
 void DrawGameObject(GameObject& obj, int graph)
 {
 	DrawRotaGraph((int)obj.pos.x, (int)obj.pos.y,

@@ -1,8 +1,8 @@
-#include "GameObject.h"
+ï»¿#include "GameObject.h"
 #include "BG.h"
 #include "DxLib.h"
 
-// ‰Šú‰».
+// åˆæœŸåŒ–.
 void InitBG(BG& bg, int graph, int index)
 {
 	bg.obj.graph = graph;
@@ -11,20 +11,20 @@ void InitBG(BG& bg, int graph, int index)
 	bg.obj.pos.y = (float)(index * bg.obj.h);
 }
 
-// ƒAƒbƒvƒf[ƒg.
+// ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ.
 void UpdateBG(BG& bg)
 {
-	// ”wŒicƒXƒNƒ[ƒ‹.
+	// èƒŒæ™¯ç¸¦ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«.
 	bg.obj.pos.y += BG_SCROLL_SPEED;
 
-	// ”wŒi‚ÌyÀ•W‚ª”wŒiˆê‚Â•ª—]Œv‚É‰º‚É‚È‚Á‚½‚çã‚ÉˆÚ“®.
+	// èƒŒæ™¯ã®yåº§æ¨™ãŒèƒŒæ™¯ä¸€ã¤åˆ†ä½™è¨ˆã«ä¸‹ã«ãªã£ãŸã‚‰ä¸Šã«ç§»å‹•.
 	if (bg.obj.pos.y > bg.obj.h + bg.obj.h * 0.5f)
 	{
 		bg.obj.pos.y -= bg.obj.h * 2;
 	}
 }
 
-// •`‰æ.
+// æç”».
 void DrawBG(BG& bg)
 {
 	DrawGameObject(bg.obj, bg.obj.graph);

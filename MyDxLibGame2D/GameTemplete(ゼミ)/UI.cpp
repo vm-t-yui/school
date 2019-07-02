@@ -1,4 +1,4 @@
-#include "Utility.h"
+ï»¿#include "Utility.h"
 #include "UI.h"
 #include "DxLib.h"
 #include "GameObject.h"
@@ -8,7 +8,7 @@
 #include "BG.h"
 #include "Game.h"
 
-// UI‰Šú‰».
+// UIåˆæœŸåŒ–.
 void InitUI(UI& ui)
 {
 	if (ui.hpGraph < 0)
@@ -21,56 +21,56 @@ void InitUI(UI& ui)
 	}
 }
 
-// UI•`‰æ.
-// ¦“ï‚µ‚¯‚ê‚ÎUI©‘Ì‚ğ”ñ•\¦‚É‚µ‚Ä©•ª‚Ål‚¦‚é‚±‚ÆI.
+// UIæç”».
+// â€»é›£ã—ã‘ã‚Œã°UIè‡ªä½“ã‚’éè¡¨ç¤ºã«ã—ã¦è‡ªåˆ†ã§è€ƒãˆã‚‹ã“ã¨ï¼.
 void DrawUI(UI& ui, Game& game)
 {
-	// ŠÔ‚ğ“ü‚ê‚é•¶š—ñ.
+	// æ™‚é–“ã‚’å…¥ã‚Œã‚‹æ–‡å­—åˆ—.
 	char timeNumStr[256];
 
-	// c‚èƒ‰ƒCƒt‚ğ“ü‚ê‚é•¶š—ñ.
+	// æ®‹ã‚Šãƒ©ã‚¤ãƒ•ã‚’å…¥ã‚Œã‚‹æ–‡å­—åˆ—.
 	char lifeStr[256];
 
-	// HP•\¦‚ğn‚ß‚éXÀ•W.
+	// HPè¡¨ç¤ºã‚’å§‹ã‚ã‚‹Xåº§æ¨™.
 	int hpGraphStartX;
 
-	// ƒ‹[ƒ‹‚²‚Æ‚É•\¦•¨‚ğ•Ï‚¦‚é.
+	// ãƒ«ãƒ¼ãƒ«ã”ã¨ã«è¡¨ç¤ºç‰©ã‚’å¤‰ãˆã‚‹.
 	switch (game.state)
 	{
-		// ƒ^ƒCƒgƒ‹.
+		// ã‚¿ã‚¤ãƒˆãƒ«.
 	case STATE_TITLE:
 		SetFontSize(TITLE_FONT_SIZE);
 
-		// ‰æ–ÊƒTƒCƒY/2 ‚©‚ç@•`‰æ‚·‚é•¶š—ñ‚Ì•2/A‚Â‚Ü‚è‰æ–Ê‚Ì’†‰›‚É•¶š‚ğ•\¦‚µ‚Ä‚¢‚é.
+		// ç”»é¢ã‚µã‚¤ã‚º/2 ã‹ã‚‰ã€€æç”»ã™ã‚‹æ–‡å­—åˆ—ã®å¹…2/ã€ã¤ã¾ã‚Šç”»é¢ã®ä¸­å¤®ã«æ–‡å­—ã‚’è¡¨ç¤ºã—ã¦ã„ã‚‹.
 		DrawString(SCREEN_W / 2 - GetDrawStringWidthFull(TITLE_STR) / 2, SCREEN_H / 2 + TITLE_STR_OFFSET_Y, TITLE_STR, GetColor(255, 255, 255));
 
 		SetFontSize(PRESS_STR_FONT_SIZE);
 		DrawString(SCREEN_W / 2 - GetDrawStringWidthFull(STARTBUTTON_STR) / 2, SCREEN_H / 2 + PRESS_STR_OFFSET_Y, STARTBUTTON_STR, GetColor(255, 255, 255));
 		break;
-		// ƒQ[ƒ€’†.
+		// ã‚²ãƒ¼ãƒ ä¸­.
 	case STATE_GAME:
 
-		// §ŒÀŠÔ.
+		// åˆ¶é™æ™‚é–“.
 		SetFontSize(TIME_STR_FONT_SIZE);
 		DrawString(SCREEN_W / 2 + TIME_STR_OFFSET_X, TIME_STR_POS_Y, TIME_STR, GetColor(255, 0, 0));
 
-		// GetNowCount‚Í1000•ª‚Ì‚P•b‚È‚Ì‚Å‚»‚±‚©‚çŒvZ‚·‚é.
+		// GetNowCountã¯1000åˆ†ã®ï¼‘ç§’ãªã®ã§ãã“ã‹ã‚‰è¨ˆç®—ã™ã‚‹.
 		sprintf_s(timeNumStr, "%d", LIMIT_TIME_COUNT + ((game.gameStartTime - GetNowCount()) / 1000));
 
 		SetFontSize(TIME_NUM_STR_FONT_SIZE);
 		DrawString(SCREEN_W / 2 - GetDrawStringWidthFull(timeNumStr) / 2, TIME_STR_POS_Y, timeNumStr, GetColor(255, 0, 0));
 
-		// ƒvƒŒƒCƒ„[‘Ì—Í.
+		// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ä½“åŠ›.
 		sprintf_s(lifeStr, "HP:%d", game.player.life);
 		SetFontSize(TIME_STR_FONT_SIZE);
 		DrawString((int)(game.player.obj.pos.x - GetDrawStringWidthFull(lifeStr) / 2), (int)(game.player.obj.pos.y + PLAYER_HP_OFFSET_Y), lifeStr, GetColor(255, 0, 0));
 
-		// “G‘Ì—Í.
+		// æ•µä½“åŠ›.
 		SetFontSize(ENEMY_HP_STR_FONT_SIZE);
 		DrawString(ENEMY_HP_STR_POS_X, ENEMY_HP_STR_POS_Y, "Enemy", GetColor(255, 0, 0));
 		hpGraphStartX = ENEMY_HP_STR_POS_X + ENEMY_HP_LEFT_OFFSET_X;
 
-		// ‘Ì—Í‰æ‘œ‚ÍˆêF‚Ì‰æ‘œ‚ğAˆø‚«L‚Î‚µ‚Ä‰æ–Ê‚©‚ç‚¢‚¢Š´‚¶‚ÌˆÊ’u‚É‚¨‚¢‚Ä‚¢‚é.
+		// ä½“åŠ›ç”»åƒã¯ä¸€è‰²ã®ç”»åƒã‚’ã€å¼•ãä¼¸ã°ã—ã¦ç”»é¢ã‹ã‚‰ã„ã„æ„Ÿã˜ã®ä½ç½®ã«ãŠã„ã¦ã„ã‚‹.
 		DrawExtendGraph(
 			hpGraphStartX,
 			ENEMY_HP_STR_POS_Y,
@@ -89,14 +89,14 @@ void DrawUI(UI& ui, Game& game)
 
 		break;
 
-		// ƒNƒŠƒA‰æ–Ê.
+		// ã‚¯ãƒªã‚¢ç”»é¢.
 	case STATE_CLEAR:
 		SetFontSize(TITLE_FONT_SIZE);
 		DrawString(SCREEN_W / 2 - GetDrawStringWidthFull(GAME_CLEAR_STR) / 2, SCREEN_H / 2 + TITLE_STR_OFFSET_Y, GAME_CLEAR_STR, GetColor(255, 255, 0));
 		SetFontSize(PRESS_STR_FONT_SIZE);
 		DrawString(SCREEN_W / 2 - GetDrawStringWidthFull(RETURN_TITLE_STR) / 2, SCREEN_H / 2 + PRESS_STR_OFFSET_Y, RETURN_TITLE_STR, GetColor(255, 255, 255));
 		break;
-		// ƒQ[ƒ€ƒI[ƒo[.
+		// ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼.
 	case STATE_GAMEOVER:
 		SetFontSize(TITLE_FONT_SIZE);
 		DrawString(SCREEN_W / 2 - GetDrawStringWidthFull(GAME_OVER_STR) / 2, SCREEN_H / 2 + TITLE_STR_OFFSET_Y, GAME_OVER_STR, GetColor(255, 0, 0));

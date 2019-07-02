@@ -1,31 +1,31 @@
-//----------------------------//
-// ƒ†[ƒeƒBƒŠƒeƒBi•Ö—˜jŠÖ”ŒQ
+ï»¿//----------------------------//
+// ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£ï¼ˆä¾¿åˆ©ï¼‰é–¢æ•°ç¾¤
 //----------------------------//
 
 #pragma once
 
-// ƒÎ
+// Ï€
 #define PI    3.1415926535897932384626433832795f
 
-// ƒXƒNƒŠ[ƒ“ƒTƒCƒY.
+// ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚µã‚¤ã‚º.
 #define SCREEN_W 640
 #define SCREEN_H 480
 
-#define LIMIT_TIME_COUNT	30		// ƒQ[ƒ€‚Ì§ŒÀŽžŠÔ.
-#define STATE_CHANGE_WAIT	500		// ƒXƒe[ƒgØ‚è‘Ö‚¦ƒEƒFƒCƒg(ƒ~ƒŠ•b).
+#define LIMIT_TIME_COUNT	30		// ã‚²ãƒ¼ãƒ ã®åˆ¶é™æ™‚é–“.
+#define STATE_CHANGE_WAIT	500		// ã‚¹ãƒ†ãƒ¼ãƒˆåˆ‡ã‚Šæ›¿ãˆã‚¦ã‚§ã‚¤ãƒˆ(ãƒŸãƒªç§’).
 
-// ó‘Ô.
+// çŠ¶æ…‹.
 enum STATE
 {
-	STATE_TITLE,		// ƒ^ƒCƒgƒ‹.
-	STATE_GAME,			// ƒQ[ƒ€’†.
-	STATE_CLEAR,		// ƒNƒŠƒA.
-	STATE_GAMEOVER,		// ƒQ[ƒ€ƒI[ƒo[.
-	STATE_NUM			// ”Ô•º.
+	STATE_TITLE,		// ã‚¿ã‚¤ãƒˆãƒ«.
+	STATE_GAME,			// ã‚²ãƒ¼ãƒ ä¸­.
+	STATE_CLEAR,		// ã‚¯ãƒªã‚¢.
+	STATE_GAMEOVER,		// ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼.
+	STATE_NUM			// ç•ªå…µ.
 };
 
-// Žw’è‚³‚ê‚½‘S•¶Žš—ñ‚Ì•‚ðŽæ“¾.
+// æŒ‡å®šã•ã‚ŒãŸå…¨æ–‡å­—åˆ—ã®å¹…ã‚’å–å¾—.
 int GetDrawStringWidthFull(char* str);
 
-// ƒfƒBƒOƒŠ[‚ðƒ‰ƒWƒAƒ“‚É•ÏŠ·
+// ãƒ‡ã‚£ã‚°ãƒªãƒ¼ã‚’ãƒ©ã‚¸ã‚¢ãƒ³ã«å¤‰æ›
 float GetRadian(float degree);

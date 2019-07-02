@@ -1,4 +1,4 @@
-// ƒGƒlƒ~[
+ï»¿// ã‚¨ãƒãƒŸãƒ¼
 #include "GameObject.h"
 #include "Shot.h"
 #include "Enemy.h"
@@ -7,12 +7,12 @@
 #include "Player.h"
 
 //----------------------------//
-// ƒGƒlƒ~[ŠÖ”ŒQ.
+// ã‚¨ãƒãƒŸãƒ¼é–¢æ•°ç¾¤.
 //----------------------------//
-// ‰Šú‰».
+// åˆæœŸåŒ–.
 void InitEnemy(Enemy& enemy)
 {
-	// ƒGƒlƒ~[‚ÌƒOƒ‰ƒtƒBƒbƒN‚ğƒƒ‚ƒŠ‚Éƒ[ƒh••\¦À•W‚ğ‰Šú‰»
+	// ã‚¨ãƒãƒŸãƒ¼ã®ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ã‚’ãƒ¡ãƒ¢ãƒªã«ãƒ­ãƒ¼ãƒ‰ï¼†è¡¨ç¤ºåº§æ¨™ã‚’åˆæœŸåŒ–
 	char* enemyGlaphStr = "data/texture/EpicEnemy.png";
 	if (enemy.obj.graph < 0)
 	{
@@ -30,13 +30,13 @@ void InitEnemy(Enemy& enemy)
 	enemy.obj.angle = GetRadian(180.0f);
 	enemy.life = ENEMY_LIFE;
 
-	// wƒ_ƒ[ƒW‚ğ‚¤‚¯‚Ä‚¢‚È‚¢x‚ğ•\‚·FALSE‚ğ‘ã“ü
+	// ã€ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ã†ã‘ã¦ã„ãªã„ã€ã‚’è¡¨ã™FALSEã‚’ä»£å…¥
 	enemy.damageFlag = false;
 
-	// ƒGƒlƒ~[‚ÌƒOƒ‰ƒtƒBƒbƒN‚ÌƒTƒCƒY‚ğ“¾‚é
+	// ã‚¨ãƒãƒŸãƒ¼ã®ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ã®ã‚µã‚¤ã‚ºã‚’å¾—ã‚‹
 	GetGraphSize(enemy.obj.graph, &enemy.obj.w, &enemy.obj.h);
 
-	// ƒVƒ‡ƒbƒg‚ğ‰Šú‰»
+	// ã‚·ãƒ§ãƒƒãƒˆã‚’åˆæœŸåŒ–
 	int shotGraph = enemy.shot[0].obj.graph;
 	int shotW = enemy.shot[0].obj.w;
 	int shotH = enemy.shot[0].obj.h;
@@ -51,10 +51,10 @@ void InitEnemy(Enemy& enemy)
 	}
 }
 
-// ƒAƒbƒvƒf[ƒg.
+// ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ.
 void UpdateEnemy(Enemy& enemy, Player& player)
 {
-	// ƒGƒlƒ~[‚ÌÀ•W‚ğˆÚ“®‚µ‚Ä‚¢‚é•ûŒü‚ÉˆÚ“®‚·‚é
+	// ã‚¨ãƒãƒŸãƒ¼ã®åº§æ¨™ã‚’ç§»å‹•ã—ã¦ã„ã‚‹æ–¹å‘ã«ç§»å‹•ã™ã‚‹
 	if (enemy.rightMove == true)
 	{
 		enemy.obj.dir = VGet(1, 0, 0);
@@ -66,7 +66,7 @@ void UpdateEnemy(Enemy& enemy, Player& player)
 	enemy.obj.speed = ENEMY_SPEED;
 	MoveGameObject(enemy.obj);
 
-	// ƒGƒlƒ~[‚ª‰æ–Ê’[‚©‚ç‚Å‚»‚¤‚É‚È‚Á‚Ä‚¢‚½‚ç‰æ–Ê“à‚ÌÀ•W‚É–ß‚µ‚Ä‚ ‚°AˆÚ“®‚·‚é•ûŒü‚à”½“]‚·‚é
+	// ã‚¨ãƒãƒŸãƒ¼ãŒç”»é¢ç«¯ã‹ã‚‰ã§ãã†ã«ãªã£ã¦ã„ãŸã‚‰ç”»é¢å†…ã®åº§æ¨™ã«æˆ»ã—ã¦ã‚ã’ã€ç§»å‹•ã™ã‚‹æ–¹å‘ã‚‚åè»¢ã™ã‚‹
 	if (enemy.obj.pos.x > SCREEN_W - enemy.obj.w)
 	{
 		enemy.obj.pos.x = (float)(SCREEN_W - enemy.obj.w);
@@ -78,32 +78,32 @@ void UpdateEnemy(Enemy& enemy, Player& player)
 		enemy.rightMove = true;
 	}
 
-	// “G‚Ì’e‚Ì”­Ëˆ—
-	// ƒVƒ‡ƒbƒg‚Ì”­ËƒCƒ“ƒ^[ƒoƒ‹‚ª‚È‚­‚È‚Á‚Ä‚¢‚½‚çŒ‚‚Â
+	// æ•µã®å¼¾ã®ç™ºå°„å‡¦ç†
+	// ã‚·ãƒ§ãƒƒãƒˆã®ç™ºå°„ã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«ãŒãªããªã£ã¦ã„ãŸã‚‰æ’ƒã¤
 	if (enemy.shotIntervalCount == 0)
 	{
-		// ‰æ–Êã‚É‚Å‚Ä‚¢‚È‚¢’e‚ª‚ ‚é‚©A’e‚Ì”‚¾‚¯ŒJ‚è•Ô‚µ‚Ä’²‚×‚é
+		// ç”»é¢ä¸Šã«ã§ã¦ã„ãªã„å¼¾ãŒã‚ã‚‹ã‹ã€å¼¾ã®æ•°ã ã‘ç¹°ã‚Šè¿”ã—ã¦èª¿ã¹ã‚‹
 		for (int i = 0; i < ENEMY_SHOT; i++)
 		{
-			// ’ei‚ª‰æ–Êã‚É‚Å‚Ä‚¢‚È‚¢ê‡‚Í‚»‚Ì’e‚ğ‰æ–Ê‚Éo‚·
+			// å¼¾iãŒç”»é¢ä¸Šã«ã§ã¦ã„ãªã„å ´åˆã¯ãã®å¼¾ã‚’ç”»é¢ã«å‡ºã™
 			if (enemy.shot[i].visibleFlag == false)
 			{
-				// ’ei‚ÌˆÊ’u‚ğƒZƒbƒgAˆÊ’u‚Í“G‚Ì’†S‚É‚·‚é
+				// å¼¾iã®ä½ç½®ã‚’ã‚»ãƒƒãƒˆã€ä½ç½®ã¯æ•µã®ä¸­å¿ƒã«ã™ã‚‹
 				enemy.shot[i].obj.pos.x = enemy.obj.pos.x;
 				enemy.shot[i].obj.pos.y = enemy.obj.pos.y;
 
-				// ’ei‚ÍŒ»“_‚ğ‚Á‚Ä‘¶İ‚·‚é‚Ì‚ÅA‘¶İó‘Ô‚ğ•Û‚·‚é•Ï”‚Étrue‚ğ‘ã“ü‚·‚é
+				// å¼¾iã¯ç¾æ™‚ç‚¹ã‚’æŒã£ã¦å­˜åœ¨ã™ã‚‹ã®ã§ã€å­˜åœ¨çŠ¶æ…‹ã‚’ä¿æŒã™ã‚‹å¤‰æ•°ã«trueã‚’ä»£å…¥ã™ã‚‹
 				enemy.shot[i].visibleFlag = true;
 
-				// Œü‚«‚ğİ’è
+				// å‘ãã‚’è¨­å®š
 				enemy.shot[i].obj.dir = VGet(0, 1, 0);
 
-				// ˆê‚Â’e‚ğo‚µ‚½‚Ì‚Å’e‚ğo‚·ƒ‹[ƒv‚©‚ç”²‚¯‚Ü‚·
+				// ä¸€ã¤å¼¾ã‚’å‡ºã—ãŸã®ã§å¼¾ã‚’å‡ºã™ãƒ«ãƒ¼ãƒ—ã‹ã‚‰æŠœã‘ã¾ã™
 				break;
 			}
 		}
 
-		// ƒCƒ“ƒ^[ƒoƒ‹—p‚ÌƒJƒEƒ“ƒ^[‚ğİ’è.
+		// ã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«ç”¨ã®ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼ã‚’è¨­å®š.
 		enemy.shotIntervalCount = ENEMY_SHOT_INTERVAL;
 	}
 
@@ -112,44 +112,44 @@ void UpdateEnemy(Enemy& enemy, Player& player)
 		--enemy.shotIntervalCount;
 	}
 
-	// ƒVƒ‡ƒbƒgˆ—
+	// ã‚·ãƒ§ãƒƒãƒˆå‡¦ç†
 	for (int i = 0; i < ENEMY_SHOT; i++)
 	{
-		// ƒVƒ‡ƒbƒgˆÚ“®
+		// ã‚·ãƒ§ãƒƒãƒˆç§»å‹•
 		MoveShot(enemy.shot[i]);
 
-		// ƒGƒlƒ~[‚ÌƒVƒ‡ƒbƒg‚ÆƒvƒŒƒCƒ„[‚Ì“–‚½‚è”»’è
+		// ã‚¨ãƒãƒŸãƒ¼ã®ã‚·ãƒ§ãƒƒãƒˆã¨ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å½“ãŸã‚Šåˆ¤å®š
 		if (IsHitShot(enemy.shot[i], player.obj))
 		{
-			// ‚ ‚½‚Á‚Ä‚½‚çƒVƒ‡ƒbƒgƒpƒ[•ªƒ_ƒ[ƒW‚ğ—^‚¦‚é
+			// ã‚ãŸã£ã¦ãŸã‚‰ã‚·ãƒ§ãƒƒãƒˆãƒ‘ãƒ¯ãƒ¼åˆ†ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹
 			player.life -= enemy.shot[i].power;
 
 			player.damageCounter = 0;
 			player.damageFlag = true;
 
-			// ˜A‘±‚Å“–‚½‚ç‚È‚¢‚æ‚¤‚É”²‚¯‚é
+			// é€£ç¶šã§å½“ãŸã‚‰ãªã„ã‚ˆã†ã«æŠœã‘ã‚‹
 			break;
 		}
 	}
 
-	// ƒ_ƒ[ƒW‚ğó‚¯‚Ä‚¢‚é‚©‚Ç‚¤‚©‚Åˆ—‚ğ•ªŠò
+	// ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’å—ã‘ã¦ã„ã‚‹ã‹ã©ã†ã‹ã§å‡¦ç†ã‚’åˆ†å²
 	if (enemy.damageFlag == true)
 	{
 		enemy.damageCounter++;
 
 		if (enemy.damageCounter == 5)
 		{
-			// wƒ_ƒ[ƒW‚ğ‚¤‚¯‚Ä‚¢‚È‚¢x‚ğ•\‚·FALSE‚ğ‘ã“ü
+			// ã€ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ã†ã‘ã¦ã„ãªã„ã€ã‚’è¡¨ã™FALSEã‚’ä»£å…¥
 			enemy.damageFlag = false;
 		}
 	}
 }
-// •`‰æ.
+// æç”».
 void DrawEnemy(Enemy& enemy)
 {
 	if (enemy.life > 0)
 	{
-		// ƒ_ƒ[ƒW‚ğó‚¯‚Ä‚¢‚éê‡‚Íƒ_ƒ[ƒW‚ÌƒOƒ‰ƒtƒBƒbƒN‚ğ•`‰æ‚·‚é
+		// ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’å—ã‘ã¦ã„ã‚‹å ´åˆã¯ãƒ€ãƒ¡ãƒ¼ã‚¸æ™‚ã®ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ã‚’æç”»ã™ã‚‹
 		if (enemy.damageFlag == true)
 		{
 			DrawGameObject(enemy.obj, enemy.damageGraph);
@@ -160,7 +160,7 @@ void DrawEnemy(Enemy& enemy)
 		}
 	}
 
-	// ƒVƒ‡ƒbƒg‚à•\¦
+	// ã‚·ãƒ§ãƒƒãƒˆã‚‚è¡¨ç¤º
 	for (int i = 0; i < ENEMY_SHOT; i++)
 	{
 		DrawShot(enemy.shot[i]);

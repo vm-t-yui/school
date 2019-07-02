@@ -1,4 +1,4 @@
-// �v���C���[
+﻿// プレイヤー
 #include "GameObject.h"
 #include "Shot.h"
 #include "Enemy.h"
@@ -7,29 +7,29 @@
 #include "DxLib.h"
 
 //----------------------------//
-// �v���C���[�֐��Q.
+// プレイヤー関数群.
 //----------------------------//
-// ������.
+// 初期化.
 void InitPlayer(Player& player)
 {
-	// �v���C���[�̃O���t�B�b�N���������Ƀ��[�h���\�����W��������
+	// プレイヤーのグラフィックをメモリにロード＆表示座標を初期化
 	if (player.obj.graph < 0)
 	{
 		player.obj.graph = LoadGraph("data/texture/EpicPlayer.png");
 	}
-	player.obj.pos.x = SCREEN_W / 2;			// ��ʂ̔����i�����j
-	player.obj.pos.y = SCREEN_H - 100;		// ��ʉ�-100�̈ʒu
+	player.obj.pos.x = SCREEN_W / 2;			// 画面の半分（中央）
+	player.obj.pos.y = SCREEN_H - 100;		// 画面下-100の位置
 	player.obj.pos.z = 0;
 	player.obj.speed = 0.0f;
 	player.life = PLAYER_LIFE;
 
-	// �w�_���[�W�������Ă��Ȃ��x��\��FALSE����
+	// 『ダメージをうけていない』を表すFALSEを代入
 	player.damageFlag = false;
 
-	// �v���C���[�̉摜�̃T�C�Y�𓾂�
+	// プレイヤーの画像のサイズを得る
 	GetGraphSize(player.obj.graph, &player.obj.w, &player.obj.h);
 
-	// �V���b�g��������
+	// ショットを初期化
 	int shotGraph = player.shot[0].obj.graph;
 	int shotW = player.shot[0].obj.w;
 	int shotH = player.shot[0].obj.h;
@@ -44,10 +44,10 @@ void InitPlayer(Player& player)
 	}
 }
 
-// �A�b�v�f�[�g.
+// アップデート.
 void UpdatePlayer(Player& player, Enemy& enemy)
 {
-	// ���L�[�������Ă�����v���C���[���ړ�������
+	// 矢印キーを押していたらプレイヤーを移動させる
 	if (CheckHitKey(KEY_INPUT_LEFT) == 1)
 	{
 		player.obj.dir = VGet(-1, 0, 0);
@@ -64,54 +64,54 @@ void UpdatePlayer(Player& player, Enemy& enemy)
 	}
 	MoveGameObject(player.obj);
 
-	// �e�̔��ˏ���
+	// 弾の発射処理
 	if (CheckHitKey(KEY_INPUT_SPACE) == 1)
 	{
-		// �V���b�g�̔��˃C���^�[�o�����Ȃ��Ȃ��Ă����猂�Ă�
+		// ショットの発射インターバルがなくなっていたら撃てる
 		if (player.shotIntervalCount == 0)
 		{
-			// ��ʏ�ɂłĂ��Ȃ��e�����邩�A�e�̐������J��Ԃ��Ē��ׂ�
+			// 画面上にでていない弾があるか、弾の数だけ繰り返して調べる
 			for (int i = 0; i < PLAYER_SHOT; i++)
 			{
-				// �ei����ʏ�ɂłĂ��Ȃ��ꍇ�͂��̒e����ʂɏo��
+				// 弾iが画面上にでていない場合はその弾を画面に出す
 				if (player.shot[i].visibleFlag == false)
 				{
-					// �ei�̈ʒu���Z�b�g�A�ʒu�̓v���C���[�̒��S�ɂ���
+					// 弾iの位置をセット、位置はプレイヤーの中心にする
 					player.shot[i].obj.pos.x = (player.obj.w - player.shot[i].obj.w) / 2 + player.obj.pos.x;
 					player.shot[i].obj.pos.y = (player.obj.h - player.shot[i].obj.h) / 2 + player.obj.pos.y;
 
-					// �ei�͌����_�������đ��݂���̂ŁA���ݏ�Ԃ�ێ�����ϐ���true��������
+					// 弾iは現時点を持って存在するので、存在状態を保持する変数にtrueを代入する
 					player.shot[i].visibleFlag = true;
 
-					// ������ݒ�
+					// 向きを設定
 					player.shot[i].obj.dir = VGet(0, -1, 0);
 
-					// ��e���o�����̂Œe���o�����[�v���甲���܂�
+					// 一つ弾を出したので弾を出すループから抜けます
 					break;
 				}
 			}
 
-			// �C���^�[�o���p�̃J�E���^�[��ݒ�.
+			// インターバル用のカウンターを設定.
 			player.shotIntervalCount = PLAYER_SHOT_INTERVAL;
 		}
 	}
 
-	// �V���b�g�֘A
+	// ショット関連
 	for (int i = 0; i < PLAYER_SHOT; i++)
 	{
-		// �V���b�g�ړ�
+		// ショット移動
 		MoveShot(player.shot[i]);
 
-		// �v���C���[�̃V���b�g�ƓG�̓����蔻��
+		// プレイヤーのショットと敵の当たり判定
 		if (IsHitShot(player.shot[i], enemy.obj))
 		{
-			// �������Ă���V���b�g�p���[���_���[�W��^����
+			// あたってたらショットパワー分ダメージを与える
 			enemy.life -= player.shot[i].power;
 
 			enemy.damageCounter = 0;
 			enemy.damageFlag = true;
 
-			// �A���œ�����Ȃ��悤�ɔ�����
+			// 連続で当たらないように抜ける
 			break;
 		}
 	}
@@ -121,7 +121,7 @@ void UpdatePlayer(Player& player, Enemy& enemy)
 		--player.shotIntervalCount;
 	}
 
-	// �v���C���[����ʍ��[����͂ݏo�����ɂȂ��Ă������ʓ��̍��W�ɖ߂��Ă�����
+	// プレイヤーが画面左端からはみ出そうになっていたら画面内の座標に戻してあげる
 	if (player.obj.pos.x < player.obj.w * 0.5f)
 	{
 		player.obj.pos.x = player.obj.w * 0.5f;
@@ -139,32 +139,32 @@ void UpdatePlayer(Player& player, Enemy& enemy)
 		player.obj.pos.y = (float)(SCREEN_H - player.obj.h * 0.5f);
 	}
 
-	// �_���[�W���󂯂Ă��邩�ǂ����ŏ����𕪊�
+	// ダメージを受けているかどうかで処理を分岐
 	if (player.damageFlag == true)
 	{
 		player.damageCounter++;
 
 		if (player.damageCounter == 5)
 		{
-			// �w�_���[�W�������Ă��Ȃ��x��\��FALSE����
+			// 『ダメージをうけていない』を表すFALSEを代入
 			player.damageFlag = false;
 		}
 	}
 }
 
-// �`��.
+// 描画.
 void DrawPlayer(Player& player)
 {
 	if (player.damageFlag == true)
 	{
-		// �_���[�W���󂯂Ă���ꍇ�͓������\�����Ȃ�
+		// ダメージを受けている場合は透明＝表示しない
 	}
 	else
 	{
 		DrawGameObject(player.obj, player.obj.graph);
 	}
 
-	// �V���b�g���\��
+	// ショットも表示
 	for (int i = 0; i < PLAYER_SHOT; i++)
 	{
 		DrawShot(player.shot[i]);

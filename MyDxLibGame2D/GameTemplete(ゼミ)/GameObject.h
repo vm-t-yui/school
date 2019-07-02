@@ -1,4 +1,4 @@
-// ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg
+ï»¿// ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 #pragma once
 #include "DxLib.h"
 
@@ -14,8 +14,8 @@ struct GameObject
 	float	scale = 1.0f;
 };
 
-// ƒQ[ƒ€ƒIƒuƒWƒFƒNƒgˆÚ“®
+// ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç§»å‹•
 void MoveGameObject(GameObject& obj);
 
-// ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg•`‰æBˆá‚¤‰æ‘œ‚à•`‰æ‚Å‚«‚é‚æ‚¤‚Égraph‚¾‚¯•ª‚¯‚Ä‚¢‚é
+// ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»ã€‚é•ã†ç”»åƒã‚‚æç”»ã§ãã‚‹ã‚ˆã†ã«graphã ã‘åˆ†ã‘ã¦ã„ã‚‹
 void DrawGameObject(GameObject& obj, int graph);

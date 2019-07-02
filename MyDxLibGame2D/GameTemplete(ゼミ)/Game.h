@@ -1,15 +1,15 @@
-#pragma once
+ï»¿#pragma once
 
-#define	BG_NUM				3		// ”wŒi‚ÌŒÂ”.
+#define	BG_NUM				3		// èƒŒæ™¯ã®å€‹æ•°.
 
-// ƒvƒƒgƒ^ƒCƒvéŒ¾
+// ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€
 enum STATE;
 struct Player;
 struct Enemy;
 struct BG;
 struct UI;
 
-// ƒQ[ƒ€\‘¢‘Ì
+// ã‚²ãƒ¼ãƒ æ§‹é€ ä½“
 struct Game
 {
 	Player	player;
@@ -26,19 +26,19 @@ struct Game
 };
 
 //----------------------------//
-// ƒQ[ƒ€‚»‚Ì‚à‚Ì‚ÌŠÖ”ŒQ.
+// ã‚²ãƒ¼ãƒ ãã®ã‚‚ã®ã®é–¢æ•°ç¾¤.
 //----------------------------//
-// ‰Šú‰».
+// åˆæœŸåŒ–.
 void InitGame(Game& game);
 
-// ƒQ[ƒ€ƒXƒ^[ƒg‚Ì‰Šú‰»
+// ã‚²ãƒ¼ãƒ ã‚¹ã‚¿ãƒ¼ãƒˆæ™‚ã®åˆæœŸåŒ–
 void InitGameStart(Game& game);
 
-// ƒXƒe[ƒgØ‚è‘Ö‚¦.
+// ã‚¹ãƒ†ãƒ¼ãƒˆåˆ‡ã‚Šæ›¿ãˆ.
 void ChangeGameState(STATE state, Game& game);
 
-// ƒAƒbƒvƒf[ƒg.
+// ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ.
 void UpdateGame(Game& game);
 
-// ƒQ[ƒ€•`‰æ
+// ã‚²ãƒ¼ãƒ æç”»
 void DrawGame(Game& game);

@@ -1,21 +1,21 @@
-// ƒGƒlƒ~[
+ï»¿// ã‚¨ãƒãƒŸãƒ¼
 #pragma once
 
-// ƒvƒƒgƒ^ƒCƒvéŒ¾
+// ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€
 struct GameObject;
 struct Player;
 struct Shot;
 
-// ’è”
-#define ENEMY_SPEED			3		// “G‚ÌƒXƒs[ƒh.
-#define ENEMY_LIFE			10		// “G‚Ìƒ‰ƒCƒt.
+// å®šæ•°
+#define ENEMY_SPEED			3		// æ•µã®ã‚¹ãƒ”ãƒ¼ãƒ‰.
+#define ENEMY_LIFE			10		// æ•µã®ãƒ©ã‚¤ãƒ•.
 
-#define ENEMY_SHOT			3		// “GƒVƒ‡ƒbƒg‚ÌÅ‘å”.
-#define ENEMY_SHOT_POWER	1		// “GƒVƒ‡ƒbƒg‚ÌˆĞ—Í.
-#define ENEMY_SHOT_SPEED	5		// “GƒVƒ‡ƒbƒg‚ÌƒXƒs[ƒh.
-#define ENEMY_SHOT_INTERVAL	10		// “GƒVƒ‡ƒbƒg‚Ì”­ËƒCƒ“ƒ^[ƒoƒ‹.
+#define ENEMY_SHOT			3		// æ•µã‚·ãƒ§ãƒƒãƒˆã®æœ€å¤§æ•°.
+#define ENEMY_SHOT_POWER	1		// æ•µã‚·ãƒ§ãƒƒãƒˆã®å¨åŠ›.
+#define ENEMY_SHOT_SPEED	5		// æ•µã‚·ãƒ§ãƒƒãƒˆã®ã‚¹ãƒ”ãƒ¼ãƒ‰.
+#define ENEMY_SHOT_INTERVAL	10		// æ•µã‚·ãƒ§ãƒƒãƒˆã®ç™ºå°„ã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«.
 
-// ƒGƒlƒ~[.
+// ã‚¨ãƒãƒŸãƒ¼.
 struct Enemy
 {
 	GameObject	obj;
@@ -26,18 +26,18 @@ struct Enemy
 
 	Shot	shot[ENEMY_SHOT];
 
-	// “GƒVƒ‡ƒbƒg‚ÌƒCƒ“ƒ^[ƒoƒ‹‚ğİ’è‚·‚éƒJƒEƒ“ƒ^[
+	// æ•µã‚·ãƒ§ãƒƒãƒˆã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«ã‚’è¨­å®šã™ã‚‹ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼
 	int shotIntervalCount = 0;
 
-	// ‰EˆÚ“®‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO‚ğƒŠƒZƒbƒg
+	// å³ç§»å‹•ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆ
 	bool rightMove = true;
 };
 
-// ‰Šú‰».
+// åˆæœŸåŒ–.
 void InitEnemy(Enemy& enemy);
 
-// ƒAƒbƒvƒf[ƒg.
+// ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ.
 void UpdateEnemy(Enemy& enemy, Player& player);
 
-// •`‰æ.
+// æç”».
 void DrawEnemy(Enemy& enemy);

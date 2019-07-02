@@ -1,21 +1,21 @@
-#pragma once
+ï»¿#pragma once
 
-// ƒvƒƒgƒ^ƒCƒvéŒ¾
+// ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€
 struct GameObject;
 
-#define BG_SCROLL_SPEED		2		// ”wŒi‚ÌcƒXƒNƒ[ƒ‹ƒXƒs[ƒh.
+#define BG_SCROLL_SPEED		2		// èƒŒæ™¯ã®ç¸¦ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã‚¹ãƒ”ãƒ¼ãƒ‰.
 
-// ”wŒi.
+// èƒŒæ™¯.
 struct BG
 {
 	GameObject	obj;
 };
 
-// ‰Šú‰».
+// åˆæœŸåŒ–.
 void InitBG(BG& bg, int graph, int index);
 
-// ƒAƒbƒvƒf[ƒg.
+// ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ.
 void UpdateBG(BG& bg);
 
-// •`‰æ.
+// æç”».
 void DrawBG(BG& bg);

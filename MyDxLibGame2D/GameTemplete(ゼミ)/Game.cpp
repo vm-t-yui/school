@@ -1,4 +1,4 @@
-#include "DxLib.h"
+ï»¿#include "DxLib.h"
 #include "Utility.h"
 #include "GameObject.h"
 #include "Shot.h"
@@ -9,16 +9,16 @@
 #include "Game.h"
 
 //----------------------------//
-// ƒQ[ƒ€‚»‚Ì‚à‚Ì‚ÌŠÖ”ŒQ.
+// ã‚²ãƒ¼ãƒ ãã®ã‚‚ã®ã®é–¢æ•°ç¾¤.
 //----------------------------//
-// ‰Šú‰».
+// åˆæœŸåŒ–.
 void InitGame(Game& game)
 {
 	game.gameStartTime = 0;
 	game.state = STATE_TITLE;
 }
 
-// ƒQ[ƒ€ƒXƒ^[ƒg‚Ì‰Šú‰»
+// ã‚²ãƒ¼ãƒ ã‚¹ã‚¿ãƒ¼ãƒˆæ™‚ã®åˆæœŸåŒ–
 void InitGameStart(Game& game)
 {
 	game.gameStartTime = GetNowCount();
@@ -27,11 +27,11 @@ void InitGameStart(Game& game)
 	InitPlayer(game.player);
 	InitEnemy(game.enemy);
 
-	// ƒOƒ‰ƒtƒBƒbƒN‚ğƒ[ƒh‚µ‚ÄƒTƒCƒY‚ğæ“¾.
+	// ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ã‚’ãƒ­ãƒ¼ãƒ‰ã—ã¦ã‚µã‚¤ã‚ºã‚’å–å¾—.
 	int bgGraph = game.bg[0].obj.graph;
 	if (bgGraph < 0)
 	{
-		// ’ˆÓI‰æ–Ê‚ÌƒTƒCƒY‚Æ”wŒi‰æ‘œ‚ÌƒTƒCƒY‚Íˆê‚¶‚á‚È‚¢‚Æƒ_ƒ
+		// æ³¨æ„ï¼ç”»é¢ã®ã‚µã‚¤ã‚ºã¨èƒŒæ™¯ç”»åƒã®ã‚µã‚¤ã‚ºã¯ä¸€ç·’ã˜ã‚ƒãªã„ã¨ãƒ€ãƒ¡
 		bgGraph = LoadGraph("data/texture/FancyBG_back.png");
 	}
 	for (int i = 0; i < BG_NUM; i++)
@@ -40,32 +40,32 @@ void InitGameStart(Game& game)
 	}
 }
 
-// ƒXƒe[ƒgØ‚è‘Ö‚¦.
+// ã‚¹ãƒ†ãƒ¼ãƒˆåˆ‡ã‚Šæ›¿ãˆ.
 void ChangeGameState(STATE state, Game& game)
 {
-	// ‘¦À‚ÉØ‚è‘Ö‚í‚è‚·‚¬‚é‚Ì‚ÅA‚¿‚å‚Á‚ÆŠÔ‚ğ~‚ß‚é.
+	// å³åº§ã«åˆ‡ã‚Šæ›¿ã‚ã‚Šã™ãã‚‹ã®ã§ã€ã¡ã‚‡ã£ã¨æ™‚é–“ã‚’æ­¢ã‚ã‚‹.
 	WaitTimer(STATE_CHANGE_WAIT);
 
-	// ƒXƒe[ƒg‚ªØ‚è‘Ö‚í‚Á‚½uŠÔ‚ÍƒL[—£‚µ‚½”»’è‚ğƒŠƒZƒbƒg.
+	// ã‚¹ãƒ†ãƒ¼ãƒˆãŒåˆ‡ã‚Šæ›¿ã‚ã£ãŸç¬é–“ã¯ã‚­ãƒ¼é›¢ã—ãŸåˆ¤å®šã‚’ãƒªã‚»ãƒƒãƒˆ.
 	game.keyOn = false;
 	game.keyRelease = false;
 
 	game.state = state;
 
-	// ƒXƒe[ƒg‚ªØ‚è‘Ö‚í‚Á‚½uŠÔA•K—v‚È‚ç‰Šú‰»‚È‚Ç‚Ìˆ—‚ğs‚¤
+	// ã‚¹ãƒ†ãƒ¼ãƒˆãŒåˆ‡ã‚Šæ›¿ã‚ã£ãŸç¬é–“ã€å¿…è¦ãªã‚‰åˆæœŸåŒ–ãªã©ã®å‡¦ç†ã‚’è¡Œã†
 	switch (game.state)
 	{
-		// ƒ^ƒCƒgƒ‹.
+		// ã‚¿ã‚¤ãƒˆãƒ«.
 	case STATE_TITLE:
 		break;
-		// ƒQ[ƒ€’†.
+		// ã‚²ãƒ¼ãƒ ä¸­.
 	case STATE_GAME:
 		InitGameStart(game);
 		break;
-		// ƒNƒŠƒA‰æ–Ê.
+		// ã‚¯ãƒªã‚¢ç”»é¢.
 	case STATE_CLEAR:
 		break;
-		// ƒQ[ƒ€ƒI[ƒo[.
+		// ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼.
 	case STATE_GAMEOVER:
 		break;
 	default:
@@ -73,10 +73,10 @@ void ChangeGameState(STATE state, Game& game)
 	}
 }
 
-// ƒAƒbƒvƒf[ƒg.
+// ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ.
 void UpdateGame(Game& game)
 {
-	// ƒL[—£‚µ‚½uŠÔ‚ğæ‚é.
+	// ã‚­ãƒ¼é›¢ã—ãŸç¬é–“ã‚’å–ã‚‹.
 	if (game.keyOn)
 	{
 		if (CheckHitKey(KEY_INPUT_SPACE) == 0)
@@ -99,18 +99,18 @@ void UpdateGame(Game& game)
 		game.prevKeyOn = false;
 	}
 
-	// ƒXƒe[ƒg‚²‚Æ‚Éˆ—‚ğ‚í‚¯‚é.
+	// ã‚¹ãƒ†ãƒ¼ãƒˆã”ã¨ã«å‡¦ç†ã‚’ã‚ã‘ã‚‹.
 	switch (game.state)
 	{
-		// ƒ^ƒCƒgƒ‹.
+		// ã‚¿ã‚¤ãƒˆãƒ«.
 	case STATE_TITLE:
-		// ƒL[“ü—Í‚ª‚ ‚Á‚½‚çƒQ[ƒ€ŠJn‚Ìó‘Ô‚É
+		// ã‚­ãƒ¼å…¥åŠ›ãŒã‚ã£ãŸã‚‰ã‚²ãƒ¼ãƒ é–‹å§‹ã®çŠ¶æ…‹ã«
 		if (game.keyRelease)
 		{
 			ChangeGameState(STATE_GAME, game);
 		}
 		break;
-		// ƒQ[ƒ€’†.
+		// ã‚²ãƒ¼ãƒ ä¸­.
 	case STATE_GAME:
 		UpdatePlayer(game.player, game.enemy);
 		UpdateEnemy(game.enemy, game.player);
@@ -119,28 +119,28 @@ void UpdateGame(Game& game)
 			UpdateBG(game.bg[i]);
 		}
 
-		// “G‚ª€‚ñ‚¾‚çƒNƒŠƒAó‘Ô‚É
+		// æ•µãŒæ­»ã‚“ã ã‚‰ã‚¯ãƒªã‚¢çŠ¶æ…‹ã«
 		if (game.enemy.life <= 0)
 		{
 			ChangeGameState(STATE_CLEAR, game);
 		}
-		// ƒvƒŒƒCƒ„[‚ª€‚Ê‚©ŠÔØ‚ê‚ÅƒQ[ƒ€ƒI[ƒo[
+		// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæ­»ã¬ã‹æ™‚é–“åˆ‡ã‚Œã§ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼
 		else if (GetNowCount() - game.gameStartTime > LIMIT_TIME_COUNT * 1000 || game.player.life <= 0)
 		{
 			ChangeGameState(STATE_GAMEOVER, game);
 		}
 		break;
-		// ƒNƒŠƒA‰æ–Ê.
+		// ã‚¯ãƒªã‚¢ç”»é¢.
 	case STATE_CLEAR:
-		// ƒL[‚ª‰Ÿ‚³‚ê‚½‚çƒ^ƒCƒgƒ‹‚Ö
+		// ã‚­ãƒ¼ãŒæŠ¼ã•ã‚ŒãŸã‚‰ã‚¿ã‚¤ãƒˆãƒ«ã¸
 		if (game.keyRelease)
 		{
 			ChangeGameState(STATE_TITLE, game);
 		}
 		break;
-		// ƒQ[ƒ€ƒI[ƒo[.
+		// ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼.
 	case STATE_GAMEOVER:
-		// ƒL[‚ª‰Ÿ‚³‚ê‚½‚çƒ^ƒCƒgƒ‹‚Ö
+		// ã‚­ãƒ¼ãŒæŠ¼ã•ã‚ŒãŸã‚‰ã‚¿ã‚¤ãƒˆãƒ«ã¸
 		if (game.keyRelease)
 		{
 			ChangeGameState(STATE_TITLE, game);
@@ -151,11 +151,11 @@ void UpdateGame(Game& game)
 	}
 }
 
-// ƒQ[ƒ€•`‰æ
+// ã‚²ãƒ¼ãƒ æç”»
 void DrawGame(Game& game)
 {
-	// Še•`‰æŠÖ”‚ğŒÄ‚Ô.
-	// UIˆÈŠO‚ÍƒQ[ƒ€’†‚¾‚¯•`‰æ‚·‚é
+	// å„æç”»é–¢æ•°ã‚’å‘¼ã¶.
+	// UIä»¥å¤–ã¯ã‚²ãƒ¼ãƒ ä¸­ã ã‘æç”»ã™ã‚‹
 	if (game.state == STATE_GAME)
 	{
 		for (int i = 0; i < BG_NUM; i++)
