@@ -57,8 +57,8 @@
 #define	PLAYER_HP_OFFSET_Y		5		// プレイヤー体力のオフセット.
 
 // スクリーンサイズ.
-#define SCREEN_W 640
-#define SCREEN_H 480
+#define SCREEN_W 1600
+#define SCREEN_H 900
 
 //----------------------------//
 // 構造体宣言.
@@ -163,11 +163,11 @@ void InitPlayer()
 	{
 		player.graph = LoadGraph("data/texture/EpicPlayer.png");
 	}
-	player.x = SCREEN_W/2;
-	player.y = SCREEN_H - 100;
+	player.x = SCREEN_W / 2;		// 画面の半分（中央）
+	player.y = SCREEN_H - 100;		// 画面下-100の位置
 	player.life = PLAYER_LIFE;
 
-	// エネミーが顔を歪めているかどうかの変数に『歪めていない』を表すFALSEを代入
+	// 『ダメージをうけていない』を表すFALSEを代入
 	player.damageFlag = false;
 
 	// プレイヤーと弾の画像のサイズを得る
@@ -286,7 +286,7 @@ void InitEnemy()
 	enemy.y = 50;
 	enemy.life = ENEMY_LIFE;
 
-	// エネミーが顔を歪めているかどうかの変数に『歪めていない』を表すFALSEを代入
+	// 『ダメージをうけていない』を表すFALSEを代入
 	enemy.damageFlag = false;
 
 	// エネミーのグラフィックのサイズを得る
@@ -453,20 +453,29 @@ void UpdateShot()
 		if (shot[i].visibleFlag == 1 && enemy.life > 0)
 		{
 			// エネミーとの当たり判定
-			if (((shot[i].x > enemy.x && shot[i].x < enemy.x + enemy.w) ||
-				(enemy.x > shot[i].x && enemy.x < shot[i].x + shot[i].w)) &&
-				((shot[i].y > enemy.y && shot[i].y < enemy.y + enemy.h) ||
-				(enemy.y > shot[i].y && enemy.y < shot[i].y + shot[i].h)))
+			int shotLeft = shot[i].x;
+			int shotRight = shot[i].x + shot[i].w;
+			int shotTop = shot[i].y;
+			int shotBottom = shot[i].y + shot[i].h;
+			int enemyLeft = enemy.x;
+			int enemyRight = enemy.x + enemy.w;
+			int enemyTop = enemy.y;
+			int enemyBottom = enemy.y + enemy.h;
+			if (((shotLeft > enemyLeft && shotLeft < enemyRight) ||
+				(enemyLeft > shotLeft && enemyLeft < shotRight)) &&
+				((shotTop > enemyTop && shotTop < enemyBottom) ||
+				(enemyTop > shotTop && enemyTop < shotBottom)))
 			{
 				// 接触している場合は当たった弾の存在を消す
 				shot[i].visibleFlag = 0;
 
-				// エネミーの顔を歪めているかどうかを保持する変数に『歪めている』を表すTRUEを代入
+				// 『ダメージをうけている』を表すTRUEを代入
 				enemy.damageFlag = true;
 
 				// エネミーの顔を歪めている時間を測るカウンタ変数に０を代入
 				enemy.damageCounter = 0;
 
+				// ダメージを受けたらショットの力の分だけライフを減らす
 				enemy.life -= SHOT_POWER;
 			}
 		}
@@ -492,10 +501,18 @@ void UpdateShot()
 		if (enemyShot[i].visibleFlag == 1 && player.life > 0)
 		{
 			// プレイヤーとの当たり判定
-			if (((enemyShot[i].x > player.x && enemyShot[i].x < player.x + player.w) ||
-				(player.x > enemyShot[i].x && player.x < enemyShot[i].x + enemyShot[i].w)) &&
-				((enemyShot[i].y > player.y && enemyShot[i].y < player.y + player.h) ||
-				(player.y > enemyShot[i].y && player.y < enemyShot[i].y + enemyShot[i].h)))
+			int enemyShotLeft = enemyShot[i].x;
+			int enemyShotRight = enemyShot[i].x + enemyShot[i].w;
+			int enemyShotTop = enemyShot[i].y;
+			int enemyShotBottom = enemyShot[i].y + enemyShot[i].h;
+			int playerLeft = player.x;
+			int playerRight = player.x + player.w;
+			int playerTop = player.y;
+			int playerBottom = player.y + player.h;
+			if (((enemyShotLeft > playerLeft && enemyShotLeft < playerRight) ||
+				(playerLeft > enemyShotLeft && playerLeft < enemyShotRight)) &&
+				((enemyShotTop > playerTop && enemyShotTop < playerBottom) ||
+				(playerTop > enemyShotTop && playerTop < enemyShotBottom)))
 			{
 				// 接触している場合は当たった弾の存在を消す
 				enemyShot[i].visibleFlag = 0;
@@ -537,6 +554,7 @@ void InitBG()
 	// グラフィックをロードしてサイズを取得.
 	if (bg[0].graph < 0)
 	{
+		// 注意！画面のサイズと背景画像のサイズは一緒じゃないとダメ
 		int bgGraph = LoadGraph("data/texture/FancyBG_back.png");
 		for (int i = 0; i < BG_NUM; i++)
 		{
@@ -682,7 +700,7 @@ void DrawUI()
 }
 
 //----------------------------//
-// ルール関数群.
+// ルール関数群。プレイヤーでも敵でもないゲームルールの部分を管理する.
 //----------------------------//
 // 初期化.
 void InitRule()
@@ -702,6 +720,8 @@ void ChangeState(int state)
 	rule.keyRelease = false;
 
 	rule.state = state;
+
+	// ステートが切り替わった瞬間、必要なら初期化などの処理を行う
 	switch (rule.state)
 	{
 		// タイトル.
@@ -757,6 +777,7 @@ void UpdateRule()
 	{
 		// タイトル.
 	case STATE_TITLE:
+		// キー入力があったらゲーム開始の状態に
 		if (rule.keyRelease)
 		{
 			ChangeState(STATE_GAME);
@@ -764,10 +785,12 @@ void UpdateRule()
 		break;
 		// ゲーム中.
 	case STATE_GAME:
+		// 敵が死んだらクリア状態に
 		if (enemy.life <= 0)
 		{
 			ChangeState(STATE_CLEAR);
 		}
+		// プレイヤーが死ぬか時間切れでゲームオーバー
 		else if (GetNowCount() - rule.gameStartTime > LIMIT_TIME_COUNT * 1000 || player.life <= 0)
 		{
 			ChangeState(STATE_GAMEOVER);
@@ -775,6 +798,7 @@ void UpdateRule()
 		break;
 		// クリア画面.
 	case STATE_CLEAR:
+		// キーが押されたらタイトルへ
 		if (rule.keyRelease)
 		{
 			ChangeState(STATE_TITLE);
@@ -782,6 +806,7 @@ void UpdateRule()
 		break;
 		// ゲームオーバー.
 	case STATE_GAMEOVER:
+		// キーが押されたらタイトルへ
 		if (rule.keyRelease)
 		{
 			ChangeState(STATE_TITLE);
@@ -800,8 +825,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 {
 	// 画面モードの設定
 	SetGraphMode(SCREEN_W, SCREEN_H, 16);		// 解像度をSCREEN_W*SCREEN_H、colorを16bitに設定.
-	ChangeWindowMode(TRUE);			// ウインドウモードに.
-	
+
+	/////////////////////////////////
+	// ウインドウモードに(コメントアウトしたらフルスクリーン).
+	ChangeWindowMode(TRUE);
+	/////////////////////////////////
+
 	// ＤＸライブラリ初期化処理
 	if (DxLib_Init() == -1)
 	{
