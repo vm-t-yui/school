@@ -18,6 +18,7 @@ struct Player
 	int Y;
 	int W;
 	int H;
+	bool PrevShotFlag = false;
 };
 
 // エネミー構造体.
@@ -31,6 +32,9 @@ struct Enemy
 	int		DamageGraph;
 	int		W;
 	int		H;
+
+	// エネミーが右移動しているかどうかのフラグをリセット
+	bool RightMove = true;
 };
 
 // ショット構造体.
@@ -54,9 +58,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	
 	// ＤＸライブラリ初期化処理
 	if (DxLib_Init() == -1)
-		{
-			return -1;
-		}
+	{
+		return -1;
+	}
 
 	// グラフィックの描画先を裏画面にセット
 	SetDrawScreen(DX_SCREEN_BACK);
@@ -66,6 +70,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	player.Graph = LoadGraph("data/texture/player.png");
 	player.X = 288; 
 	player.Y = 400;
+
+	// ショットボタンが前のフレームで押されたかどうかを保存する変数にfalse(押されいない)を代入
+	player.PrevShotFlag = false;
 
 	// プレイヤーと弾の画像のサイズを得る
 	GetGraphSize(player.Graph, &player.W, &player.H);
@@ -109,12 +116,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	// エネミーのグラフィックのサイズを得る
 	GetGraphSize(enemy.Graph, &enemy.W, &enemy.H);
 
-	// ショットボタンが前のフレームで押されたかどうかを保存する変数にfalse(押されいない)を代入
-	bool prevShotFlag = false;
-
-	// エネミーが右移動しているかどうかのフラグをリセット
-	bool enemyRightMove = true;
-
 	// ゲームループ.
 	while (1)
 	{
@@ -147,7 +148,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			if (CheckHitKey(KEY_INPUT_SPACE))
 			{
 				// 前フレームでショットボタンを押したかが保存されている変数がfalseだったら弾を発射
-				if (prevShotFlag == false)
+				if (player.PrevShotFlag == false)
 				{
 					// 画面上にでていない弾があるか、弾の数だけ繰り返して調べる
 					for (int i = 0; i < SHOT; i++)
@@ -169,13 +170,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 				}
 
 				// 前フレームでショットボタンを押されていたかを保存する変数にtrue(おされていた)を代入
-				prevShotFlag = true;
+				player.PrevShotFlag = true;
 			}
 			else
 			{
 				// ショットボタンが押されていなかった場合は
 				// 前フレームでショットボタンが押されていたかを保存する変数にfalse(おされていない)を代入
-				prevShotFlag = false;
+				player.PrevShotFlag = false;
 			}
 
 			// プレイヤーが画面左端からはみ出そうになっていたら画面内の座標に戻してあげる
@@ -205,7 +206,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		//------------------------------//
 		{
 			// エネミーの座標を移動している方向に移動する
-			if (enemyRightMove == true)
+			if (enemy.RightMove == true)
 			{
 				enemy.X += 3;
 			}
@@ -218,12 +219,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			if (enemy.X > 640 - enemy.W)
 			{
 				enemy.X = 640 - enemy.W;
-				enemyRightMove = false;
+				enemy.RightMove = false;
 			}
 			else if (enemy.X < 0)
 			{
 				enemy.X = 0;
-				enemyRightMove = true;
+				enemy.RightMove = true;
 			}
 
 			// エネミーを描画
