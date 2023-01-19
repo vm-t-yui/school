@@ -30,7 +30,7 @@ void HpBar::Draw()
 	DrawExtendGraph(
 		HpBarSideSpace,
 		HpBarStartY,
-		(int)((ScreenW - (HpBarSideSpace * 2)) * ((float)hp / HpMax)),
+		HpBarSideSpace + (int)((ScreenW - (HpBarSideSpace * 2)) * ((float)drawHp / HpMax)),
 		HpBarStartY + HpBarHight,
 		graph,
 		TRUE);
