@@ -27,14 +27,11 @@ void HpBar::Draw()
 {
 	// 画面サイズに合わせて、HPゲージを表示する
 	printfDx("hp:%d\n", hp);
-	if (hp > 0)
-	{
-		DrawExtendGraph(
-			HpBarSideSpace,
-			HpBarStartY,
-			(int)((ScreenW - (HpBarSideSpace * 2)) * ((float)hp / HpMax)),
-			HpBarStartY + HpBarHight,
-			graph,
-			TRUE);
-	}
+	DrawExtendGraph(
+		HpBarSideSpace,
+		HpBarStartY,
+		(int)((ScreenW - (HpBarSideSpace * 2)) * ((float)hp / HpMax)),
+		HpBarStartY + HpBarHight,
+		graph,
+		TRUE);
 }
