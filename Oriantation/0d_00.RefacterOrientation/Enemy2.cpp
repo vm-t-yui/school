@@ -1,101 +1,98 @@
-﻿//-----------------------------------------------------------------------------
-// @brief  エネミー処理
-//-----------------------------------------------------------------------------
-#include"Enemy2.h"
+﻿#include"Enemy2.h"
 
-//----------------------------//
-// 初期化
-//----------------------------//
+/// <summary>
+/// 初期化
+/// </summary>
 void Enemy2::Init()
 {
 	// エネミーのグラフィックをメモリにロード＆表示座標を初期化
 	char* enemyGlaphStr = "data/texture/EpicEnemy2.png";
-	Graph = LoadGraph(enemyGlaphStr);
-	DamageGraph = LoadGraph(enemyGlaphStr);
-	GraphFilter(DamageGraph, DX_GRAPH_FILTER_HSB, 0, 0, 0, 256);
-	X = 0;
-	Y = 100;
-	Life = ENEMY_LIFE2;
+	graph = LoadGraph(enemyGlaphStr);
+	damageGraph = LoadGraph(enemyGlaphStr);
+	GraphFilter(damageGraph, DX_GRAPH_FILTER_HSB, 0, 0, 0, 256);
+	x = 0;
+	y = 100;
+	life = ENEMY_LIFE2;
 
 	// エネミーが顔を歪めているかどうかの変数に『歪めていない』を表すFALSEを代入
-	DamageFlag = false;
+	damageFlag = false;
 
 	// エネミーのグラフィックのサイズを得る
-	GetGraphSize(Graph, &W, &H);
+	GetGraphSize(graph, &w, &h);
 
-	RightMove = true;
+	rightMove = true;
 }
 
-//----------------------------//
-// アップデート
-//----------------------------//
+/// <summary>
+/// 更新
+/// </summary>
 void Enemy2::Update()
 {
 	// エネミーの座標を移動している方向に移動する
-	if (RightMove == true)
+	if (rightMove == true)
 	{
-		X += 2;
+		x += 2;
 	}
 	else
 	{
-		X -= 2;
+		x -= 2;
 	}
 
 	// エネミーが画面端からでそうになっていたら画面内の座標に戻してあげ、移動する方向も反転する
-	if (X > SCREEN_W - W)
+	if (x > SCREEN_W - w)
 	{
-		X = SCREEN_W - W;
-		RightMove = false;
+		x = SCREEN_W - w;
+		rightMove = false;
 	}
-	else if (X < 0)
+	else if (x < 0)
 	{
-		X = 0;
-		RightMove = true;
+		x = 0;
+		rightMove = true;
 	}
 
 	// エネミーを描画
 	// ダメージを受けているかどうかで処理を分岐
-	if (DamageFlag == true)
+	if (damageFlag == true)
 	{
-		DamageCounter++;
+		damageCounter++;
 
-		if (DamageCounter == 5)
+		if (damageCounter == 5)
 		{
 			// 『ダメージをうけていない』を表すFALSEを代入
-			DamageFlag = false;
+			damageFlag = false;
 		}
 	}
 }
 
-//----------------------------//
-// 描画
-//----------------------------//
+/// <summary>
+/// 描画
+/// </summary>
 void Enemy2::Draw()
 {
-	if (Life > 0)
+	if (life > 0)
 	{
 		// ダメージを受けている場合はダメージ時のグラフィックを描画する
-		if (DamageFlag == true)
+		if (damageFlag == true)
 		{
-			DrawGraph(X, Y, DamageGraph, TRUE);
+			DrawGraph(x, y, damageGraph, TRUE);
 		}
 		else
 		{
-			DrawGraph(X, Y, Graph, TRUE);
+			DrawGraph(x, y, graph, TRUE);
 		}
 	}
 }
 
-//----------------------------//
-// ダメージを受けた
-//----------------------------//
+/// <summary>
+/// ダメージを受けた
+/// </summary>
 void Enemy2::OnDamage()
 {
 	// エネミーの顔を歪めているかどうかを保持する変数に『歪めている』を表すTRUEを代入
-	DamageFlag = true;
+	damageFlag = true;
 
 	// エネミーの顔を歪めている時間を測るカウンタ変数に０を代入
-	DamageCounter = 0;
+	damageCounter = 0;
 
-	Life -= 1;
+	life -= 1;
 }

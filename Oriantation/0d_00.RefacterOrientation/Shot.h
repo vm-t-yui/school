@@ -1,6 +1,4 @@
-﻿//-----------------------------------------------------------------------------
-// @brief  ショット処理.
-//-----------------------------------------------------------------------------
+﻿// 2023 Takeru Yui All Rights Reserved.
 #pragma once
 
 #include "DxLib.h"
@@ -9,7 +7,9 @@
 #include "Enemy2.h"
 #include "Enemy3.h"
 
-// ショット.
+/// <summary>
+/// ショット
+/// </summary>
 class Shot
 {
 public:

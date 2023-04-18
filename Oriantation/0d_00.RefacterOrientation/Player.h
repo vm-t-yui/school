@@ -1,18 +1,18 @@
-﻿//-----------------------------------------------------------------------------
-// @brief  プレイヤー処理
-//-----------------------------------------------------------------------------
+﻿// 2023 Takeru Yui All Rights Reserved.
 #pragma once
 
 #include "DxLib.h"
 #include "Common.h"
 #include "Shot.h"
 
-// プレイヤー
+/// <summary>
+/// プレイヤー
+/// </summary>
 class Player
 {
 public:
 	void Init();				// 初期化
-	void Update(Shot* shot);	// アップデート
+	void Update(Shot shot[], int shotNum);	// アップデート
 	void Draw();				// 描画
 
 private:

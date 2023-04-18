@@ -1,12 +1,9 @@
-﻿//-----------------------------------------------------------------------------
-// @brief  プレイヤー処理.
-//-----------------------------------------------------------------------------
+﻿// 2023 Takeru Yui All Rights Reserved.
 #include "Player.h"
 
-//----------------------------//
-// プレイヤー関数群.
-//----------------------------//
-// 初期化.
+/// <summary>
+/// 初期化
+/// </summary>
 void Player::Init()
 {
 	shotIntervalCount = 0;
@@ -20,8 +17,11 @@ void Player::Init()
 	GetGraphSize(Graph, &W, &H);
 }
 
-// アップデート.
-void Player::Update(Shot* shot)
+/// <summary>
+/// 更新
+/// </summary>
+/// <param name="shot">ショット配列</param>
+void Player::Update(Shot shot[], int shotNum)
 {
 	// 矢印キーを押していたらプレイヤーを移動させる
 	if (CheckHitKey(KEY_INPUT_UP) == 1)
@@ -48,7 +48,7 @@ void Player::Update(Shot* shot)
 		if (shotIntervalCount == 0)
 		{
 			// 画面上にでていない弾があるか、弾の数だけ繰り返して調べる
-			for (int i = 0; i < SHOT; i++)
+			for (int i = 0; i < shotNum; i++)
 			{
 				// 弾iが画面上にでていない場合はその弾を画面に出す
 				if (shot[i].GetVisibleFlag() == false)
@@ -89,7 +89,9 @@ void Player::Update(Shot* shot)
 	}
 }
 
-// 描画.
+/// <summary>
+/// 描画
+/// </summary>
 void Player::Draw()
 {
 	DrawGraph(X, Y, Graph, TRUE);

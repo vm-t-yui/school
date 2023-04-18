@@ -1,7 +1,4 @@
-﻿//-----------------------------------------------------------------------------
-// @brief  メイン処理.
-// 2016 Takeru Yui All Rights Reserved.
-//-----------------------------------------------------------------------------
+﻿// 2023 Takeru Yui All Rights Reserved.
 #include "DxLib.h"
 #include "Common.h"
 #include "Player.h"
@@ -10,22 +7,16 @@
 #include "Enemy2.h"
 #include "Enemy3.h"
 
-//-----------------------------------------------------------------------------
-// @brief  メイン関数.
-//-----------------------------------------------------------------------------
-
-//----------------------------//
-// グローバル変数.
-//----------------------------//
+// グローバル変数
 Player player;
 Enemy enemy;
 Enemy2 enemy2;
 Enemy3 enemy3;
-Shot shot[SHOT];
+Shot shot[SHOT_NUM];
 
-//----------------------------//
-// WinMain関数.
-//----------------------------//
+/// <summary>
+/// WinMain関数
+/// </summary>
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	LPSTR lpCmdLine, int nCmdShow)
 {
@@ -50,7 +41,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	enemy.Init();
 	enemy2.Init();
 	enemy3.Init();
-	for (int i = 0; i < SHOT; i++)
+	for (int i = 0; i < SHOT_NUM; i++)
 	{
 		shot[i].Init();
 	}
@@ -62,17 +53,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		ClearDrawScreen();
 
 		// 各アップデート関数を呼ぶ.
-		player.Update(shot);
+		player.Update(shot, SHOT_NUM);
 		enemy.Update();
 		enemy2.Update();
 		enemy3.Update();
-		for (int i = 0; i < SHOT; i++)
+		for (int i = 0; i < SHOT_NUM; i++)
 		{
 			shot[i].Update(enemy, enemy2, enemy3);
 		}
 
 		// 各描画関数を呼ぶ.
-		for (int i = 0; i < SHOT; i++)
+		for (int i = 0; i < SHOT_NUM; i++)
 		{
 			shot[i].Draw();
 		}

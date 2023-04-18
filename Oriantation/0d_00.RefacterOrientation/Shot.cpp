@@ -1,12 +1,9 @@
-﻿//-----------------------------------------------------------------------------
-// @brief  ショット処理.
-//-----------------------------------------------------------------------------
+﻿// 2023 Takeru Yui All Rights Reserved.
 #include "Shot.h"
 
-//----------------------------//
-// ショット関数群.
-//----------------------------//
-// 初期化.
+/// <summary>
+/// 初期化
+/// </summary>
 void Shot::Init()
 {
 	// ショットのグラフィックをメモリにロード.
@@ -19,7 +16,12 @@ void Shot::Init()
 	GetGraphSize(Graph, &W, &H);
 }
 
-// アップデート.
+/// <summary>
+/// 更新
+/// </summary>
+/// <param name="enemy">敵</param>
+/// <param name="enemy2">敵2</param>
+/// <param name="enemy3">敵3</param>
 void Shot::Update(Enemy& enemy, Enemy2& enemy2, Enemy3& enemy3)
 {
 	// 自機の弾iの移動ルーチン( 存在状態を保持している変数の内容がtrue(存在する)の場合のみ行う )
@@ -80,7 +82,10 @@ void Shot::Update(Enemy& enemy, Enemy2& enemy2, Enemy3& enemy3)
 		}
 	}
 }
-// 描画.
+
+/// <summary>
+/// 描画
+/// </summary>
 void Shot::Draw()
 {
 	if (VisibleFlag == true)
@@ -90,6 +95,11 @@ void Shot::Draw()
 	}
 }
 
+/// <summary>
+/// ショット撃った
+/// </summary>
+/// <param name="playerX">プレイヤーのX座標</param>
+/// <param name="playerY">プレイヤーのY座標</param>
 void Shot::OnShot(int playerX, int playerY)
 {
 	// 弾iの位置をセット、位置はプレイヤーの中心にする

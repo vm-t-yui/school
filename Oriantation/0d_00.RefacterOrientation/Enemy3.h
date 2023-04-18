@@ -1,12 +1,11 @@
-﻿//-----------------------------------------------------------------------------
-// @brief  エネミー処理.
-//-----------------------------------------------------------------------------
-#pragma once
+﻿#pragma once
 
 #include "DxLib.h"
 #include "Common.h"
 
-// エネミークラス.
+/// <summary>
+/// 大きくて固いエネミー
+/// </summary>
 class Enemy3
 {
 public:
@@ -16,23 +15,23 @@ public:
 
 	void OnDamage();	// ダメージを受けた
 
-	int GetLife() { return Life; }
-	int GetX() { return X; }
-	int GetY() { return Y; }
-	int GetW() { return W; }
-	int GetH() { return H; }
+	int GetLife() { return life; }
+	int GetX() { return x; }
+	int GetY() { return y; }
+	int GetW() { return w; }
+	int GetH() { return h; }
 
 private:
-	int		X;
-	int		Y;
-	int		Graph;
-	bool	DamageFlag;
-	int		DamageCounter;
-	int		DamageGraph;
-	int		W;
-	int		H;
-	int		Life;
+	int		x;
+	int		y;
+	int		graph;
+	bool	damageFlag;
+	int		damageCounter;
+	int		damageGraph;
+	int		w;
+	int		h;
+	int		life;
 
 	// エネミーが右移動しているかどうか
-	bool	RightMove;
+	bool	rightMove;
 };
