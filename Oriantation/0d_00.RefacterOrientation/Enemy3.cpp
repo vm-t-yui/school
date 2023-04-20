@@ -1,5 +1,6 @@
 ﻿// 2023 Takeru Yui All Rights Reserved.
-#include"Enemy3.h"
+#include "DxLib.h"
+#include "Enemy3.h"
 
 /// <summary>
 /// 初期化

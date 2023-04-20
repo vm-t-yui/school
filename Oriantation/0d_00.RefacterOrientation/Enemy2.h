@@ -1,7 +1,6 @@
 ﻿// 2023 Takeru Yui All Rights Reserved.
 #pragma once
 
-#include "DxLib.h"
 #include "Common.h"
 
 /// <summary>
