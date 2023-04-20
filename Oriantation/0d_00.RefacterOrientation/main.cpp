@@ -7,13 +7,6 @@
 #include "Enemy2.h"
 #include "Enemy3.h"
 
-// グローバル変数
-Player player;
-Enemy enemy;
-Enemy2 enemy2;
-Enemy3 enemy3;
-Shot shot[SHOT_NUM];
-
 /// <summary>
 /// WinMain関数
 /// </summary>
@@ -35,6 +28,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	// グラフィックの描画先を裏画面にセット
 	SetDrawScreen(DX_SCREEN_BACK);
+
+	// 変数宣言
+	Player player;
+	Enemy enemy;
+	Enemy2 enemy2;
+	Enemy3 enemy3;
+	Shot shot[SHOT_NUM];
 
 	// 各初期化を呼ぶ.
 	player.Init();
