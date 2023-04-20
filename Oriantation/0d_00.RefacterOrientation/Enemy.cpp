@@ -68,7 +68,7 @@ void Enemy::Update()
 /// <summary>
 /// 描画
 /// </summary>
-void Enemy::Draw()
+void Enemy::Draw() const
 {
 	if (life > 0)
 	{

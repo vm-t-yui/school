@@ -1,4 +1,5 @@
-﻿#pragma once
+﻿// 2023 Takeru Yui All Rights Reserved.
+#pragma once
 
 #include "DxLib.h"
 #include "Common.h"
@@ -11,15 +12,15 @@ class Enemy3
 public:
 	void Init();		// 初期化
 	void Update();		// アップデート
-	void Draw();		// 描画
+	void Draw() const;	// 描画
 
 	void OnDamage();	// ダメージを受けた
 
-	int GetLife() { return life; }
-	int GetX() { return x; }
-	int GetY() { return y; }
-	int GetW() { return w; }
-	int GetH() { return h; }
+	int GetLife() const { return life; }
+	int GetX() const { return x; }
+	int GetY() const { return y; }
+	int GetW() const { return w; }
+	int GetH() const { return h; }
 
 private:
 	int		x;

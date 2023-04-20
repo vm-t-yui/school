@@ -1,4 +1,5 @@
-﻿#include"Enemy2.h"
+﻿// 2023 Takeru Yui All Rights Reserved.
+#include"Enemy2.h"
 
 /// <summary>
 /// 初期化
@@ -67,7 +68,7 @@ void Enemy2::Update()
 /// <summary>
 /// 描画
 /// </summary>
-void Enemy2::Draw()
+void Enemy2::Draw() const
 {
 	if (life > 0)
 	{

@@ -82,7 +82,7 @@ void Enemy3::Update()
 /// <summary>
 /// 描画
 /// </summary>
-void Enemy3::Draw()
+void Enemy3::Draw() const
 {
 	if (life > 0)
 	{

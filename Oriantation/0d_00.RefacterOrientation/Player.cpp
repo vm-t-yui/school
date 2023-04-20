@@ -9,12 +9,12 @@ void Player::Init()
 	shotIntervalCount = 0;
 
 	// プレイヤーのグラフィックをメモリにロード＆表示座標を初期化
-	Graph = LoadGraph("data/texture/EpicPlayer.png");
-	X = SCREEN_W / 2;
-	Y = SCREEN_H - 100;
+	graph = LoadGraph("data/texture/EpicPlayer.png");
+	x = SCREEN_W / 2;
+	y = SCREEN_H - 100;
 
 	// プレイヤーと弾の画像のサイズを得る
-	GetGraphSize(Graph, &W, &H);
+	GetGraphSize(graph, &w, &h);
 }
 
 /// <summary>
@@ -26,19 +26,19 @@ void Player::Update(Shot shot[], int shotNum)
 	// 矢印キーを押していたらプレイヤーを移動させる
 	if (CheckHitKey(KEY_INPUT_UP) == 1)
 	{
-		Y -= PLAYER_SPEED;
+		y -= PLAYER_SPEED;
 	}
 	if (CheckHitKey(KEY_INPUT_DOWN) == 1)
 	{
-		Y += PLAYER_SPEED;
+		y += PLAYER_SPEED;
 	}
 	if (CheckHitKey(KEY_INPUT_LEFT) == 1)
 	{
-		X -= PLAYER_SPEED;
+		x -= PLAYER_SPEED;
 	}
 	if (CheckHitKey(KEY_INPUT_RIGHT) == 1)
 	{
-		X += PLAYER_SPEED;
+		x += PLAYER_SPEED;
 	}
 
 	// 弾の発射処理
@@ -53,7 +53,7 @@ void Player::Update(Shot shot[], int shotNum)
 				// 弾iが画面上にでていない場合はその弾を画面に出す
 				if (shot[i].GetVisibleFlag() == false)
 				{
-					shot[i].OnShot(X, Y);
+					shot[i].OnShot(x, y);
 
 					// 一つ弾を出したので弾を出すループから抜けます
 					break;
@@ -71,28 +71,28 @@ void Player::Update(Shot shot[], int shotNum)
 	}
 
 	// プレイヤーが画面左端からはみ出そうになっていたら画面内の座標に戻してあげる
-	if (X < 0)
+	if (x < 0)
 	{
-		X = 0;
+		x = 0;
 	}
-	if (X > SCREEN_W - W)
+	if (x > SCREEN_W - w)
 	{
-		X = SCREEN_W - W;
+		x = SCREEN_W - w;
 	}
-	if (Y < 0)
+	if (y < 0)
 	{
-		Y = 0;
+		y = 0;
 	}
-	if (Y > SCREEN_H - H)
+	if (y > SCREEN_H - h)
 	{
-		Y = SCREEN_H - H;
+		y = SCREEN_H - h;
 	}
 }
 
 /// <summary>
 /// 描画
 /// </summary>
-void Player::Draw()
+void Player::Draw() const
 {
-	DrawGraph(X, Y, Graph, TRUE);
+	DrawGraph(x, y, graph, TRUE);
 }
