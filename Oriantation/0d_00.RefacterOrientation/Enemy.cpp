@@ -52,7 +52,6 @@ void Enemy::Update()
 		rightMove = true;
 	}
 
-	// エネミーを描画
 	// ダメージを受けているかどうかで処理を分岐
 	if (damageFlag == true)
 	{
