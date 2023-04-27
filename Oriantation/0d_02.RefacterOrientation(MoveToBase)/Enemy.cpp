@@ -1,5 +1,6 @@
 ﻿// 2023 Takeru Yui All Rights Reserved.
 #include "DxLib.h"
+#include "EnemyBase.h"
 #include "Enemy.h"
 
 /// <summary>

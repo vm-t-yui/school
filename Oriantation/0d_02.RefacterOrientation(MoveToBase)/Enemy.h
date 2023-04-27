@@ -2,7 +2,6 @@
 #pragma once
 
 #include "Common.h"
-#include "EnemyBase.h"
 
 /// <summary>
 /// 普通のエネミー

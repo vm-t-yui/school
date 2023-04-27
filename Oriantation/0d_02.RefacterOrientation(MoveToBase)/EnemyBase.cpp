@@ -1,3 +1,4 @@
+// 2023 Takeru Yui All Rights Reserved.
 #include "DxLib.h"
 #include "EnemyBase.h"
 #include "Common.h"
@@ -8,12 +9,18 @@
 void EnemyBase::Init()
 {
 	SetInitializeData();
-	graph = LoadGraph(enemyGlaphStr);
-	damageGraph = LoadGraph(enemyGlaphStr);
-	GraphFilter(damageGraph, DX_GRAPH_FILTER_HSB, 0, 0, 0, 256);
+	
+	damageFlag	= false;			// エネミーが顔を歪めているかどうかの変数に『歪めていない』を表すFALSEを代入
+	rightMove	= true;
 
-	// エネミーのグラフィックのサイズを得る
-	GetGraphSize(graph, &w, &h);
+	// ロード
+	graph		= LoadGraph(enemyGlaphStr);
+	damageGraph = LoadGraph(enemyGlaphStr);
+	
+	GetGraphSize(graph, &w, &h);	// エネミーのグラフィックのサイズを得る
+
+	// ダメージリアクションで色変更を行うので、初期化しておく
+	GraphFilter(damageGraph, DX_GRAPH_FILTER_HSB, 0, 0, 0, 256);
 }
 
 /// <summary>

@@ -1,5 +1,6 @@
 ﻿// 2023 Takeru Yui All Rights Reserved.
 #include "DxLib.h"
+#include "EnemyBase.h"
 #include "Enemy3.h"
 
 /// <summary>
@@ -12,11 +13,6 @@ void Enemy3::SetInitializeData()
 	x = 0;
 	y = 150;
 	life = ENEMY_LIFE3;
-
-	// エネミーが顔を歪めているかどうかの変数に『歪めていない』を表すFALSEを代入
-	damageFlag = false;
-
-	rightMove = true;
 	speed = 4;
 	speedUpLifeLimit = 10;
 }

@@ -3,6 +3,7 @@
 #include "Common.h"
 #include "Player.h"
 #include "Shot.h"
+#include "EnemyBase.h"
 #include "Enemy.h"
 #include "Enemy2.h"
 #include "Enemy3.h"
