@@ -19,6 +19,9 @@
     <ClCompile Include="Map.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="WorldSprite.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Player.h">
@@ -27,6 +30,11 @@
     <ClInclude Include="Camera.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Map.h" />
+    <ClInclude Include="Map.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldSprite.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

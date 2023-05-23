@@ -1,4 +1,7 @@
+// 2023 Takeru Yui All Rights Reserved.
 #pragma once
+
+class WorldSprite;
 
 /// <summary>
 /// 2D‚Ì”wŒiƒ}ƒbƒv
@@ -18,7 +21,7 @@ private:
 	static const int Stage1Data[][StageDataColNum];
 	
 	std::vector<std::vector<int>> currentData;
-
+	WorldSprite* sprite;
 	int chipGraph;
 };
 

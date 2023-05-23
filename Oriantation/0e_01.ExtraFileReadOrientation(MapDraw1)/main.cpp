@@ -10,8 +10,6 @@
 /// </summary>
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) 
 {
-	ChangeWindowMode(TRUE);
-
 	// ＤＸライブラリ初期化処理
 	if (DxLib_Init() == -1)		
 	{
@@ -19,6 +17,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	}
 
 	// 画面モードのセット
+	ChangeWindowMode(TRUE);
 	SetGraphMode(1600, 900, 16);
 
 	// 生成

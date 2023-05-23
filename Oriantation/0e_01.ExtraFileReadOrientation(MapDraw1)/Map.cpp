@@ -1,6 +1,8 @@
+// 2023 Takeru Yui All Rights Reserved.
 #include<vector>
 #include "Map.h"
 #include "DxLib.h"
+#include "WorldSprite.h"
 
 const int Map::Stage1Data[][StageDataColNum] =
 {
@@ -22,6 +24,7 @@ Map::Map()
 	: chipGraph(-1)
 {
 	currentData.clear();
+	sprite = new WorldSprite();
 }
 
 /// <summary>
@@ -29,7 +32,11 @@ Map::Map()
 /// </summary>
 Map::~Map()
 {
-	// 処理なし
+	if (sprite != nullptr)
+	{
+		delete sprite;
+		sprite = nullptr;
+	}
 }
 
 /// <summary>
@@ -38,21 +45,23 @@ Map::~Map()
 void Map::Load()
 {
 	// とりあえずマップロード
-	chipGraph = LoadGraph("data/mapChip1.png");
+	chipGraph = LoadGraph("data/map.png");
+	sprite->Initialize(chipGraph, 32, 65);
+	sprite->SetTransform(VGet(-0.5f, -0.5f, 0), 1.0f);
 
-	//// 後々違うデータを動的に切り替えるため、currentDataにコピー
-	//const int** targetData = (const int**)Stage1Data;
+	// 後々違うデータを動的に切り替えるため、currentDataにコピー
+	const int(*targetDataRows)[StageDataColNum] = Stage1Data;
 
-	//currentData.clear();
-	//for (int i = 0; i < StageDataColNum; i++)
-	//{
-	//	std::vector<int> newColData;
-	//	for (int j = 0; j < StageDataColNum; j++)
-	//	{
-	//		newColData.push_back(targetData[i][j]);
-	//	}
-	//	currentData.push_back(newColData);
-	//}
+	currentData.clear();
+	for (int i = 0; i < StageDataColNum; i++)
+	{
+		std::vector<int> newColData;
+		for (int j = 0; j < StageDataColNum; j++)
+		{
+			newColData.push_back(targetDataRows[i][j]);
+		}
+		currentData.push_back(newColData);
+	}
 }
 
 /// <summary>
@@ -70,8 +79,7 @@ void Map::Draw()
 {
 	// ゆくゆくはカメラを持ってきて、カメラ範囲以外表示しないように
 	float size = 1.0f;
-	DrawBillboard3D(VGet(0,0,0), 0, 0, size, 0, chipGraph, FALSE);
-	//DrawGraph3D(0, 0, 0, chipGraph, FALSE);
+	sprite->Draw();
 }
 
 
