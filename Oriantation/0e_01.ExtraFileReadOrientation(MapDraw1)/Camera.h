@@ -13,7 +13,7 @@ public:
 	Camera();							// コンストラクタ.
 	~Camera();							// デストラクタ.
 
-	void Update(const Player& player, float chipSize);	// 更新.
+	void Update(const Player& player);	// 更新.
 
 	// ポジションのgetter/setter.
 	const VECTOR& GetPos() const { return pos; }

@@ -4,18 +4,8 @@
 #include "DxLib.h"
 #include "WorldSprite.h"
 
-const int Map::Stage1Data[][StageDataColNum] =
-{
-	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-};
+const float Map::ChipSize = 0.725f;
+const int Map::ChipPixelSize = 32;
 
 /// <summary>
 /// コンストラクタ
@@ -24,7 +14,6 @@ Map::Map()
 	: chipGraph(-1)
 {
 	currentData.clear();
-	sprite = new WorldSprite();
 }
 
 /// <summary>
@@ -35,7 +24,6 @@ Map::~Map()
 	if (sprite != nullptr)
 	{
 		delete sprite;
-		sprite = nullptr;
 	}
 }
 
@@ -46,22 +34,13 @@ void Map::Load()
 {
 	// とりあえずマップロード
 	chipGraph = LoadGraph("data/map.png");
-	sprite->Initialize(chipGraph, 32, 65);
-	sprite->SetTransform(VGet(-0.5f, -0.5f, 0), 1.0f);
 
-	// 後々違うデータを動的に切り替えるため、currentDataにコピー
-	const int(*targetDataRows)[StageDataColNum] = Stage1Data;
-
-	currentData.clear();
-	for (int i = 0; i < StageDataColNum; i++)
-	{
-		std::vector<int> newColData;
-		for (int j = 0; j < StageDataColNum; j++)
-		{
-			newColData.push_back(targetDataRows[i][j]);
-		}
-		currentData.push_back(newColData);
-	}
+	// WorldSprite実体設定と位置初期化
+	sprite = new WorldSprite();
+	sprite->Initialize(chipGraph, ChipPixelSize, 65);
+	VECTOR chipHalfOffset = VGet(-Map::ChipSize * 0.5f, -Map::ChipSize * 0.5f, 0);					// マップチップの半分サイズ左下にずらすオフセット
+	VECTOR chipPos = VAdd(VGet(0,0,0), chipHalfOffset);	// 真ん中ピボットなのでマップチップ半分サイズずらす+地面なので一つ下に
+	sprite->SetTransform(chipPos, Map::ChipSize);
 }
 
 /// <summary>
@@ -78,7 +57,6 @@ void Map::Update()
 void Map::Draw()
 {
 	// ゆくゆくはカメラを持ってきて、カメラ範囲以外表示しないように
-	float size = 1.0f;
 	sprite->Draw();
 }
 

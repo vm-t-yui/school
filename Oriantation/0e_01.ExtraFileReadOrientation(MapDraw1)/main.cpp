@@ -38,17 +38,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		// TODO: 定数なのでいい感じの位置に移動したい
 		// マップチップのサイズ
-		float chipSize = 0.725f;
-		camera->Update(*player, chipSize);
-
 		map->Update();
+		camera->Update(*player);
 
 		// 画面を初期化する
 		ClearDrawScreen();
 
 		// 描画
-		player->Draw();
 		map->Draw();
+		player->Draw();
 
 		// デバッグ描画
 		// XYZ軸
@@ -57,14 +55,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		DrawLine3D(VGet(0, -lineSize, 0), VGet(0, lineSize, 0), GetColor(0, 255, 0));
 		DrawLine3D(VGet(0, 0, -lineSize), VGet(0, 0, lineSize), GetColor(0, 0, 255));
 
-		// マップチップライン(15個のマップチップをどう配置するか)
+		// マップチップライン(マップチップをどう配置するか)
 		// プレイヤーの地面をY=0としたいので、その周りを配置し、大体の基準でカメラを決める
-		for (int i = 0; i < 15 + 2; i++)
+		for (int i = 0; i < Map::StageDataColNum + 2; i++)
 		{
 			// X軸とかぶるところはとりあえず描画しない
 			if (i != 1)
 			{
-				float y = chipSize * (i - 1); // 一個下のラインからチップが始まる
+				float y = Map::ChipSize * (i - 1); // 一個下のラインからチップが始まる
 				DrawLine3D(VGet(-lineSize, y, 0), VGet(lineSize, y, 0), GetColor(255, 255, 0));
 			}
 		}

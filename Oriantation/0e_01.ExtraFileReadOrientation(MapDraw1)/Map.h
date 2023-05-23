@@ -1,5 +1,6 @@
 // 2023 Takeru Yui All Rights Reserved.
 #pragma once
+#include <vector>
 
 class WorldSprite;
 
@@ -16,9 +17,13 @@ public:
 	void Update();
 	void Draw();
 
+	// マップチップのサイズ
+	static const float	ChipSize;
+	static const int	ChipPixelSize;
+	static const int	StageDataColNum = 16;		// マップ行
+	static const int	StageDataRowNum = 20;		// マップ列
+
 private:
-	static const int StageDataColNum = 15;
-	static const int Stage1Data[][StageDataColNum];
 	
 	std::vector<std::vector<int>> currentData;
 	WorldSprite* sprite;

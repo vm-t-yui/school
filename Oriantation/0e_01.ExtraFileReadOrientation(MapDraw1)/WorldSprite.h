@@ -8,7 +8,7 @@
 class WorldSprite
 {
 public:
-	void Initialize(int textureGraph, int chipSize, int spriteNo);
+	void Initialize(int textureGraph, int chipPixelSize, int spriteNo);
 	void SetTransform(const VECTOR& pos, float scale);
 	void Draw();
 	

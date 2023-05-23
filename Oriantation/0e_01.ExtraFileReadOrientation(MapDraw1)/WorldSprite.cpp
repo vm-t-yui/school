@@ -4,9 +4,9 @@
 /// 初期化
 /// </summary>
 /// <param name="textureGraph">テクスチャの画像ハンドル</param>
-/// <param name="chipSize">スプライトの１チップのサイズ</param>
+/// <param name="chipPixelSize">スプライトの１チップのピクセルサイズ</param>
 /// <param name="spriteNo">スプライト番号</param>
-void WorldSprite::Initialize(int textureGraph, int chipSize, int spriteNo)
+void WorldSprite::Initialize(int textureGraph, int chipPixelSize, int spriteNo)
 {
 	this->textureGraph = textureGraph;
 
@@ -14,7 +14,7 @@ void WorldSprite::Initialize(int textureGraph, int chipSize, int spriteNo)
     // ４頂点分のuvデータを設定
     int texW, texH;
     GetGraphTextureSize(textureGraph, &texW, &texH);
-    int chipNum = texW / chipSize;
+    int chipNum = texW / chipPixelSize;
     int chipNoX = spriteNo % chipNum;
     int chipNoY = spriteNo / chipNum;
     float oneChipUVRate = 1.0f / (float)chipNum;   // テクスチャ全部を1.0とした時のcihp一個に対するuvのサイズ

@@ -1,6 +1,7 @@
 ﻿// 2016 Takeru Yui All Rights Reserved.
 #include "Player.h"
 #include "Camera.h"
+#include "Map.h"
 
 /// <summary>
 /// コンストラクタ
@@ -24,17 +25,19 @@ Camera::~Camera()
 /// <summary>
 /// 更新
 /// </summary>
-void Camera::Update(const Player& player, float chipSize)
+void Camera::Update(const Player& player)
 {
-	// 大きさ0.5のマップチップを15個配置する
+	// ほんとは…
+	// 大きさ0.5のマップチップをStageDataColNum個配置する
 	// プレイヤーの地面のY位置を0としたいので、地上部のマップチップの数は14個
 	// その真ん中に表示するので半分を計算で出す
 	// プレイヤーのX座標には追従したいのでplayerのXを使う
-	VECTOR playerPos = player.GetPos();
-	VECTOR cameraPos = VGet(playerPos.x, chipSize * 14.0f * 0.5f, playerPos.z - 10.0f);
-
 	// 注視する視点は、カメラと平行にまっすぐz=0地点
-	VECTOR lookPos = VGet(cameraPos.x, cameraPos.y, 0.0f);
+
+
+	VECTOR playerPos = player.GetPos();
+	VECTOR cameraPos = VGet(playerPos.x, playerPos.y + 3.0f, playerPos.z - 10.0f);
+	VECTOR lookPos = playerPos;
 
 	pos = cameraPos;
 
