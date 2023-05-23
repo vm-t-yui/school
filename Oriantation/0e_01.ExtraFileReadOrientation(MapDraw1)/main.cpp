@@ -35,7 +35,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		frameTime = GetNowHiPerformanceCount();
 		// プレイヤー制御.
 		player->Update();
-		camera->Update(*player);
+
+		// TODO: 定数なのでいい感じの位置に移動したい
+		// マップチップのサイズ
+		float chipSize = 0.725f;
+		camera->Update(*player, chipSize);
+
 		map->Update();
 
 		// 画面を初期化する
@@ -54,13 +59,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		// マップチップライン(15個のマップチップをどう配置するか)
 		// プレイヤーの地面をY=0としたいので、その周りを配置し、大体の基準でカメラを決める
-		float ySize = 0.5f;
 		for (int i = 0; i < 15 + 2; i++)
 		{
 			// X軸とかぶるところはとりあえず描画しない
 			if (i != 1)
 			{
-				float y = ySize * (i - 1); // 一個下のラインからチップが始まる
+				float y = chipSize * (i - 1); // 一個下のラインからチップが始まる
 				DrawLine3D(VGet(-lineSize, y, 0), VGet(lineSize, y, 0), GetColor(255, 255, 0));
 			}
 		}

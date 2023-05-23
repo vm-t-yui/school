@@ -17,7 +17,7 @@ Player::Player()
 	// ３Ｄモデルの読み込み
 	modelHandle = MV1LoadModel("data/Robot.mv1");
 
-	pos = VGet(1, 1, 0);
+	pos = VGet(10, 0, 0);
 	velocity = VGet(0, 0, 0);
 	dir = VGet(0, 0, 1);
 }
