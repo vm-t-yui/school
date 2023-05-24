@@ -1,39 +1,40 @@
-﻿//-----------------------------------------------------------------------------
-// @brief  カメラクラス.
-// 2016 Takeru Yui All Rights Reserved.
-//-----------------------------------------------------------------------------
-#include <math.h>
+﻿// 2016 Takeru Yui All Rights Reserved.
 #include "Player.h"
 #include "Camera.h"
+#include "Map.h"
 
-//-----------------------------------------------------------------------------
-// @brief  コンストラクタ.
-//-----------------------------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 Camera::Camera()
 {
-	// fov設定
-	SetupCamera_Perspective(45.0f * DX_PI_F / 180.0f);
+	//奥行0.1～1000までをカメラの描画範囲とする
+	SetCameraNearFar(0.1f, 1000.0f);
 
-	//奥行1.0f～1000までをカメラの描画範囲とする
-	SetCameraNearFar(1.0f, 1000.0f);
-
-	pos = VGet(0, 0, -880.0f);
-	look = VGet(0, 0, 0);
-	up = VGet(0, 1, 0);
+	pos = VGet(0, 0, 0);
 }
 
-//-----------------------------------------------------------------------------
-// @brief  デストラクタ.
-//-----------------------------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 Camera::~Camera()
 {
 	// 処理なし.
 }
 
-//-----------------------------------------------------------------------------
-// @brief  更新.
-//-----------------------------------------------------------------------------
-void Camera::Update()
+/// <summary>
+/// 更新
+/// </summary>
+void Camera::Update(const Player& player)
 {
-	SetCameraPositionAndTargetAndUpVec(pos, look, up);
+	// プレイヤーのX座標には追従したいのでplayerのXを使う
+	// 注視する視点は、カメラと平行にまっすぐz=0地点
+	VECTOR playerPos = player.GetPos();
+	VECTOR cameraPos = VGet(playerPos.x, playerPos.y + 3.0f, playerPos.z - 10.0f);
+	VECTOR lookPos = VGet(cameraPos.x, cameraPos.y, cameraPos.z + 1.0f);
+
+	pos = cameraPos;
+
+	// カメラに位置を反映.
+	SetCameraPositionAndTarget_UpVecY(pos, lookPos);
 }

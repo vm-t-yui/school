@@ -1,110 +1,96 @@
-﻿//-----------------------------------------------------------------------------
-// @brief  プレイヤークラス.
-// 2016 Takeru Yui All Rights Reserved.
-//-----------------------------------------------------------------------------
+﻿// 2023 Takeru Yui All Rights Reserved.
 #include "Player.h"
+#include "DxLib.h"
 
-// 静的定数.
-const float Player::SPEED				= 15.0f;		// 移動速度.
+// 静的定数
+// 速度（1=1m、60fps固定として、時速10km）
+// 10000m ÷ 時間 ÷ 分 ÷ 秒 ÷ フレーム
+const float Player::Speed = static_cast<float>(10000.0 / 60.0 / 60.0 / 60.0);
+const float Player::Scale = 0.002f;		// スケール
 
-//-----------------------------------------------------------------------------
-// @brief  コンストラクタ.
-//-----------------------------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 Player::Player()
-	: graphicHandle(-1)
-	, w(0)
-	, h(0)
+	: modelHandle(-1)
 {
-	// 画像の読み込み
-	//const TCHAR* path = "data/texture/shimakaze.png";
-	const TCHAR* path = "data/texture/player.png";
-	graphicHandle = LoadGraph(path);
-	if (graphicHandle <= 0)
-	{
-		printfDx("画像のロードに失敗:%s\n", path);
-	}
-	GetGraphSize(graphicHandle, &w, &h);
+	// ３Ｄモデルの読み込み
+	modelHandle = MV1LoadModel("data/Robot.mv1");
 
-	pos = VGet(0, 0, 0);
+	pos = VGet(10, 0, 0);
 	velocity = VGet(0, 0, 0);
 	dir = VGet(0, 0, 1);
 }
 
-//-----------------------------------------------------------------------------
-// @brief  デストラクタ.
-//-----------------------------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 Player::~Player()
 {
-	// 処理なし.
+	// モデルのアンロード.
+	MV1DeleteModel(modelHandle);
 }
 
-//-----------------------------------------------------------------------------
-// @brief  更新.
-//-----------------------------------------------------------------------------
+/// <summary>
+/// 更新
+/// </summary>
 void Player::Update()
 {
 	// キー入力取得
 	int Key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 
-	// 上を押していたら.
+	// 単純に方向転換
+	dir = VGet(0, 0, 0);
 	if (Key & PAD_INPUT_UP)
 	{
-		dir = VGet(0, 1, 0);
-		velocity = VScale(dir, SPEED);
+		dir = VAdd(dir, VGet(0, 1, 0));
 	}
-	// 下を押していたら.
 	else if (Key & PAD_INPUT_DOWN)
 	{
-		dir = VGet(0, -1, 0);
-		velocity = VScale(dir, SPEED);
+		dir = VAdd(dir, VGet(0, -1, 0));
 	}
-	// 右を押していたら
-	else if (Key & PAD_INPUT_RIGHT)
+	if (Key & PAD_INPUT_RIGHT)
 	{
-		dir = VGet(1, 0, 0);
-		velocity = VScale(dir, SPEED);
+		dir = VAdd(dir, VGet(1, 0, 0));
 	}
-	// 左を押していたら
 	else if (Key & PAD_INPUT_LEFT)
 	{
-		dir = VGet(-1, 0, 0);
-		velocity = VScale(dir, SPEED);
+		dir = VAdd(dir, VGet(-1, 0, 0));
 	}
-	else
+
+	// ゼロ除算避け
+	if (VSquareSize(dir) > 0)
 	{
-		velocity = VGet(0, 0, 0);
+		// 正規化
+		dir = VNorm(dir);
 	}
 
 	// ポジションを更新.
+	velocity = VScale(dir, Speed);
 	pos = VAdd(pos, velocity);
 
-	// 画面外に出たら戻してやる.
-	float screenLeft = -SCREEN_WIDTH_F * 0.5f;
-	float screenRight = SCREEN_WIDTH_F * 0.5f;
-	float screenUp = SCREEN_HEIGHT_F * 0.5f;
-	float screenDown = -SCREEN_HEIGHT_F * 0.5f;
-	if (pos.x < screenLeft + w * 0.5f)
+	// 力をかけ終わったベロシティの方向にディレクションを調整.
+	if (VSize(velocity) != 0)
 	{
-		pos.x = screenLeft + w * 0.5f;
+		dir = VNorm(velocity);
 	}
-	else if (pos.x > screenRight - w * 0.5f)
-	{
-		pos.x = screenRight - w * 0.5f;
-	}
-	if (pos.y < screenDown + h * 0.5f)
-	{
-		pos.y = screenDown + h * 0.5f;
-	}
-	else if (pos.y > screenUp - h * 0.5f)
-	{
-		pos.y = screenUp - h * 0.5f;
-	}
+	//printfDx("%f %f %f\n", dir.x, dir.y, dir.z);
+
+	// 3Dモデルのスケール決定
+	MV1SetScale(modelHandle, VGet(Scale, Scale, Scale));
+
+	// ３Dモデルのポジション設定
+	MV1SetPosition(modelHandle, pos);
+
+	// 回転
+	MV1SetRotationXYZ(modelHandle, VGet(0.0f, -90.0f, 0.0f));
 }
 
-//-----------------------------------------------------------------------------
-// @brief  描画.
-//-----------------------------------------------------------------------------
+/// <summary>
+/// 描画
+/// </summary>
 void Player::Draw()
 {
-	DrawBillboard3D(pos, 0.5f, 0.5f, GRAPHIC_SCALE_FACTOR_2POINT5D, 0, graphicHandle, TRUE);
+	// ３Ｄモデルの描画
+	MV1DrawModel(modelHandle);
 }

@@ -1,12 +1,11 @@
-﻿//-----------------------------------------------------------------------------
-// @brief  プレイヤークラス.
-// 2016 Takeru Yui All Rights Reserved.
-//-----------------------------------------------------------------------------
-#ifndef _PLAYER_H_
-#define _PLAYER_H_
+﻿// 2023 Takeru Yui All Rights Reserved.
+#pragma once
 
-#include "common.h"
+#include "DxLib.h"
 
+/// <summary>
+/// プレイヤークラス
+/// </summary>
 class Player final
 {
 public:
@@ -16,28 +15,19 @@ public:
 	void Update();			// 更新.
 	void Draw();			// 描画.
 
-	// グラフィックハンドルの取得.
-	int GetGraphiclHandle(){ return graphicHandle; }
+	// モデルハンドルの取得.
+	int GetModelHandle() const { return modelHandle; }
 
-	// ポジションのgetter/setter.
 	const VECTOR& GetPos() const { return pos; }
-	void SetPos(const VECTOR set) { pos = set; }
-
-	// ディレクションのgetter/setter.
 	const VECTOR& GetDir() const { return dir; }
-	void SetDir(const VECTOR set) { dir = set; }
 
 private:
-	int		graphicHandle;	// グラフィックハンドル.
+	int		modelHandle;	// モデルハンドル.
 	VECTOR	pos;			// ポジション.
 	VECTOR	velocity;		// 移動力.
 	VECTOR	dir;			// 回転方向.
 
-	// 画像のサイズ。モデルでする人には不要.
-	int	w;					// 幅.
-	int	h;					// 高さ.
-
-	const static float SPEED;	// 移動速度.
+	// 静的定数.
+	static const float Speed;
+	static const float Scale;
 };
-
-#endif // _PLAYER_H_

@@ -19,6 +19,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// 画面モードのセット
 	ChangeWindowMode(TRUE);
 	SetGraphMode(1600, 900, 16);
+	
+	SetDrawScreen(DX_SCREEN_BACK);	// 裏画面を描画対象にする
+	SetUseZBufferFlag(TRUE);		// Ｚバッファを使用する
+	SetWriteZBufferFlag(TRUE);		// Ｚバッファへの書き込みを行う
+	SetUseBackCulling(TRUE);		// バックカリングを行う
 
 	// 生成
 	Camera* camera = new Camera();
