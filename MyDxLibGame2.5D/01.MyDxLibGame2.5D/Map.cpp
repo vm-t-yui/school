@@ -1,4 +1,4 @@
-// 2023 Takeru Yui All Rights Reserved.
+ï»¿// 2023 Takeru Yui All Rights Reserved.
 #include<vector>
 #include "Map.h"
 #include "DxLib.h"
@@ -8,16 +8,16 @@ const float Map::ChipSize = 0.725f;
 const int Map::ChipPixelSize = 32;
 
 /// <summary>
-/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 /// </summary>
 Map::Map()
-	: chipGraph(-1)
+	: sprite(nullptr)
 {
-	currentData.clear();
+	// å‡¦ç†ãªã—
 }
 
 /// <summary>
-/// ƒfƒXƒgƒ‰ƒNƒ^
+/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 /// </summary>
 Map::~Map()
 {
@@ -28,35 +28,35 @@ Map::~Map()
 }
 
 /// <summary>
-/// ƒ[ƒh
+/// ãƒ­ãƒ¼ãƒ‰
 /// </summary>
 void Map::Load()
 {
-	// ‚Æ‚è‚ ‚¦‚¸ƒ}ƒbƒvƒ[ƒh
-	chipGraph = LoadGraph("data/map.png");
+	// ã¨ã‚Šã‚ãˆãšãƒãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰
+	int chipGraph = LoadGraph("data/map.png");
 
-	// WorldSpriteÀ‘Ìİ’è‚ÆˆÊ’u‰Šú‰»
+	// WorldSpriteå®Ÿä½“è¨­å®šã¨ä½ç½®åˆæœŸåŒ–
 	sprite = new WorldSprite();
 	sprite->Initialize(chipGraph, ChipPixelSize, 65);
-	VECTOR chipHalfOffset = VGet(-Map::ChipSize * 0.5f, -Map::ChipSize * 0.5f, 0);					// ƒ}ƒbƒvƒ`ƒbƒv‚Ì”¼•ªƒTƒCƒY¶‰º‚É‚¸‚ç‚·ƒIƒtƒZƒbƒg
-	VECTOR chipPos = VAdd(VGet(0,0,0), chipHalfOffset);	// ^‚ñ’†ƒsƒ{ƒbƒg‚È‚Ì‚Åƒ}ƒbƒvƒ`ƒbƒv”¼•ªƒTƒCƒY‚¸‚ç‚·+’n–Ê‚È‚Ì‚Åˆê‚Â‰º‚É
+	VECTOR chipHalfOffset = VGet(-Map::ChipSize * 0.5f, -Map::ChipSize * 0.5f, 0);					// ãƒãƒƒãƒ—ãƒãƒƒãƒ—ã®åŠåˆ†ã‚µã‚¤ã‚ºå·¦ä¸‹ã«ãšã‚‰ã™ã‚ªãƒ•ã‚»ãƒƒãƒˆ
+	VECTOR chipPos = VAdd(VGet(0,0,0), chipHalfOffset);	// çœŸã‚“ä¸­ãƒ”ãƒœãƒƒãƒˆãªã®ã§ãƒãƒƒãƒ—ãƒãƒƒãƒ—åŠåˆ†ã‚µã‚¤ã‚ºãšã‚‰ã™+åœ°é¢ãªã®ã§ä¸€ã¤ä¸‹ã«
 	sprite->SetTransform(chipPos, Map::ChipSize);
 }
 
 /// <summary>
-/// XV
+/// æ›´æ–°
 /// </summary>
 void Map::Update()
 {
-	// ˆ—‚È‚µ
+	// å‡¦ç†ãªã—
 }
 
 /// <summary>
-/// •`‰æ
+/// æç”»
 /// </summary>
 void Map::Draw()
 {
-	// ‚ä‚­‚ä‚­‚ÍƒJƒƒ‰‚ğ‚Á‚Ä‚«‚ÄAƒJƒƒ‰”ÍˆÍˆÈŠO•\¦‚µ‚È‚¢‚æ‚¤‚É
+	// ã‚†ãã‚†ãã¯ã‚«ãƒ¡ãƒ©ã‚’æŒã£ã¦ãã¦ã€ã‚«ãƒ¡ãƒ©ç¯„å›²ä»¥å¤–è¡¨ç¤ºã—ãªã„ã‚ˆã†ã«
 	sprite->Draw();
 }
 

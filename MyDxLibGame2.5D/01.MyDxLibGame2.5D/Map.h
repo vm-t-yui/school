@@ -1,11 +1,11 @@
-// 2023 Takeru Yui All Rights Reserved.
+ï»¿// 2023 Takeru Yui All Rights Reserved.
 #pragma once
 #include <vector>
 
 class WorldSprite;
 
 /// <summary>
-/// 2D‚Ì”wŒiƒ}ƒbƒv
+/// 2Dã®èƒŒæ™¯ãƒãƒƒãƒ—
 /// </summary>
 class Map
 {
@@ -17,16 +17,11 @@ public:
 	void Update();
 	void Draw();
 
-	// ƒ}ƒbƒvƒ`ƒbƒv‚ÌƒTƒCƒY
+	// ãƒãƒƒãƒ—ãƒãƒƒãƒ—ã®ã‚µã‚¤ã‚º
 	static const float	ChipSize;
 	static const int	ChipPixelSize;
-	static const int	StageDataColNum = 16;		// ƒ}ƒbƒvs
-	static const int	StageDataRowNum = 20;		// ƒ}ƒbƒv—ñ
 
 private:
-	
-	std::vector<std::vector<int>> currentData;
 	WorldSprite* sprite;
-	int chipGraph;
 };
 

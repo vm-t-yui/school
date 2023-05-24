@@ -41,7 +41,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// プレイヤー制御.
 		player->Update();
 
-		// TODO: 定数なのでいい感じの位置に移動したい
 		// マップチップのサイズ
 		map->Update();
 		camera->Update(*player);
@@ -62,7 +61,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		// マップチップライン(マップチップをどう配置するか)
 		// プレイヤーの地面をY=0としたいので、その周りを配置し、大体の基準でカメラを決める
-		for (int i = 0; i < Map::StageDataColNum + 2; i++)
+		for (int i = 0; i < 16 + 2; i++)
 		{
 			// X軸とかぶるところはとりあえず描画しない
 			if (i != 1)
