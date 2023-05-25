@@ -11,6 +11,8 @@ public:
 	void Initialize(int textureGraph, int chipPixelSize, int spriteNo);
 	void SetTransform(const VECTOR& pos, float spriteSize);
 	void Draw();
+
+	const VECTOR& GetPos()const { return pos; }
 	
 private:
 	int			textureGraph;	// スプライトを作成する元テクスチャのグラフィックハンドル
