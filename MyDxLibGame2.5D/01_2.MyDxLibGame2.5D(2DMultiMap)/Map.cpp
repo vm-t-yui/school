@@ -4,7 +4,7 @@
 #include "DxLib.h"
 #include "WorldSprite.h"
 
-const int Map::Stage1Data[StageDataColNum][StageDataRowNum] =
+const int Map::Stage1Data[StageData1ColNum][StageData1RowNum] =
 {
 	{65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65},
 	{73,73, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,65},
@@ -22,6 +22,24 @@ const int Map::Stage1Data[StageDataColNum][StageDataRowNum] =
 	{73, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,65},
 	{73, 0,73, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,65},
 	{73,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65},
+};
+
+const int Map::Stage2Data[StageData2ColNum][StageData2RowNum] =
+{
+	{65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65},
+	{73,73, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,65},
+	{73, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,65},
+	{73, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,65},
+	{73, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,65},
+	{73, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,65},
+	{73, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,65},
+	{73, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,65},
+	{73, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,65},
+	{73, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,65},
+	{73, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,65},
+	{73, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,65},
+	{73, 0,73, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,65},
+	{73,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65},
 };
 
 const float Map::ChipSize = 0.725f;
@@ -61,13 +79,13 @@ void Map::Load()
 	///////////////////////////////////////////////////////////////
 
 	// 後々違うデータを動的に切り替えるため、currentDataにコピー
-	const int(*targetDataRows)[StageDataRowNum] = Stage1Data;
+	const int(*targetDataRows)[StageData1RowNum] = Stage1Data;
 
 	currentData.clear();
-	for (int i = 0; i < StageDataColNum; i++)
+	for (int i = 0; i < StageData1ColNum; i++)
 	{
 		std::vector<int> newColData;
-		for (int j = 0; j < StageDataColNum; j++)
+		for (int j = 0; j < StageData1ColNum; j++)
 		{
 			newColData.push_back(targetDataRows[i][j]);
 		}
@@ -82,10 +100,10 @@ void Map::Load()
 	///////////////////////////////////////////////////////////////
 
 	// WorldSprite実体設定と位置初期化
-	VECTOR chipLeftTopPos = VGet(0, StageDataColNum * ChipSize, 0);			// マップの描画開始位置（左上）
-	for (int i = 0; i < StageDataColNum; i++)
+	VECTOR chipLeftTopPos = VGet(0, StageData1ColNum * ChipSize, 0);			// マップの描画開始位置（左上）
+	for (int i = 0; i < StageData1ColNum; i++)
 	{
-		for (int j = 0; j < StageDataRowNum; j++)
+		for (int j = 0; j < StageData1RowNum; j++)
 		{
 			auto sprite = new WorldSprite();
 			sprite->Initialize(chipGraph, ChipPixelSize, Stage1Data[i][j]);

@@ -20,11 +20,14 @@ public:
 	// マップチップのサイズ
 	static const float	ChipSize;
 	static const int	ChipPixelSize;
-	static const int	StageDataColNum = 16;		// マップ行
-	static const int	StageDataRowNum = 20;		// マップ列
 
 private:
-	static const int Stage1Data[StageDataColNum][StageDataRowNum];
+	static const int	StageData1ColNum = 16;		// マップ行
+	static const int	StageData1RowNum = 20;		// マップ列
+	static const int	Stage1Data[StageData1ColNum][StageData1RowNum];
+	static const int	StageData2ColNum = 14;		// マップ行
+	static const int	StageData2RowNum = 18;		// マップ列
+	static const int	Stage2Data[StageData2ColNum][StageData2RowNum];
 	
 	std::vector<std::vector<int>> currentData;
 	std::vector<WorldSprite*> sprites;

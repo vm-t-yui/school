@@ -60,9 +60,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		DrawLine3D(VGet(0, -lineSize, 0), VGet(0, lineSize, 0), GetColor(0, 255, 0));
 		DrawLine3D(VGet(0, 0, -lineSize), VGet(0, 0, lineSize), GetColor(0, 0, 255));
 
-		// マップチップライン(StageDataColNum個のマップチップをどう配置するか)
+		// マップチップライン(課題当初のStageData1ColNum個(16)のマップチップをどう配置するか)
 		// プレイヤーの地面をY=0としたいので、その周りを配置し、大体の基準でカメラを決める
-		for (int i = 0; i < Map::StageDataColNum + 2; i++)
+		for (int i = 0; i < 16 + 2; i++)
 		{
 			// X軸とかぶるところはとりあえず描画しない
 			if (i != 1)
