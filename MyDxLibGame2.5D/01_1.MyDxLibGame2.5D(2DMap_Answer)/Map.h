@@ -26,7 +26,6 @@ public:
 private:
 	static const int Stage1Data[StageDataColNum][StageDataRowNum];
 	
-	std::vector<std::vector<int>> currentData;
 	std::vector<WorldSprite*> sprites;
 	int chipGraph;
 };

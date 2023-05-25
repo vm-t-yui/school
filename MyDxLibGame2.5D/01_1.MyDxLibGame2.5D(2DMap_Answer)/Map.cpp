@@ -33,7 +33,7 @@ const int Map::ChipPixelSize = 32;
 Map::Map()
 	: chipGraph(-1)
 {
-	currentData.clear();
+	// ˆ—‚È‚µ
 }
 
 /// <summary>
