@@ -3,6 +3,7 @@
 #include "Map.h"
 #include "DxLib.h"
 #include "WorldSprite.h"
+#include "Stage.h"
 
 const int Map::Stage1Data[StageData1ColNum][StageData1RowNum] =
 {
