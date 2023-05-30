@@ -31,8 +31,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Map*	map	   = new Map();
 
 	// ロード
-	//map->Load(0);
-	map->Load(1);
+	map->Load(0);
+	//map->Load(1);
 
 	// エスケープキーが押されるかウインドウが閉じられるまでループ
 	LONGLONG frameTime = 0;

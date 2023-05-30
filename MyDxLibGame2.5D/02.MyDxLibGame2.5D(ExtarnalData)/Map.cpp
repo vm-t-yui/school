@@ -46,19 +46,6 @@ const float Map::ChipSize = 0.725f;
 const int Map::ChipPixelSize = 32;
 
 /// <summary>
-/// 配列へのポインタをもらってベクタを作成する
-/// </summary>
-std::vector<int> CreateArrayVector(const int targetData[], int num)
-{
-	std::vector<int> newVector;
-	for (int i = 0; i < num; i++)
-	{
-		newVector.push_back(targetData[i]);
-	}
-	return newVector;
-}
-
-/// <summary>
 /// コンストラクタ
 /// </summary>
 Map::Map()
@@ -87,8 +74,15 @@ Map::~Map()
 /// </summary>
 void Map::Load(int stageNo)
 {
+	//////////////////////////////////////////////////////
 	// 外部からのint値入力で、Stage1Dataを使うかStage2Dataを使うか切り替える
+	// 言い換えると、可変データであるcurrentDataに
+	// Stage1DataかStage2Dataの内容を【読み取って代入している】
+	// ここを外部ファイル「外部ファイルの内容を読み取って代入する」形にすれば
+	// 外部データ化は完了
+	//////////////////////////////////////////////////////
 	currentData.clear();
+	std::vector<int> newColData;
 	switch (stageNo)
 	{
 	case 0:
@@ -96,7 +90,12 @@ void Map::Load(int stageNo)
 		dataRowNum = StageData1RowNum;
 		for (int i = 0; i < dataColNum; i++)
 		{
-			currentData.push_back(CreateArrayVector(Stage1Data[i], StageData1RowNum));
+			newColData.clear();
+			for (int j = 0; j < dataRowNum; j++)
+			{
+				newColData.push_back(Stage1Data[i][j]);
+			}
+			currentData.push_back(newColData);
 		}
 		break;
 	case 1:
@@ -104,10 +103,16 @@ void Map::Load(int stageNo)
 		dataRowNum = StageData2RowNum;
 		for (int i = 0; i < dataColNum; i++)
 		{
-			currentData.push_back(CreateArrayVector(Stage2Data[i], StageData2RowNum));
+			newColData.clear();
+			for (int j = 0; j < dataRowNum; j++)
+			{
+				newColData.push_back(Stage2Data[i][j]);
+			}
+			currentData.push_back(newColData);
 		}
 		break;
 	}
+	//////////////////////////////////////////////////////
 
 	// とりあえずマップロード
 	chipGraph = LoadGraph("data/map.png");
