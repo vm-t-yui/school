@@ -1,3 +1,4 @@
+// 2023 Takeru Yui All Rights Reserved.
 #include "WorldSprite.h"
 
 /// <summary>
