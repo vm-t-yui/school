@@ -37,6 +37,17 @@
 // 5 : 右方向登り天井ブロック
 // 6 : 上下判定のみブロック
 // 7 : 坂道補助ブロック
+enum class BlockKind : char
+{
+    NONE = 0,
+    NORMAL = 1,
+    RIGHT_UP = 2,
+    RIGHT_DOWN = 3,
+    RIGHT_DOWN_CEIL = 4,
+    RIGHT_UP_CEIL = 5,
+    TOP_BOTTOM_COLLIDE_ONLY = 6,
+    SLOPE_FIX = 7
+};
 char MapData[MAP_HEIGHT][MAP_WIDTH] =
 {
     0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1,
@@ -75,7 +86,7 @@ int prevInput;              // 前フレームの入力状態
 int nowInput;               // 今の入力状態
 
 // 矩形でどこの辺に当たったか
-enum HitPosition
+enum class HitPosition
 {
     NONE,
     TOP,
@@ -87,17 +98,16 @@ enum HitPosition
 
 // プロトタイプ宣言
 // 指定の座標に該当するマップのチップ番号を返す関数
-int GetMapChipNoWithoutSlope(float playerX, float playerY);
+BlockKind GetMapChipNoWithoutSlope(float playerX, float playerY);
 
 // 坂道ブロックを考慮したマップのチップ番号を返す関数
-int GetMapChipNoWithSlope(float playerX, float playerY);
+BlockKind GetMapChipNoWithSlope(float playerX, float playerY);
 
 // プレイヤーをマップとの当たり判定を考慮しながら移動する関数
 int MovePlayer(float* playerX, float* playerY, float* fallSpeed,
     float MoveX, float MoveY, float playerSize, bool* JumpFlag);
 
 // マップとの当たり判定(（プレイヤーがマップチップのどの辺に当たったか：通常ブロックとの判定のみ )
-// 注意：MoveX と MoveY 、どっちか片方が０じゃないとまともに動作しません
 HitPosition CheckHitMapWithoutSlope(float playerX, float playerY, float* MoveX, float* MoveY);
 
 // マップとの当たり判定( 坂道ブロック、上下判定ブロックとの判定もあり )
@@ -164,28 +174,31 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
         // プレイヤーの移動処理
         {
+            // パッドの入力により、落下スピード（ジャンプの場合は反転。重力に近い）
             float MoveX, MoveY;
-
-            // 移動量の初期化
-            MoveX = 0.0F;
-            MoveY = 0.0F;
-
-            // 左右の移動を見る
-            if ((prevInput & PAD_INPUT_LEFT) != 0) MoveX -= SPEED;
-            if ((prevInput & PAD_INPUT_RIGHT) != 0) MoveX += SPEED;
-
-            // 地に足が着いている場合のみジャンプボタン(ボタン１ or Ｚキー)を見る
-            if (player.isJump == FALSE && (nowInput & PAD_INPUT_A) != 0)
+            // 上下左右の移動量を決定
             {
-                player.fallSpeed = -JUMP_POWER;
-                player.isJump = TRUE;
+                // 移動量の初期化
+                MoveX = 0.0F;
+                MoveY = 0.0F;
+
+                // 左右の移動を見る
+                if ((prevInput & PAD_INPUT_LEFT) != 0) MoveX -= SPEED;
+                if ((prevInput & PAD_INPUT_RIGHT) != 0) MoveX += SPEED;
+
+                // 地に足が着いている場合のみジャンプボタン(ボタン１ or Ｚキー)を見る
+                if (player.isJump == FALSE && (nowInput & PAD_INPUT_A) != 0)
+                {
+                    player.fallSpeed = -JUMP_POWER;     // プレイヤーの落下スピードに反発する形でジャンプ力を減算
+                    player.isJump = TRUE;
+                }
+
+                // ジャンプボタンを押していてもいなくても、重力によってプレイヤーの落下速度は加算される
+                player.fallSpeed += G;
+
+                // パッド入力による移動量の決定の後に、現在のプレイヤーの落下速度を移動量に加算
+                MoveY = player.fallSpeed;
             }
-
-            // 落下処理
-            player.fallSpeed += G;
-
-            // 落下速度を移動量に加える
-            MoveY = player.fallSpeed;
 
             // 移動量に基づいてプレイヤーの座標を移動
             MovePlayer(&player.x, &player.y, &player.fallSpeed, MoveX, MoveY, PLAYER_SIZE, &player.isJump);
@@ -200,18 +213,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                 for (j = 0; j < MAP_WIDTH; j++)
                 {
                     // １～７はブロックチップを表しているので１～７のところだけ描画
-                    switch (MapData[i][j])
+                    switch (static_cast<BlockKind>(MapData[i][j]))
                     {
-                    case 1:
-                    case 6:
-                    case 7:
+                    case BlockKind::NORMAL:
+                    case BlockKind::TOP_BOTTOM_COLLIDE_ONLY:
+                    case BlockKind::SLOPE_FIX:
                         DrawBox(
                             j * CHIP_SIZE, i * CHIP_SIZE,
                             j * CHIP_SIZE + CHIP_SIZE, i * CHIP_SIZE + CHIP_SIZE,
                             GetColor(255, 255, 255), TRUE);
                         break;
 
-                    case 2:
+                    case BlockKind::RIGHT_UP:
                         DrawTriangle(
                             j * CHIP_SIZE, i * CHIP_SIZE + CHIP_SIZE,
                             j * CHIP_SIZE + CHIP_SIZE, i * CHIP_SIZE,
@@ -219,7 +232,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                             GetColor(255, 255, 255), TRUE);
                         break;
 
-                    case 3:
+                    case BlockKind::RIGHT_DOWN:
                         DrawTriangle(
                             j * CHIP_SIZE, i * CHIP_SIZE,
                             j * CHIP_SIZE + CHIP_SIZE, i * CHIP_SIZE + CHIP_SIZE,
@@ -227,7 +240,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                             GetColor(255, 255, 255), TRUE);
                         break;
 
-                    case 4:
+                    case BlockKind::RIGHT_DOWN_CEIL:
                         DrawTriangle(
                             j * CHIP_SIZE, i * CHIP_SIZE,
                             j * CHIP_SIZE + CHIP_SIZE, i * CHIP_SIZE,
@@ -235,7 +248,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                             GetColor(255, 255, 255), TRUE);
                         break;
 
-                    case 5:
+                    case BlockKind::RIGHT_UP_CEIL:
                         DrawTriangle(
                             j * CHIP_SIZE, i * CHIP_SIZE + CHIP_SIZE,
                             j * CHIP_SIZE, i * CHIP_SIZE,
@@ -268,7 +281,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 int MovePlayer(float* playerX, float* playerY, float* fallSpeed,
     float MoveX, float MoveY, float playerSize, bool* JumpFlag)
 {
-    float Dummy = 0.0F;         // ?
+    float Dummy = 0.0F; // 関数を動作させるため、あえて無効な値を入れていることを分かりやすくる
     float MoveXBackup = MoveX;
     float MoveYBackup = MoveY;
 
@@ -280,14 +293,17 @@ int MovePlayer(float* playerX, float* playerY, float* fallSpeed,
 
     // まず上下移動成分だけでチェックして、落下速度をコントロール
     {
-        // プレイヤー矩形の左下座標がマップチップと当たっているかチェック、もしマップチップの上辺に当たっていたら落下を止める
+        // プレイヤー矩形の左下座標がマップチップと当たっているかチェック
+        // もしマップチップの上辺に当たっていたら（プレイヤーが地面についていたら）落下を止める
         if (CheckHitMapWithoutSlope(*playerX - playerSizeHalf, *playerY + playerSizeHalf, &Dummy, &MoveY) == HitPosition::TOP) *fallSpeed = 0.0F;
 
         // プレイヤー矩形の右下座標がマップチップと当たっているかチェック、もしマップチップの上辺に当たっていたら落下を止める
         if (CheckHitMapWithoutSlope(*playerX + playerSizeHalf, *playerY + playerSizeHalf, &Dummy, &MoveY) == HitPosition::TOP) *fallSpeed = 0.0F;
 
         // 上辺に当たる場合、ジャンプ中のときはジャンプ速度をそのまま反転する
-        // プレイヤー矩形の左上座標がマップチップと当たっているかチェック、もしマップチップの下辺に当たっていたら落下を止める
+        // 反転だと完全な力で反発して急なので、頭が当たったら止めたい等変更が必要な場合はここをいじる
+        // プレイヤー矩形の左上座標がマップチップと当たっているかチェック
+        // もしマップチップの下辺に当たっていたら（頭がチップの下にぶつかったら）落下を止める
         if (CheckHitMapWithoutSlope(*playerX - playerSizeHalf, *playerY - playerSizeHalf, &Dummy, &MoveY) == HitPosition::BOTTOM && *fallSpeed < 0.0f) *fallSpeed *= -1.0F;
 
         // プレイヤー矩形の右上座標がマップチップと当たっているかチェック、もしマップチップの下辺に当たっていたら落下を止める
@@ -328,15 +344,17 @@ int MovePlayer(float* playerX, float* playerY, float* fallSpeed,
     }
 
     // 接地状態保存
+    // 位置の補正などがすべて終わった後、自分が接地しているかを判定している
     {
-        int ChipL1, ChipC1, ChipR1;
-        int ChipL2, ChipC2, ChipR2;
+        BlockKind ChipL1, ChipC1, ChipR1;
+        BlockKind ChipL2, ChipC2, ChipR2;
 
         // 足元にブロックがあるか判定
+        // HACK: 足元を＋2.0fすることで補正しているが、何かのエラー用なのか意図が不明
         ChipL1 = GetMapChipNoWithSlope(*playerX - playerSize * 0.5F, *playerY + playerSize * 0.5F + 2.0F);
         ChipC1 = GetMapChipNoWithSlope(*playerX, *playerY + playerSize * 0.5F + 2.0F);
         ChipR1 = GetMapChipNoWithSlope(*playerX + playerSize * 0.5F, *playerY + playerSize * 0.5F + 2.0F);
-        if (ChipL1 == 1 || ChipC1 != 0 || ChipR1 == 1)
+        if (ChipL1 == BlockKind::NORMAL || ChipC1 != BlockKind::NONE || ChipR1 == BlockKind::NORMAL)
         {
             // ブロックがあったら接地中にする
             *JumpFlag = FALSE;
@@ -355,6 +373,7 @@ int MovePlayer(float* playerX, float* playerY, float* fallSpeed,
             {
                 // 前回接地していて、今回接地していなかった場合、下り坂に入ったかを判定する
 
+                // HACK: 歩いて下り坂に入った場合に、挙動がおかしくなるので無理やり足元周辺ブロックに接地させる処理
                 // 足元周辺にブロックがあるか調べる
                 ChipL1 = GetMapChipNoWithoutSlope(*playerX - playerSize * 0.5f, *playerY + playerSize * 0.5F);
                 ChipC1 = GetMapChipNoWithoutSlope(*playerX, *playerY + playerSize * 0.5F);
@@ -362,28 +381,28 @@ int MovePlayer(float* playerX, float* playerY, float* fallSpeed,
                 ChipL2 = GetMapChipNoWithoutSlope(*playerX - playerSize * 0.5f, *playerY + playerSize * 0.5F + CHIP_SIZE / 2.0f);
                 ChipC2 = GetMapChipNoWithoutSlope(*playerX, *playerY + playerSize * 0.5F + CHIP_SIZE / 2.0f);
                 ChipR2 = GetMapChipNoWithoutSlope(*playerX + playerSize * 0.5f, *playerY + playerSize * 0.5F + CHIP_SIZE / 2.0f);
-                if (ChipL1 == 1 || ChipL1 == 2 || ChipL1 == 3 || ChipL1 == 6 || ChipL1 == 7 ||
-                    ChipL2 == 1 || ChipL2 == 2 || ChipL2 == 3 || ChipL2 == 6 || ChipL2 == 7 ||
-                    ChipC1 == 1 || ChipC1 == 2 || ChipC1 == 3 || ChipC1 == 6 || ChipC1 == 7 ||
-                    ChipC2 == 1 || ChipC2 == 2 || ChipC2 == 3 || ChipC2 == 6 || ChipC2 == 7 ||
-                    ChipR1 == 1 || ChipR1 == 2 || ChipR1 == 3 || ChipR1 == 6 || ChipR1 == 7 ||
-                    ChipR2 == 1 || ChipR2 == 2 || ChipR2 == 3 || ChipR2 == 6 || ChipR2 == 7)
+                if (ChipL1 == BlockKind::NORMAL || ChipL1 == BlockKind::RIGHT_UP || ChipL1 == BlockKind::RIGHT_DOWN || ChipL1 == BlockKind::TOP_BOTTOM_COLLIDE_ONLY || ChipL1 == BlockKind::SLOPE_FIX ||
+                    ChipL2 == BlockKind::NORMAL || ChipL2 == BlockKind::RIGHT_UP || ChipL2 == BlockKind::RIGHT_DOWN || ChipL2 == BlockKind::TOP_BOTTOM_COLLIDE_ONLY || ChipL2 == BlockKind::SLOPE_FIX ||
+                    ChipC1 == BlockKind::NORMAL || ChipC1 == BlockKind::RIGHT_UP || ChipC1 == BlockKind::RIGHT_DOWN || ChipC1 == BlockKind::TOP_BOTTOM_COLLIDE_ONLY || ChipC1 == BlockKind::SLOPE_FIX ||
+                    ChipC2 == BlockKind::NORMAL || ChipC2 == BlockKind::RIGHT_UP || ChipC2 == BlockKind::RIGHT_DOWN || ChipC2 == BlockKind::TOP_BOTTOM_COLLIDE_ONLY || ChipC2 == BlockKind::SLOPE_FIX ||
+                    ChipR1 == BlockKind::NORMAL || ChipR1 == BlockKind::RIGHT_UP || ChipR1 == BlockKind::RIGHT_DOWN || ChipR1 == BlockKind::TOP_BOTTOM_COLLIDE_ONLY || ChipR1 == BlockKind::SLOPE_FIX ||
+                    ChipR2 == BlockKind::NORMAL || ChipR2 == BlockKind::RIGHT_UP || ChipR2 == BlockKind::RIGHT_DOWN || ChipR2 == BlockKind::TOP_BOTTOM_COLLIDE_ONLY || ChipR2 == BlockKind::SLOPE_FIX)
                 {
                     int addcy = 0;
 
                     // 足元周辺にブロックがあった場合は、足元のブロックに無理やり接地させる
-                    if (ChipC1 != 0 || ChipC2 != 0)
+                    if (ChipC1 != BlockKind::NONE || ChipC2 != BlockKind::NONE)
                     {
-                        if (ChipC1 == 0) addcy = 1;
+                        if (ChipC1 == BlockKind::NONE) addcy = 1;
                     }
                     else
-                        if (ChipL1 != 0 || ChipL2 != 0)
+                        if (ChipL1 != BlockKind::NONE || ChipL2 != BlockKind::NONE)
                         {
-                            if (ChipL1 == 0) addcy = 1;
+                            if (ChipL1 == BlockKind::NONE) addcy = 1;
                         }
                         else
                         {
-                            if (ChipR1 == 0) addcy = 1;
+                            if (ChipR1 == BlockKind::NONE) addcy = 1;
                         }
 
                     // 接地させるために無理やり足元のブロックまで移動させる
@@ -410,7 +429,9 @@ int MovePlayer(float* playerX, float* playerY, float* fallSpeed,
 }
 
 // マップとの当たり判定( 通常ブロックとの判定のみ )
-// 注意：MoveX と MoveY 、どっちか片方が０じゃないとまともに動作しません
+// HACK: プレイヤーの幅と高さを考慮せず、中心座標がどこにあるかで当たっているか否かを判定している
+// HACK: 移動先の方向でどこの辺に当たったかどうか決めつけているため、指定移動量によっては当たり判定が動かない
+// HACK: MoveX と MoveY両方に移動量があった場合、MoveYが優先されて判定される（MoveX、MoveYそれぞれ別に判定する前提）
 HitPosition CheckHitMapWithoutSlope(float playerX, float playerY, float* MoveX, float* MoveY)
 {
     // 移動後のプレイヤーの座標
@@ -421,54 +442,58 @@ HitPosition CheckHitMapWithoutSlope(float playerX, float playerY, float* MoveX, 
     afterPlayerY = playerY + *MoveY;
 
     // 当たり判定のあるブロックに、移動後に当たるかチェック
-    if (GetMapChipNoWithoutSlope(afterPlayerX, afterPlayerY) == 1)
+    // 移動先の中心座標に存在するマップチップのマップ番号を取得し、
+    // その番号が1（当たるブロック）だったら、あたっているものとする
+    if (GetMapChipNoWithoutSlope(afterPlayerX, afterPlayerY) == BlockKind::NORMAL)
     {
-        float blx, bty, brx, bby;
-
-        // 当たっていたら壁から離す処理を行う
+        // 自分と当たっているブロックの、上下左右辺のx/y座標を算出
+        float hitBlockRight;
+        float hitBlockLeft;
+        float hitBlockTop;
+        float hitBlockBottom;
 
         // ブロックの上下左右の座標を算出
-        blx = (float)((int)afterPlayerX / CHIP_SIZE) * CHIP_SIZE;        // 左辺のx座標
-        brx = (float)((int)afterPlayerX / CHIP_SIZE + 1) * CHIP_SIZE;    // 右辺のx座標
+        hitBlockLeft = (float)((int)afterPlayerX / CHIP_SIZE) * CHIP_SIZE;        // 左辺のx座標
+        hitBlockRight = (float)((int)afterPlayerX / CHIP_SIZE + 1) * CHIP_SIZE;    // 右辺のx座標
 
-        bty = (float)((int)afterPlayerY / CHIP_SIZE) * CHIP_SIZE;        // 上辺のy座標
-        bby = (float)((int)afterPlayerY / CHIP_SIZE + 1) * CHIP_SIZE;    // 下辺のy座標
+        hitBlockTop = (float)((int)afterPlayerY / CHIP_SIZE) * CHIP_SIZE;        // 上辺のy座標
+        hitBlockBottom = (float)((int)afterPlayerY / CHIP_SIZE + 1) * CHIP_SIZE;    // 下辺のy座標
 
-        // 上辺に当たっていた場合
+        // 移動量が上方向に向かっていた場合
         if (*MoveY > 0.0F)
         {
             // 移動量を補正する
-            *MoveY = bty - playerY - 1.0F;
+            *MoveY = hitBlockTop - playerY - 1.0F;
 
             // 上辺に当たったと返す
             return HitPosition::TOP;
         }
 
-        // 下辺に当たっていた場合
+        // 移動量が下方向に向かっていた場合
         if (*MoveY < 0.0F)
         {
             // 移動量を補正する
-            *MoveY = bby - playerY + 1.0F;
+            *MoveY = hitBlockBottom - playerY + 1.0F;
 
             // 下辺に当たったと返す
             return HitPosition::BOTTOM;
         }
 
-        // 左辺に当たっていた場合
+        // 移動量が右方向に向かっていた場合
         if (*MoveX > 0.0F)
         {
             // 移動量を補正する
-            *MoveX = blx - playerX - 1.0F;
+            *MoveX = hitBlockLeft - playerX - 1.0F;
 
             // 左辺に当たったと返す
             return HitPosition::LEFT;
         }
 
-        // 右辺に当たっていた場合
+        // 移動量が左方向に向かっていた場合
         if (*MoveX < 0.0F)
         {
             // 移動量を補正する
-            *MoveX = brx - playerX + 1.0F;
+            *MoveX = hitBlockRight - playerX + 1.0F;
 
             // 右辺に当たったと返す
             return HitPosition::RIGHT;
@@ -486,39 +511,51 @@ HitPosition CheckHitMapWithoutSlope(float playerX, float playerY, float* MoveX, 
 // ( 戻り値 0:当たらなかった  1:上辺に当たった  2:下辺に当たった )
 HitPosition CheckHitMapWithSlope(float playerX, float playerY, float* MoveX, float* MoveY)
 {
-    float afX, afY;
-    int Chip;
+    float afterX, afterY;
+    BlockKind Chip;
 
     // 移動量を足す
-    afX = playerX + *MoveX;
-    afY = playerY + *MoveY;
+    afterX = playerX + *MoveX;
+    afterY = playerY + *MoveY;
 
-    // ブロックに当たっているかチェック
-    Chip = GetMapChipNoWithoutSlope(afX, afY);
-    if (Chip != 0)
+    // 自分の場所にあるブロックの種類を判別
+    // HACK: 前に坂道以外のブロックと判定を行い、移動距離を制限しているので、
+    // ここにきて当たっている時点で何かしらの坂道ブロックの中
+    Chip = GetMapChipNoWithoutSlope(afterX, afterY);
+    if (Chip != BlockKind::NONE)
     {
-        float blx, bty, brx, bby;
-        float blh;
-        float plx, ply;
+        float hitBlockLeft, hitBlockTop, hitBlockRight, hitBlockBottom;
 
         // ブロックの上下左右の座標を算出
-        blx = (float)((int)afX / CHIP_SIZE) * CHIP_SIZE;        // 左辺の playerX 座標
-        brx = (float)((int)afX / CHIP_SIZE + 1) * CHIP_SIZE;    // 右辺の playerX 座標
+        hitBlockLeft = (float)((int)afterX / CHIP_SIZE) * CHIP_SIZE;        // 左辺の playerX 座標
+        hitBlockRight = (float)((int)afterX / CHIP_SIZE + 1) * CHIP_SIZE;   // 右辺の playerX 座標
 
-        bty = (float)((int)afY / CHIP_SIZE) * CHIP_SIZE;        // 上辺の playerY 座標
-        bby = (float)((int)afY / CHIP_SIZE + 1) * CHIP_SIZE;    // 下辺の playerY 座標
+        hitBlockTop = (float)((int)afterY / CHIP_SIZE) * CHIP_SIZE;         // 上辺の playerY 座標
+        hitBlockBottom = (float)((int)afterY / CHIP_SIZE + 1) * CHIP_SIZE;  // 下辺の playerY 座標
 
         // プレイヤーの位置がブロックのどの位置にあるか算出
-        plx = (afX - blx) / CHIP_SIZE;
-        ply = (afY - bty) / CHIP_SIZE;
+        // 移動後の座標からぶつかったブロックの左辺座標を引いてチップサイズで割る
+        // block hit slope in inside colide pos rate 
+        // hitSlopeBlock colideSlopeBlock
+        // insidePosRate positionRateInBlock
+        // positonRateInHitSlopeBlock
+
+        // 当たっている坂道ブロック内での位置割合を出す
+        float positonRateInHitSlopeBlockX, positonRateInHitSlopeBlockY;
+        positonRateInHitSlopeBlockX = (afterX - hitBlockLeft) / CHIP_SIZE;
+        positonRateInHitSlopeBlockY = (afterY - hitBlockTop) / CHIP_SIZE;
 
         // 坂道補助ブロックだった場合は上下の坂道ブロックを判定対象にする
-        if (Chip == 7)
+        // HACK: 坂道補助ブロックは、坂道が連続して続く場合に上下の坂道ブロックに沿って移動できるよう
+        // 計算するための特殊ブロック
+        if (Chip == BlockKind::SLOPE_FIX)
         {
             float addy;
 
+            // そのまま別のブロックと判定してしまうとずっとそこで止まるため、
             // 上下の近いブロックを対象にする
-            if (ply < 0.5f)
+            // 上下の位置レートを見ることでどちらのブロックが近いか判定
+            if (positonRateInHitSlopeBlockY < 0.5f)
             {
                 addy = -CHIP_SIZE;
             }
@@ -527,85 +564,86 @@ HitPosition CheckHitMapWithSlope(float playerX, float playerY, float* MoveX, flo
                 addy = CHIP_SIZE;
             }
 
-            // ブロック取り直し
-            Chip = GetMapChipNoWithoutSlope(afX, afY + addy);
+            // ブロック取り直し（ずらした先の坂道ブロックの種別で上書き
+            Chip = GetMapChipNoWithoutSlope(afterX, afterY + addy);
 
             // ブロックの上下左右の座標を再算出
-            bty = (float)((int)(afY + addy) / CHIP_SIZE) * CHIP_SIZE;        // 上辺の playerY 座標
-            bby = (float)((int)(afY + addy) / CHIP_SIZE + 1) * CHIP_SIZE;    // 下辺の playerY 座標
+            hitBlockTop = (float)((int)(afterY + addy) / CHIP_SIZE) * CHIP_SIZE;        // 上辺の playerY 座標
+            hitBlockBottom = (float)((int)(afterY + addy) / CHIP_SIZE + 1) * CHIP_SIZE;    // 下辺の playerY 座標
 
-            // プレイヤーの位置がブロックのどの位置にあるか算出
-            ply = (afY - bty) / CHIP_SIZE;
+            // プレイヤーの位置がブロックのどの位置にあるか再算出
+            positonRateInHitSlopeBlockY = (afterY - hitBlockTop) / CHIP_SIZE;
         }
 
         // ブロックのタイプによって処理を分岐
+        float targetPlayerY;  // 移動目標のプレイヤーのy座標
         switch (Chip)
         {
-        case 2:    // 右方向登りブロック
+        case BlockKind::RIGHT_UP:    // 右方向登りブロック
             // プレイヤーの位置でのブロックの高さを算出
-            blh = bby - plx * CHIP_SIZE;
+            targetPlayerY = hitBlockBottom - positonRateInHitSlopeBlockX * CHIP_SIZE;
 
             // ブロックにあたっていた場合
-            if (afY > blh)
+            if (afterY > targetPlayerY)
             {
                 // 移動量を補正する
-                *MoveY = blh - playerY - 1.0f;
+                *MoveY = targetPlayerY - playerY - 1.0f;
 
                 return HitPosition::BOTTOM;
             }
             break;
 
-        case 3:    // 右方向下りブロック
+        case BlockKind::RIGHT_DOWN:    // 右方向下りブロック
             // プレイヤーの位置でのブロックの高さを算出
-            blh = bty + plx * CHIP_SIZE;
+            targetPlayerY = hitBlockTop + positonRateInHitSlopeBlockX * CHIP_SIZE;
 
             // ブロックにあたっていた場合
-            if (afY > blh)
+            if (afterY > targetPlayerY)
             {
                 // 移動量を補正する
-                *MoveY = blh - playerY - 1.0f;
+                *MoveY = targetPlayerY - playerY - 1.0f;
 
                 return HitPosition::BOTTOM;
             }
             break;
 
-        case 4:    // 右方向下り天井ブロック
+        case BlockKind::RIGHT_DOWN_CEIL:    // 右方向下り天井ブロック
             // プレイヤーの位置でのブロックの高さを算出
-            blh = bty + plx * CHIP_SIZE;
+            targetPlayerY = hitBlockTop + positonRateInHitSlopeBlockX * CHIP_SIZE;
 
             // ブロックにあたっていた場合
-            if (afY < blh)
+            if (afterY < targetPlayerY)
             {
                 // 移動量を補正する
-                *MoveY = blh - playerY + 1.0f;
+                *MoveY = targetPlayerY - playerY + 1.0f;
 
                 // 上辺に当たったと返す
                 return HitPosition::TOP;
             }
             break;
 
-        case 5:    // 右方向登り天井ブロック
+        case BlockKind::RIGHT_UP_CEIL:    // 右方向登り天井ブロック
             // プレイヤーの位置でのブロックの高さを算出
-            blh = bby - plx * CHIP_SIZE;
+            targetPlayerY = hitBlockBottom - positonRateInHitSlopeBlockX * CHIP_SIZE;
 
             // ブロックにあたっていた場合
-            if (afY < blh)
+            if (afterY < targetPlayerY)
             {
                 // 移動量を補正する
-                *MoveY = blh - playerY + 1.0f;
+                *MoveY = targetPlayerY - playerY + 1.0f;
 
                 // 上辺に当たったと返す
                 return HitPosition::TOP;
             }
             break;
 
-        case 1:    // 通常ブロック
-        case 6:    // 上下判定のみブロック
+        case BlockKind::NORMAL:    // ダメだが通常ブロック配置してしまった場合もここに通る
+        case BlockKind::TOP_BOTTOM_COLLIDE_ONLY:    // 上下判定のみブロック
             // 上辺に当たっていた場合
             if (*MoveY > 0.0F)
             {
                 // 移動量を補正する
-                *MoveY = bty - playerY - 1.0F;
+                *MoveY = hitBlockTop - playerY - 1.0F;
 
                 // 下辺に当たったと返す
                 return HitPosition::BOTTOM;
@@ -615,7 +653,7 @@ HitPosition CheckHitMapWithSlope(float playerX, float playerY, float* MoveX, flo
             if (*MoveY < 0.0F)
             {
                 // 移動量を補正する
-                *MoveY = bby - playerY + 1.0F;
+                *MoveY = hitBlockBottom - playerY + 1.0F;
 
                 // 上辺に当たったと返す
                 return HitPosition::TOP;
@@ -631,7 +669,7 @@ HitPosition CheckHitMapWithSlope(float playerX, float playerY, float* MoveX, flo
 }
 
 // 指定の座標に該当するマップのチップ番号を返す関数
-int GetMapChipNoWithoutSlope(float X, float Y)
+BlockKind GetMapChipNoWithoutSlope(float X, float Y)
 {
     int mapDataIndexX, mapDataIndexY;
 
@@ -640,43 +678,43 @@ int GetMapChipNoWithoutSlope(float X, float Y)
     mapDataIndexY = (int)Y / CHIP_SIZE;
 
     // マップチップの二次元配列からはみ出ていたら 0 を返す
-    if (mapDataIndexX >= MAP_WIDTH || mapDataIndexY >= MAP_HEIGHT || mapDataIndexX < 0 || mapDataIndexY < 0) return 0;
+    if (mapDataIndexX >= MAP_WIDTH || mapDataIndexY >= MAP_HEIGHT || mapDataIndexX < 0 || mapDataIndexY < 0) return BlockKind::NONE;
 
-    return MapData[mapDataIndexY][mapDataIndexX];
+    return static_cast<BlockKind>(MapData[mapDataIndexY][mapDataIndexX]);
 }
 
 // 坂道ブロックを考慮したマップチップの値を取得する関数
-int GetMapChipNoWithSlope(float playerX, float playerY)
+BlockKind GetMapChipNoWithSlope(float playerX, float playerY)
 {
-    int Chip;
+    BlockKind Chip;
 
     Chip = GetMapChipNoWithoutSlope(playerX, playerY);
 
     // 坂道ブロックではなかったらそのまま値を返す
-    if (Chip < 2 || Chip > 7)
+    if (Chip < BlockKind::RIGHT_UP || Chip > BlockKind::SLOPE_FIX)
     {
         return Chip;
     }
 
     // 坂道ブロックの場合は坂道を考慮して当たっているか判定
     {
-        float blx, bty, brx, bby;
+        float hitBlockLeft, hitBlockTop, hitBlockRight, hitBlockBottom;
         float blh;
         float xr, yr;
 
         // ブロックの上下左右の座標を算出
-        blx = (float)((int)playerX / CHIP_SIZE) * CHIP_SIZE;        // 左辺の playerX 座標
-        brx = (float)((int)playerX / CHIP_SIZE + 1) * CHIP_SIZE;    // 右辺の playerX 座標
+        hitBlockLeft = (float)((int)playerX / CHIP_SIZE) * CHIP_SIZE;        // 左辺の playerX 座標
+        hitBlockRight = (float)((int)playerX / CHIP_SIZE + 1) * CHIP_SIZE;    // 右辺の playerX 座標
 
-        bty = (float)((int)playerY / CHIP_SIZE) * CHIP_SIZE;        // 上辺の playerY 座標
-        bby = (float)((int)playerY / CHIP_SIZE + 1) * CHIP_SIZE;    // 下辺の playerY 座標
+        hitBlockTop = (float)((int)playerY / CHIP_SIZE) * CHIP_SIZE;        // 上辺の playerY 座標
+        hitBlockBottom = (float)((int)playerY / CHIP_SIZE + 1) * CHIP_SIZE;    // 下辺の playerY 座標
 
         // プレイヤーの位置がブロックのどの位置にあるか算出
-        xr = (playerX - blx) / CHIP_SIZE;
-        yr = (playerY - bty) / CHIP_SIZE;
+        xr = (playerX - hitBlockLeft) / CHIP_SIZE;
+        yr = (playerY - hitBlockTop) / CHIP_SIZE;
 
         // 坂道補助ブロックだった場合は上下の坂道ブロックを判定対象にする
-        if (Chip == 7)
+        if (Chip == BlockKind::SLOPE_FIX)
         {
             float addy;
 
@@ -694,19 +732,19 @@ int GetMapChipNoWithSlope(float playerX, float playerY)
             Chip = GetMapChipNoWithoutSlope(playerX, playerY + addy);
 
             // ブロックの上下左右の座標を再算出
-            bty = (float)((int)(playerY + addy) / CHIP_SIZE) * CHIP_SIZE;        // 上辺の playerY 座標
-            bby = (float)((int)(playerY + addy) / CHIP_SIZE + 1) * CHIP_SIZE;    // 下辺の playerY 座標
+            hitBlockTop = (float)((int)(playerY + addy) / CHIP_SIZE) * CHIP_SIZE;        // 上辺の playerY 座標
+            hitBlockBottom = (float)((int)(playerY + addy) / CHIP_SIZE + 1) * CHIP_SIZE;    // 下辺の playerY 座標
 
             // プレイヤーの位置がブロックのどの位置にあるか算出
-            yr = (yr - bty) / CHIP_SIZE;
+            yr = (yr - hitBlockTop) / CHIP_SIZE;
         }
 
         // ブロックのタイプによって処理を分岐
         switch (Chip)
         {
-        case 2:    // 右方向登りブロック
+        case BlockKind::RIGHT_UP:    // 右方向登りブロック
             // プレイヤーの位置でのブロックの高さを算出
-            blh = bby - xr * CHIP_SIZE;
+            blh = hitBlockBottom - xr * CHIP_SIZE;
 
             // ブロックに当たっているか判定
             if (playerY > blh)
@@ -715,9 +753,9 @@ int GetMapChipNoWithSlope(float playerX, float playerY)
             }
             break;
 
-        case 3:    // 右方向下りブロック
+        case BlockKind::RIGHT_DOWN:    // 右方向下りブロック
             // プレイヤーの位置でのブロックの高さを算出
-            blh = bty + xr * CHIP_SIZE;
+            blh = hitBlockTop + xr * CHIP_SIZE;
 
             // ブロックに当たっているか判定
             if (playerY > blh)
@@ -726,9 +764,9 @@ int GetMapChipNoWithSlope(float playerX, float playerY)
             }
             break;
 
-        case 4:    // 右方向下り天井ブロック
+        case BlockKind::RIGHT_DOWN_CEIL:    // 右方向下り天井ブロック
             // プレイヤーの位置でのブロックの高さを算出
-            blh = bty + xr * CHIP_SIZE;
+            blh = hitBlockTop + xr * CHIP_SIZE;
 
             // ブロックに当たっているか判定
             if (playerY < blh)
@@ -737,9 +775,9 @@ int GetMapChipNoWithSlope(float playerX, float playerY)
             }
             break;
 
-        case 5:    // 右方向登り天井ブロック
+        case BlockKind::RIGHT_UP_CEIL:    // 右方向登り天井ブロック
             // プレイヤーの位置でのブロックの高さを算出
-            blh = bby - xr * CHIP_SIZE;
+            blh = hitBlockBottom - xr * CHIP_SIZE;
 
             // ブロックに当たっているか判定
             if (playerY < blh)
@@ -748,11 +786,11 @@ int GetMapChipNoWithSlope(float playerX, float playerY)
             }
             break;
 
-        case 6:    // 上下判定のみブロック
+        case BlockKind::TOP_BOTTOM_COLLIDE_ONLY:    // 上下判定のみブロック
             return Chip;
         }
     }
 
     // 当たっていなかったらブロックなしの値を返す
-    return 0;
+    return BlockKind::NONE;
 }
