@@ -131,7 +131,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     SetWaitVSyncFlag(FALSE);
 
     // プレイヤーの座標を初期化
-    player.x = 320.0F;        player.y = 240.0F;
+    player.x = 135.0F;        player.y = 240.0F;
 
     // プレイヤーの落下速度を初期化
     player.fallSpeed = 0.0F;
@@ -295,19 +295,23 @@ int MovePlayer(float* playerX, float* playerY, float* fallSpeed,
     {
         // プレイヤー矩形の左下座標がマップチップと当たっているかチェック
         // もしマップチップの上辺に当たっていたら（プレイヤーが地面についていたら）落下を止める
-        if (CheckHitMapWithoutSlope(*playerX - playerSizeHalf, *playerY + playerSizeHalf, &Dummy, &MoveY) == HitPosition::TOP) *fallSpeed = 0.0F;
+        if (CheckHitMapWithoutSlope(*playerX - playerSizeHalf, *playerY + playerSizeHalf, &Dummy, &MoveY) == HitPosition::TOP)
+            *fallSpeed = 0.0F;
 
         // プレイヤー矩形の右下座標がマップチップと当たっているかチェック、もしマップチップの上辺に当たっていたら落下を止める
-        if (CheckHitMapWithoutSlope(*playerX + playerSizeHalf, *playerY + playerSizeHalf, &Dummy, &MoveY) == HitPosition::TOP) *fallSpeed = 0.0F;
+        if (CheckHitMapWithoutSlope(*playerX + playerSizeHalf, *playerY + playerSizeHalf, &Dummy, &MoveY) == HitPosition::TOP)
+            *fallSpeed = 0.0F;
 
         // 上辺に当たる場合、ジャンプ中のときはジャンプ速度をそのまま反転する
         // 反転だと完全な力で反発して急なので、頭が当たったら止めたい等変更が必要な場合はここをいじる
         // プレイヤー矩形の左上座標がマップチップと当たっているかチェック
         // もしマップチップの下辺に当たっていたら（頭がチップの下にぶつかったら）落下を止める
-        if (CheckHitMapWithoutSlope(*playerX - playerSizeHalf, *playerY - playerSizeHalf, &Dummy, &MoveY) == HitPosition::BOTTOM && *fallSpeed < 0.0f) *fallSpeed *= -1.0F;
+        if (CheckHitMapWithoutSlope(*playerX - playerSizeHalf, *playerY - playerSizeHalf, &Dummy, &MoveY) == HitPosition::BOTTOM && *fallSpeed < 0.0f)
+            *fallSpeed *= -1.0F;
 
         // プレイヤー矩形の右上座標がマップチップと当たっているかチェック、もしマップチップの下辺に当たっていたら落下を止める
-        if (CheckHitMapWithoutSlope(*playerX + playerSizeHalf, *playerY - playerSizeHalf, &Dummy, &MoveY) == HitPosition::BOTTOM && *fallSpeed < 0.0f) *fallSpeed *= -1.0F;
+        if (CheckHitMapWithoutSlope(*playerX + playerSizeHalf, *playerY - playerSizeHalf, &Dummy, &MoveY) == HitPosition::BOTTOM && *fallSpeed < 0.0f)
+            *fallSpeed *= -1.0F;
     }
 
     // 次に左右移動成分だけでチェック
@@ -333,10 +337,12 @@ int MovePlayer(float* playerX, float* playerY, float* fallSpeed,
     // 最後に坂道ブロック、上下判定ブロックを含めてチェック
     {
         // 上辺のチェック、もしブロックの上辺に着いていたら落下を止める
-        if (CheckHitMapWithSlope(*playerX, *playerY + playerSizeHalf, &MoveX, &MoveY) == HitPosition::TOP) *fallSpeed = 0.0F;
+        if (CheckHitMapWithSlope(*playerX, *playerY + playerSizeHalf, &MoveX, &MoveY) == HitPosition::TOP)
+            *fallSpeed = 0.0F;
 
         // 下辺のチェック、もしブロックの下辺に着いていたら落下させる
-        if (CheckHitMapWithSlope(*playerX, *playerY - playerSizeHalf, &MoveX, &MoveY) == HitPosition::BOTTOM && *fallSpeed < 0.0f) *fallSpeed *= -1.0f;
+        if (CheckHitMapWithSlope(*playerX, *playerY - playerSizeHalf, &MoveX, &MoveY) == HitPosition::BOTTOM && *fallSpeed < 0.0f)
+            *fallSpeed *= -1.0f;
 
         // 上下移動成分を加算
         *playerY += MoveY;
@@ -589,7 +595,7 @@ HitPosition CheckHitMapWithSlope(float playerX, float playerY, float* MoveX, flo
                 // 移動量を補正する
                 *MoveY = targetPlayerY - playerY - 1.0f;
 
-                return HitPosition::BOTTOM;
+                return HitPosition::TOP;
             }
             break;
 
@@ -603,7 +609,7 @@ HitPosition CheckHitMapWithSlope(float playerX, float playerY, float* MoveX, flo
                 // 移動量を補正する
                 *MoveY = targetPlayerY - playerY - 1.0f;
 
-                return HitPosition::BOTTOM;
+                return HitPosition::TOP;
             }
             break;
 
@@ -617,8 +623,7 @@ HitPosition CheckHitMapWithSlope(float playerX, float playerY, float* MoveX, flo
                 // 移動量を補正する
                 *MoveY = targetPlayerY - playerY + 1.0f;
 
-                // 上辺に当たったと返す
-                return HitPosition::TOP;
+                return HitPosition::BOTTOM;
             }
             break;
 
@@ -632,8 +637,7 @@ HitPosition CheckHitMapWithSlope(float playerX, float playerY, float* MoveX, flo
                 // 移動量を補正する
                 *MoveY = targetPlayerY - playerY + 1.0f;
 
-                // 上辺に当たったと返す
-                return HitPosition::TOP;
+                return HitPosition::BOTTOM;
             }
             break;
 
@@ -645,8 +649,7 @@ HitPosition CheckHitMapWithSlope(float playerX, float playerY, float* MoveX, flo
                 // 移動量を補正する
                 *MoveY = hitBlockTop - playerY - 1.0F;
 
-                // 下辺に当たったと返す
-                return HitPosition::BOTTOM;
+                return HitPosition::TOP;
             }
 
             // 下辺に当たっていた場合
@@ -655,8 +658,7 @@ HitPosition CheckHitMapWithSlope(float playerX, float playerY, float* MoveX, flo
                 // 移動量を補正する
                 *MoveY = hitBlockBottom - playerY + 1.0F;
 
-                // 上辺に当たったと返す
-                return HitPosition::TOP;
+                return HitPosition::BOTTOM;
             }
 
             // ここに来たら上辺に当たったとみなす
