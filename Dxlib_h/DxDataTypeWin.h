@@ -1,15 +1,15 @@
-ï»¿// -------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------
 // 
-// 		ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒª		Windowsç”¨ãƒ‡ãƒ¼ã‚¿ã‚¿ã‚¤ãƒ—å®šç¾©ãƒ˜ãƒƒãƒ€ãƒ•ã‚¡ã‚¤ãƒ«
+// 		‚c‚wƒ‰ƒCƒuƒ‰ƒŠ		Windows—pƒf[ƒ^ƒ^ƒCƒv’è‹`ƒwƒbƒ_ƒtƒ@ƒCƒ‹
 // 
-// 				Ver 3.19d
+// 				Ver 3.24b
 // 
 // -------------------------------------------------------------------------------
 
-#ifndef __DXDATATYPEWIN_H__
-#define __DXDATATYPEWIN_H__
+#ifndef DX_DATATYPEWIN_H
+#define DX_DATATYPEWIN_H
 
-// ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ ------------------------------------------------------------------
+// ƒCƒ“ƒNƒ‹[ƒh ------------------------------------------------------------------
 #include "DxCompileConfig.h"
 
 #if defined(__c2__) &&  __clang_major__ == 3 && __clang_minor__ == 8
@@ -23,9 +23,9 @@ struct IUnknown;
 #include <tchar.h>
 #include <commctrl.h>
 
-// ãƒ©ã‚¤ãƒ–ãƒ©ãƒªãƒªãƒ³ã‚¯å®šç¾©--------------------------------------------------------
+// ƒ‰ƒCƒuƒ‰ƒŠƒŠƒ“ƒN’è‹`--------------------------------------------------------
 
-#ifndef __DX_MAKE
+#ifndef DX_MAKE
 	#ifndef DX_LIB_NOT_DEFAULTPATH
 		#ifndef DX_GCC_COMPILE
 			#ifndef DX_SRC_COMPILE
@@ -33,42 +33,42 @@ struct IUnknown;
 					#if _MSC_VER <  1700
 						#ifdef _WIN64
 							#ifdef _DEBUG
-								#pragma comment( lib, "DxDrawFunc_x64_d.lib"		)		//  æç”»éƒ¨åˆ†ã®æŠœãå‡ºã—
+								#pragma comment( lib, "DxDrawFunc_x64_d.lib"		)		//  •`‰æ•”•ª‚Ì”²‚«o‚µ
 								#ifdef UNICODE
-									#pragma comment( lib, "DxLibW_x64_d.lib"		)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
-									#pragma comment( lib, "DxUseCLibW_x64_d.lib"	)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+									#pragma comment( lib, "DxLibW_x64_d.lib"		)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
+									#pragma comment( lib, "DxUseCLibW_x64_d.lib"	)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 								#else
-									#pragma comment( lib, "DxLib_x64_d.lib"			)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
-									#pragma comment( lib, "DxUseCLib_x64_d.lib"		)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+									#pragma comment( lib, "DxLib_x64_d.lib"			)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
+									#pragma comment( lib, "DxUseCLib_x64_d.lib"		)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 								#endif
 							#else // _DEBUG
-								#pragma comment( lib, "DxDrawFunc_x64.lib"			)		//  æç”»éƒ¨åˆ†ã®æŠœãå‡ºã—
+								#pragma comment( lib, "DxDrawFunc_x64.lib"			)		//  •`‰æ•”•ª‚Ì”²‚«o‚µ
 								#ifdef UNICODE
-									#pragma comment( lib, "DxLibW_x64.lib"			)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
-									#pragma comment( lib, "DxUseCLibW_x64.lib"		)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+									#pragma comment( lib, "DxLibW_x64.lib"			)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
+									#pragma comment( lib, "DxUseCLibW_x64.lib"		)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 								#else
-									#pragma comment( lib, "DxLib_x64.lib"			)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
-									#pragma comment( lib, "DxUseCLib_x64.lib"		)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+									#pragma comment( lib, "DxLib_x64.lib"			)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
+									#pragma comment( lib, "DxUseCLib_x64.lib"		)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 								#endif
 							#endif // _DEBUG
 						#else // _WIN64
 							#ifdef _DEBUG
-								#pragma comment( lib, "DxDrawFunc_d.lib"		)		//  æç”»éƒ¨åˆ†ã®æŠœãå‡ºã—
+								#pragma comment( lib, "DxDrawFunc_d.lib"		)		//  •`‰æ•”•ª‚Ì”²‚«o‚µ
 								#ifdef UNICODE
-									#pragma comment( lib, "DxLibW_d.lib"		)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
-									#pragma comment( lib, "DxUseCLibW_d.lib"	)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+									#pragma comment( lib, "DxLibW_d.lib"		)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
+									#pragma comment( lib, "DxUseCLibW_d.lib"	)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 								#else
-									#pragma comment( lib, "DxLib_d.lib"			)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
-									#pragma comment( lib, "DxUseCLib_d.lib"		)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+									#pragma comment( lib, "DxLib_d.lib"			)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
+									#pragma comment( lib, "DxUseCLib_d.lib"		)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 								#endif
 							#else // _DEBUG
-								#pragma comment( lib, "DxDrawFunc.lib"			)		//  æç”»éƒ¨åˆ†ã®æŠœãå‡ºã—
+								#pragma comment( lib, "DxDrawFunc.lib"			)		//  •`‰æ•”•ª‚Ì”²‚«o‚µ
 								#ifdef UNICODE
-									#pragma comment( lib, "DxLibW.lib"			)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
-									#pragma comment( lib, "DxUseCLibW.lib"		)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+									#pragma comment( lib, "DxLibW.lib"			)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
+									#pragma comment( lib, "DxUseCLibW.lib"		)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 								#else
-									#pragma comment( lib, "DxLib.lib"			)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
-									#pragma comment( lib, "DxUseCLib.lib"		)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+									#pragma comment( lib, "DxLib.lib"			)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
+									#pragma comment( lib, "DxUseCLib.lib"		)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 								#endif
 							#endif // _DEBUG
 						#endif // _WIN64
@@ -77,116 +77,116 @@ struct IUnknown;
 							#ifdef _DLL
 								#ifdef _WIN64
 									#ifdef _DEBUG
-										#pragma comment( lib, "DxDrawFunc_vs2015_x64_MDd.lib"						)		//  æç”»éƒ¨åˆ†ã®æŠœãå‡ºã—
+										#pragma comment( lib, "DxDrawFunc_vs2015_x64_MDd.lib"						)		//  •`‰æ•”•ª‚Ì”²‚«o‚µ
 										#ifdef UNICODE
-											#pragma comment( lib, "DxLibW_vs2015_x64_MDd.lib"						)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxLibW_vs2015_x64_MDd.lib"						)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
 											#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
-												#pragma comment( lib, "DxUseCLibW_vs2015_x64_ItrDbgLv0_MDd.lib"	)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+												#pragma comment( lib, "DxUseCLibW_vs2015_x64_ItrDbgLv0_MDd.lib"	)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 											#else
-												#pragma comment( lib, "DxUseCLibW_vs2015_x64_MDd.lib"				)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+												#pragma comment( lib, "DxUseCLibW_vs2015_x64_MDd.lib"				)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 											#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 										#else
-											#pragma comment( lib, "DxLib_vs2015_x64_MDd.lib"						)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxLib_vs2015_x64_MDd.lib"						)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
 											#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
-												#pragma comment( lib, "DxUseCLib_vs2015_x64_ItrDbgLv0_MDd.lib"	)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+												#pragma comment( lib, "DxUseCLib_vs2015_x64_ItrDbgLv0_MDd.lib"	)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 											#else
-												#pragma comment( lib, "DxUseCLib_vs2015_x64_MDd.lib"				)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+												#pragma comment( lib, "DxUseCLib_vs2015_x64_MDd.lib"				)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 											#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 										#endif
 									#else // _DEBUG
-										#pragma comment( lib, "DxDrawFunc_vs2015_x64_MD.lib"						)		//  æç”»éƒ¨åˆ†ã®æŠœãå‡ºã—
+										#pragma comment( lib, "DxDrawFunc_vs2015_x64_MD.lib"						)		//  •`‰æ•”•ª‚Ì”²‚«o‚µ
 										#ifdef UNICODE
-											#pragma comment( lib, "DxLibW_vs2015_x64_MD.lib"						)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
-											#pragma comment( lib, "DxUseCLibW_vs2015_x64_MD.lib"					)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxLibW_vs2015_x64_MD.lib"						)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
+											#pragma comment( lib, "DxUseCLibW_vs2015_x64_MD.lib"					)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 										#else
-											#pragma comment( lib, "DxLib_vs2015_x64_MD.lib"						)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
-											#pragma comment( lib, "DxUseCLib_vs2015_x64_MD.lib"					)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxLib_vs2015_x64_MD.lib"						)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
+											#pragma comment( lib, "DxUseCLib_vs2015_x64_MD.lib"					)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 										#endif
 									#endif // _DEBUG
 								#else // _WIN64
 									#ifdef _DEBUG
-										#pragma comment( lib, "DxDrawFunc_vs2015_x86_MDd.lib"						)		//  æç”»éƒ¨åˆ†ã®æŠœãå‡ºã—
+										#pragma comment( lib, "DxDrawFunc_vs2015_x86_MDd.lib"						)		//  •`‰æ•”•ª‚Ì”²‚«o‚µ
 										#ifdef UNICODE
-											#pragma comment( lib, "DxLibW_vs2015_x86_MDd.lib"						)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxLibW_vs2015_x86_MDd.lib"						)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
 											#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
-												#pragma comment( lib, "DxUseCLibW_vs2015_x86_ItrDbgLv0_MDd.lib"	)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+												#pragma comment( lib, "DxUseCLibW_vs2015_x86_ItrDbgLv0_MDd.lib"	)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 											#else
-												#pragma comment( lib, "DxUseCLibW_vs2015_x86_MDd.lib"				)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+												#pragma comment( lib, "DxUseCLibW_vs2015_x86_MDd.lib"				)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 											#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 										#else
-											#pragma comment( lib, "DxLib_vs2015_x86_MDd.lib"						)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxLib_vs2015_x86_MDd.lib"						)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
 											#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
-												#pragma comment( lib, "DxUseCLib_vs2015_x86_ItrDbgLv0_MDd.lib"	)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+												#pragma comment( lib, "DxUseCLib_vs2015_x86_ItrDbgLv0_MDd.lib"	)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 											#else
-												#pragma comment( lib, "DxUseCLib_vs2015_x86_MDd.lib"				)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+												#pragma comment( lib, "DxUseCLib_vs2015_x86_MDd.lib"				)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 											#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 										#endif
 									#else // _DEBUG
-										#pragma comment( lib, "DxDrawFunc_vs2015_x86_MD.lib"						)		//  æç”»éƒ¨åˆ†ã®æŠœãå‡ºã—
+										#pragma comment( lib, "DxDrawFunc_vs2015_x86_MD.lib"						)		//  •`‰æ•”•ª‚Ì”²‚«o‚µ
 										#ifdef UNICODE
-											#pragma comment( lib, "DxLibW_vs2015_x86_MD.lib"						)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
-											#pragma comment( lib, "DxUseCLibW_vs2015_x86_MD.lib"					)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxLibW_vs2015_x86_MD.lib"						)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
+											#pragma comment( lib, "DxUseCLibW_vs2015_x86_MD.lib"					)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 										#else
-											#pragma comment( lib, "DxLib_vs2015_x86_MD.lib"						)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
-											#pragma comment( lib, "DxUseCLib_vs2015_x86_MD.lib"					)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxLib_vs2015_x86_MD.lib"						)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
+											#pragma comment( lib, "DxUseCLib_vs2015_x86_MD.lib"					)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 										#endif
 									#endif // _DEBUG
 								#endif // _WIN64
 							#else // _DLL
 								#ifdef _WIN64
 									#ifdef _DEBUG
-										#pragma comment( lib, "DxDrawFunc_vs2015_x64_MTd.lib"						)		//  æç”»éƒ¨åˆ†ã®æŠœãå‡ºã—
+										#pragma comment( lib, "DxDrawFunc_vs2015_x64_MTd.lib"						)		//  •`‰æ•”•ª‚Ì”²‚«o‚µ
 										#ifdef UNICODE
-											#pragma comment( lib, "DxLibW_vs2015_x64_MTd.lib"						)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxLibW_vs2015_x64_MTd.lib"						)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
 											#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
-												#pragma comment( lib, "DxUseCLibW_vs2015_x64_ItrDbgLv0_MTd.lib"	)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+												#pragma comment( lib, "DxUseCLibW_vs2015_x64_ItrDbgLv0_MTd.lib"	)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 											#else
-												#pragma comment( lib, "DxUseCLibW_vs2015_x64_MTd.lib"				)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+												#pragma comment( lib, "DxUseCLibW_vs2015_x64_MTd.lib"				)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 											#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 										#else
-											#pragma comment( lib, "DxLib_vs2015_x64_MTd.lib"						)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxLib_vs2015_x64_MTd.lib"						)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
 											#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
-												#pragma comment( lib, "DxUseCLib_vs2015_x64_ItrDbgLv0_MTd.lib"	)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+												#pragma comment( lib, "DxUseCLib_vs2015_x64_ItrDbgLv0_MTd.lib"	)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 											#else
-												#pragma comment( lib, "DxUseCLib_vs2015_x64_MTd.lib"				)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+												#pragma comment( lib, "DxUseCLib_vs2015_x64_MTd.lib"				)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 											#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 										#endif
 									#else // _DEBUG
-										#pragma comment( lib, "DxDrawFunc_vs2015_x64_MT.lib"						)		//  æç”»éƒ¨åˆ†ã®æŠœãå‡ºã—
+										#pragma comment( lib, "DxDrawFunc_vs2015_x64_MT.lib"						)		//  •`‰æ•”•ª‚Ì”²‚«o‚µ
 										#ifdef UNICODE
-											#pragma comment( lib, "DxLibW_vs2015_x64_MT.lib"						)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
-											#pragma comment( lib, "DxUseCLibW_vs2015_x64_MT.lib"					)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxLibW_vs2015_x64_MT.lib"						)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
+											#pragma comment( lib, "DxUseCLibW_vs2015_x64_MT.lib"					)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 										#else
-											#pragma comment( lib, "DxLib_vs2015_x64_MT.lib"						)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
-											#pragma comment( lib, "DxUseCLib_vs2015_x64_MT.lib"					)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxLib_vs2015_x64_MT.lib"						)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
+											#pragma comment( lib, "DxUseCLib_vs2015_x64_MT.lib"					)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 										#endif
 									#endif // _DEBUG
 								#else // _WIN64
 									#ifdef _DEBUG
-										#pragma comment( lib, "DxDrawFunc_vs2015_x86_MTd.lib"						)		//  æç”»éƒ¨åˆ†ã®æŠœãå‡ºã—
+										#pragma comment( lib, "DxDrawFunc_vs2015_x86_MTd.lib"						)		//  •`‰æ•”•ª‚Ì”²‚«o‚µ
 										#ifdef UNICODE
-											#pragma comment( lib, "DxLibW_vs2015_x86_MTd.lib"						)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxLibW_vs2015_x86_MTd.lib"						)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
 											#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
-												#pragma comment( lib, "DxUseCLibW_vs2015_x86_ItrDbgLv0_MTd.lib"	)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+												#pragma comment( lib, "DxUseCLibW_vs2015_x86_ItrDbgLv0_MTd.lib"	)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 											#else
-												#pragma comment( lib, "DxUseCLibW_vs2015_x86_MTd.lib"				)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+												#pragma comment( lib, "DxUseCLibW_vs2015_x86_MTd.lib"				)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 											#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 										#else
-											#pragma comment( lib, "DxLib_vs2015_x86_MTd.lib"						)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxLib_vs2015_x86_MTd.lib"						)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
 											#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
-												#pragma comment( lib, "DxUseCLib_vs2015_x86_ItrDbgLv0_MTd.lib"	)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+												#pragma comment( lib, "DxUseCLib_vs2015_x86_ItrDbgLv0_MTd.lib"	)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 											#else
-												#pragma comment( lib, "DxUseCLib_vs2015_x86_MTd.lib"				)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+												#pragma comment( lib, "DxUseCLib_vs2015_x86_MTd.lib"				)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 											#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 										#endif
 									#else // _DEBUG
-										#pragma comment( lib, "DxDrawFunc_vs2015_x86_MT.lib"						)		//  æç”»éƒ¨åˆ†ã®æŠœãå‡ºã—
+										#pragma comment( lib, "DxDrawFunc_vs2015_x86_MT.lib"						)		//  •`‰æ•”•ª‚Ì”²‚«o‚µ
 										#ifdef UNICODE
-											#pragma comment( lib, "DxLibW_vs2015_x86_MT.lib"						)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
-											#pragma comment( lib, "DxUseCLibW_vs2015_x86_MT.lib"					)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxLibW_vs2015_x86_MT.lib"						)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
+											#pragma comment( lib, "DxUseCLibW_vs2015_x86_MT.lib"					)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 										#else
-											#pragma comment( lib, "DxLib_vs2015_x86_MT.lib"						)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
-											#pragma comment( lib, "DxUseCLib_vs2015_x86_MT.lib"					)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxLib_vs2015_x86_MT.lib"						)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
+											#pragma comment( lib, "DxUseCLib_vs2015_x86_MT.lib"					)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 										#endif
 									#endif // _DEBUG
 								#endif // _WIN64
@@ -194,129 +194,129 @@ struct IUnknown;
 						#elif _MSC_VER >= 1800
 							#ifdef _WIN64
 								#ifdef _DEBUG
-									#pragma comment( lib, "DxDrawFunc_vs2012_x64_d.lib"			)		//  æç”»éƒ¨åˆ†ã®æŠœãå‡ºã—
+									#pragma comment( lib, "DxDrawFunc_vs2012_x64_d.lib"			)		//  •`‰æ•”•ª‚Ì”²‚«o‚µ
 									#ifdef UNICODE
-										#pragma comment( lib, "DxLibW_vs2012_x64_d.lib"			)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
+										#pragma comment( lib, "DxLibW_vs2012_x64_d.lib"			)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
 										#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
-											#pragma comment( lib, "DxUseCLibW_vs2013_x64_ItrDbgLv0_d.lib"	)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxUseCLibW_vs2013_x64_ItrDbgLv0_d.lib"	)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 										#else
-											#pragma comment( lib, "DxUseCLibW_vs2013_x64_d.lib"				)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxUseCLibW_vs2013_x64_d.lib"				)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 										#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 									#else
-										#pragma comment( lib, "DxLib_vs2012_x64_d.lib"			)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
+										#pragma comment( lib, "DxLib_vs2012_x64_d.lib"			)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
 										#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
-											#pragma comment( lib, "DxUseCLib_vs2013_x64_ItrDbgLv0_d.lib"	)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxUseCLib_vs2013_x64_ItrDbgLv0_d.lib"	)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 										#else
-											#pragma comment( lib, "DxUseCLib_vs2013_x64_d.lib"				)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxUseCLib_vs2013_x64_d.lib"				)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 										#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 									#endif
 								#else // _DEBUG
-									#pragma comment( lib, "DxDrawFunc_vs2012_x64.lib"			)		//  æç”»éƒ¨åˆ†ã®æŠœãå‡ºã—
+									#pragma comment( lib, "DxDrawFunc_vs2012_x64.lib"			)		//  •`‰æ•”•ª‚Ì”²‚«o‚µ
 									#ifdef UNICODE
-										#pragma comment( lib, "DxLibW_vs2012_x64.lib"			)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
-										#pragma comment( lib, "DxUseCLibW_vs2013_x64.lib"		)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+										#pragma comment( lib, "DxLibW_vs2012_x64.lib"			)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
+										#pragma comment( lib, "DxUseCLibW_vs2013_x64.lib"		)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 									#else
-										#pragma comment( lib, "DxLib_vs2012_x64.lib"			)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
-										#pragma comment( lib, "DxUseCLib_vs2013_x64.lib"		)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+										#pragma comment( lib, "DxLib_vs2012_x64.lib"			)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
+										#pragma comment( lib, "DxUseCLib_vs2013_x64.lib"		)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 									#endif
 								#endif // _DEBUG
 							#else // _WIN64
 								#ifdef _DEBUG
-									#pragma comment( lib, "DxDrawFunc_vs2012_x86_d.lib"			)		//  æç”»éƒ¨åˆ†ã®æŠœãå‡ºã—
+									#pragma comment( lib, "DxDrawFunc_vs2012_x86_d.lib"			)		//  •`‰æ•”•ª‚Ì”²‚«o‚µ
 									#ifdef UNICODE
-										#pragma comment( lib, "DxLibW_vs2012_x86_d.lib"			)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
+										#pragma comment( lib, "DxLibW_vs2012_x86_d.lib"			)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
 										#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
-											#pragma comment( lib, "DxUseCLibW_vs2013_x86_ItrDbgLv0_d.lib"	)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxUseCLibW_vs2013_x86_ItrDbgLv0_d.lib"	)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 										#else
-											#pragma comment( lib, "DxUseCLibW_vs2013_x86_d.lib"				)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxUseCLibW_vs2013_x86_d.lib"				)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 										#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 									#else
-										#pragma comment( lib, "DxLib_vs2012_x86_d.lib"			)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
+										#pragma comment( lib, "DxLib_vs2012_x86_d.lib"			)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
 										#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
-											#pragma comment( lib, "DxUseCLib_vs2013_x86_ItrDbgLv0_d.lib"	)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxUseCLib_vs2013_x86_ItrDbgLv0_d.lib"	)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 										#else
-											#pragma comment( lib, "DxUseCLib_vs2013_x86_d.lib"				)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxUseCLib_vs2013_x86_d.lib"				)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 										#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 									#endif
 								#else // _DEBUG
-									#pragma comment( lib, "DxDrawFunc_vs2012_x86.lib"			)		//  æç”»éƒ¨åˆ†ã®æŠœãå‡ºã—
+									#pragma comment( lib, "DxDrawFunc_vs2012_x86.lib"			)		//  •`‰æ•”•ª‚Ì”²‚«o‚µ
 									#ifdef UNICODE
-										#pragma comment( lib, "DxLibW_vs2012_x86.lib"			)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
-										#pragma comment( lib, "DxUseCLibW_vs2013_x86.lib"		)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+										#pragma comment( lib, "DxLibW_vs2012_x86.lib"			)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
+										#pragma comment( lib, "DxUseCLibW_vs2013_x86.lib"		)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 									#else
-										#pragma comment( lib, "DxLib_vs2012_x86.lib"			)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
-										#pragma comment( lib, "DxUseCLib_vs2013_x86.lib"		)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+										#pragma comment( lib, "DxLib_vs2012_x86.lib"			)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
+										#pragma comment( lib, "DxUseCLib_vs2013_x86.lib"		)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 									#endif
 								#endif // _DEBUG
 							#endif // _WIN64
 						#elif _MSC_VER >= 1700
 							#ifdef _WIN64
 								#ifdef _DEBUG
-									#pragma comment( lib, "DxDrawFunc_vs2012_x64_d.lib"			)		//  æç”»éƒ¨åˆ†ã®æŠœãå‡ºã—
+									#pragma comment( lib, "DxDrawFunc_vs2012_x64_d.lib"			)		//  •`‰æ•”•ª‚Ì”²‚«o‚µ
 									#ifdef UNICODE
-										#pragma comment( lib, "DxLibW_vs2012_x64_d.lib"			)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
+										#pragma comment( lib, "DxLibW_vs2012_x64_d.lib"			)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
 										#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
-											#pragma comment( lib, "DxUseCLibW_vs2012_x64_ItrDbgLv0_d.lib"	)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxUseCLibW_vs2012_x64_ItrDbgLv0_d.lib"	)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 										#else
-											#pragma comment( lib, "DxUseCLibW_vs2012_x64_d.lib"				)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxUseCLibW_vs2012_x64_d.lib"				)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 										#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 									#else
-										#pragma comment( lib, "DxLib_vs2012_x64_d.lib"			)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
+										#pragma comment( lib, "DxLib_vs2012_x64_d.lib"			)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
 										#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
-											#pragma comment( lib, "DxUseCLib_vs2012_x64_ItrDbgLv0_d.lib"	)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxUseCLib_vs2012_x64_ItrDbgLv0_d.lib"	)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 										#else
-											#pragma comment( lib, "DxUseCLib_vs2012_x64_d.lib"				)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxUseCLib_vs2012_x64_d.lib"				)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 										#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 									#endif
 								#else // _DEBUG
-									#pragma comment( lib, "DxDrawFunc_vs2012_x64.lib"			)		//  æç”»éƒ¨åˆ†ã®æŠœãå‡ºã—
+									#pragma comment( lib, "DxDrawFunc_vs2012_x64.lib"			)		//  •`‰æ•”•ª‚Ì”²‚«o‚µ
 									#ifdef UNICODE
-										#pragma comment( lib, "DxLibW_vs2012_x64.lib"			)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
-										#pragma comment( lib, "DxUseCLibW_vs2012_x64.lib"		)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+										#pragma comment( lib, "DxLibW_vs2012_x64.lib"			)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
+										#pragma comment( lib, "DxUseCLibW_vs2012_x64.lib"		)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 									#else
-										#pragma comment( lib, "DxLib_vs2012_x64.lib"			)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
-										#pragma comment( lib, "DxUseCLib_vs2012_x64.lib"		)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+										#pragma comment( lib, "DxLib_vs2012_x64.lib"			)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
+										#pragma comment( lib, "DxUseCLib_vs2012_x64.lib"		)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 									#endif
 								#endif // _DEBUG
 							#else // _WIN64
 								#ifdef _DEBUG
-									#pragma comment( lib, "DxDrawFunc_vs2012_x86_d.lib"			)		//  æç”»éƒ¨åˆ†ã®æŠœãå‡ºã—
+									#pragma comment( lib, "DxDrawFunc_vs2012_x86_d.lib"			)		//  •`‰æ•”•ª‚Ì”²‚«o‚µ
 									#ifdef UNICODE
-										#pragma comment( lib, "DxLibW_vs2012_x86_d.lib"			)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
+										#pragma comment( lib, "DxLibW_vs2012_x86_d.lib"			)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
 										#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
-											#pragma comment( lib, "DxUseCLibW_vs2012_x86_ItrDbgLv0_d.lib"	)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxUseCLibW_vs2012_x86_ItrDbgLv0_d.lib"	)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 										#else
-											#pragma comment( lib, "DxUseCLibW_vs2012_x86_d.lib"				)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxUseCLibW_vs2012_x86_d.lib"				)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 										#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 									#else
-										#pragma comment( lib, "DxLib_vs2012_x86_d.lib"			)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
+										#pragma comment( lib, "DxLib_vs2012_x86_d.lib"			)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
 										#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
-											#pragma comment( lib, "DxUseCLib_vs2012_x86_ItrDbgLv0_d.lib"	)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxUseCLib_vs2012_x86_ItrDbgLv0_d.lib"	)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 										#else
-											#pragma comment( lib, "DxUseCLib_vs2012_x86_d.lib"				)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+											#pragma comment( lib, "DxUseCLib_vs2012_x86_d.lib"				)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 										#endif // defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL == 0
 									#endif
 								#else // _DEBUG
-									#pragma comment( lib, "DxDrawFunc_vs2012_x86.lib"			)		//  æç”»éƒ¨åˆ†ã®æŠœãå‡ºã—
+									#pragma comment( lib, "DxDrawFunc_vs2012_x86.lib"			)		//  •`‰æ•”•ª‚Ì”²‚«o‚µ
 									#ifdef UNICODE
-										#pragma comment( lib, "DxLibW_vs2012_x86.lib"			)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
-										#pragma comment( lib, "DxUseCLibW_vs2012_x86.lib"		)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+										#pragma comment( lib, "DxLibW_vs2012_x86.lib"			)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
+										#pragma comment( lib, "DxUseCLibW_vs2012_x86.lib"		)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 									#else
-										#pragma comment( lib, "DxLib_vs2012_x86.lib"			)		//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
-										#pragma comment( lib, "DxUseCLib_vs2012_x86.lib"		)		//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+										#pragma comment( lib, "DxLib_vs2012_x86.lib"			)		//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
+										#pragma comment( lib, "DxUseCLib_vs2012_x86.lib"		)		//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 									#endif
 								#endif // _DEBUG
 							#endif // _WIN64
 						#endif // // _MSC_VER >= 1700
 					#endif // // _MSC_VER <  1700
 				#else // _MSC_VER
-					#pragma comment( lib, "DxDrawFunc.lib"		)			//  æç”»éƒ¨åˆ†ã®æŠœãå‡ºã—
+					#pragma comment( lib, "DxDrawFunc.lib"		)			//  •`‰æ•”•ª‚Ì”²‚«o‚µ
 					#ifdef UNICODE
-						#pragma comment( lib, "DxLibW.lib"		)			//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
-						#pragma comment( lib, "DxUseCLibW.lib"	)			//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+						#pragma comment( lib, "DxLibW.lib"		)			//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
+						#pragma comment( lib, "DxUseCLibW.lib"	)			//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 					#else
-						#pragma comment( lib, "DxLib.lib"		)			//  ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨æŒ‡å®š
-						#pragma comment( lib, "DxUseCLib.lib"	)			//  æ¨™æº–ï¼£ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã™ã‚‹éƒ¨åˆ†ã® lib ãƒ•ã‚¡ã‚¤ãƒ«ã®ä½¿ç”¨æŒ‡å®š
+						#pragma comment( lib, "DxLib.lib"		)			//  ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—pw’è
+						#pragma comment( lib, "DxUseCLib.lib"	)			//  •W€‚bƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚·‚é•”•ª‚Ì lib ƒtƒ@ƒCƒ‹‚Ìg—pw’è
 					#endif
 				#endif // _MSC_VER
 
@@ -334,26 +334,26 @@ struct IUnknown;
 		//			#pragma comment( linker, "/NODEFAULTLIB:msvcrtd.lib" )
 				#endif
 			#endif
-			//#pragma comment( lib, "libcmt.lib"		)				//  Cæ¨™æº–ãƒãƒ«ãƒã‚¹ãƒ¬ãƒƒãƒ‰å¯¾å¿œãƒ©ã‚¤ãƒ–ãƒ©ãƒª
-			#pragma comment( lib, "kernel32.lib"		)			//  Win32ã‚«ãƒ¼ãƒãƒ«ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
-			//#pragma comment( lib, "comctl32.lib"		)			//ã€€Win32APIãƒ©ã‚¤ãƒ–ãƒ©ãƒª
-			#pragma comment( lib, "user32.lib"		)				//  Win32APIãƒ©ã‚¤ãƒ–ãƒ©ãƒª
-			#pragma comment( lib, "gdi32.lib"		)				//  Win32APIãƒ©ã‚¤ãƒ–ãƒ©ãƒª
-			#pragma comment( lib, "advapi32.lib"		)			//  Win32APIãƒ©ã‚¤ãƒ–ãƒ©ãƒª
-			//#pragma comment( lib, "ole32.lib"		)				//  Win32APIãƒ©ã‚¤ãƒ–ãƒ©ãƒª
-			#pragma comment( lib, "shell32.lib"		)				//  ãƒãƒ«ãƒãƒ¡ãƒ‡ã‚£ã‚¢ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
-			//#pragma comment( lib, "winmm.lib"		)				//  ãƒãƒ«ãƒãƒ¡ãƒ‡ã‚£ã‚¢ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+			//#pragma comment( lib, "libcmt.lib"		)				//  C•W€ƒ}ƒ‹ƒ`ƒXƒŒƒbƒh‘Î‰ƒ‰ƒCƒuƒ‰ƒŠ
+			#pragma comment( lib, "kernel32.lib"		)			//  Win32ƒJ[ƒlƒ‹ƒ‰ƒCƒuƒ‰ƒŠ
+			//#pragma comment( lib, "comctl32.lib"		)			//@Win32APIƒ‰ƒCƒuƒ‰ƒŠ
+			#pragma comment( lib, "user32.lib"		)				//  Win32APIƒ‰ƒCƒuƒ‰ƒŠ
+			#pragma comment( lib, "gdi32.lib"		)				//  Win32APIƒ‰ƒCƒuƒ‰ƒŠ
+			#pragma comment( lib, "advapi32.lib"		)			//  Win32APIƒ‰ƒCƒuƒ‰ƒŠ
+			//#pragma comment( lib, "ole32.lib"		)				//  Win32APIƒ‰ƒCƒuƒ‰ƒŠ
+			#pragma comment( lib, "shell32.lib"		)				//  ƒ}ƒ‹ƒ`ƒƒfƒBƒAƒ‰ƒCƒuƒ‰ƒŠ
+			//#pragma comment( lib, "winmm.lib"		)				//  ƒ}ƒ‹ƒ`ƒƒfƒBƒAƒ‰ƒCƒuƒ‰ƒŠ
 			#ifndef DX_NON_MOVIE
-				//#pragma comment( lib, "Strmiids.lib" )			//ã€€DirectShowãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+				//#pragma comment( lib, "Strmiids.lib" )			//@DirectShowƒ‰ƒCƒuƒ‰ƒŠ
 			#endif
 			#ifndef DX_NON_NETWORK
-				//#pragma comment( lib, "wsock32.lib" )				//  WinSocketsãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+				//#pragma comment( lib, "wsock32.lib" )				//  WinSocketsƒ‰ƒCƒuƒ‰ƒŠ
 			#endif
 			#ifndef DX_NON_KEYEX
-				//#pragma comment( lib, "imm32.lib" )					// ï¼©ï¼­ï¼¥æ“ä½œç”¨ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+				//#pragma comment( lib, "imm32.lib" )					// ‚h‚l‚d‘€ì—pƒ‰ƒCƒuƒ‰ƒŠ
 			#endif
 			#ifndef DX_NON_ACM
-				//#pragma comment( lib, "msacm32.lib" )				// ï¼¡ï¼£ï¼­æ“ä½œç”¨ãƒ©ã‚¤ãƒ–ãƒ©ãƒª 
+				//#pragma comment( lib, "msacm32.lib" )				// ‚`‚b‚l‘€ì—pƒ‰ƒCƒuƒ‰ƒŠ 
 			#endif
 			#ifndef DX_NON_BULLET_PHYSICS
 				#ifdef _MSC_VER
@@ -361,21 +361,21 @@ struct IUnknown;
 						#ifdef DX_USE_VC8_BULLET_PHYSICS_LIB
 							#ifdef _WIN64
 								#ifdef _DEBUG
-									#pragma comment( lib, "libbulletcollision_vc8_x64_d.lib" )	// Visual C++ 8.0 ã§ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã—ãŸ Bullet Physics ãƒ©ã‚¤ãƒ–ãƒ©ãƒª 
+									#pragma comment( lib, "libbulletcollision_vc8_x64_d.lib" )	// Visual C++ 8.0 ‚ÅƒRƒ“ƒpƒCƒ‹‚µ‚½ Bullet Physics ƒ‰ƒCƒuƒ‰ƒŠ 
 									#pragma comment( lib, "libbulletdynamics_vc8_x64_d.lib" )
 									#pragma comment( lib, "libbulletmath_vc8_x64_d.lib" )
 								#else
-									#pragma comment( lib, "libbulletcollision_vc8_x64.lib" )	// Visual C++ 8.0 ã§ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã—ãŸ Bullet Physics ãƒ©ã‚¤ãƒ–ãƒ©ãƒª 
+									#pragma comment( lib, "libbulletcollision_vc8_x64.lib" )	// Visual C++ 8.0 ‚ÅƒRƒ“ƒpƒCƒ‹‚µ‚½ Bullet Physics ƒ‰ƒCƒuƒ‰ƒŠ 
 									#pragma comment( lib, "libbulletdynamics_vc8_x64.lib" )
 									#pragma comment( lib, "libbulletmath_vc8_x64.lib" )
 								#endif
 							#else
 								#ifdef _DEBUG
-									#pragma comment( lib, "libbulletcollision_vc8_d.lib" )	// Visual C++ 8.0 ã§ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã—ãŸ Bullet Physics ãƒ©ã‚¤ãƒ–ãƒ©ãƒª 
+									#pragma comment( lib, "libbulletcollision_vc8_d.lib" )	// Visual C++ 8.0 ‚ÅƒRƒ“ƒpƒCƒ‹‚µ‚½ Bullet Physics ƒ‰ƒCƒuƒ‰ƒŠ 
 									#pragma comment( lib, "libbulletdynamics_vc8_d.lib" )
 									#pragma comment( lib, "libbulletmath_vc8_d.lib" )
 								#else
-									#pragma comment( lib, "libbulletcollision_vc8.lib" )	// Visual C++ 8.0 ã§ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã—ãŸ Bullet Physics ãƒ©ã‚¤ãƒ–ãƒ©ãƒª 
+									#pragma comment( lib, "libbulletcollision_vc8.lib" )	// Visual C++ 8.0 ‚ÅƒRƒ“ƒpƒCƒ‹‚µ‚½ Bullet Physics ƒ‰ƒCƒuƒ‰ƒŠ 
 									#pragma comment( lib, "libbulletdynamics_vc8.lib" )
 									#pragma comment( lib, "libbulletmath_vc8.lib" )
 								#endif
@@ -383,21 +383,21 @@ struct IUnknown;
 						#else // DX_USE_VC8_BULLET_PHYSICS_LIB
 							#ifdef _WIN64
 								#ifdef _DEBUG
-									#pragma comment( lib, "libbulletcollision_vc8_x64_d.lib" )	// Visual C++ 8.0 ã§ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã—ãŸ Bullet Physics ãƒ©ã‚¤ãƒ–ãƒ©ãƒª 
+									#pragma comment( lib, "libbulletcollision_vc8_x64_d.lib" )	// Visual C++ 8.0 ‚ÅƒRƒ“ƒpƒCƒ‹‚µ‚½ Bullet Physics ƒ‰ƒCƒuƒ‰ƒŠ 
 									#pragma comment( lib, "libbulletdynamics_vc8_x64_d.lib" )
 									#pragma comment( lib, "libbulletmath_vc8_x64_d.lib" )
 								#else
-									#pragma comment( lib, "libbulletcollision_vc8_x64.lib" )	// Visual C++ 8.0 ã§ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã—ãŸ Bullet Physics ãƒ©ã‚¤ãƒ–ãƒ©ãƒª 
+									#pragma comment( lib, "libbulletcollision_vc8_x64.lib" )	// Visual C++ 8.0 ‚ÅƒRƒ“ƒpƒCƒ‹‚µ‚½ Bullet Physics ƒ‰ƒCƒuƒ‰ƒŠ 
 									#pragma comment( lib, "libbulletdynamics_vc8_x64.lib" )
 									#pragma comment( lib, "libbulletmath_vc8_x64.lib" )
 								#endif
 							#else
 								#ifdef _DEBUG
-									#pragma comment( lib, "libbulletcollision_vc6_d.lib" )	// Visual C++ 6.0 ã§ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã—ãŸ Bullet Physics ãƒ©ã‚¤ãƒ–ãƒ©ãƒª 
+									#pragma comment( lib, "libbulletcollision_vc6_d.lib" )	// Visual C++ 6.0 ‚ÅƒRƒ“ƒpƒCƒ‹‚µ‚½ Bullet Physics ƒ‰ƒCƒuƒ‰ƒŠ 
 									#pragma comment( lib, "libbulletdynamics_vc6_d.lib" )
 									#pragma comment( lib, "libbulletmath_vc6_d.lib" )
 								#else
-									#pragma comment( lib, "libbulletcollision_vc6.lib" )	// Visual C++ 6.0 ã§ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã—ãŸ Bullet Physics ãƒ©ã‚¤ãƒ–ãƒ©ãƒª 
+									#pragma comment( lib, "libbulletcollision_vc6.lib" )	// Visual C++ 6.0 ‚ÅƒRƒ“ƒpƒCƒ‹‚µ‚½ Bullet Physics ƒ‰ƒCƒuƒ‰ƒŠ 
 									#pragma comment( lib, "libbulletdynamics_vc6.lib" )
 									#pragma comment( lib, "libbulletmath_vc6.lib" )
 								#endif
@@ -545,7 +545,7 @@ struct IUnknown;
 						#endif // _MSC_VER >= 1700
 					#endif // _MSC_VER < 1700
 				#else // _MSC_VER
-					#pragma comment( lib, "libbulletcollision.lib" )	// Bullet Physics ãƒ©ã‚¤ãƒ–ãƒ©ãƒª 
+					#pragma comment( lib, "libbulletcollision.lib" )	// Bullet Physics ƒ‰ƒCƒuƒ‰ƒŠ 
 					#pragma comment( lib, "libbulletdynamics.lib" )
 					#pragma comment( lib, "libbulletmath.lib" )
 				#endif // _MSC_VER
@@ -555,15 +555,15 @@ struct IUnknown;
 					#if _MSC_VER <  1700
 						#ifdef _WIN64
 							#ifdef _DEBUG
-								#pragma comment( lib, "libtiff_x64_d.lib" )		// ï¼´ï¼©ï¼¦ï¼¦ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+								#pragma comment( lib, "libtiff_x64_d.lib" )		// ‚s‚h‚e‚eƒ‰ƒCƒuƒ‰ƒŠ
 							#else
-								#pragma comment( lib, "libtiff_x64.lib" )		// ï¼´ï¼©ï¼¦ï¼¦ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+								#pragma comment( lib, "libtiff_x64.lib" )		// ‚s‚h‚e‚eƒ‰ƒCƒuƒ‰ƒŠ
 							#endif
 						#else
 							#ifdef _DEBUG
-								#pragma comment( lib, "libtiff_d.lib" )			// ï¼´ï¼©ï¼¦ï¼¦ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+								#pragma comment( lib, "libtiff_d.lib" )			// ‚s‚h‚e‚eƒ‰ƒCƒuƒ‰ƒŠ
 							#else
-								#pragma comment( lib, "libtiff.lib" )			// ï¼´ï¼©ï¼¦ï¼¦ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+								#pragma comment( lib, "libtiff.lib" )			// ‚s‚h‚e‚eƒ‰ƒCƒuƒ‰ƒŠ
 							#endif
 						#endif
 					#else // _MSC_VER <  1700
@@ -571,64 +571,64 @@ struct IUnknown;
 							#ifdef _DLL
 								#ifdef _WIN64
 									#ifdef _DEBUG
-										#pragma comment( lib, "libtiff_vs2015_x64_MDd.lib" )	// ï¼´ï¼©ï¼¦ï¼¦ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+										#pragma comment( lib, "libtiff_vs2015_x64_MDd.lib" )	// ‚s‚h‚e‚eƒ‰ƒCƒuƒ‰ƒŠ
 									#else
-										#pragma comment( lib, "libtiff_vs2015_x64_MD.lib" )	// ï¼´ï¼©ï¼¦ï¼¦ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+										#pragma comment( lib, "libtiff_vs2015_x64_MD.lib" )	// ‚s‚h‚e‚eƒ‰ƒCƒuƒ‰ƒŠ
 									#endif
 								#else
 									#ifdef _DEBUG
-										#pragma comment( lib, "libtiff_vs2015_x86_MDd.lib" )		// ï¼´ï¼©ï¼¦ï¼¦ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+										#pragma comment( lib, "libtiff_vs2015_x86_MDd.lib" )		// ‚s‚h‚e‚eƒ‰ƒCƒuƒ‰ƒŠ
 									#else
-										#pragma comment( lib, "libtiff_vs2015_x86_MD.lib" )		// ï¼´ï¼©ï¼¦ï¼¦ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+										#pragma comment( lib, "libtiff_vs2015_x86_MD.lib" )		// ‚s‚h‚e‚eƒ‰ƒCƒuƒ‰ƒŠ
 									#endif
 								#endif
 							#else // _DLL
 								#ifdef _WIN64
 									#ifdef _DEBUG
-										#pragma comment( lib, "libtiff_vs2015_x64_MTd.lib" )	// ï¼´ï¼©ï¼¦ï¼¦ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+										#pragma comment( lib, "libtiff_vs2015_x64_MTd.lib" )	// ‚s‚h‚e‚eƒ‰ƒCƒuƒ‰ƒŠ
 									#else
-										#pragma comment( lib, "libtiff_vs2015_x64_MT.lib" )	// ï¼´ï¼©ï¼¦ï¼¦ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+										#pragma comment( lib, "libtiff_vs2015_x64_MT.lib" )	// ‚s‚h‚e‚eƒ‰ƒCƒuƒ‰ƒŠ
 									#endif
 								#else
 									#ifdef _DEBUG
-										#pragma comment( lib, "libtiff_vs2015_x86_MTd.lib" )		// ï¼´ï¼©ï¼¦ï¼¦ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+										#pragma comment( lib, "libtiff_vs2015_x86_MTd.lib" )		// ‚s‚h‚e‚eƒ‰ƒCƒuƒ‰ƒŠ
 									#else
-										#pragma comment( lib, "libtiff_vs2015_x86_MT.lib" )		// ï¼´ï¼©ï¼¦ï¼¦ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+										#pragma comment( lib, "libtiff_vs2015_x86_MT.lib" )		// ‚s‚h‚e‚eƒ‰ƒCƒuƒ‰ƒŠ
 									#endif
 								#endif
 							#endif // _DLL
 						#elif _MSC_VER >= 1800
 							#ifdef _WIN64
 								#ifdef _DEBUG
-									#pragma comment( lib, "libtiff_vs2013_x64_d.lib" )		// ï¼´ï¼©ï¼¦ï¼¦ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+									#pragma comment( lib, "libtiff_vs2013_x64_d.lib" )		// ‚s‚h‚e‚eƒ‰ƒCƒuƒ‰ƒŠ
 								#else
-									#pragma comment( lib, "libtiff_vs2013_x64.lib" )		// ï¼´ï¼©ï¼¦ï¼¦ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+									#pragma comment( lib, "libtiff_vs2013_x64.lib" )		// ‚s‚h‚e‚eƒ‰ƒCƒuƒ‰ƒŠ
 								#endif
 							#else
 								#ifdef _DEBUG
-									#pragma comment( lib, "libtiff_vs2013_x86_d.lib" )		// ï¼´ï¼©ï¼¦ï¼¦ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+									#pragma comment( lib, "libtiff_vs2013_x86_d.lib" )		// ‚s‚h‚e‚eƒ‰ƒCƒuƒ‰ƒŠ
 								#else
-									#pragma comment( lib, "libtiff_vs2013_x86.lib" )		// ï¼´ï¼©ï¼¦ï¼¦ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+									#pragma comment( lib, "libtiff_vs2013_x86.lib" )		// ‚s‚h‚e‚eƒ‰ƒCƒuƒ‰ƒŠ
 								#endif
 							#endif
 						#elif _MSC_VER >= 1700
 							#ifdef _WIN64
 								#ifdef _DEBUG
-									#pragma comment( lib, "libtiff_vs2012_x64_d.lib" )	// ï¼´ï¼©ï¼¦ï¼¦ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+									#pragma comment( lib, "libtiff_vs2012_x64_d.lib" )	// ‚s‚h‚e‚eƒ‰ƒCƒuƒ‰ƒŠ
 								#else
-									#pragma comment( lib, "libtiff_vs2012_x64.lib" )	// ï¼´ï¼©ï¼¦ï¼¦ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+									#pragma comment( lib, "libtiff_vs2012_x64.lib" )	// ‚s‚h‚e‚eƒ‰ƒCƒuƒ‰ƒŠ
 								#endif
 							#else
 								#ifdef _DEBUG
-									#pragma comment( lib, "libtiff_vs2012_x86_d.lib" )	// ï¼´ï¼©ï¼¦ï¼¦ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+									#pragma comment( lib, "libtiff_vs2012_x86_d.lib" )	// ‚s‚h‚e‚eƒ‰ƒCƒuƒ‰ƒŠ
 								#else
-									#pragma comment( lib, "libtiff_vs2012_x86.lib" )	// ï¼´ï¼©ï¼¦ï¼¦ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+									#pragma comment( lib, "libtiff_vs2012_x86.lib" )	// ‚s‚h‚e‚eƒ‰ƒCƒuƒ‰ƒŠ
 								#endif
 							#endif
 						#endif // _MSC_VER >= 1700
 					#endif // _MSC_VER <  1700
 				#else // _MSC_VER
-					#pragma comment( lib, "libtiff.lib" )			// ï¼´ï¼©ï¼¦ï¼¦ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+					#pragma comment( lib, "libtiff.lib" )			// ‚s‚h‚e‚eƒ‰ƒCƒuƒ‰ƒŠ
 				#endif // _MSC_VER
 			#endif
 			#ifndef DX_NON_PNGREAD
@@ -636,18 +636,18 @@ struct IUnknown;
 					#if _MSC_VER <  1700
 						#ifdef _WIN64
 							#ifdef _DEBUG
-								#pragma comment( lib, "libpng_x64_d.lib" )		// ï¼°ï¼®ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+								#pragma comment( lib, "libpng_x64_d.lib" )		// ‚o‚m‚fƒ‰ƒCƒuƒ‰ƒŠ
 								#pragma comment( lib, "zlib_x64_d.lib" )
 							#else
-								#pragma comment( lib, "libpng_x64.lib" )		// ï¼°ï¼®ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+								#pragma comment( lib, "libpng_x64.lib" )		// ‚o‚m‚fƒ‰ƒCƒuƒ‰ƒŠ
 								#pragma comment( lib, "zlib_x64.lib" )
 							#endif
 						#else
 							#ifdef _DEBUG
-								#pragma comment( lib, "libpng_d.lib" )			// ï¼°ï¼®ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+								#pragma comment( lib, "libpng_d.lib" )			// ‚o‚m‚fƒ‰ƒCƒuƒ‰ƒŠ
 								#pragma comment( lib, "zlib_d.lib" )
 							#else
-								#pragma comment( lib, "libpng.lib" )			// ï¼°ï¼®ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+								#pragma comment( lib, "libpng.lib" )			// ‚o‚m‚fƒ‰ƒCƒuƒ‰ƒŠ
 								#pragma comment( lib, "zlib.lib" )
 							#endif
 						#endif
@@ -656,36 +656,36 @@ struct IUnknown;
 							#ifdef _DLL
 								#ifdef _WIN64
 									#ifdef _DEBUG
-										#pragma comment( lib, "libpng_vs2015_x64_MDd.lib" )	// ï¼°ï¼®ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+										#pragma comment( lib, "libpng_vs2015_x64_MDd.lib" )	// ‚o‚m‚fƒ‰ƒCƒuƒ‰ƒŠ
 										#pragma comment( lib, "zlib_vs2015_x64_MDd.lib" )
 									#else
-										#pragma comment( lib, "libpng_vs2015_x64_MD.lib" )		// ï¼°ï¼®ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+										#pragma comment( lib, "libpng_vs2015_x64_MD.lib" )		// ‚o‚m‚fƒ‰ƒCƒuƒ‰ƒŠ
 										#pragma comment( lib, "zlib_vs2015_x64_MD.lib" )
 									#endif
 								#else
 									#ifdef _DEBUG
-										#pragma comment( lib, "libpng_vs2015_x86_MDd.lib" )	// ï¼°ï¼®ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+										#pragma comment( lib, "libpng_vs2015_x86_MDd.lib" )	// ‚o‚m‚fƒ‰ƒCƒuƒ‰ƒŠ
 										#pragma comment( lib, "zlib_vs2015_x86_MDd.lib" )
 									#else
-										#pragma comment( lib, "libpng_vs2015_x86_MD.lib" )		// ï¼°ï¼®ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+										#pragma comment( lib, "libpng_vs2015_x86_MD.lib" )		// ‚o‚m‚fƒ‰ƒCƒuƒ‰ƒŠ
 										#pragma comment( lib, "zlib_vs2015_x86_MD.lib" )
 									#endif
 								#endif
 							#else // _DLL
 								#ifdef _WIN64
 									#ifdef _DEBUG
-										#pragma comment( lib, "libpng_vs2015_x64_MTd.lib" )	// ï¼°ï¼®ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+										#pragma comment( lib, "libpng_vs2015_x64_MTd.lib" )	// ‚o‚m‚fƒ‰ƒCƒuƒ‰ƒŠ
 										#pragma comment( lib, "zlib_vs2015_x64_MTd.lib" )
 									#else
-										#pragma comment( lib, "libpng_vs2015_x64_MT.lib" )		// ï¼°ï¼®ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+										#pragma comment( lib, "libpng_vs2015_x64_MT.lib" )		// ‚o‚m‚fƒ‰ƒCƒuƒ‰ƒŠ
 										#pragma comment( lib, "zlib_vs2015_x64_MT.lib" )
 									#endif
 								#else
 									#ifdef _DEBUG
-										#pragma comment( lib, "libpng_vs2015_x86_MTd.lib" )	// ï¼°ï¼®ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+										#pragma comment( lib, "libpng_vs2015_x86_MTd.lib" )	// ‚o‚m‚fƒ‰ƒCƒuƒ‰ƒŠ
 										#pragma comment( lib, "zlib_vs2015_x86_MTd.lib" )
 									#else
-										#pragma comment( lib, "libpng_vs2015_x86_MT.lib" )		// ï¼°ï¼®ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+										#pragma comment( lib, "libpng_vs2015_x86_MT.lib" )		// ‚o‚m‚fƒ‰ƒCƒuƒ‰ƒŠ
 										#pragma comment( lib, "zlib_vs2015_x86_MT.lib" )
 									#endif
 								#endif
@@ -693,43 +693,43 @@ struct IUnknown;
 						#elif _MSC_VER >= 1800
 							#ifdef _WIN64
 								#ifdef _DEBUG
-									#pragma comment( lib, "libpng_vs2013_x64_d.lib" )	// ï¼°ï¼®ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+									#pragma comment( lib, "libpng_vs2013_x64_d.lib" )	// ‚o‚m‚fƒ‰ƒCƒuƒ‰ƒŠ
 									#pragma comment( lib, "zlib_vs2013_x64_d.lib" )
 								#else
-									#pragma comment( lib, "libpng_vs2013_x64.lib" )		// ï¼°ï¼®ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+									#pragma comment( lib, "libpng_vs2013_x64.lib" )		// ‚o‚m‚fƒ‰ƒCƒuƒ‰ƒŠ
 									#pragma comment( lib, "zlib_vs2013_x64.lib" )
 								#endif
 							#else
 								#ifdef _DEBUG
-									#pragma comment( lib, "libpng_vs2013_x86_d.lib" )	// ï¼°ï¼®ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+									#pragma comment( lib, "libpng_vs2013_x86_d.lib" )	// ‚o‚m‚fƒ‰ƒCƒuƒ‰ƒŠ
 									#pragma comment( lib, "zlib_vs2013_x86_d.lib" )
 								#else
-									#pragma comment( lib, "libpng_vs2013_x86.lib" )		// ï¼°ï¼®ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+									#pragma comment( lib, "libpng_vs2013_x86.lib" )		// ‚o‚m‚fƒ‰ƒCƒuƒ‰ƒŠ
 									#pragma comment( lib, "zlib_vs2013_x86.lib" )
 								#endif
 							#endif
 						#elif _MSC_VER >= 1700
 							#ifdef _WIN64
 								#ifdef _DEBUG
-									#pragma comment( lib, "libpng_vs2012_x64_d.lib" )	// ï¼°ï¼®ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+									#pragma comment( lib, "libpng_vs2012_x64_d.lib" )	// ‚o‚m‚fƒ‰ƒCƒuƒ‰ƒŠ
 									#pragma comment( lib, "zlib_vs2012_x64_d.lib" )
 								#else
-									#pragma comment( lib, "libpng_vs2012_x64.lib" )		// ï¼°ï¼®ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+									#pragma comment( lib, "libpng_vs2012_x64.lib" )		// ‚o‚m‚fƒ‰ƒCƒuƒ‰ƒŠ
 									#pragma comment( lib, "zlib_vs2012_x64.lib" )
 								#endif
 							#else
 								#ifdef _DEBUG
-									#pragma comment( lib, "libpng_vs2012_x86_d.lib" )	// ï¼°ï¼®ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+									#pragma comment( lib, "libpng_vs2012_x86_d.lib" )	// ‚o‚m‚fƒ‰ƒCƒuƒ‰ƒŠ
 									#pragma comment( lib, "zlib_vs2012_x86_d.lib" )
 								#else
-									#pragma comment( lib, "libpng_vs2012_x86.lib" )		// ï¼°ï¼®ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+									#pragma comment( lib, "libpng_vs2012_x86.lib" )		// ‚o‚m‚fƒ‰ƒCƒuƒ‰ƒŠ
 									#pragma comment( lib, "zlib_vs2012_x86.lib" )
 								#endif
 							#endif
 						#endif // _MSC_VER >= 1700
 					#endif // _MSC_VER < 1700
 				#else // _MSC_VER
-					#pragma comment( lib, "libpng.lib" )			// ï¼°ï¼®ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+					#pragma comment( lib, "libpng.lib" )			// ‚o‚m‚fƒ‰ƒCƒuƒ‰ƒŠ
 					#pragma comment( lib, "zlib.lib" )
 				#endif // _MSC_VER
 			#endif
@@ -738,15 +738,15 @@ struct IUnknown;
 					#if _MSC_VER <  1700
 						#ifdef _WIN64
 							#ifdef _DEBUG
-								#pragma comment( lib, "libjpeg_x64_d.lib" )		// ï¼ªï¼°ï¼¥ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+								#pragma comment( lib, "libjpeg_x64_d.lib" )		// ‚i‚o‚d‚fƒ‰ƒCƒuƒ‰ƒŠ
 							#else
-								#pragma comment( lib, "libjpeg_x64.lib" )		// ï¼ªï¼°ï¼¥ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+								#pragma comment( lib, "libjpeg_x64.lib" )		// ‚i‚o‚d‚fƒ‰ƒCƒuƒ‰ƒŠ
 							#endif
 						#else
 							#ifdef _DEBUG
-								#pragma comment( lib, "libjpeg_d.lib" )			// ï¼ªï¼°ï¼¥ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+								#pragma comment( lib, "libjpeg_d.lib" )			// ‚i‚o‚d‚fƒ‰ƒCƒuƒ‰ƒŠ
 							#else
-								#pragma comment( lib, "libjpeg.lib" )			// ï¼ªï¼°ï¼¥ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+								#pragma comment( lib, "libjpeg.lib" )			// ‚i‚o‚d‚fƒ‰ƒCƒuƒ‰ƒŠ
 							#endif
 						#endif
 					#else // _MSC_VER <  1700
@@ -754,67 +754,67 @@ struct IUnknown;
 							#ifdef _DLL
 								#ifdef _WIN64
 									#ifdef _DEBUG
-										#pragma comment( lib, "libjpeg_vs2015_x64_MDd.lib" )		// ï¼ªï¼°ï¼¥ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+										#pragma comment( lib, "libjpeg_vs2015_x64_MDd.lib" )		// ‚i‚o‚d‚fƒ‰ƒCƒuƒ‰ƒŠ
 									#else
-										#pragma comment( lib, "libjpeg_vs2015_x64_MD.lib" )		// ï¼ªï¼°ï¼¥ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+										#pragma comment( lib, "libjpeg_vs2015_x64_MD.lib" )		// ‚i‚o‚d‚fƒ‰ƒCƒuƒ‰ƒŠ
 									#endif
 								#else
 									#ifdef _DEBUG
-										#pragma comment( lib, "libjpeg_vs2015_x86_MDd.lib" )		// ï¼ªï¼°ï¼¥ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+										#pragma comment( lib, "libjpeg_vs2015_x86_MDd.lib" )		// ‚i‚o‚d‚fƒ‰ƒCƒuƒ‰ƒŠ
 									#else
-										#pragma comment( lib, "libjpeg_vs2015_x86_MD.lib" )		// ï¼ªï¼°ï¼¥ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+										#pragma comment( lib, "libjpeg_vs2015_x86_MD.lib" )		// ‚i‚o‚d‚fƒ‰ƒCƒuƒ‰ƒŠ
 									#endif
 								#endif
 							#else // _DLL
 								#ifdef _WIN64
 									#ifdef _DEBUG
-										#pragma comment( lib, "libjpeg_vs2015_x64_MTd.lib" )		// ï¼ªï¼°ï¼¥ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+										#pragma comment( lib, "libjpeg_vs2015_x64_MTd.lib" )		// ‚i‚o‚d‚fƒ‰ƒCƒuƒ‰ƒŠ
 									#else
-										#pragma comment( lib, "libjpeg_vs2015_x64_MT.lib" )		// ï¼ªï¼°ï¼¥ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+										#pragma comment( lib, "libjpeg_vs2015_x64_MT.lib" )		// ‚i‚o‚d‚fƒ‰ƒCƒuƒ‰ƒŠ
 									#endif
 								#else
 									#ifdef _DEBUG
-										#pragma comment( lib, "libjpeg_vs2015_x86_MTd.lib" )		// ï¼ªï¼°ï¼¥ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+										#pragma comment( lib, "libjpeg_vs2015_x86_MTd.lib" )		// ‚i‚o‚d‚fƒ‰ƒCƒuƒ‰ƒŠ
 									#else
-										#pragma comment( lib, "libjpeg_vs2015_x86_MT.lib" )		// ï¼ªï¼°ï¼¥ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+										#pragma comment( lib, "libjpeg_vs2015_x86_MT.lib" )		// ‚i‚o‚d‚fƒ‰ƒCƒuƒ‰ƒŠ
 									#endif
 								#endif
 							#endif // _DLL
 						#elif _MSC_VER >= 1800
 							#ifdef _WIN64
 								#ifdef _DEBUG
-									#pragma comment( lib, "libjpeg_vs2013_x64_d.lib" )		// ï¼ªï¼°ï¼¥ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+									#pragma comment( lib, "libjpeg_vs2013_x64_d.lib" )		// ‚i‚o‚d‚fƒ‰ƒCƒuƒ‰ƒŠ
 								#else
-									#pragma comment( lib, "libjpeg_vs2013_x64.lib" )		// ï¼ªï¼°ï¼¥ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+									#pragma comment( lib, "libjpeg_vs2013_x64.lib" )		// ‚i‚o‚d‚fƒ‰ƒCƒuƒ‰ƒŠ
 								#endif
 							#else
 								#ifdef _DEBUG
-									#pragma comment( lib, "libjpeg_vs2013_x86_d.lib" )		// ï¼ªï¼°ï¼¥ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+									#pragma comment( lib, "libjpeg_vs2013_x86_d.lib" )		// ‚i‚o‚d‚fƒ‰ƒCƒuƒ‰ƒŠ
 								#else
-									#pragma comment( lib, "libjpeg_vs2013_x86.lib" )		// ï¼ªï¼°ï¼¥ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+									#pragma comment( lib, "libjpeg_vs2013_x86.lib" )		// ‚i‚o‚d‚fƒ‰ƒCƒuƒ‰ƒŠ
 								#endif
 							#endif
 						#elif _MSC_VER >= 1700
 							#ifdef _WIN64
 								#ifdef _DEBUG
-									#pragma comment( lib, "libjpeg_vs2012_x64_d.lib" )		// ï¼ªï¼°ï¼¥ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+									#pragma comment( lib, "libjpeg_vs2012_x64_d.lib" )		// ‚i‚o‚d‚fƒ‰ƒCƒuƒ‰ƒŠ
 								#else
-									#pragma comment( lib, "libjpeg_vs2012_x64.lib" )		// ï¼ªï¼°ï¼¥ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+									#pragma comment( lib, "libjpeg_vs2012_x64.lib" )		// ‚i‚o‚d‚fƒ‰ƒCƒuƒ‰ƒŠ
 								#endif
 							#else
 								#ifdef _DEBUG
-									#pragma comment( lib, "libjpeg_vs2012_x86_d.lib" )		// ï¼ªï¼°ï¼¥ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+									#pragma comment( lib, "libjpeg_vs2012_x86_d.lib" )		// ‚i‚o‚d‚fƒ‰ƒCƒuƒ‰ƒŠ
 								#else
-									#pragma comment( lib, "libjpeg_vs2012_x86.lib" )		// ï¼ªï¼°ï¼¥ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+									#pragma comment( lib, "libjpeg_vs2012_x86.lib" )		// ‚i‚o‚d‚fƒ‰ƒCƒuƒ‰ƒŠ
 								#endif
 							#endif
 						#endif // _MSC_VER >= 1700
 					#endif // _MSC_VER <  1700
 				#else // _MSC_VER
-					#pragma comment( lib, "libjpeg.lib" )			// ï¼ªï¼°ï¼¥ï¼§ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+					#pragma comment( lib, "libjpeg.lib" )			// ‚i‚o‚d‚fƒ‰ƒCƒuƒ‰ƒŠ
 				#endif // _MSC_VER
 			#endif
-			#ifndef DX_NON_OGGVORBIS								// ï¼¯ï½‡ï½‡ï¼¶ï½ï½’ï½‚ï½‰ï½“ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+			#ifndef DX_NON_OGGVORBIS								// ‚n‚‡‚‡‚u‚‚’‚‚‚‰‚“ƒ‰ƒCƒuƒ‰ƒŠ
 				#ifdef _MSC_VER
 					#if _MSC_VER <  1700
 						#ifdef _WIN64
@@ -937,7 +937,7 @@ struct IUnknown;
 					#pragma comment( lib, "vorbisfile_static.lib" )
 				#endif // _MSC_VER
 			#endif
-			#ifndef DX_NON_OGGTHEORA								// ï¼¯ï½‡ï½‡ï¼´ï½ˆï½…ï½ï½’ï½ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+			#ifndef DX_NON_OGGTHEORA								// ‚n‚‡‚‡‚s‚ˆ‚…‚‚’‚ƒ‰ƒCƒuƒ‰ƒŠ
 				#ifdef _MSC_VER
 					#if _MSC_VER <  1700
 						#ifdef _WIN64
@@ -1102,7 +1102,7 @@ struct IUnknown;
 					#pragma comment( lib, "libtheora_static.lib" )
 				#endif // _MSC_VER
 			#endif
-			#ifndef DX_NON_OPUS								// Opusãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+			#ifndef DX_NON_OPUS								// Opusƒ‰ƒCƒuƒ‰ƒŠ
 				#ifdef _MSC_VER
 					#if _MSC_VER <  1700
 						#ifdef _WIN64
@@ -1248,7 +1248,7 @@ struct IUnknown;
 			#endif
 		#endif  // DX_GCC_COMPILE
 	#endif	// DX_LIB_NOT_DEFAULTPATH
-#endif // __DX_MAKE
+#endif // DX_MAKE
 
 #ifndef DX_NON_NAMESPACE
 
@@ -1257,14 +1257,14 @@ namespace DxLib
 
 #endif // DX_NON_NAMESPACE
 
-// ãƒã‚¯ãƒ­å®šç¾© --------------------------------------------------------------------
+// ƒ}ƒNƒ’è‹` --------------------------------------------------------------------
 
-// ç’°å¢ƒä¾å­˜ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ãªã©
+// ŠÂ‹«ˆË‘¶ƒL[ƒ[ƒh‚È‚Ç
 #ifndef FASTCALL
 #define FASTCALL	__fastcall
 #endif
 
-// ï¼¤ï½‰ï½’ï½…ï½ƒï½”ï¼©ï½ï½ï½•ï½”ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³è¨­å®š
+// ‚c‚‰‚’‚…‚ƒ‚”‚h‚‚‚•‚”‚Ìƒo[ƒWƒ‡ƒ“İ’è
 #define DIRECTINPUT_VERSION 0x700
 
 #ifndef DWORD_PTR
@@ -1283,12 +1283,12 @@ namespace DxLib
 #endif
 #endif
 
-#define DX_READSOUNDFUNCTION_ACM					(1 << ( DX_READSOUNDFUNCTION_DEFAULT_NUM + 0 ))		// ACM ã‚’ä½¿ç”¨ã—ãŸèª­ã¿è¾¼ã¿å‡¦ç†
-#define DX_READSOUNDFUNCTION_MP3					(1 << ( DX_READSOUNDFUNCTION_DEFAULT_NUM + 1 ))		// ACM ã‚’ä½¿ç”¨ã—ãŸ MP3 ã®èª­ã¿è¾¼ã¿å‡¦ç†
-#define DX_READSOUNDFUNCTION_DSMP3					(1 << ( DX_READSOUNDFUNCTION_DEFAULT_NUM + 2 ))		// DirectShow ã‚’ä½¿ç”¨ã—ãŸ MP3 ã®èª­ã¿è¾¼ã¿å‡¦ç†
-#define DX_READSOUNDFUNCTION_MF						(1 << ( DX_READSOUNDFUNCTION_DEFAULT_NUM + 3 ))		// Media Foundation ã‚’ä½¿ç”¨ã—ãŸèª­ã¿è¾¼ã¿å‡¦ç†
+#define DX_READSOUNDFUNCTION_ACM					(1 << ( DX_READSOUNDFUNCTION_DEFAULT_NUM + 0 ))		// ACM ‚ğg—p‚µ‚½“Ç‚İ‚İˆ—
+#define DX_READSOUNDFUNCTION_MP3					(1 << ( DX_READSOUNDFUNCTION_DEFAULT_NUM + 1 ))		// ACM ‚ğg—p‚µ‚½ MP3 ‚Ì“Ç‚İ‚İˆ—
+#define DX_READSOUNDFUNCTION_DSMP3					(1 << ( DX_READSOUNDFUNCTION_DEFAULT_NUM + 2 ))		// DirectShow ‚ğg—p‚µ‚½ MP3 ‚Ì“Ç‚İ‚İˆ—
+#define DX_READSOUNDFUNCTION_MF						(1 << ( DX_READSOUNDFUNCTION_DEFAULT_NUM + 3 ))		// Media Foundation ‚ğg—p‚µ‚½“Ç‚İ‚İˆ—
 
-// Direct3D9 ç”¨ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ
+// Direct3D9 —pƒeƒNƒXƒ`ƒƒƒtƒH[ƒ}ƒbƒg
 #define DX_TEXTUREFORMAT_DIRECT3D9_R8G8B8				(1)
 #define DX_TEXTUREFORMAT_DIRECT3D9_A8R8G8B8				(2)
 #define DX_TEXTUREFORMAT_DIRECT3D9_X8R8G8B8				(3)
@@ -1312,24 +1312,24 @@ namespace DxLib
 #define DX_TEXTUREFORMAT_DIRECT3D9_G32R32F				(21)
 #define DX_TEXTUREFORMAT_DIRECT3D9_A32B32G32R32F		(22)
 
-// ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰
-#define DX_ERRORCODE_WIN_DESKTOP_24BIT_COLOR				(0x01010001)				// ãƒ‡ã‚¹ã‚¯ãƒˆãƒƒãƒ—ãŒï¼’ï¼”ãƒ“ãƒƒãƒˆã‚«ãƒ©ãƒ¼ãƒ¢ãƒ¼ãƒ‰ã ã£ãŸ
-#define DX_ERRORCODE_WIN_DOUBLE_START						(0x01010002)				// äºŒé‡èµ·å‹•
-#define DX_ERRORCODE_WIN_FAILED_CREATEWINDOW				(0x01010003)				// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ä½œæˆã«å¤±æ•—
-#define DX_ERRORCODE_WIN_FAILED_ASYNCLOAD_CREATE_THREAD		(0x01010004)				// éåŒæœŸèª­ã¿è¾¼ã¿å‡¦ç†ã‚’è¡Œã†ã‚¹ãƒ¬ãƒƒãƒ‰ã®ç«‹ã¡ä¸Šã’ã«å¤±æ•—
+// ƒGƒ‰[ƒR[ƒh
+#define DX_ERRORCODE_WIN_DESKTOP_24BIT_COLOR				(0x01010001)				// ƒfƒXƒNƒgƒbƒv‚ª‚Q‚SƒrƒbƒgƒJƒ‰[ƒ‚[ƒh‚¾‚Á‚½
+#define DX_ERRORCODE_WIN_DOUBLE_START						(0x01010002)				// “ñd‹N“®
+#define DX_ERRORCODE_WIN_FAILED_CREATEWINDOW				(0x01010003)				// ƒEƒCƒ“ƒhƒE‚Ìì¬‚É¸”s
+#define DX_ERRORCODE_WIN_FAILED_ASYNCLOAD_CREATE_THREAD		(0x01010004)				// ”ñ“¯Šú“Ç‚İ‚İˆ—‚ğs‚¤ƒXƒŒƒbƒh‚Ì—§‚¿ã‚°‚É¸”s
 
-#define DX_ERRORCODE_WIN_FAILED_CREATE_DIRECTDRAW7			(0x01020001)				// DirectDraw7 ã®å–å¾—ã«å¤±æ•—
-#define DX_ERRORCODE_WIN_FAILED_INITIALIZE_DIRECTDRAW7		(0x01020002)				// DirectDraw7 ã®åˆæœŸåŒ–ã«å¤±æ•—
-#define DX_ERRORCODE_WIN_NOT_COMPATIBLE_SCREEN_COLOR_MODE	(0x01020003)				// éå¯¾å¿œã®ç”»é¢ã‚«ãƒ©ãƒ¼ãƒ¢ãƒ¼ãƒ‰ãŒæŒ‡å®šã•ã‚ŒãŸ
-#define DX_ERRORCODE_WIN_FAILED_CHANGE_DISPLAY_SETTINGS		(0x01020004)				// Win32API ã® ChangeDisplaySettings ã‚’ä½¿ç”¨ã—ãŸç”»é¢ãƒ¢ãƒ¼ãƒ‰ã®å¤‰æ›´ã«å¤±æ•—
+#define DX_ERRORCODE_WIN_FAILED_CREATE_DIRECTDRAW7			(0x01020001)				// DirectDraw7 ‚Ìæ“¾‚É¸”s
+#define DX_ERRORCODE_WIN_FAILED_INITIALIZE_DIRECTDRAW7		(0x01020002)				// DirectDraw7 ‚Ì‰Šú‰»‚É¸”s
+#define DX_ERRORCODE_WIN_NOT_COMPATIBLE_SCREEN_COLOR_MODE	(0x01020003)				// ”ñ‘Î‰‚Ì‰æ–ÊƒJƒ‰[ƒ‚[ƒh‚ªw’è‚³‚ê‚½
+#define DX_ERRORCODE_WIN_FAILED_CHANGE_DISPLAY_SETTINGS		(0x01020004)				// Win32API ‚Ì ChangeDisplaySettings ‚ğg—p‚µ‚½‰æ–Êƒ‚[ƒh‚Ì•ÏX‚É¸”s
 	
-// æ§‹é€ ä½“å®šç¾© --------------------------------------------------------------------
+// \‘¢‘Ì’è‹` --------------------------------------------------------------------
 
-// ãƒ†ãƒ¼ãƒ–ãƒ«-----------------------------------------------------------------------
+// ƒe[ƒuƒ‹-----------------------------------------------------------------------
 
-// å†…éƒ¨å¤§åŸŸå¤‰æ•°å®£è¨€ --------------------------------------------------------------
+// “à•”‘åˆæ•Ï”éŒ¾ --------------------------------------------------------------
 
-// é–¢æ•°ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€-----------------------------------------------------------
+// ŠÖ”ƒvƒƒgƒ^ƒCƒvéŒ¾-----------------------------------------------------------
 
 #ifndef DX_NON_NAMESPACE
 
@@ -1337,4 +1337,4 @@ namespace DxLib
 
 #endif // DX_NON_NAMESPACE
 
-#endif // __DXDATATYPEWIN_H__
+#endif // DX_DATATYPEWIN_H

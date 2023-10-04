@@ -1,15 +1,15 @@
-ï»¿// -------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------
 // 
-// 		ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒª		Windowså°‚ç”¨é–¢æ•°ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€ç”¨ãƒ˜ãƒƒãƒ€ãƒ•ã‚¡ã‚¤ãƒ«
+// 		‚c‚wƒ‰ƒCƒuƒ‰ƒŠ		Windowsê—pŠÖ”ƒvƒƒgƒ^ƒCƒvéŒ¾—pƒwƒbƒ_ƒtƒ@ƒCƒ‹
 // 
-// 				Ver 3.19d
+// 				Ver 3.24b
 // 
 // -------------------------------------------------------------------------------
 
-#ifndef __DXFUNCTIONWIN
-#define __DXFUNCTIONWIN
+#ifndef DX_FUNCTIONWIN_H
+#define DX_FUNCTIONWIN_H
 
-// é–¢æ•°ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€------------------------------------------------------------------
+// ŠÖ”ƒvƒƒgƒ^ƒCƒvéŒ¾------------------------------------------------------------------
 
 #ifndef DX_NON_NAMESPACE
 
@@ -21,201 +21,214 @@ namespace DxLib
 #define DX_FUNCTION_START
 
 
-// DxWindow.cppé–¢æ•°ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€
+// DxWindow.cppŠÖ”ƒvƒƒgƒ^ƒCƒvéŒ¾
 
-// ä¾¿åˆ©é–¢æ•°
-extern	int				GetResourceInfo(			const TCHAR *ResourceName,                            const TCHAR *ResourceType,                            void **DataPointerP , int *DataSizeP ) ;		// æŒ‡å®šã®åå‰ã€ã‚¿ã‚¤ãƒ—ã®ãƒªã‚½ãƒ¼ã‚¹ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã¨ã‚µã‚¤ã‚ºã‚’å–å¾—ã™ã‚‹( æˆ»ã‚Šå€¤  -1:å¤±æ•—  0:æˆåŠŸ )
-extern	int				GetResourceInfoWithStrLen(	const TCHAR *ResourceName, size_t ResourceNameLength, const TCHAR *ResourceType, size_t ResourceTypeLength, void **DataPointerP , int *DataSizeP ) ;		// æŒ‡å®šã®åå‰ã€ã‚¿ã‚¤ãƒ—ã®ãƒªã‚½ãƒ¼ã‚¹ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã¨ã‚µã‚¤ã‚ºã‚’å–å¾—ã™ã‚‹( æˆ»ã‚Šå€¤  -1:å¤±æ•—  0:æˆåŠŸ )
-extern	const TCHAR*	GetResourceIDString(		int ResourceID ) ;																																			// ãƒªã‚½ãƒ¼ã‚¹ï¼©ï¼¤å€¤ã‹ã‚‰ãƒªã‚½ãƒ¼ã‚¹åã‚’å–å¾—ã™ã‚‹
+// •Ö—˜ŠÖ”
+extern	int				GetResourceInfo(			const TCHAR *ResourceName,                            const TCHAR *ResourceType,                            void **DataPointerP , size_t *DataSizeP ) ;		// w’è‚Ì–¼‘OAƒ^ƒCƒv‚ÌƒŠƒ\[ƒX‚ÌƒAƒhƒŒƒX‚ÆƒTƒCƒY‚ğæ“¾‚·‚é( –ß‚è’l  -1:¸”s  0:¬Œ÷ )
+extern	int				GetResourceInfoWithStrLen(	const TCHAR *ResourceName, size_t ResourceNameLength, const TCHAR *ResourceType, size_t ResourceTypeLength, void **DataPointerP , size_t *DataSizeP ) ;		// w’è‚Ì–¼‘OAƒ^ƒCƒv‚ÌƒŠƒ\[ƒX‚ÌƒAƒhƒŒƒX‚ÆƒTƒCƒY‚ğæ“¾‚·‚é( –ß‚è’l  -1:¸”s  0:¬Œ÷ )
+extern	const TCHAR*	GetResourceIDString(		int ResourceID ) ;																																			// ƒŠƒ\[ƒX‚h‚c’l‚©‚çƒŠƒ\[ƒX–¼‚ğæ“¾‚·‚é
 
-// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦é–¢ä¿‚æƒ…å ±å–å¾—é–¢æ•°
-extern	int			GetWindowCRect(					RECT *RectBuf ) ;										// GetWindowClientRect ã®æ—§åç§°
-extern	int			GetWindowClientRect(			RECT *RectBuf ) ;										// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆé ˜åŸŸã‚’å–å¾—ã™ã‚‹
-extern	int			GetWindowFrameRect(				RECT *RectBuf ) ;										// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®æ ã®éƒ¨åˆ†ã‚‚å«ã‚ãŸå…¨ä½“ã®é ˜åŸŸã‚’å–å¾—ã™ã‚‹
-extern	int			GetWindowActiveFlag(			void ) ;												// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãŒã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã‹ã©ã†ã‹ã‚’å–å¾—ã™ã‚‹( æˆ»ã‚Šå€¤  TRUE:ã‚¢ã‚¯ãƒ†ã‚£ãƒ–  FALSE:éã‚¢ã‚¯ãƒ†ã‚£ãƒ– )
-extern	int			GetWindowMinSizeFlag(			void ) ;												// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãŒæœ€å°åŒ–ã•ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹ã‚’å–å¾—ã™ã‚‹( æˆ»ã‚Šå€¤  TRUE:æœ€å°åŒ–ã•ã‚Œã¦ã„ã‚‹  FALSE:æœ€å°åŒ–ã•ã‚Œã¦ã„ãªã„ )
-extern	int			GetWindowMaxSizeFlag(			void ) ;												// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãŒæœ€å¤§åŒ–ã•ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹ã‚’å–å¾—ã™ã‚‹( æˆ»ã‚Šå€¤  TRUE:æœ€å¤§åŒ–ã•ã‚Œã¦ã„ã‚‹  FALSE:æœ€å¤§åŒ–ã•ã‚Œã¦ã„ãªã„ )
-extern	int			GetActiveFlag(					void ) ;												// GetWindowActiveFlag ã®åˆ¥åé–¢æ•°
-extern	HWND		GetMainWindowHandle(			void ) ;												// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ã™ã‚‹
-extern	int			GetWindowModeFlag(				void ) ;												// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ¢ãƒ¼ãƒ‰ã§èµ·å‹•ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹ã‚’å–å¾—ã™ã‚‹( æˆ»ã‚Šå€¤  TRUE:ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ¢ãƒ¼ãƒ‰  FALSE:ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ãƒ¢ãƒ¼ãƒ‰ )
-extern	int			GetDefaultState(				int *SizeX, int *SizeY, int *ColorBitDepth, int *RefreshRate = NULL , int *LeftTopX = NULL , int *LeftTopY = NULL , int *PixelSizeX = NULL , int *PixelSizeY = NULL ) ;		// èµ·å‹•æ™‚ã®ãƒ‡ã‚¹ã‚¯ãƒˆãƒƒãƒ—ã®ç”»é¢æƒ…å ±ã‚’å–å¾—ã™ã‚‹( SizeX:ãƒ‡ã‚¹ã‚¯ãƒˆãƒƒãƒ—ã®æ¨ªè§£åƒåº¦ã‚’æ ¼ç´ã™ã‚‹å¤‰æ•°ã®ãƒã‚¤ãƒ³ã‚¿  SizeY:ç¸¦è§£åƒåº¦ã‚’æ ¼ç´ã™ã‚‹å¤‰æ•°ã®ãƒã‚¤ãƒ³ã‚¿  ColorBitDepth:ç”»é¢ã‚«ãƒ©ãƒ¼ãƒ“ãƒƒãƒˆæ•°ã‚’æ ¼ç´ã™ã‚‹å¤‰æ•°ã®ãƒã‚¤ãƒ³ã‚¿  RefreshRate:ãƒ‡ã‚¹ã‚¯ãƒˆãƒƒãƒ—ã®ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥ãƒ¬ãƒ¼ãƒˆã‚’æ ¼ç´ã™ã‚‹å¤‰æ•°ã®ãƒã‚¤ãƒ³ã‚¿  LeftTopX:ãƒ‡ã‚¹ã‚¯ãƒˆãƒƒãƒ—ã®å·¦ä¸Šï¼¸åº§æ¨™ã‚’æ ¼ç´ã™ã‚‹å¤‰æ•°ã®ãƒã‚¤ãƒ³ã‚¿  LeftTopY:ãƒ‡ã‚¹ã‚¯ãƒˆãƒƒãƒ—ã®å·¦ä¸Šï¼¹åº§æ¨™ã‚’æ ¼ç´ã™ã‚‹å¤‰æ•°ã®ãƒã‚¤ãƒ³ã‚¿  PixelSizeX:OSã®æ‹¡å¤§ç‡è¨­å®šã®å½±éŸ¿ã‚’å—ã‘ãªã„ãƒ‡ã‚¹ã‚¯ãƒˆãƒƒãƒ—ã®æ¨ªè§£åƒåº¦ã‚’æ ¼ç´ã™ã‚‹å¤‰æ•°ã®ãƒã‚¤ãƒ³ã‚¿  PixelSizeY:OSã®æ‹¡å¤§ç‡è¨­å®šã®å½±éŸ¿ã‚’å—ã‘ãªã„ãƒ‡ã‚¹ã‚¯ãƒˆãƒƒãƒ—ã®ç¸¦è§£åƒåº¦ã‚’æ ¼ç´ã™ã‚‹å¤‰æ•°ã®ãƒã‚¤ãƒ³ã‚¿ )
-extern	int			GetNoActiveState(				int ResetFlag = TRUE ) ;								// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãŒéã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ãªã‚Šã€å‡¦ç†ãŒä¸€æ™‚åœæ­¢ã—ã¦ã„ãŸã‹ã©ã†ã‹ã‚’å–å¾—ã™ã‚‹(å¼•æ•° ResetFlag=TRUE:çŠ¶æ…‹ã‚’ãƒªã‚»ãƒƒãƒˆ FALSE:çŠ¶æ…‹ã‚’ãƒªã‚»ãƒƒãƒˆã—ãªã„    æˆ»ã‚Šå€¤: 0=ä¸€æ™‚åœæ­¢ã¯ã—ã¦ã„ãªã„  1=ä¸€æ™‚åœæ­¢ã—ã¦ã„ãŸ )
-extern	int			GetMouseDispFlag(				void ) ;												// ãƒã‚¦ã‚¹ãƒã‚¤ãƒ³ã‚¿ã‚’è¡¨ç¤ºã™ã‚‹ã‹ã©ã†ã‹ã®è¨­å®šã‚’å–å¾—ã™ã‚‹( æˆ»ã‚Šå€¤  TRUE:è¡¨ç¤ºã™ã‚‹  FALSE:è¡¨ç¤ºã—ãªã„ )
-extern	int			GetAlwaysRunFlag(				void ) ;												// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãŒéã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ãªã£ã¦ã‚‚å‡¦ç†ã‚’å®Ÿè¡Œã—ç¶šã‘ã‚‹ã‹ã©ã†ã‹ã®è¨­å®šã‚’å–å¾—ã™ã‚‹( TRUE:å®Ÿè¡Œã™ã‚‹  FALSE:åœæ­¢ã™ã‚‹ )
-extern	int			_GetSystemInfo(					int *DxLibVer , int *DirectXVer , int *WindowsVer ) ;	// ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã¨ DirectX ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã¨ Windows ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ç•ªå·ã‚’å–å¾—ã™ã‚‹
-extern	int			GetPcInfo(						TCHAR *OSString , TCHAR *DirectXString , TCHAR *CPUString , int *CPUSpeed /* å˜ä½MHz */ , double *FreeMemorySize /* å˜ä½MByte */ , double *TotalMemorySize , TCHAR *VideoDriverFileName , TCHAR *VideoDriverString , double *FreeVideoMemorySize /* å˜ä½MByte */ , double *TotalVideoMemorySize ) ;	// ï¼°ï¼£ã®æƒ…å ±ã‚’å–å¾—ã™ã‚‹
-extern	int			GetUseMMXFlag(					void ) ;												// ï¼­ï¼­ï¼¸ãŒä½¿ãˆã‚‹ã‹ã©ã†ã‹ã®æƒ…å ±ã‚’å¾—ã‚‹
-extern	int			GetUseSSEFlag(					void ) ;												// ï¼³ï¼³ï¼¥ãŒä½¿ãˆã‚‹ã‹ã©ã†ã‹ã®æƒ…å ±ã‚’å¾—ã‚‹
-extern	int			GetUseSSE2Flag(					void ) ;												// ï¼³ï¼³ï¼¥ï¼’ãŒä½¿ãˆã‚‹ã‹ã©ã†ã‹ã®æƒ…å ±ã‚’å¾—ã‚‹
-extern	int			GetWindowCloseFlag(				void ) ;												// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’é–‰ã˜ã‚ˆã†ã¨ã—ã¦ã„ã‚‹ã‹ã®æƒ…å ±ã‚’å¾—ã‚‹
-extern	HINSTANCE	GetTaskInstance(				void ) ;												// ã‚½ãƒ•ãƒˆã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’å–å¾—ã™ã‚‹
-extern	int			GetUseWindowRgnFlag(			void ) ;												// ãƒªãƒ¼ã‚¸ãƒ§ãƒ³ã‚’ä½¿ã£ã¦ã„ã‚‹ã‹ã©ã†ã‹ã‚’å–å¾—ã™ã‚‹
-extern	int			GetWindowSizeChangeEnableFlag(	int *FitScreen = NULL ) ;								// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚ºã‚’å¤‰æ›´ã§ãã‚‹è¨­å®šã«ãªã£ã¦ã„ã‚‹ã‹ã©ã†ã‹ã‚’å–å¾—ã™ã‚‹( æˆ»ã‚Šå€¤  TRUE:å¤‰æ›´ã§ãã‚‹ã‚ˆã†ã«ãªã£ã¦ã„ã‚‹  FALSE:å¤‰æ›´ã§ããªã„ã‚ˆã†ã«ãªã£ã¦ã„ã‚‹ )
-extern	double		GetWindowSizeExtendRate(		double *ExRateX = NULL , double *ExRateY = NULL ) ;		// æç”»ç”»é¢ã®ã‚µã‚¤ã‚ºã«å¯¾ã™ã‚‹ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºã®æ¯”ç‡ã‚’å–å¾—ã™ã‚‹( æˆ»ã‚Šå€¤ã¯ ExRateX ã«ä»£å…¥ã•ã‚Œã‚‹å€¤ã¨åŒã˜ã§ã™ )
-extern	int			GetWindowSize(					int *Width, int *Height ) ;								// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆé ˜åŸŸã®ã‚µã‚¤ã‚ºã‚’å–å¾—ã™ã‚‹
-extern	int			GetWindowEdgeWidth(				int *LeftWidth, int *RightWidth, int *TopWidth, int *BottomWidth ) ;	// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ä¸Šä¸‹å·¦å³ã®ç¸ã®å¹…ã‚’å–å¾—ã™ã‚‹
-extern	int			GetWindowPosition(				int *x, int *y ) ;										// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ãƒ‡ã‚¹ã‚¯ãƒˆãƒƒãƒ—ä¸Šã®å·¦ä¸Šç«¯åº§æ¨™ã‚’å–å¾—ã™ã‚‹( æ ã‚‚å«ã‚ã‚‹ )
-extern	int			GetWindowUserCloseFlag(			int StateResetFlag = FALSE ) ;							// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®é–‰ã˜ã‚‹ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’å–å¾—ã™ã‚‹
-extern	int			GetNotDrawFlag(					void ) ;												// ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®æç”»æ©Ÿèƒ½ã‚’ä½¿ã†ã‹ã©ã†ã‹ã®è¨­å®šã‚’å–å¾—ã™ã‚‹
-extern	int			GetPaintMessageFlag(			void ) ;												// WM_PAINT ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒæ¥ãŸã‹ã©ã†ã‹ã‚’å–å¾—ã™ã‚‹(æˆ»ã‚Šå€¤  TRUE:WM_PAINTãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒæ¥ãŸ(ä¸€åº¦å–å¾—ã™ã‚‹ã¨ä»¥å¾Œã€å†ã³ WM_PAINTãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒæ¥ã‚‹ã¾ã§ FALSE ãŒè¿”ã£ã¦ãã‚‹ã‚ˆã†ã«ãªã‚‹)  FALSE:WM_PAINT ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã¯æ¥ã¦ã„ãªã„)
-extern	int			GetValidHiPerformanceCounter(	void ) ;												// ãƒ‘ãƒ•ã‚©ãƒ¼ãƒãƒ³ã‚¹ã‚«ã‚¦ãƒ³ã‚¿ãŒæœ‰åŠ¹ã‹ã©ã†ã‹ã‚’å–å¾—ã™ã‚‹(æˆ»ã‚Šå€¤  TRUE:æœ‰åŠ¹  FALSE:ç„¡åŠ¹)
-extern	TCHAR		GetInputSystemChar(				int DeleteFlag ) ;										// å…¥åŠ›ã•ã‚ŒãŸã‚·ã‚¹ãƒ†ãƒ æ–‡å­—ã‚’å–å¾—ã™ã‚‹
+// ƒEƒCƒ“ƒhƒEŠÖŒWî•ñæ“¾ŠÖ”
+extern	int			GetWindowCRect(					RECT *RectBuf ) ;										// GetWindowClientRect ‚Ì‹Œ–¼Ì
+extern	int			GetWindowClientRect(			RECT *RectBuf ) ;										// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒg—Ìˆæ‚ğæ“¾‚·‚é
+extern	int			GetWindowFrameRect(				RECT *RectBuf ) ;										// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚Ì˜g‚Ì•”•ª‚àŠÜ‚ß‚½‘S‘Ì‚Ì—Ìˆæ‚ğæ“¾‚·‚é
+extern	int			GetWindowActiveFlag(			void ) ;												// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ªƒAƒNƒeƒBƒu‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é( –ß‚è’l  TRUE:ƒAƒNƒeƒBƒu  FALSE:”ñƒAƒNƒeƒBƒu )
+extern	int			GetWindowMinSizeFlag(			void ) ;												// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ªÅ¬‰»‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é( –ß‚è’l  TRUE:Å¬‰»‚³‚ê‚Ä‚¢‚é  FALSE:Å¬‰»‚³‚ê‚Ä‚¢‚È‚¢ )
+extern	int			GetWindowMaxSizeFlag(			void ) ;												// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ªÅ‘å‰»‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é( –ß‚è’l  TRUE:Å‘å‰»‚³‚ê‚Ä‚¢‚é  FALSE:Å‘å‰»‚³‚ê‚Ä‚¢‚È‚¢ )
+extern	int			GetActiveFlag(					void ) ;												// GetWindowActiveFlag ‚Ì•Ê–¼ŠÖ”
+extern	HWND		GetMainWindowHandle(			void ) ;												// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ÌƒEƒCƒ“ƒhƒEƒnƒ“ƒhƒ‹‚ğæ“¾‚·‚é
+extern	int			GetWindowModeFlag(				void ) ;												// ƒEƒCƒ“ƒhƒEƒ‚[ƒh‚Å‹N“®‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é( –ß‚è’l  TRUE:ƒEƒCƒ“ƒhƒEƒ‚[ƒh  FALSE:ƒtƒ‹ƒXƒNƒŠ[ƒ“ƒ‚[ƒh )
+extern	int			GetDefaultState(				int *SizeX, int *SizeY, int *ColorBitDepth, int *RefreshRate DEFAULTPARAM( = NULL ) , int *LeftTopX DEFAULTPARAM( = NULL ) , int *LeftTopY DEFAULTPARAM( = NULL ) , int *PixelSizeX DEFAULTPARAM( = NULL ) , int *PixelSizeY DEFAULTPARAM( = NULL ) , int *XDpi DEFAULTPARAM( = NULL ) , int *YDpi DEFAULTPARAM( = NULL ) ) ;		// ‹N“®‚ÌƒfƒXƒNƒgƒbƒv‚Ì‰æ–Êî•ñ‚ğæ“¾‚·‚é( SizeX:ƒfƒXƒNƒgƒbƒv‚Ì‰¡‰ğ‘œ“x‚ğŠi”[‚·‚é•Ï”‚Ìƒ|ƒCƒ“ƒ^  SizeY:c‰ğ‘œ“x‚ğŠi”[‚·‚é•Ï”‚Ìƒ|ƒCƒ“ƒ^  ColorBitDepth:‰æ–ÊƒJƒ‰[ƒrƒbƒg”‚ğŠi”[‚·‚é•Ï”‚Ìƒ|ƒCƒ“ƒ^  RefreshRate:ƒfƒXƒNƒgƒbƒv‚ÌƒŠƒtƒŒƒbƒVƒ…ƒŒ[ƒg‚ğŠi”[‚·‚é•Ï”‚Ìƒ|ƒCƒ“ƒ^  LeftTopX:ƒfƒXƒNƒgƒbƒv‚Ì¶ã‚wÀ•W‚ğŠi”[‚·‚é•Ï”‚Ìƒ|ƒCƒ“ƒ^  LeftTopY:ƒfƒXƒNƒgƒbƒv‚Ì¶ã‚xÀ•W‚ğŠi”[‚·‚é•Ï”‚Ìƒ|ƒCƒ“ƒ^  PixelSizeX:OS‚ÌŠg‘å—¦İ’è‚Ì‰e‹¿‚ğó‚¯‚È‚¢ƒfƒXƒNƒgƒbƒv‚Ì‰¡‰ğ‘œ“x‚ğŠi”[‚·‚é•Ï”‚Ìƒ|ƒCƒ“ƒ^  PixelSizeY:OS‚ÌŠg‘å—¦İ’è‚Ì‰e‹¿‚ğó‚¯‚È‚¢ƒfƒXƒNƒgƒbƒv‚Ìc‰ğ‘œ“x‚ğŠi”[‚·‚é•Ï”‚Ìƒ|ƒCƒ“ƒ^  XDpi:X²‚ÌDPI  YDpi:Y²‚ÌDPI )
+extern	int			GetMonitorDpi(					int *XDpi, int *YDpi, int MonitorIndex DEFAULTPARAM( = -1 ) ) ;			// ƒ‚ƒjƒ^[‚ÌDPI‚ğæ“¾‚·‚é
+extern	int			GetNoActiveState(				int ResetFlag DEFAULTPARAM( = TRUE ) ) ;				// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ª”ñƒAƒNƒeƒBƒu‚É‚È‚èAˆ—‚ªˆê’â~‚µ‚Ä‚¢‚½‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é(ˆø” ResetFlag=TRUE:ó‘Ô‚ğƒŠƒZƒbƒg FALSE:ó‘Ô‚ğƒŠƒZƒbƒg‚µ‚È‚¢    –ß‚è’l: 0=ˆê’â~‚Í‚µ‚Ä‚¢‚È‚¢  1=ˆê’â~‚µ‚Ä‚¢‚½ )
+extern	int			GetMouseDispFlag(				void ) ;												// ƒ}ƒEƒXƒ|ƒCƒ“ƒ^‚ğ•\¦‚·‚é‚©‚Ç‚¤‚©‚Ìİ’è‚ğæ“¾‚·‚é( –ß‚è’l  TRUE:•\¦‚·‚é  FALSE:•\¦‚µ‚È‚¢ )
+extern	int			GetAlwaysRunFlag(				void ) ;												// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ª”ñƒAƒNƒeƒBƒu‚É‚È‚Á‚Ä‚àˆ—‚ğÀs‚µ‘±‚¯‚é‚©‚Ç‚¤‚©‚Ìİ’è‚ğæ“¾‚·‚é( TRUE:Às‚·‚é  FALSE:’â~‚·‚é )
+extern	int			_GetSystemInfo(					int *DxLibVer , int *DirectXVer , int *WindowsVer ) ;	// ‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚Æ DirectX ‚Ìƒo[ƒWƒ‡ƒ“‚Æ Windows ‚Ìƒo[ƒWƒ‡ƒ“”Ô†‚ğæ“¾‚·‚é
+extern	int			GetPcInfo(						TCHAR *OSString , TCHAR *DirectXString , TCHAR *CPUString , int *CPUSpeed /* ’PˆÊMHz */ , double *FreeMemorySize /* ’PˆÊMByte */ , double *TotalMemorySize , TCHAR *VideoDriverFileName , TCHAR *VideoDriverString , double *FreeVideoMemorySize /* ’PˆÊMByte */ , double *TotalVideoMemorySize ) ;	// ‚o‚b‚Ìî•ñ‚ğæ“¾‚·‚é
+extern	int			GetWindowOSVersion(				void ) ;												// WindowsOS‚Ìƒo[ƒWƒ‡ƒ“‚ğæ“¾‚·‚é( –ß‚è’l : DX_WINDOWSVERSION_10 ‚È‚Ç )
+extern	int			GetUseMMXFlag(					void ) ;												// ‚l‚l‚w‚ªg‚¦‚é‚©‚Ç‚¤‚©‚Ìî•ñ‚ğ“¾‚é
+extern	int			GetUseSSEFlag(					void ) ;												// ‚r‚r‚d‚ªg‚¦‚é‚©‚Ç‚¤‚©‚Ìî•ñ‚ğ“¾‚é
+extern	int			GetUseSSE2Flag(					void ) ;												// ‚r‚r‚d‚Q‚ªg‚¦‚é‚©‚Ç‚¤‚©‚Ìî•ñ‚ğ“¾‚é
+extern	int			GetWindowCloseFlag(				void ) ;												// ƒEƒCƒ“ƒhƒE‚ğ•Â‚¶‚æ‚¤‚Æ‚µ‚Ä‚¢‚é‚©‚Ìî•ñ‚ğ“¾‚é
+extern	HINSTANCE	GetTaskInstance(				void ) ;												// ƒ\ƒtƒg‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğæ“¾‚·‚é
+extern	int			GetUseWindowRgnFlag(			void ) ;												// ƒŠ[ƒWƒ‡ƒ“‚ğg‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é
+extern	int			GetWindowSizeChangeEnableFlag(	int *FitScreen DEFAULTPARAM( = NULL ) ) ;				// ƒEƒCƒ“ƒhƒE‚ÌƒTƒCƒY‚ğ•ÏX‚Å‚«‚éİ’è‚É‚È‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é( –ß‚è’l  TRUE:•ÏX‚Å‚«‚é‚æ‚¤‚É‚È‚Á‚Ä‚¢‚é  FALSE:•ÏX‚Å‚«‚È‚¢‚æ‚¤‚É‚È‚Á‚Ä‚¢‚é )
+extern	double		GetWindowSizeExtendRate(		double *ExRateX DEFAULTPARAM( = NULL ) , double *ExRateY DEFAULTPARAM( = NULL ) ) ;		// •`‰æ‰æ–Ê‚ÌƒTƒCƒY‚É‘Î‚·‚éƒEƒCƒ“ƒhƒEƒTƒCƒY‚Ì”ä—¦‚ğæ“¾‚·‚é( –ß‚è’l‚Í ExRateX ‚É‘ã“ü‚³‚ê‚é’l‚Æ“¯‚¶‚Å‚· )
+extern	int			GetWindowSize(					int *Width, int *Height ) ;								// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒg—Ìˆæ‚ÌƒTƒCƒY‚ğæ“¾‚·‚é
+extern	int			GetWindowEdgeWidth(				int *LeftWidth, int *RightWidth, int *TopWidth, int *BottomWidth ) ;	// ƒEƒCƒ“ƒhƒE‚Ìã‰º¶‰E‚Ì‰‚Ì•‚ğæ“¾‚·‚é
+extern	int			GetWindowPosition(				int *x, int *y ) ;										// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ÌƒfƒXƒNƒgƒbƒvã‚Ì¶ã’[À•W‚ğæ“¾‚·‚é( ˜g‚àŠÜ‚ß‚é )
+extern	int			GetWindowUserCloseFlag(			int StateResetFlag DEFAULTPARAM( = FALSE ) ) ;			// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚Ì•Â‚¶‚éƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é
+extern	int			CheckWindowMaximizeButtonInput(	int StateResetFlag DEFAULTPARAM( = TRUE ) ) ;			// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ÌÅ‘å‰»ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚©‚Ç‚¤‚©‚ğæ“¾‚·‚éASetWindowMaximizeButtonBehavior( 1 ); ‚ªÀs‚³‚ê‚Ä‚¢‚éê‡‚Ì‚İ—LŒø‚ÈŠÖ”( StateResetFlag  TRUE = ‰Ÿ‚³‚ê‚½ó‘Ô‚ğƒŠƒZƒbƒg‚·‚é   FALSE = ‰Ÿ‚³‚ê‚½ó‘Ô‚ğƒŠƒZƒbƒg‚µ‚È‚¢ )
+extern	int			GetNotDrawFlag(					void ) ;												// ‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚Ì•`‰æ‹@”\‚ğg‚¤‚©‚Ç‚¤‚©‚Ìİ’è‚ğæ“¾‚·‚é
+extern	int			GetPaintMessageFlag(			void ) ;												// WM_PAINT ƒƒbƒZ[ƒW‚ª—ˆ‚½‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é(–ß‚è’l  TRUE:WM_PAINTƒƒbƒZ[ƒW‚ª—ˆ‚½(ˆê“xæ“¾‚·‚é‚ÆˆÈŒãAÄ‚Ñ WM_PAINTƒƒbƒZ[ƒW‚ª—ˆ‚é‚Ü‚Å FALSE ‚ª•Ô‚Á‚Ä‚­‚é‚æ‚¤‚É‚È‚é)  FALSE:WM_PAINT ƒƒbƒZ[ƒW‚Í—ˆ‚Ä‚¢‚È‚¢)
+extern	int			GetValidHiPerformanceCounter(	void ) ;												// ƒpƒtƒH[ƒ}ƒ“ƒXƒJƒEƒ“ƒ^‚ª—LŒø‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é(–ß‚è’l  TRUE:—LŒø  FALSE:–³Œø)
+extern	TCHAR		GetInputSystemChar(				int DeleteFlag ) ;										// “ü—Í‚³‚ê‚½ƒVƒXƒeƒ€•¶š‚ğæ“¾‚·‚é
 
-// è¨­å®šç³»é–¢æ•°
-extern	int			ChangeWindowMode(						int Flag ) ;																		// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ¢ãƒ¼ãƒ‰ã‚’å¤‰æ›´ã™ã‚‹
-extern	int			SetUseCharSet(							int CharSet /* = DX_CHARSET_SHFTJIS ç­‰ */ ) ;										// ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®æ–‡å­—åˆ—å‡¦ç†ã§å‰æã¨ã™ã‚‹æ–‡å­—åˆ—ã‚»ãƒƒãƒˆã‚’è¨­å®šã™ã‚‹
-extern	int			LoadPauseGraph(							const TCHAR *FileName                        ) ;									// ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãŒä»–ã®ã‚½ãƒ•ãƒˆã«ç§»ã£ã¦ã„ã‚‹éš›ã«è¡¨ç¤ºã™ã‚‹ç”»åƒã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã¿è¾¼ã‚€( FileName ã« NULL ã‚’æ¸¡ã™ã“ã¨ã§è§£é™¤)
-extern	int			LoadPauseGraphWithStrLen(				const TCHAR *FileName, size_t FileNameLength ) ;									// ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãŒä»–ã®ã‚½ãƒ•ãƒˆã«ç§»ã£ã¦ã„ã‚‹éš›ã«è¡¨ç¤ºã™ã‚‹ç”»åƒã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã¿è¾¼ã‚€( FileName ã« NULL ã‚’æ¸¡ã™ã“ã¨ã§è§£é™¤)
-extern	int			LoadPauseGraphFromMem(					const void *MemImage , int MemImageSize ) ;											// ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãŒä»–ã®ã‚½ãƒ•ãƒˆã«ç§»ã£ã¦ã„ã‚‹éš›ã«è¡¨ç¤ºã™ã‚‹ç”»åƒã‚’ãƒ¡ãƒ¢ãƒªã‹ã‚‰èª­ã¿è¾¼ã‚€( MemImage:ãƒ•ã‚¡ã‚¤ãƒ«ã‚¤ãƒ¡ãƒ¼ã‚¸ã®å…ˆé ­ã‚¢ãƒ‰ãƒ¬ã‚¹,NULL ã«ã™ã‚‹ã“ã¨ã§è¨­å®šè§£é™¤  MemImageSize:ãƒ•ã‚¡ã‚¤ãƒ«ã‚¤ãƒ¡ãƒ¼ã‚¸ã®ã‚µã‚¤ã‚º( å˜ä½:Byte ) )
-extern	int			SetActiveStateChangeCallBackFunction(	int (* CallBackFunction )( int ActiveState , void *UserData ) , void *UserData ) ;	// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¢ã‚¯ãƒ†ã‚£ãƒ–çŠ¶æ…‹ã«å¤‰åŒ–ãŒã‚ã£ãŸã¨ãã«å‘¼ã°ã‚Œã‚‹ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã‚’è¨­å®šã™ã‚‹( CallBackFunction:å‘¼ã°ã‚Œã‚‹ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã€NULL ã‚’æ¸¡ã™ã¨è¨­å®šè§£é™¤  UserData:CallBackFunction ã®ç¬¬ï¼’å¼•æ•°ã«æ¸¡ã•ã‚Œã‚‹å€¤ )
-extern	int			SetWindowText(							const TCHAR *WindowText                          ) ;								// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ†ã‚­ã‚¹ãƒˆã‚’å¤‰æ›´ã™ã‚‹
-extern	int			SetWindowTextWithStrLen(				const TCHAR *WindowText, size_t WindowTextLength ) ;								// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ†ã‚­ã‚¹ãƒˆã‚’å¤‰æ›´ã™ã‚‹
-extern	int			SetMainWindowText(						const TCHAR *WindowText                          ) ;								// SetWindowText ã®åˆ¥åé–¢æ•°
-extern	int			SetMainWindowTextWithStrLen(			const TCHAR *WindowText, size_t WindowTextLength ) ;								// SetWindowText ã®åˆ¥åé–¢æ•°
-extern	int			SetMainWindowClassName(					const TCHAR *ClassName                         ) ;									// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¯ãƒ©ã‚¹åã‚’è¨­å®šã™ã‚‹( DxLib_Init ã®å‰ã§ã®ã¿ä½¿ç”¨å¯èƒ½ )
-extern	int			SetMainWindowClassNameWithStrLen(		const TCHAR *ClassName, size_t ClassNameLength ) ;									// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¯ãƒ©ã‚¹åã‚’è¨­å®šã™ã‚‹( DxLib_Init ã®å‰ã§ã®ã¿ä½¿ç”¨å¯èƒ½ )
-extern	int			SetWindowIconID(						int ID ) ;																			// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã§ä½¿ç”¨ã™ã‚‹ã‚¢ã‚¤ã‚³ãƒ³ã®ï¼©ï¼¤ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
-extern	int			SetWindowIconHandle(					HICON Icon ) ;																		// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã§ä½¿ç”¨ã™ã‚‹ã‚¢ã‚¤ã‚³ãƒ³ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
-extern	int			SetUseASyncChangeWindowModeFunction(	int Flag , void (* CallBackFunction )( void * ) , void *Data ) ;					// æœ€å¤§åŒ–ãƒœã‚¿ãƒ³ã‚„ALT+ENTERã‚­ãƒ¼ã«ã‚ˆã‚‹éåŒæœŸãªã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ¢ãƒ¼ãƒ‰ã®å¤‰æ›´ã®æ©Ÿèƒ½ã®è¨­å®šã‚’è¡Œã†( Flag:éåŒæœŸã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ¢ãƒ¼ãƒ‰å¤‰æ›´ã‚’æœ‰åŠ¹ã«ã™ã‚‹ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°( TRUE:æœ‰åŠ¹ã«ã™ã‚‹  FALSE:ç„¡åŠ¹ã«ã™ã‚‹( ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ ) )   CallBackFunction:éåŒæœŸã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ¢ãƒ¼ãƒ‰å¤‰æ›´ãŒè¡Œã‚ã‚ŒãŸå ´åˆã«å‘¼ã°ã‚Œã‚‹ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã®ã‚¢ãƒ‰ãƒ¬ã‚¹   Data:CallBackFunction ã®å¼•æ•°ã«æ¸¡ã•ã‚Œã‚‹ void å‹ã®ãƒã‚¤ãƒ³ã‚¿ )
-extern	int			SetShutdownCallbackFunction(			void (* CallbackFunction )( void * ), void *Data, const TCHAR *Message ) ;			// ã‚·ãƒ£ãƒƒãƒˆãƒ€ã‚¦ãƒ³ã«ã‚ˆã‚‹ã‚½ãƒ•ãƒˆã®å¼·åˆ¶çµ‚äº†ã®éš›ã«å‘¼ã°ã‚Œã‚‹ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã‚’ç™»éŒ²ã™ã‚‹( Message ã¯ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã®çµ‚äº†ã‚’å¾…ã¤é–“è¡¨ç¤ºã•ã‚Œã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ )
-extern	int			SetWindowStyleMode(						int Mode ) ;																		// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¹ã‚¿ã‚¤ãƒ«ã‚’å¤‰æ›´ã™ã‚‹
-extern	int			SetWindowZOrder(						int ZType /* = DX_WIN_ZTYPE_TOP ç­‰ */ , int WindowActivateFlag = TRUE ) ;			// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®å¥¥è¡Œãä½ç½®ã‚’å¤‰æ›´ã™ã‚‹
-extern	int			SetWindowSizeChangeEnableFlag(			int Flag, int FitScreen = TRUE ) ;													// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ç«¯ã‚’æ´ã‚“ã§ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚ºã‚’å¤‰æ›´ã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹ã‹ã©ã†ã‹ã®è¨­å®šã‚’è¡Œã†( Flag:å¤‰æ›´ã‚’å¯èƒ½ã«ã™ã‚‹ã‹ã©ã†ã‹( TRUE:å¯èƒ½ã«ã™ã‚‹  FALSE:ä¸å¯èƒ½ã«ã™ã‚‹( ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ ) )  FitScreen:ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆé ˜åŸŸã«ç”»é¢ã‚’ãƒ•ã‚£ãƒƒãƒˆã•ã›ã‚‹(æ‹¡å¤§ã•ã›ã‚‹)ã‹ã©ã†ã‹  TRUE:ãƒ•ã‚£ãƒƒãƒˆã•ã›ã‚‹  FALSE:ãƒ•ã‚£ãƒƒãƒˆã•ã›ãªã„ )
-extern	int			SetWindowSizeExtendRate(				double ExRateX, double ExRateY = -1.0 ) ;											// æç”»ç”»é¢ã®ã‚µã‚¤ã‚ºã«å¯¾ã™ã‚‹ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºã®æ¯”ç‡ã‚’è¨­å®šã™ã‚‹( ExRateY ãŒãƒã‚¤ãƒŠã‚¹ã®å ´åˆã¯ ExRateX ã®å€¤ãŒ ExRateY ã«ã‚‚ä½¿ç”¨ã•ã‚Œã¾ã™ )
-extern	int			SetWindowSize(							int Width, int Height ) ;															// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆé ˜åŸŸã®ã‚µã‚¤ã‚ºã‚’è¨­å®šã™ã‚‹
-extern	int			SetWindowMaxSize(						int MaxWidth, int MaxHeight ) ;														// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆé ˜åŸŸã®æœ€å¤§ã‚µã‚¤ã‚ºã‚’è¨­å®šã™ã‚‹( SetWindowSizeChangeEnableFlag ã®ç¬¬ä¸€å¼•æ•°ã‚’ TRUE ã§å‘¼ã³å‡ºã—ã¦ã€ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚ºãŒå¤‰æ›´ã§ãã‚‹çŠ¶æ…‹ã§ã®ã¿ä½¿ç”¨ã•ã‚Œã‚‹ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã§ã™ )
-extern	int			SetWindowMinSize(						int MinWidth, int MinHeight ) ;														// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆé ˜åŸŸã®æœ€å°ã‚µã‚¤ã‚ºã‚’è¨­å®šã™ã‚‹( SetWindowSizeChangeEnableFlag ã®ç¬¬ä¸€å¼•æ•°ã‚’ TRUE ã§å‘¼ã³å‡ºã—ã¦ã€ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚ºãŒå¤‰æ›´ã§ãã‚‹çŠ¶æ…‹ã§ã®ã¿ä½¿ç”¨ã•ã‚Œã‚‹ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã§ã™ )
-extern	int			SetWindowPosition(						int x, int y ) ;																	// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ä½ç½®ã‚’è¨­å®šã™ã‚‹( æ ã‚‚å«ã‚ãŸå·¦ä¸Šåº§æ¨™ )
-extern	int			SetSysCommandOffFlag(					int Flag , const TCHAR *HookDllPath = NULL                                ) ;		// ã‚¿ã‚¹ã‚¯ã‚¹ã‚¤ãƒƒãƒã‚’æœ‰åŠ¹ã«ã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹
-extern	int			SetSysCommandOffFlagWithStrLen(			int Flag , const TCHAR *HookDllPath = NULL , size_t HookDllPathLength = 0 ) ;		// ã‚¿ã‚¹ã‚¯ã‚¹ã‚¤ãƒƒãƒã‚’æœ‰åŠ¹ã«ã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹
-extern	int			SetHookWinProc(							WNDPROC WinProc ) ;																	// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã¸ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ãƒ•ãƒƒã‚¯ã™ã‚‹ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ãƒ¼ã‚¸ãƒ£ã‚’ç™»éŒ²ã™ã‚‹
-extern	int			SetUseHookWinProcReturnValue(			int UseFlag ) ;																		// SetHookWinProc ã§è¨­å®šã—ãŸã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ãƒ¼ã‚¸ãƒ£ã®æˆ»ã‚Šå€¤ã‚’ä½¿ç”¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹ã€SetHookWinProc ã§è¨­å®šã—ãŸã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ãƒ¼ã‚¸ãƒ£ã®ä¸­ã§ã®ã¿ä½¿ç”¨å¯èƒ½( UseFlag TRUE:æˆ»ã‚Šå€¤ã‚’ä½¿ç”¨ã—ã¦ã€ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ãƒ¼ã‚¸ãƒ£ã®å‡¦ç†ã¯è¡Œã‚ãªã„  FALSE:æˆ»ã‚Šå€¤ã¯ä½¿ç”¨ã›ãšã€ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ãƒ¼ã‚¸ãƒ£ã‹ã‚‰å‡ºãŸå¾Œã€ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ãƒ¼ã‚¸ãƒ£ã®å‡¦ç†ã‚’è¡Œã† )
-extern	int			SetDoubleStartValidFlag(				int Flag ) ;																		// ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã—ãŸã‚½ãƒ•ãƒˆã®äºŒé‡èµ·å‹•ã‚’å¯èƒ½ã«ã™ã‚‹ã‹ã©ã†ã‹ã®è¨­å®šã‚’è¡Œã†( TRUE:å¯èƒ½ã«ã™ã‚‹  FALSE:ä¸å¯èƒ½ã«ã™ã‚‹( ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ ) )
-extern	int			CheckDoubleStart(						void ) ;																			// ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã—ãŸã‚½ãƒ•ãƒˆãŒæ—¢ã«èµ·å‹•ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹ã‚’å–å¾—ã™ã‚‹( TRUE:æ—¢ã«èµ·å‹•ã—ã¦ã„ã‚‹  FALSE:èµ·å‹•ã—ã¦ã„ãªã„ )
-extern	int			AddMessageTakeOverWindow(				HWND Window ) ;																		// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç†ã‚’ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã«è‚©ä»£ã‚ã‚Šã—ã¦ã‚‚ã‚‰ã†ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’è¿½åŠ ã™ã‚‹
-extern	int			SubMessageTakeOverWindow(				HWND Window ) ;																		// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç†ã‚’ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã«è‚©ä»£ã‚ã‚Šã—ã¦ã‚‚ã‚‰ã†ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’æ¸›ã‚‰ã™
+// İ’èŒnŠÖ”
+extern	int			ChangeWindowMode(						int Flag ) ;																		// ƒEƒCƒ“ƒhƒEƒ‚[ƒh‚ğ•ÏX‚·‚é
+extern	int			SetUseCharSet(							int CharSet /* = DX_CHARSET_SHFTJIS “™ */ ) ;										// ‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚Ì•¶š—ñˆ—‚Å‘O’ñ‚Æ‚·‚é•¶š—ñƒZƒbƒg‚ğİ’è‚·‚é
+extern	int			LoadPauseGraph(							const TCHAR *FileName                        ) ;									// ƒAƒNƒeƒBƒuƒEƒCƒ“ƒhƒE‚ª‘¼‚Ìƒ\ƒtƒg‚ÉˆÚ‚Á‚Ä‚¢‚éÛ‚É•\¦‚·‚é‰æ‘œ‚ğƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚Ş( FileName ‚É NULL ‚ğ“n‚·‚±‚Æ‚Å‰ğœ)
+extern	int			LoadPauseGraphWithStrLen(				const TCHAR *FileName, size_t FileNameLength ) ;									// ƒAƒNƒeƒBƒuƒEƒCƒ“ƒhƒE‚ª‘¼‚Ìƒ\ƒtƒg‚ÉˆÚ‚Á‚Ä‚¢‚éÛ‚É•\¦‚·‚é‰æ‘œ‚ğƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚Ş( FileName ‚É NULL ‚ğ“n‚·‚±‚Æ‚Å‰ğœ)
+extern	int			LoadPauseGraphFromMem(					const void *MemImage , int MemImageSize ) ;											// ƒAƒNƒeƒBƒuƒEƒCƒ“ƒhƒE‚ª‘¼‚Ìƒ\ƒtƒg‚ÉˆÚ‚Á‚Ä‚¢‚éÛ‚É•\¦‚·‚é‰æ‘œ‚ğƒƒ‚ƒŠ‚©‚ç“Ç‚İ‚Ş( MemImage:ƒtƒ@ƒCƒ‹ƒCƒ[ƒW‚Ìæ“ªƒAƒhƒŒƒX,NULL ‚É‚·‚é‚±‚Æ‚Åİ’è‰ğœ  MemImageSize:ƒtƒ@ƒCƒ‹ƒCƒ[ƒW‚ÌƒTƒCƒY( ’PˆÊ:Byte ) )
+extern	int			SetActiveStateChangeCallBackFunction(	int (* CallBackFunction )( int ActiveState , void *UserData ) , void *UserData ) ;	// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ÌƒAƒNƒeƒBƒuó‘Ô‚É•Ï‰»‚ª‚ ‚Á‚½‚Æ‚«‚ÉŒÄ‚Î‚ê‚éƒR[ƒ‹ƒoƒbƒNŠÖ”‚ğİ’è‚·‚é( CallBackFunction:ŒÄ‚Î‚ê‚éƒR[ƒ‹ƒoƒbƒNŠÖ”ANULL ‚ğ“n‚·‚Æİ’è‰ğœ  UserData:CallBackFunction ‚Ì‘æ‚Qˆø”‚É“n‚³‚ê‚é’l )
+#ifndef DX_COMPILE_TYPE_C_LANGUAGE
+extern	int			SetWindowText(							const TCHAR *WindowText                          ) ;								// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ÌƒEƒCƒ“ƒhƒEƒeƒLƒXƒg‚ğ•ÏX‚·‚é
+#endif // DX_COMPILE_TYPE_C_LANGUAGE
+extern	int			SetWindowTextDX(						const TCHAR *WindowText                          ) ;								// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ÌƒEƒCƒ“ƒhƒEƒeƒLƒXƒg‚ğ•ÏX‚·‚é
+extern	int			SetWindowTextWithStrLen(				const TCHAR *WindowText, size_t WindowTextLength ) ;								// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ÌƒEƒCƒ“ƒhƒEƒeƒLƒXƒg‚ğ•ÏX‚·‚é
+extern	int			SetMainWindowText(						const TCHAR *WindowText                          ) ;								// SetWindowText ‚Ì•Ê–¼ŠÖ”
+extern	int			SetMainWindowTextWithStrLen(			const TCHAR *WindowText, size_t WindowTextLength ) ;								// SetWindowText ‚Ì•Ê–¼ŠÖ”
+extern	int			SetMainWindowClassName(					const TCHAR *ClassName                         ) ;									// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒX–¼‚ğİ’è‚·‚é( DxLib_Init ‚Ì‘O‚Å‚Ì‚İg—p‰Â”\ )
+extern	int			SetMainWindowClassNameWithStrLen(		const TCHAR *ClassName, size_t ClassNameLength ) ;									// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒX–¼‚ğİ’è‚·‚é( DxLib_Init ‚Ì‘O‚Å‚Ì‚İg—p‰Â”\ )
+extern	int			SetWindowIconID(						int ID ) ;																			// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚Åg—p‚·‚éƒAƒCƒRƒ“‚Ì‚h‚c‚ğƒZƒbƒg‚·‚é
+extern	int			SetWindowIconHandle(					HICON Icon ) ;																		// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚Åg—p‚·‚éƒAƒCƒRƒ“‚Ìƒnƒ“ƒhƒ‹‚ğƒZƒbƒg‚·‚é
+extern	int			SetUseASyncChangeWindowModeFunction(	int Flag , void (* CallBackFunction )( void * ) , void *Data ) ;					// Å‘å‰»ƒ{ƒ^ƒ“‚âALT+ENTERƒL[‚É‚æ‚é”ñ“¯Šú‚ÈƒEƒCƒ“ƒhƒEƒ‚[ƒh‚Ì•ÏX‚Ì‹@”\‚Ìİ’è‚ğs‚¤( Flag:”ñ“¯ŠúƒEƒCƒ“ƒhƒEƒ‚[ƒh•ÏX‚ğ—LŒø‚É‚·‚é‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO( TRUE:—LŒø‚É‚·‚é  FALSE:–³Œø‚É‚·‚é( ƒfƒtƒHƒ‹ƒg ) )   CallBackFunction:”ñ“¯ŠúƒEƒCƒ“ƒhƒEƒ‚[ƒh•ÏX‚ªs‚í‚ê‚½ê‡‚ÉŒÄ‚Î‚ê‚éƒR[ƒ‹ƒoƒbƒNŠÖ”‚ÌƒAƒhƒŒƒX   Data:CallBackFunction ‚Ìˆø”‚É“n‚³‚ê‚é void Œ^‚Ìƒ|ƒCƒ“ƒ^ )
+extern	int			SetShutdownCallbackFunction(			void (* CallbackFunction )( void * ), void *Data, const TCHAR *Message ) ;			// ƒVƒƒƒbƒgƒ_ƒEƒ“‚É‚æ‚éƒ\ƒtƒg‚Ì‹­§I—¹‚ÌÛ‚ÉŒÄ‚Î‚ê‚éƒR[ƒ‹ƒoƒbƒNŠÖ”‚ğ“o˜^‚·‚é( Message ‚ÍƒR[ƒ‹ƒoƒbƒNŠÖ”‚ÌI—¹‚ğ‘Ò‚ÂŠÔ•\¦‚³‚ê‚éƒƒbƒZ[ƒW )
+extern	int			SetWindowStyleMode(						int Mode ) ;																		// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ÌƒXƒ^ƒCƒ‹‚ğ•ÏX‚·‚é
+extern	int			SetWindowZOrder(						int ZType /* = DX_WIN_ZTYPE_TOP “™ */ , int WindowActivateFlag DEFAULTPARAM( = TRUE ) ) ;	// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚Ì‰œs‚«ˆÊ’u‚ğ•ÏX‚·‚é
+extern	int			SetWindowSizeChangeEnableFlag(			int Flag, int FitScreen DEFAULTPARAM( = TRUE ) ) ;									// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚Ì’[‚ğ’Í‚ñ‚ÅƒEƒCƒ“ƒhƒE‚ÌƒTƒCƒY‚ğ•ÏX‚Å‚«‚é‚æ‚¤‚É‚·‚é‚©‚Ç‚¤‚©‚Ìİ’è‚ğs‚¤( Flag:•ÏX‚ğ‰Â”\‚É‚·‚é‚©‚Ç‚¤‚©( TRUE:‰Â”\‚É‚·‚é  FALSE:•s‰Â”\‚É‚·‚é( ƒfƒtƒHƒ‹ƒg ) )  FitScreen:ƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒg—Ìˆæ‚É‰æ–Ê‚ğƒtƒBƒbƒg‚³‚¹‚é(Šg‘å‚³‚¹‚é)‚©‚Ç‚¤‚©  TRUE:ƒtƒBƒbƒg‚³‚¹‚é  FALSE:ƒtƒBƒbƒg‚³‚¹‚È‚¢ )
+extern	int			SetWindowSizeExtendRate(				double ExRateX, double ExRateY DEFAULTPARAM( = -1.0 ) ) ;							// •`‰æ‰æ–Ê‚ÌƒTƒCƒY‚É‘Î‚·‚éƒƒCƒ“ƒEƒCƒ“ƒhƒEƒTƒCƒY‚Ì”ä—¦‚ğİ’è‚·‚é( ExRateY ‚ªƒ}ƒCƒiƒX‚Ìê‡‚Í ExRateX ‚Ì’l‚ª ExRateY ‚É‚àg—p‚³‚ê‚Ü‚· )
+extern	int			SetWindowSize(							int Width, int Height ) ;															// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒg—Ìˆæ‚ÌƒTƒCƒY‚ğİ’è‚·‚é
+extern	int			SetWindowMaxSize(						int MaxWidth, int MaxHeight ) ;														// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒg—Ìˆæ‚ÌÅ‘åƒTƒCƒY‚ğİ’è‚·‚é( SetWindowSizeChangeEnableFlag ‚Ì‘æˆêˆø”‚ğ TRUE ‚ÅŒÄ‚Ño‚µ‚ÄAƒEƒCƒ“ƒhƒE‚ÌƒTƒCƒY‚ª•ÏX‚Å‚«‚éó‘Ô‚Å‚Ì‚İg—p‚³‚ê‚éƒpƒ‰ƒ[ƒ^‚Å‚· )
+extern	int			SetWindowMinSize(						int MinWidth, int MinHeight ) ;														// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒg—Ìˆæ‚ÌÅ¬ƒTƒCƒY‚ğİ’è‚·‚é( SetWindowSizeChangeEnableFlag ‚Ì‘æˆêˆø”‚ğ TRUE ‚ÅŒÄ‚Ño‚µ‚ÄAƒEƒCƒ“ƒhƒE‚ÌƒTƒCƒY‚ª•ÏX‚Å‚«‚éó‘Ô‚Å‚Ì‚İg—p‚³‚ê‚éƒpƒ‰ƒ[ƒ^‚Å‚· )
+extern	int			SetWindowPosition(						int x, int y ) ;																	// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ÌˆÊ’u‚ğİ’è‚·‚é( ˜g‚àŠÜ‚ß‚½¶ãÀ•W )
+extern	int			SetSysCommandOffFlag(					int Flag , const TCHAR *HookDllPath DEFAULTPARAM( = NULL ) ) ;						// ƒ^ƒXƒNƒXƒCƒbƒ`‚ğ—LŒø‚É‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é
+extern	int			SetSysCommandOffFlagWithStrLen(			int Flag , const TCHAR *HookDllPath DEFAULTPARAM( = NULL ) , size_t HookDllPathLength DEFAULTPARAM( = 0 ) ) ;	// ƒ^ƒXƒNƒXƒCƒbƒ`‚ğ—LŒø‚É‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é
+extern	int			SetWindowMaximizeButtonBehavior(		int BehaviorType ) ;																// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ÌÅ‘å‰»ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚Æ‚«‚Ì‹““®‚ğİ’è‚·‚é( BehaviorType 0=•W€“®ì 1=•W€“®ì‚Ís‚í‚¸AÅ‘å‰»ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚©‚Ç‚¤‚©‚Í CheckWindowMaximizeButtonInput ‚Å”»’è‚·‚é )
+extern	int			SetHookWinProc(							WNDPROC WinProc ) ;																	// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚Ö‚ÌƒƒbƒZ[ƒW‚ğƒtƒbƒN‚·‚éƒEƒCƒ“ƒhƒEƒvƒ[ƒWƒƒ‚ğ“o˜^‚·‚é
+extern	int			SetUseHookWinProcReturnValue(			int UseFlag ) ;																		// SetHookWinProc ‚Åİ’è‚µ‚½ƒEƒCƒ“ƒhƒEƒvƒ[ƒWƒƒ‚Ì–ß‚è’l‚ğg—p‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚éASetHookWinProc ‚Åİ’è‚µ‚½ƒEƒCƒ“ƒhƒEƒvƒ[ƒWƒƒ‚Ì’†‚Å‚Ì‚İg—p‰Â”\( UseFlag TRUE:–ß‚è’l‚ğg—p‚µ‚ÄA‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚ÌƒEƒCƒ“ƒhƒEƒvƒ[ƒWƒƒ‚Ìˆ—‚Ís‚í‚È‚¢  FALSE:–ß‚è’l‚Íg—p‚¹‚¸AƒEƒCƒ“ƒhƒEƒvƒ[ƒWƒƒ‚©‚ço‚½ŒãA‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚ÌƒEƒCƒ“ƒhƒEƒvƒ[ƒWƒƒ‚Ìˆ—‚ğs‚¤ )
+extern	int			SetDoubleStartValidFlag(				int Flag ) ;																		// ‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚µ‚½ƒ\ƒtƒg‚Ì“ñd‹N“®‚ğ‰Â”\‚É‚·‚é‚©‚Ç‚¤‚©‚Ìİ’è‚ğs‚¤( TRUE:‰Â”\‚É‚·‚é  FALSE:•s‰Â”\‚É‚·‚é( ƒfƒtƒHƒ‹ƒg ) )
+extern	int			CheckDoubleStart(						void ) ;																			// ‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚ğg—p‚µ‚½ƒ\ƒtƒg‚ªŠù‚É‹N“®‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é( TRUE:Šù‚É‹N“®‚µ‚Ä‚¢‚é  FALSE:‹N“®‚µ‚Ä‚¢‚È‚¢ )
+extern	int			AddMessageTakeOverWindow(				HWND Window ) ;																		// ƒƒbƒZ[ƒWˆ—‚ğ‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚ÉŒ¨‘ã‚í‚è‚µ‚Ä‚à‚ç‚¤ƒEƒCƒ“ƒhƒE‚ğ’Ç‰Á‚·‚é
+extern	int			SubMessageTakeOverWindow(				HWND Window ) ;																		// ƒƒbƒZ[ƒWˆ—‚ğ‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚ÉŒ¨‘ã‚í‚è‚µ‚Ä‚à‚ç‚¤ƒEƒCƒ“ƒhƒE‚ğŒ¸‚ç‚·
 
-extern	int			SetWindowInitPosition(					int x , int y ) ;																	// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®åˆæœŸä½ç½®ã‚’è¨­å®šã™ã‚‹
-extern	int			SetNotWinFlag(							int Flag ) ;																		// ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦é–¢é€£ã®æ©Ÿèƒ½ã‚’ä½¿ç”¨ã—ãªã„ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( TRUE:ä½¿ç”¨ã—ãªã„  FALSE:ä½¿ç”¨ã™ã‚‹( ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ ) )
-extern	int			SetNotDrawFlag(							int Flag ) ;																		// ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®æç”»æ©Ÿèƒ½ã‚’ä½¿ã†ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( TRUE:ä½¿ç”¨ã—ãªã„  FALSE:ä½¿ç”¨ã™ã‚‹( ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ ) )
-extern	int			SetNotSoundFlag(						int Flag ) ;																		// ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®ã‚µã‚¦ãƒ³ãƒ‰æ©Ÿèƒ½ã‚’ä½¿ã†ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( TRUE:ä½¿ç”¨ã—ãªã„  FALSE:ä½¿ç”¨ã™ã‚‹( ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ ) )
-extern	int			SetNotInputFlag(						int Flag ) ;																		// ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®å…¥åŠ›çŠ¶æ…‹ã®å–å¾—æ©Ÿèƒ½ã‚’ä½¿ã†ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( TRUE:ä½¿ç”¨ã—ãªã„  FALSE:ä½¿ç”¨ã™ã‚‹( ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ ) )
-extern	int			SetDialogBoxHandle(						HWND WindowHandle ) ;																// ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã§ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç†ã‚’è¡Œã†ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒœãƒƒã‚¯ã‚¹ã‚’ç™»éŒ²ã™ã‚‹
-extern	int			SetWindowVisibleFlag(					int Flag ) ;																		// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’è¡¨ç¤ºã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( TRUE:è¡¨ç¤ºã™ã‚‹  FALSE:è¡¨ç¤ºã—ãªã„ )
-extern	int			SetWindowMinimizeFlag(					int Flag ) ;																		// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’æœ€å°åŒ–ã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( TRUE:æœ€å°åŒ–ã™ã‚‹  FALSE:æœ€å°åŒ–ã‚’è§£é™¤ )
-extern	int			SetWindowUserCloseEnableFlag(			int Flag ) ;																		// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®Ã—ãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ãŸæ™‚ã«ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªãŒè‡ªå‹•çš„ã«ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’é–‰ã˜ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( TRUE:è‡ªå‹•çš„ã«é–‰ã˜ã‚‹( ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ )  FALSE:é–‰ã˜ãªã„ )
-extern	int			SetDxLibEndPostQuitMessageFlag(			int Flag ) ;																		// ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªçµ‚äº†æ™‚ã« PostQuitMessage ã‚’å‘¼ã¶ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( TRUE:PostQuitMessage ã‚’å‘¼ã¶( ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ )  FALSE:å‘¼ã°ãªã„ )
-extern	int			SetUserWindow(							HWND WindowHandle ) ;																// ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã§ä½¿ç”¨ã™ã‚‹ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’ã‚»ãƒƒãƒˆã™ã‚‹( DxLib_Init ã‚’å®Ÿè¡Œã™ã‚‹ä»¥å‰ã§ã®ã¿æœ‰åŠ¹ )
-extern	int			SetUserChildWindow(						HWND WindowHandle ) ;																// ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã§ä½¿ç”¨ã™ã‚‹è¡¨ç¤ºç”¨ã®å­ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’ã‚»ãƒƒãƒˆã™ã‚‹( DxLib_Init ã‚’å®Ÿè¡Œã™ã‚‹ä»¥å‰ã§ã®ã¿æœ‰åŠ¹ )
-extern	int			SetUserWindowMessageProcessDXLibFlag(	int Flag ) ;																		// SetUseWindow ã§è¨­å®šã—ãŸã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒ«ãƒ¼ãƒ—å‡¦ç†ã‚’ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã§è¡Œã†ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( TRUE:ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã§è¡Œã†( ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ )  FALSE:ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã§ã¯è¡Œã‚ãªã„ )
-extern	int			SetUseFPUPreserveFlag(					int Flag ) ;																		// FPUã®ç²¾åº¦ã‚’è½ã¨ã•ãªã„è¨­å®šã‚’ä½¿ç”¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹ã€DxLib_Init ã‚’å‘¼ã³å‡ºã™å‰ã®ã¿æœ‰åŠ¹( TRUE:ä½¿ç”¨ã™ã‚‹(ç²¾åº¦ãŒè½ã¡ãªã„)  FALSE:ä½¿ç”¨ã—ãªã„(ç²¾åº¦ã‚’è½ã¨ã™(ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ) )
-extern	int			SetValidMousePointerWindowOutClientAreaMoveFlag( int Flag ) ;																// ãƒã‚¦ã‚¹ãƒã‚¤ãƒ³ã‚¿ãŒã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã‚¨ãƒªã‚¢ã®å¤–ã«ã„ã‘ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( TRUE:ã„ã‘ã‚‹( ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆè¨­å®š )  FALSE:ã„ã‘ãªã„ )
-extern	int			SetUseBackBufferTransColorFlag(			int Flag ) ;																		// ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã®é€éè‰²ã®éƒ¨åˆ†ã‚’é€éã•ã›ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( TRUE:é€éã•ã›ã‚‹  FALSE:é€éã•ã›ãªã„( ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ ) )
-extern	int			SetUseUpdateLayerdWindowFlag(			int Flag ) ;																		// UpdateLayerdWindowForBaseImage ã‚„ UpdateLayerdWindowForSoftImage ã‚’ä½¿ç”¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( TRUE:ä½¿ç”¨ã™ã‚‹  FALSE:ä½¿ç”¨ã—ãªã„ )
-extern	int			SetResourceModule(						HMODULE ResourceModule ) ;															// ãƒªã‚½ãƒ¼ã‚¹ã‚’èª­ã¿è¾¼ã‚€éš›ã«ä½¿ç”¨ã™ã‚‹ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã‚’è¨­å®šã™ã‚‹( NULL ã‚’æŒ‡å®šã™ã‚‹ã¨åˆæœŸçŠ¶æ…‹ã«æˆ»ã‚Šã¾ã™ã€ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§ã¯ NULL )
-extern	int			SetUseDxLibWM_PAINTProcess(				int Flag ) ;																		// WM_PAINT ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒæ¥ãŸéš›ã«ã€ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã® WM_PAINTãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒæ¥ãŸéš›ã®å‡¦ç†ã€ã‚’è¡Œã†ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( åˆ¥ã‚¹ãƒ¬ãƒƒãƒ‰ã§æç”»å‡¦ç†ã‚’è¡Œã†å ´åˆãªã©ã§ä½¿ç”¨ )
+extern	int			SetWindowInitPosition(					int x , int y ) ;																	// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚Ì‰ŠúˆÊ’u‚ğİ’è‚·‚é
+extern	int			SetNotWinFlag(							int Flag ) ;																		// ‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚ÌƒEƒCƒ“ƒhƒEŠÖ˜A‚Ì‹@”\‚ğg—p‚µ‚È‚¢‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:g—p‚µ‚È‚¢  FALSE:g—p‚·‚é( ƒfƒtƒHƒ‹ƒg ) )
+extern	int			SetNotDrawFlag(							int Flag ) ;																		// ‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚Ì•`‰æ‹@”\‚ğg‚¤‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:g—p‚µ‚È‚¢  FALSE:g—p‚·‚é( ƒfƒtƒHƒ‹ƒg ) )
+extern	int			SetNotSoundFlag(						int Flag ) ;																		// ‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚ÌƒTƒEƒ“ƒh‹@”\‚ğg‚¤‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:g—p‚µ‚È‚¢  FALSE:g—p‚·‚é( ƒfƒtƒHƒ‹ƒg ) )
+extern	int			SetNotInputFlag(						int Flag ) ;																		// ‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚Ì“ü—Íó‘Ô‚Ìæ“¾‹@”\‚ğg‚¤‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:g—p‚µ‚È‚¢  FALSE:g—p‚·‚é( ƒfƒtƒHƒ‹ƒg ) )
+extern	int			SetDialogBoxHandle(						HWND WindowHandle ) ;																// ‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚ÅƒƒbƒZ[ƒWˆ—‚ğs‚¤ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ğ“o˜^‚·‚é
+extern	int			SetWindowVisibleFlag(					int Flag ) ;																		// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ğ•\¦‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:•\¦‚·‚é  FALSE:•\¦‚µ‚È‚¢ )
+extern	int			SetWindowMinimizeFlag(					int Flag ) ;																		// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ğÅ¬‰»‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:Å¬‰»‚·‚é  FALSE:Å¬‰»‚ğ‰ğœ )
+extern	int			SetWindowUserCloseEnableFlag(			int Flag ) ;																		// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚Ì~ƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½‚É‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚ª©“®“I‚ÉƒEƒCƒ“ƒhƒE‚ğ•Â‚¶‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:©“®“I‚É•Â‚¶‚é( ƒfƒtƒHƒ‹ƒg )  FALSE:•Â‚¶‚È‚¢ )
+extern	int			SetUseBorderlessWindowFlag(				int Flag ) ;																		// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚ğƒ{[ƒ_[ƒŒƒXƒEƒBƒ“ƒhƒE‚É‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:ƒ{[ƒ_[ƒŒƒXƒEƒBƒ“ƒhƒE@FALSE:’ÊíƒEƒBƒ“ƒhƒE )
+extern	int			SetDxLibEndPostQuitMessageFlag(			int Flag ) ;																		// ‚c‚wƒ‰ƒCƒuƒ‰ƒŠI—¹‚É PostQuitMessage ‚ğŒÄ‚Ô‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:PostQuitMessage ‚ğŒÄ‚Ô( ƒfƒtƒHƒ‹ƒg )  FALSE:ŒÄ‚Î‚È‚¢ )
+extern	int			SetUserWindow(							HWND WindowHandle ) ;																// ‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚Åg—p‚·‚éƒEƒCƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹‚ğƒZƒbƒg‚·‚é( DxLib_Init ‚ğÀs‚·‚éˆÈ‘O‚Å‚Ì‚İ—LŒø )
+extern	int			SetUserChildWindow(						HWND WindowHandle ) ;																// ‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚Åg—p‚·‚é•\¦—p‚ÌqƒEƒCƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹‚ğƒZƒbƒg‚·‚é( DxLib_Init ‚ğÀs‚·‚éˆÈ‘O‚Å‚Ì‚İ—LŒø )
+extern	int			SetUserWindowMessageProcessDXLibFlag(	int Flag ) ;																		// SetUseWindow ‚Åİ’è‚µ‚½ƒEƒCƒ“ƒhƒE‚ÌƒƒbƒZ[ƒWƒ‹[ƒvˆ—‚ğ‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚Ås‚¤‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚Ås‚¤( ƒfƒtƒHƒ‹ƒg )  FALSE:‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚Å‚Ís‚í‚È‚¢ )
+extern	int			SetUseFPUPreserveFlag(					int Flag ) ;																		// FPU‚Ì¸“x‚ğ—‚Æ‚³‚È‚¢İ’è‚ğg—p‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚éADxLib_Init ‚ğŒÄ‚Ño‚·‘O‚Ì‚İ—LŒø( TRUE:g—p‚·‚é(¸“x‚ª—‚¿‚È‚¢)  FALSE:g—p‚µ‚È‚¢(¸“x‚ğ—‚Æ‚·(ƒfƒtƒHƒ‹ƒg) )
+extern	int			SetValidMousePointerWindowOutClientAreaMoveFlag( int Flag ) ;																// ƒ}ƒEƒXƒ|ƒCƒ“ƒ^‚ªƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒgƒGƒŠƒA‚ÌŠO‚É‚¢‚¯‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:‚¢‚¯‚é( ƒfƒtƒHƒ‹ƒgİ’è )  FALSE:‚¢‚¯‚È‚¢ )
+extern	int			SetUseBackBufferTransColorFlag(			int Flag ) ;																		// ƒoƒbƒNƒoƒbƒtƒ@‚Ì“§‰ßF‚Ì•”•ª‚ğ“§‰ß‚³‚¹‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:“§‰ß‚³‚¹‚é  FALSE:“§‰ß‚³‚¹‚È‚¢( ƒfƒtƒHƒ‹ƒg ) )
+extern	int			SetUseUpdateLayerdWindowFlag(			int Flag ) ;																		// UpdateLayerdWindowForBaseImage ‚â UpdateLayerdWindowForSoftImage ‚ğg—p‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:g—p‚·‚é  FALSE:g—p‚µ‚È‚¢ )
+extern	int			SetUseMouseEventTransparentWindowFlag(	int Flag ) ;																		// SetUseBackBufferTransColorFlag( TRUE ); –”‚Í SetUseUpdateLayerdWindowFlag( TRUE ); ‚ğİ’è‚ÌÛ‚Éƒ}ƒEƒXŠÖŒW‚ÌƒCƒxƒ“ƒg‚ğ”wŒã‚ÌƒEƒBƒ“ƒhƒE‚É“§‰ß‚³‚¹‚é‚©‚ğİ’è‚·‚é( TRUE:“§‰ß‚·‚é   FALSE:“§‰ß‚µ‚È‚¢( ƒfƒtƒHƒ‹ƒg ) )
+extern	int			SetResourceModule(						HMODULE ResourceModule ) ;															// ƒŠƒ\[ƒX‚ğ“Ç‚İ‚ŞÛ‚Ég—p‚·‚éƒ‚ƒWƒ…[ƒ‹‚ğİ’è‚·‚é( NULL ‚ğw’è‚·‚é‚Æ‰Šúó‘Ô‚É–ß‚è‚Ü‚·AƒfƒtƒHƒ‹ƒg‚Å‚Í NULL )
+extern	int			SetUseDxLibWM_PAINTProcess(				int Flag ) ;																		// WM_PAINT ƒƒbƒZ[ƒW‚ª—ˆ‚½Û‚Éw‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚Ì WM_PAINTƒƒbƒZ[ƒW‚ª—ˆ‚½Û‚Ìˆ—x‚ğs‚¤‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( •ÊƒXƒŒƒbƒh‚Å•`‰æˆ—‚ğs‚¤ê‡‚È‚Ç‚Åg—p )
+extern	int			SetWindows10_WM_CHAR_CancelTime(		int MilliSecond ) ;																	// Windows10 ‚Å WM_CHAR ‚Å’ZŠÔ‚É˜A‘±‚µ‚Ä“¯‚¶•¶š‚ª“ü—Í‚³‚ê‚½ê‡‚Ì–³Œøˆµ‚¢‚É‚·‚éŠÔ‚ğİ’è‚·‚é( MilliSecond ‚Ìƒ~ƒŠ•bˆÈ“à‚É˜A‘±‚µ‚Ä“¯‚¶•¶š‚ª“ü—Í‚³‚ê‚½ê‡‚É–³Œø‚É‚·‚éAMilliSecond ‚Ì’l‚ğƒ}ƒCƒiƒX‚É‚·‚é‚ÆƒfƒtƒHƒ‹ƒg‚Ìİ’è‚É–ß‚é )
 
-// ãƒ‰ãƒ©ãƒƒã‚°ï¼†ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«é–¢ä¿‚
-extern	int			SetDragFileValidFlag(		int Flag ) ;																	// ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã¸ã®ãƒ‰ãƒ©ãƒƒã‚°ï¼†ãƒ‰ãƒ­ãƒƒãƒ—æ©Ÿèƒ½ã‚’æœ‰åŠ¹ã«ã™ã‚‹ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
-extern	int			DragFileInfoClear(			void ) ;																		// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã¸ãƒ‰ãƒ©ãƒƒã‚°ï¼†ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ã®æƒ…å ±ã‚’ãƒªã‚»ãƒƒãƒˆã™ã‚‹
-extern	int			GetDragFilePath(			TCHAR *FilePathBuffer ) ;														// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã¸ãƒ‰ãƒ©ãƒƒã‚°ï¼†ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«åã‚’å–å¾—ã™ã‚‹( FilePathBuffer:ãƒ•ã‚¡ã‚¤ãƒ«åã‚’æ ¼ç´ã™ã‚‹ãƒãƒƒãƒ•ã‚¡ã®å…ˆé ­ã‚¢ãƒ‰ãƒ¬ã‚¹ã€€ã€€æˆ»ã‚Šå€¤ã€€-1:å–å¾—ã§ããªã‹ã£ãŸ  0:å–å¾—ã§ããŸ )
-extern	int			GetDragFileNum(				void ) ;																		// ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã¸ãƒ‰ãƒ©ãƒƒã‚°ï¼†ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ã®æ•°ã‚’å–å¾—ã™ã‚‹
+// ƒhƒ‰ƒbƒO•ƒhƒƒbƒv‚³‚ê‚½ƒtƒ@ƒCƒ‹ŠÖŒW
+extern	int			SetDragFileValidFlag(		int Flag ) ;																	// ƒtƒ@ƒCƒ‹‚ÌƒƒCƒ“ƒEƒCƒ“ƒhƒE‚Ö‚Ìƒhƒ‰ƒbƒO•ƒhƒƒbƒv‹@”\‚ğ—LŒø‚É‚·‚é‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO‚ğƒZƒbƒg‚·‚é
+extern	int			DragFileInfoClear(			void ) ;																		// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚Öƒhƒ‰ƒbƒO•ƒhƒƒbƒv‚³‚ê‚½ƒtƒ@ƒCƒ‹‚Ìî•ñ‚ğƒŠƒZƒbƒg‚·‚é
+extern	int			GetDragFilePath(			TCHAR *FilePathBuffer, int FilePathBufferBytes DEFAULTPARAM( = -1 ) ) ;			// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚Öƒhƒ‰ƒbƒO•ƒhƒƒbƒv‚³‚ê‚½ƒtƒ@ƒCƒ‹–¼‚ğæ“¾‚·‚é( FilePathBuffer:ƒtƒ@ƒCƒ‹–¼‚ğŠi”[‚·‚éƒoƒbƒtƒ@‚Ìæ“ªƒAƒhƒŒƒX@@–ß‚è’l@-1:æ“¾‚Å‚«‚È‚©‚Á‚½  0:æ“¾‚Å‚«‚½ )
+extern	int			GetDragFileNum(				void ) ;																		// ƒƒCƒ“ƒEƒCƒ“ƒhƒE‚Öƒhƒ‰ƒbƒO•ƒhƒƒbƒv‚³‚ê‚½ƒtƒ@ƒCƒ‹‚Ì”‚ğæ“¾‚·‚é
 
-// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦æç”»é ˜åŸŸè¨­å®šç³»é–¢æ•°
-extern	HRGN		CreateRgnFromGraph(			int Width , int Height , const void *MaskData , int Pitch , int Byte ) ;		// ä»»æ„ã®ç”»åƒã‚¤ãƒ¡ãƒ¼ã‚¸ã‹ã‚‰RGNãƒãƒ³ãƒ‰ãƒ«ã‚’ä½œæˆã™ã‚‹( Width:æ¨ªãƒ‰ãƒƒãƒˆæ•°  Height:ç¸¦ãƒ‰ãƒƒãƒˆæ•°  MaskData:ãƒ‰ãƒƒãƒˆæƒ…å ±é…åˆ—ã®å…ˆé ­ã‚¢ãƒ‰ãƒ¬ã‚¹  Pitch:ï¼‘ãƒ©ã‚¤ãƒ³ã‚ãŸã‚Šã®byteã‚µã‚¤ã‚º  Byte:ï¼‘ãƒ‰ãƒƒãƒˆè¾ºã‚Šã®byteã‚µã‚¤ã‚º( å¯¾å¿œã—ã¦ã„ã‚‹ã®ã¯ 1ï½4 )ã€ãƒ‰ãƒƒãƒˆã®æ•°å€¤ãŒ0ã‹ãã‚Œä»¥å¤–ã‹ã§åˆ¤åˆ¥ )
-extern	HRGN		CreateRgnFromBaseImage(		BASEIMAGE *BaseImage, int TransColorR, int TransColorG, int TransColorB ) ;		// ä»»æ„ã®åŸºæœ¬ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒ‡ãƒ¼ã‚¿ã¨é€éè‰²ã‹ã‚‰RGNãƒãƒ³ãƒ‰ãƒ«ã‚’ä½œæˆã™ã‚‹( BaseImage:åŸºæœ¬ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒ‡ãƒ¼ã‚¿ã®ã‚¢ãƒ‰ãƒ¬ã‚¹  TransColorR,TransColorG,TransColorB:é€éè‰²( ãã‚Œãã‚Œï¼ï½ï¼’ï¼•ï¼• )
-extern	int			SetWindowRgnGraph(			 const TCHAR *FileName                        ) ;								// ä»»æ„ã®ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ï¼²ï¼§ï¼®ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
-extern	int			SetWindowRgnGraphWithStrLen( const TCHAR *FileName, size_t FileNameLength ) ;								// ä»»æ„ã®ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ï¼²ï¼§ï¼®ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
-extern	int			UpdateTransColorWindowRgn(	void ) ;																		// æç”»å…ˆã®ç”»é¢ã®é€éè‰²ã®éƒ¨åˆ†ã‚’é€éã•ã›ã‚‹ï¼²ï¼§ï¼®ã‚’ã‚»ãƒƒãƒˆã™ã‚‹( ä½¿ç”¨ã•ã‚Œã‚‹é€éè‰²ã¯é–¢æ•° SetTransColor ã§è¨­å®šã—ãŸè‰² )
+// ƒEƒCƒ“ƒhƒE•`‰æ—Ìˆæİ’èŒnŠÖ”
+extern	HRGN		CreateRgnFromGraph(			int Width , int Height , const void *MaskData , int Pitch , int Byte ) ;		// ”CˆÓ‚Ì‰æ‘œƒCƒ[ƒW‚©‚çRGNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é( Width:‰¡ƒhƒbƒg”  Height:cƒhƒbƒg”  MaskData:ƒhƒbƒgî•ñ”z—ñ‚Ìæ“ªƒAƒhƒŒƒX  Pitch:‚Pƒ‰ƒCƒ“‚ ‚½‚è‚ÌbyteƒTƒCƒY  Byte:‚Pƒhƒbƒg•Ó‚è‚ÌbyteƒTƒCƒY( ‘Î‰‚µ‚Ä‚¢‚é‚Ì‚Í 1`4 )Aƒhƒbƒg‚Ì”’l‚ª0‚©‚»‚êˆÈŠO‚©‚Å”»•Ê )
+extern	HRGN		CreateRgnFromBaseImage(		BASEIMAGE *BaseImage, int TransColorR, int TransColorG, int TransColorB ) ;		// ”CˆÓ‚ÌŠî–{ƒCƒ[ƒWƒf[ƒ^‚Æ“§‰ßF‚©‚çRGNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é( BaseImage:Šî–{ƒCƒ[ƒWƒf[ƒ^‚ÌƒAƒhƒŒƒX  TransColorR,TransColorG,TransColorB:“§‰ßF( ‚»‚ê‚¼‚ê‚O`‚Q‚T‚T )
+extern	int			SetWindowRgnGraph(			 const TCHAR *FileName                        ) ;								// ”CˆÓ‚Ì‰æ‘œƒtƒ@ƒCƒ‹‚©‚ç‚q‚f‚m‚ğƒZƒbƒg‚·‚é
+extern	int			SetWindowRgnGraphWithStrLen( const TCHAR *FileName, size_t FileNameLength ) ;								// ”CˆÓ‚Ì‰æ‘œƒtƒ@ƒCƒ‹‚©‚ç‚q‚f‚m‚ğƒZƒbƒg‚·‚é
+extern	int			UpdateTransColorWindowRgn(	void ) ;																		// •`‰ææ‚Ì‰æ–Ê‚Ì“§‰ßF‚Ì•”•ª‚ğ“§‰ß‚³‚¹‚é‚q‚f‚m‚ğƒZƒbƒg‚·‚é( g—p‚³‚ê‚é“§‰ßF‚ÍŠÖ” SetTransColor ‚Åİ’è‚µ‚½F )
 
-// ãƒ„ãƒ¼ãƒ«ãƒãƒ¼é–¢ä¿‚
-extern	int			SetupToolBar(				const TCHAR *BitmapName,                          int DivNum, int ResourceID = -1 ) ;									// ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã®æº–å‚™ã€BitmapName ã« NULL, ResourceID ã« -1 ã‚’æ¸¡ã™ã¨ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã‚’è§£é™¤( BitmapName:ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã®ãƒœã‚¿ãƒ³ã«ä½¿ç”¨ã™ã‚‹ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã€ResourceID ã« -1 ä»¥å¤–ã‚’æ¸¡ã™å ´åˆã¯ NULL ã«ã™ã‚‹  DivNum:ãƒœã‚¿ãƒ³ç”»åƒä¸­ã®ãƒœã‚¿ãƒ³ã®æ•°  ResourceID:ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã®ãƒœã‚¿ãƒ³ã«ä½¿ç”¨ã™ã‚‹ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ãƒªã‚½ãƒ¼ã‚¹ã®ï¼©ï¼¤ã€BitmapName ã« NULL ã‚’æ¸¡ã™ã¨ã“ã®å¼•æ•°ãŒä½¿ç”¨ã•ã‚Œã‚‹ )
-extern	int			SetupToolBarWithStrLen(		const TCHAR *BitmapName, size_t BitmapNameLength, int DivNum, int ResourceID = -1 ) ;									// ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã®æº–å‚™ã€BitmapName ã« NULL, ResourceID ã« -1 ã‚’æ¸¡ã™ã¨ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã‚’è§£é™¤( BitmapName:ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã®ãƒœã‚¿ãƒ³ã«ä½¿ç”¨ã™ã‚‹ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã€ResourceID ã« -1 ä»¥å¤–ã‚’æ¸¡ã™å ´åˆã¯ NULL ã«ã™ã‚‹  DivNum:ãƒœã‚¿ãƒ³ç”»åƒä¸­ã®ãƒœã‚¿ãƒ³ã®æ•°  ResourceID:ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã®ãƒœã‚¿ãƒ³ã«ä½¿ç”¨ã™ã‚‹ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ãƒªã‚½ãƒ¼ã‚¹ã®ï¼©ï¼¤ã€BitmapName ã« NULL ã‚’æ¸¡ã™ã¨ã“ã®å¼•æ•°ãŒä½¿ç”¨ã•ã‚Œã‚‹ )
-extern	int			AddToolBarButton(			int Type /* TOOLBUTTON_TYPE_NORMAL ç­‰ */ , int State /* TOOLBUTTON_STATE_ENABLE ç­‰ */ , int ImageIndex, int ID ) ;		// ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã«ãƒœã‚¿ãƒ³ã‚’è¿½åŠ ã™ã‚‹( Type:ãƒœã‚¿ãƒ³ã‚¿ã‚¤ãƒ—( TOOLBUTTON_TYPE_NORMAL ç­‰( è§£èª¬ã¯ #define ã®å®šç¾©ã‚’å‚ç…§ã—ã¦ãã ã•ã„ ) )  State:åˆæœŸçŠ¶æ…‹( TOOLBUTTON_STATE_ENABLE ç­‰( è§£èª¬ã¯ #define ã®å®šç¾©ã‚’å‚ç…§ã—ã¦ãã ã•ã„ ) )  ImageIndex:ä½¿ç”¨ã™ã‚‹ãƒœã‚¿ãƒ³ã®ç”»åƒç•ªå·  ID:ãƒœã‚¿ãƒ³ã«å‰²ã‚Šå½“ã¦ã‚‹è­˜åˆ¥ç•ªå·  )
-extern	int			AddToolBarSep(				void ) ;																												// ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã«éš™é–“ã‚’è¿½åŠ ã™ã‚‹
-extern	int			GetToolBarButtonState(		int ID ) ;																												// ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã®ãƒœã‚¿ãƒ³ã®çŠ¶æ…‹ã‚’å–å¾—ã™ã‚‹( ID:AddToolBarButtonã§è¨­å®šã—ãŸãƒœã‚¿ãƒ³ã®è­˜åˆ¥ç•ªå·ã€€ã€€æˆ»ã‚Šå€¤ã€€TRUE:æŠ¼ã•ã‚Œã¦ã„ã‚‹ or æŠ¼ã•ã‚ŒãŸ  FALSE:æŠ¼ã•ã‚Œã¦ã„ãªã„ )
-extern	int			SetToolBarButtonState(		int ID , int State /* TOOLBUTTON_STATE_ENABLE ç­‰ */ ) ;																	// ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã®ãƒœã‚¿ãƒ³ã®çŠ¶æ…‹ã‚’è¨­å®šã™ã‚‹( ID:AddToolBarButtonã§è¨­å®šã—ãŸãƒœã‚¿ãƒ³ã®è­˜åˆ¥ç•ªå·ã€€State:è¨­å®šã™ã‚‹çŠ¶æ…‹( TOOLBUTTON_STATE_ENABLE ç­‰( è§£èª¬ã¯ #define ã®å®šç¾©ã‚’å‚ç…§ã—ã¦ãã ã•ã„ ) )
-extern	int			DeleteAllToolBarButton(		void ) ;																												// ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã®ãƒœã‚¿ãƒ³ã‚’å…¨ã¦å‰Šé™¤ã™ã‚‹
+// ƒc[ƒ‹ƒo[ŠÖŒW
+extern	int			SetupToolBar(				const TCHAR *BitmapName,                          int DivNum, int ResourceID DEFAULTPARAM( = -1 ) ) ;					// ƒc[ƒ‹ƒo[‚Ì€”õABitmapName ‚É NULL, ResourceID ‚É -1 ‚ğ“n‚·‚Æƒc[ƒ‹ƒo[‚ğ‰ğœ( BitmapName:ƒc[ƒ‹ƒo[‚Ìƒ{ƒ^ƒ“‚Ég—p‚·‚é‰æ‘œƒtƒ@ƒCƒ‹ƒpƒXAResourceID ‚É -1 ˆÈŠO‚ğ“n‚·ê‡‚Í NULL ‚É‚·‚é  DivNum:ƒ{ƒ^ƒ“‰æ‘œ’†‚Ìƒ{ƒ^ƒ“‚Ì”  ResourceID:ƒc[ƒ‹ƒo[‚Ìƒ{ƒ^ƒ“‚Ég—p‚·‚éƒrƒbƒgƒ}ƒbƒvƒŠƒ\[ƒX‚Ì‚h‚cABitmapName ‚É NULL ‚ğ“n‚·‚Æ‚±‚Ìˆø”‚ªg—p‚³‚ê‚é )
+extern	int			SetupToolBarWithStrLen(		const TCHAR *BitmapName, size_t BitmapNameLength, int DivNum, int ResourceID DEFAULTPARAM( = -1 ) ) ;					// ƒc[ƒ‹ƒo[‚Ì€”õABitmapName ‚É NULL, ResourceID ‚É -1 ‚ğ“n‚·‚Æƒc[ƒ‹ƒo[‚ğ‰ğœ( BitmapName:ƒc[ƒ‹ƒo[‚Ìƒ{ƒ^ƒ“‚Ég—p‚·‚é‰æ‘œƒtƒ@ƒCƒ‹ƒpƒXAResourceID ‚É -1 ˆÈŠO‚ğ“n‚·ê‡‚Í NULL ‚É‚·‚é  DivNum:ƒ{ƒ^ƒ“‰æ‘œ’†‚Ìƒ{ƒ^ƒ“‚Ì”  ResourceID:ƒc[ƒ‹ƒo[‚Ìƒ{ƒ^ƒ“‚Ég—p‚·‚éƒrƒbƒgƒ}ƒbƒvƒŠƒ\[ƒX‚Ì‚h‚cABitmapName ‚É NULL ‚ğ“n‚·‚Æ‚±‚Ìˆø”‚ªg—p‚³‚ê‚é )
+extern	int			AddToolBarButton(			int Type /* TOOLBUTTON_TYPE_NORMAL “™ */ , int State /* TOOLBUTTON_STATE_ENABLE “™ */ , int ImageIndex, int ID ) ;		// ƒc[ƒ‹ƒo[‚Éƒ{ƒ^ƒ“‚ğ’Ç‰Á‚·‚é( Type:ƒ{ƒ^ƒ“ƒ^ƒCƒv( TOOLBUTTON_TYPE_NORMAL “™( ‰ğà‚Í #define ‚Ì’è‹`‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢ ) )  State:‰Šúó‘Ô( TOOLBUTTON_STATE_ENABLE “™( ‰ğà‚Í #define ‚Ì’è‹`‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢ ) )  ImageIndex:g—p‚·‚éƒ{ƒ^ƒ“‚Ì‰æ‘œ”Ô†  ID:ƒ{ƒ^ƒ“‚ÉŠ„‚è“–‚Ä‚é¯•Ê”Ô†  )
+extern	int			AddToolBarSep(				void ) ;																												// ƒc[ƒ‹ƒo[‚ÉŒ„ŠÔ‚ğ’Ç‰Á‚·‚é
+extern	int			GetToolBarButtonState(		int ID ) ;																												// ƒc[ƒ‹ƒo[‚Ìƒ{ƒ^ƒ“‚Ìó‘Ô‚ğæ“¾‚·‚é( ID:AddToolBarButton‚Åİ’è‚µ‚½ƒ{ƒ^ƒ“‚Ì¯•Ê”Ô†@@–ß‚è’l@TRUE:‰Ÿ‚³‚ê‚Ä‚¢‚é or ‰Ÿ‚³‚ê‚½  FALSE:‰Ÿ‚³‚ê‚Ä‚¢‚È‚¢ )
+extern	int			SetToolBarButtonState(		int ID , int State /* TOOLBUTTON_STATE_ENABLE “™ */ ) ;																	// ƒc[ƒ‹ƒo[‚Ìƒ{ƒ^ƒ“‚Ìó‘Ô‚ğİ’è‚·‚é( ID:AddToolBarButton‚Åİ’è‚µ‚½ƒ{ƒ^ƒ“‚Ì¯•Ê”Ô†@State:İ’è‚·‚éó‘Ô( TOOLBUTTON_STATE_ENABLE “™( ‰ğà‚Í #define ‚Ì’è‹`‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢ ) )
+extern	int			DeleteAllToolBarButton(		void ) ;																												// ƒc[ƒ‹ƒo[‚Ìƒ{ƒ^ƒ“‚ğ‘S‚Äíœ‚·‚é
 
-// ãƒ¡ãƒ‹ãƒ¥ãƒ¼é–¢ä¿‚
-extern	int			SetUseMenuFlag(						int Flag ) ;																										// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’æœ‰åŠ¹ã«ã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( TRUE:ä½¿ç”¨ã™ã‚‹  FALSE:ä½¿ç”¨ã—ãªã„ )
-extern	int			SetUseKeyAccelFlag(					int Flag ) ;																										// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã‚¢ã‚¯ã‚»ãƒ©ãƒ¬ãƒ¼ã‚¿ãƒ¼ã‚’ä½¿ç”¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( TRUE:ä½¿ç”¨ã™ã‚‹  FALSE:ä½¿ç”¨ã—ãªã„ )
+// ƒƒjƒ…[ŠÖŒW
+extern	int			SetUseMenuFlag(						int Flag ) ;																										// ƒƒjƒ…[‚ğ—LŒø‚É‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:g—p‚·‚é  FALSE:g—p‚µ‚È‚¢ )
+extern	int			SetUseKeyAccelFlag(					int Flag ) ;																										// ƒL[ƒ{[ƒhƒAƒNƒZƒ‰ƒŒ[ƒ^[‚ğg—p‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:g—p‚·‚é  FALSE:g—p‚µ‚È‚¢ )
 
-extern	int			AddKeyAccel(						const TCHAR *ItemName,                        int ItemID , int KeyCode , int CtrlFlag , int AltFlag , int ShiftFlag ) ;	// ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆã‚­ãƒ¼ã‚’è¿½åŠ ã™ã‚‹( ItemName:ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆã‚­ãƒ¼ã‚’å‰²ã‚Šå½“ã¦ã‚‹ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ã‚¢ã‚¤ãƒ†ãƒ å( AddMenuItem ã§ NewItemName ã«æ¸¡ã—ãŸåå‰ )ã€ItemID ã‚’ä½¿ç”¨ã™ã‚‹å ´åˆã¯ NULL ã‚’æ¸¡ã™  ItemID:ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã®è­˜åˆ¥ç•ªå·( AddMenuItem ã®å¼•æ•° NewItemID ã§æŒ‡å®šã—ãŸã‚‚ã® )ã€ItemName ã‚’ä½¿ç”¨ã™ã‚‹å ´åˆã¯ -1 ã‚’æ¸¡ã™  KeyCode:ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆã‚­ãƒ¼ã®ã‚­ãƒ¼( KEY_INPUT_L ç­‰ )  CtrlFlag:åŒæ™‚ã«CTRLã‚­ãƒ¼ã‚’æŠ¼ã™å¿…è¦ãŒã‚ã‚‹ã‚ˆã†ã«ã™ã‚‹ã‹ã©ã†ã‹( TRUE:æŠ¼ã™å¿…è¦ãŒã‚ã‚‹  FALSE:æŠ¼ã•ãªãã¦ã‚‚è‰¯ã„ )  AltFlag:åŒæ™‚ã«ALTã‚­ãƒ¼ã‚’æŠ¼ã™å¿…è¦ãŒã‚ã‚‹ã‚ˆã†ã«ã™ã‚‹ã‹ã©ã†ã‹( TRUE:æŠ¼ã™å¿…è¦ãŒã‚ã‚‹  FALSE:æŠ¼ã•ãªãã¦ã‚‚è‰¯ã„ )  ShiftFlag:åŒæ™‚ã«SHIFTã‚­ãƒ¼ã‚’æŠ¼ã™å¿…è¦ãŒã‚ã‚‹ã‚ˆã†ã«ã™ã‚‹ã‹ã©ã†ã‹( TRUE:æŠ¼ã™å¿…è¦ãŒã‚ã‚‹  FALSE:æŠ¼ã•ãªãã¦ã‚‚è‰¯ã„ )
-extern	int			AddKeyAccelWithStrLen(				const TCHAR *ItemName, size_t ItemNameLength, int ItemID , int KeyCode , int CtrlFlag , int AltFlag , int ShiftFlag ) ;	// ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆã‚­ãƒ¼ã‚’è¿½åŠ ã™ã‚‹( ItemName:ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆã‚­ãƒ¼ã‚’å‰²ã‚Šå½“ã¦ã‚‹ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ã‚¢ã‚¤ãƒ†ãƒ å( AddMenuItem ã§ NewItemName ã«æ¸¡ã—ãŸåå‰ )ã€ItemID ã‚’ä½¿ç”¨ã™ã‚‹å ´åˆã¯ NULL ã‚’æ¸¡ã™  ItemID:ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã®è­˜åˆ¥ç•ªå·( AddMenuItem ã®å¼•æ•° NewItemID ã§æŒ‡å®šã—ãŸã‚‚ã® )ã€ItemName ã‚’ä½¿ç”¨ã™ã‚‹å ´åˆã¯ -1 ã‚’æ¸¡ã™  KeyCode:ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆã‚­ãƒ¼ã®ã‚­ãƒ¼( KEY_INPUT_L ç­‰ )  CtrlFlag:åŒæ™‚ã«CTRLã‚­ãƒ¼ã‚’æŠ¼ã™å¿…è¦ãŒã‚ã‚‹ã‚ˆã†ã«ã™ã‚‹ã‹ã©ã†ã‹( TRUE:æŠ¼ã™å¿…è¦ãŒã‚ã‚‹  FALSE:æŠ¼ã•ãªãã¦ã‚‚è‰¯ã„ )  AltFlag:åŒæ™‚ã«ALTã‚­ãƒ¼ã‚’æŠ¼ã™å¿…è¦ãŒã‚ã‚‹ã‚ˆã†ã«ã™ã‚‹ã‹ã©ã†ã‹( TRUE:æŠ¼ã™å¿…è¦ãŒã‚ã‚‹  FALSE:æŠ¼ã•ãªãã¦ã‚‚è‰¯ã„ )  ShiftFlag:åŒæ™‚ã«SHIFTã‚­ãƒ¼ã‚’æŠ¼ã™å¿…è¦ãŒã‚ã‚‹ã‚ˆã†ã«ã™ã‚‹ã‹ã©ã†ã‹( TRUE:æŠ¼ã™å¿…è¦ãŒã‚ã‚‹  FALSE:æŠ¼ã•ãªãã¦ã‚‚è‰¯ã„ )
-extern	int			AddKeyAccel_Name(					const TCHAR *ItemName,                        int KeyCode , int CtrlFlag , int AltFlag , int ShiftFlag ) ;				// ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆã‚­ãƒ¼ã‚’è¿½åŠ ã™ã‚‹( å„å¼•æ•°ã®è§£èª¬ã¯ AddKeyAccel ã¨åŒã˜ã€ItemID ãŒç„¡ããªã£ãŸã ã‘ )
-extern	int			AddKeyAccel_NameWithStrLen(			const TCHAR *ItemName, size_t ItemNameLength, int KeyCode , int CtrlFlag , int AltFlag , int ShiftFlag ) ;				// ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆã‚­ãƒ¼ã‚’è¿½åŠ ã™ã‚‹( å„å¼•æ•°ã®è§£èª¬ã¯ AddKeyAccel ã¨åŒã˜ã€ItemID ãŒç„¡ããªã£ãŸã ã‘ )
-extern	int			AddKeyAccel_ID(						int ItemID, int KeyCode, int CtrlFlag, int AltFlag, int ShiftFlag ) ;												// ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆã‚­ãƒ¼ã‚’è¿½åŠ ã™ã‚‹( å„å¼•æ•°ã®è§£èª¬ã¯ AddKeyAccel ã¨åŒã˜ã€ItemName ãŒç„¡ããªã£ãŸã ã‘ )
-extern	int			ClearKeyAccel(						void ) ;																											// ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆã‚­ãƒ¼ã®æƒ…å ±ã‚’ãƒªã‚»ãƒƒãƒˆã™ã‚‹
+extern	int			AddKeyAccel(						const TCHAR *ItemName,                        int ItemID , int KeyCode , int CtrlFlag , int AltFlag , int ShiftFlag ) ;	// ƒVƒ‡[ƒgƒJƒbƒgƒL[‚ğ’Ç‰Á‚·‚é( ItemName:ƒVƒ‡[ƒgƒJƒbƒgƒL[‚ğŠ„‚è“–‚Ä‚éƒƒjƒ…[‚ÌƒAƒCƒeƒ€–¼( AddMenuItem ‚Å NewItemName ‚É“n‚µ‚½–¼‘O )AItemID ‚ğg—p‚·‚éê‡‚Í NULL ‚ğ“n‚·  ItemID:ƒƒjƒ…[€–Ú‚Ì¯•Ê”Ô†( AddMenuItem ‚Ìˆø” NewItemID ‚Åw’è‚µ‚½‚à‚Ì )AItemName ‚ğg—p‚·‚éê‡‚Í -1 ‚ğ“n‚·  KeyCode:ƒVƒ‡[ƒgƒJƒbƒgƒL[‚ÌƒL[( KEY_INPUT_L “™ )  CtrlFlag:“¯‚ÉCTRLƒL[‚ğ‰Ÿ‚·•K—v‚ª‚ ‚é‚æ‚¤‚É‚·‚é‚©‚Ç‚¤‚©( TRUE:‰Ÿ‚·•K—v‚ª‚ ‚é  FALSE:‰Ÿ‚³‚È‚­‚Ä‚à—Ç‚¢ )  AltFlag:“¯‚ÉALTƒL[‚ğ‰Ÿ‚·•K—v‚ª‚ ‚é‚æ‚¤‚É‚·‚é‚©‚Ç‚¤‚©( TRUE:‰Ÿ‚·•K—v‚ª‚ ‚é  FALSE:‰Ÿ‚³‚È‚­‚Ä‚à—Ç‚¢ )  ShiftFlag:“¯‚ÉSHIFTƒL[‚ğ‰Ÿ‚·•K—v‚ª‚ ‚é‚æ‚¤‚É‚·‚é‚©‚Ç‚¤‚©( TRUE:‰Ÿ‚·•K—v‚ª‚ ‚é  FALSE:‰Ÿ‚³‚È‚­‚Ä‚à—Ç‚¢ )
+extern	int			AddKeyAccelWithStrLen(				const TCHAR *ItemName, size_t ItemNameLength, int ItemID , int KeyCode , int CtrlFlag , int AltFlag , int ShiftFlag ) ;	// ƒVƒ‡[ƒgƒJƒbƒgƒL[‚ğ’Ç‰Á‚·‚é( ItemName:ƒVƒ‡[ƒgƒJƒbƒgƒL[‚ğŠ„‚è“–‚Ä‚éƒƒjƒ…[‚ÌƒAƒCƒeƒ€–¼( AddMenuItem ‚Å NewItemName ‚É“n‚µ‚½–¼‘O )AItemID ‚ğg—p‚·‚éê‡‚Í NULL ‚ğ“n‚·  ItemID:ƒƒjƒ…[€–Ú‚Ì¯•Ê”Ô†( AddMenuItem ‚Ìˆø” NewItemID ‚Åw’è‚µ‚½‚à‚Ì )AItemName ‚ğg—p‚·‚éê‡‚Í -1 ‚ğ“n‚·  KeyCode:ƒVƒ‡[ƒgƒJƒbƒgƒL[‚ÌƒL[( KEY_INPUT_L “™ )  CtrlFlag:“¯‚ÉCTRLƒL[‚ğ‰Ÿ‚·•K—v‚ª‚ ‚é‚æ‚¤‚É‚·‚é‚©‚Ç‚¤‚©( TRUE:‰Ÿ‚·•K—v‚ª‚ ‚é  FALSE:‰Ÿ‚³‚È‚­‚Ä‚à—Ç‚¢ )  AltFlag:“¯‚ÉALTƒL[‚ğ‰Ÿ‚·•K—v‚ª‚ ‚é‚æ‚¤‚É‚·‚é‚©‚Ç‚¤‚©( TRUE:‰Ÿ‚·•K—v‚ª‚ ‚é  FALSE:‰Ÿ‚³‚È‚­‚Ä‚à—Ç‚¢ )  ShiftFlag:“¯‚ÉSHIFTƒL[‚ğ‰Ÿ‚·•K—v‚ª‚ ‚é‚æ‚¤‚É‚·‚é‚©‚Ç‚¤‚©( TRUE:‰Ÿ‚·•K—v‚ª‚ ‚é  FALSE:‰Ÿ‚³‚È‚­‚Ä‚à—Ç‚¢ )
+extern	int			AddKeyAccel_Name(					const TCHAR *ItemName,                        int KeyCode , int CtrlFlag , int AltFlag , int ShiftFlag ) ;				// ƒVƒ‡[ƒgƒJƒbƒgƒL[‚ğ’Ç‰Á‚·‚é( Šeˆø”‚Ì‰ğà‚Í AddKeyAccel ‚Æ“¯‚¶AItemID ‚ª–³‚­‚È‚Á‚½‚¾‚¯ )
+extern	int			AddKeyAccel_NameWithStrLen(			const TCHAR *ItemName, size_t ItemNameLength, int KeyCode , int CtrlFlag , int AltFlag , int ShiftFlag ) ;				// ƒVƒ‡[ƒgƒJƒbƒgƒL[‚ğ’Ç‰Á‚·‚é( Šeˆø”‚Ì‰ğà‚Í AddKeyAccel ‚Æ“¯‚¶AItemID ‚ª–³‚­‚È‚Á‚½‚¾‚¯ )
+extern	int			AddKeyAccel_ID(						int ItemID, int KeyCode, int CtrlFlag, int AltFlag, int ShiftFlag ) ;												// ƒVƒ‡[ƒgƒJƒbƒgƒL[‚ğ’Ç‰Á‚·‚é( Šeˆø”‚Ì‰ğà‚Í AddKeyAccel ‚Æ“¯‚¶AItemName ‚ª–³‚­‚È‚Á‚½‚¾‚¯ )
+extern	int			ClearKeyAccel(						void ) ;																											// ƒVƒ‡[ƒgƒJƒbƒgƒL[‚Ìî•ñ‚ğƒŠƒZƒbƒg‚·‚é
 
-extern	int			AddMenuItem(						int AddType /* MENUITEM_ADD_CHILDç­‰ */ , const TCHAR *ItemName,                        int ItemID, int SeparatorFlag, const TCHAR *NewItemName = NULL ,                                int NewItemID = -1 ) ;	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«é …ç›®ã‚’è¿½åŠ ã™ã‚‹( AddType:é …ç›®ã‚¿ã‚¤ãƒ—( MENUITEM_ADD_CHILD ç­‰( è§£èª¬ã¯ #define ã®å®šç¾©ã‚’å‚ç…§ã—ã¦ãã ã•ã„ ) )    ItemName:AddType ãŒ MENUITEM_ADD_CHILDã®å ´åˆã¯è¦ªã¨ãªã‚‹é …ç›®ã®åå‰ã€MENUITEM_ADD_INSERTã®å ´åˆã¯æŒ¿å…¥ä½ç½®ã¨ãªã‚‹é …ç›®ã®åå‰ã€NULL ã‚’æŒ‡å®šã™ã‚‹ã¨ ItemID ãŒä½¿ç”¨ã•ã‚Œã‚‹   ItemID:ItemName ã®ä»£ã‚ã‚Šã«è­˜åˆ¥ç•ªå·ã§æŒ‡å®šã™ã‚‹ã‚‚ã®ã€AddTypeæ¯ã®é•ã„ã¯ ItemName ã®è§£èª¬ã®é€šã‚Šã€-1ã‚’æŒ‡å®šã™ã‚‹ã¨ ItemName ãŒä½¿ç”¨ã•ã‚Œã‚‹ã€€ã€€SeparatorFlag:åŒºåˆ‡ã‚Šç·šã‚’è¿½åŠ ã™ã‚‹ã‹ã©ã†ã‹( TRUE:åŒºåˆ‡ã‚Šç·šã‚’è¿½åŠ ã€ã“ã®å ´åˆ NewItemName ã¨ NewItemID ã¯ç„¡è¦–ã•ã‚Œã‚‹  FALSE:è¿½åŠ ã™ã‚‹ã®ã¯åŒºåˆ‡ã‚Šç·šã§ã¯ãªã„ )ã€€ã€€NewItemName:æ–°ã—ã„é …ç›®ã®åå‰  NewItemID:æ–°ã—ã„é …ç›®ã®è­˜åˆ¥ç•ªå·ã€-1ã‚’æŒ‡å®šã™ã‚‹ã¨å†…éƒ¨ã§é©å½“ãªç•ªå·ãŒå‰²ã‚Šå½“ã¦ã‚‰ã‚Œã‚‹ )
-extern	int			AddMenuItemWithStrLen(				int AddType /* MENUITEM_ADD_CHILDç­‰ */ , const TCHAR *ItemName, size_t ItemNameLength, int ItemID, int SeparatorFlag, const TCHAR *NewItemName = NULL , size_t NewItemNameLength = 0 , int NewItemID = -1 ) ;	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«é …ç›®ã‚’è¿½åŠ ã™ã‚‹( AddType:é …ç›®ã‚¿ã‚¤ãƒ—( MENUITEM_ADD_CHILD ç­‰( è§£èª¬ã¯ #define ã®å®šç¾©ã‚’å‚ç…§ã—ã¦ãã ã•ã„ ) )    ItemName:AddType ãŒ MENUITEM_ADD_CHILDã®å ´åˆã¯è¦ªã¨ãªã‚‹é …ç›®ã®åå‰ã€MENUITEM_ADD_INSERTã®å ´åˆã¯æŒ¿å…¥ä½ç½®ã¨ãªã‚‹é …ç›®ã®åå‰ã€NULL ã‚’æŒ‡å®šã™ã‚‹ã¨ ItemID ãŒä½¿ç”¨ã•ã‚Œã‚‹   ItemID:ItemName ã®ä»£ã‚ã‚Šã«è­˜åˆ¥ç•ªå·ã§æŒ‡å®šã™ã‚‹ã‚‚ã®ã€AddTypeæ¯ã®é•ã„ã¯ ItemName ã®è§£èª¬ã®é€šã‚Šã€-1ã‚’æŒ‡å®šã™ã‚‹ã¨ ItemName ãŒä½¿ç”¨ã•ã‚Œã‚‹ã€€ã€€SeparatorFlag:åŒºåˆ‡ã‚Šç·šã‚’è¿½åŠ ã™ã‚‹ã‹ã©ã†ã‹( TRUE:åŒºåˆ‡ã‚Šç·šã‚’è¿½åŠ ã€ã“ã®å ´åˆ NewItemName ã¨ NewItemID ã¯ç„¡è¦–ã•ã‚Œã‚‹  FALSE:è¿½åŠ ã™ã‚‹ã®ã¯åŒºåˆ‡ã‚Šç·šã§ã¯ãªã„ )ã€€ã€€NewItemName:æ–°ã—ã„é …ç›®ã®åå‰  NewItemID:æ–°ã—ã„é …ç›®ã®è­˜åˆ¥ç•ªå·ã€-1ã‚’æŒ‡å®šã™ã‚‹ã¨å†…éƒ¨ã§é©å½“ãªç•ªå·ãŒå‰²ã‚Šå½“ã¦ã‚‰ã‚Œã‚‹ )
-extern	int			DeleteMenuItem(						const TCHAR *ItemName,                        int ItemID ) ;														// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‹ã‚‰é¸æŠé …ç›®ã‚’å‰Šé™¤ã™ã‚‹( ItemName:å‰Šé™¤ã™ã‚‹é …ç›®ã®åå‰( AddMenuItem ã§ NewItemName ã«æ¸¡ã—ãŸåå‰ )ã€NULL ã‚’æŒ‡å®šã™ã‚‹ã¨ ItemID ãŒä½¿ç”¨ã•ã‚Œã‚‹  ItemID:å‰Šé™¤ã™ã‚‹é …ç›®ã®è­˜åˆ¥ç•ªå·( AddMenuItem ã§ NewItemID ã«æ¸¡ã—ãŸç•ªå· )ã€-1 ã‚’æŒ‡å®šã™ã‚‹ã¨ ItemName ãŒä½¿ç”¨ã•ã‚Œã‚‹ )
-extern	int			DeleteMenuItemWithStrLen(			const TCHAR *ItemName, size_t ItemNameLength, int ItemID ) ;														// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‹ã‚‰é¸æŠé …ç›®ã‚’å‰Šé™¤ã™ã‚‹( ItemName:å‰Šé™¤ã™ã‚‹é …ç›®ã®åå‰( AddMenuItem ã§ NewItemName ã«æ¸¡ã—ãŸåå‰ )ã€NULL ã‚’æŒ‡å®šã™ã‚‹ã¨ ItemID ãŒä½¿ç”¨ã•ã‚Œã‚‹  ItemID:å‰Šé™¤ã™ã‚‹é …ç›®ã®è­˜åˆ¥ç•ªå·( AddMenuItem ã§ NewItemID ã«æ¸¡ã—ãŸç•ªå· )ã€-1 ã‚’æŒ‡å®šã™ã‚‹ã¨ ItemName ãŒä½¿ç”¨ã•ã‚Œã‚‹ )
-extern	int			CheckMenuItemSelect(				const TCHAR *ItemName,                        int ItemID ) ;														// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãŒé¸æŠã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’å–å¾—ã™ã‚‹( æˆ»ã‚Šå€¤ã€€ 0:é¸æŠã•ã‚Œã¦ã„ãªã„  1:é¸æŠã•ã‚ŒãŸ   ItemName ã¨ ItemID ã«ã¤ã„ã¦ã¯é–¢æ•° DeleteMenuItem ã®æ³¨é‡ˆã‚’å‚ç…§ã—ã¦ãã ã•ã„ )
-extern	int			CheckMenuItemSelectWithStrLen(		const TCHAR *ItemName, size_t ItemNameLength, int ItemID ) ;														// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãŒé¸æŠã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’å–å¾—ã™ã‚‹( æˆ»ã‚Šå€¤ã€€ 0:é¸æŠã•ã‚Œã¦ã„ãªã„  1:é¸æŠã•ã‚ŒãŸ   ItemName ã¨ ItemID ã«ã¤ã„ã¦ã¯é–¢æ•° DeleteMenuItem ã®æ³¨é‡ˆã‚’å‚ç…§ã—ã¦ãã ã•ã„ )
-extern	int			SetMenuItemEnable(					const TCHAR *ItemName,                        int ItemID, int EnableFlag ) ;										// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é …ç›®ã‚’é¸æŠå‡ºæ¥ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( EnableFlag:é …ç›®ãŒé¸æŠã§ãã‚‹ã‹ã©ã†ã‹( TRUE:é¸æŠã§ãã‚‹   FALSE:é¸æŠã§ããªã„ )   ItemName ã¨ ItemID ã«ã¤ã„ã¦ã¯é–¢æ•° DeleteMenuItem ã®æ³¨é‡ˆã‚’å‚ç…§ã—ã¦ãã ã•ã„ )
-extern	int			SetMenuItemEnableWithStrLen(		const TCHAR *ItemName, size_t ItemNameLength, int ItemID, int EnableFlag ) ;										// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é …ç›®ã‚’é¸æŠå‡ºæ¥ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( EnableFlag:é …ç›®ãŒé¸æŠã§ãã‚‹ã‹ã©ã†ã‹( TRUE:é¸æŠã§ãã‚‹   FALSE:é¸æŠã§ããªã„ )   ItemName ã¨ ItemID ã«ã¤ã„ã¦ã¯é–¢æ•° DeleteMenuItem ã®æ³¨é‡ˆã‚’å‚ç…§ã—ã¦ãã ã•ã„ )
-extern	int			SetMenuItemMark(					const TCHAR *ItemName,                        int ItemID, int Mark ) ;												// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é …ç›®ã«ãƒã‚§ãƒƒã‚¯ãƒãƒ¼ã‚¯ã‚„ãƒ©ã‚¸ã‚ªãƒœã‚¿ãƒ³ã‚’è¡¨ç¤ºã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( Mark:è¨­å®šã™ã‚‹ãƒãƒ¼ã‚¯( MENUITEM_MARK_NONE ç­‰( è§£èª¬ã¯ #define ã®å®šç¾©ã‚’å‚ç…§ã—ã¦ãã ã•ã„ )    ItemName ã¨ ItemID ã«ã¤ã„ã¦ã¯é–¢æ•° DeleteMenuItem ã®æ³¨é‡ˆã‚’å‚ç…§ã—ã¦ãã ã•ã„ ) )
-extern	int			SetMenuItemMarkWithStrLen(			const TCHAR *ItemName, size_t ItemNameLength, int ItemID, int Mark ) ;												// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é …ç›®ã«ãƒã‚§ãƒƒã‚¯ãƒãƒ¼ã‚¯ã‚„ãƒ©ã‚¸ã‚ªãƒœã‚¿ãƒ³ã‚’è¡¨ç¤ºã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( Mark:è¨­å®šã™ã‚‹ãƒãƒ¼ã‚¯( MENUITEM_MARK_NONE ç­‰( è§£èª¬ã¯ #define ã®å®šç¾©ã‚’å‚ç…§ã—ã¦ãã ã•ã„ )    ItemName ã¨ ItemID ã«ã¤ã„ã¦ã¯é–¢æ•° DeleteMenuItem ã®æ³¨é‡ˆã‚’å‚ç…§ã—ã¦ãã ã•ã„ ) )
-extern	int			CheckMenuItemSelectAll(				void ) ;																											// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é …ç›®ãŒã©ã‚Œã‹é¸æŠã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’å–å¾—ã™ã‚‹( æˆ»ã‚Šå€¤  TRUE:ã©ã‚Œã‹é¸æŠã•ã‚ŒãŸ  FALSE:é¸æŠã•ã‚Œã¦ã„ãªã„ )
+extern	int			AddMenuItem(						int AddType /* MENUITEM_ADD_CHILD“™ */ , const TCHAR *ItemName,                        int ItemID, int SeparatorFlag, const TCHAR *NewItemName DEFAULTPARAM( = NULL ) ,                                                int NewItemID DEFAULTPARAM( = -1 ) ) ;	// ƒƒjƒ…[‚É€–Ú‚ğ’Ç‰Á‚·‚é( AddType:€–Úƒ^ƒCƒv( MENUITEM_ADD_CHILD “™( ‰ğà‚Í #define ‚Ì’è‹`‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢ ) )    ItemName:AddType ‚ª MENUITEM_ADD_CHILD‚Ìê‡‚Íe‚Æ‚È‚é€–Ú‚Ì–¼‘OAMENUITEM_ADD_INSERT‚Ìê‡‚Í‘}“üˆÊ’u‚Æ‚È‚é€–Ú‚Ì–¼‘OANULL ‚ğw’è‚·‚é‚Æ ItemID ‚ªg—p‚³‚ê‚é   ItemID:ItemName ‚Ì‘ã‚í‚è‚É¯•Ê”Ô†‚Åw’è‚·‚é‚à‚ÌAAddType–ˆ‚Ìˆá‚¢‚Í ItemName ‚Ì‰ğà‚Ì’Ê‚èA-1‚ğw’è‚·‚é‚Æ ItemName ‚ªg—p‚³‚ê‚é@@SeparatorFlag:‹æØ‚èü‚ğ’Ç‰Á‚·‚é‚©‚Ç‚¤‚©( TRUE:‹æØ‚èü‚ğ’Ç‰ÁA‚±‚Ìê‡ NewItemName ‚Æ NewItemID ‚Í–³‹‚³‚ê‚é  FALSE:’Ç‰Á‚·‚é‚Ì‚Í‹æØ‚èü‚Å‚Í‚È‚¢ )@@NewItemName:V‚µ‚¢€–Ú‚Ì–¼‘O  NewItemID:V‚µ‚¢€–Ú‚Ì¯•Ê”Ô†A-1‚ğw’è‚·‚é‚Æ“à•”‚Å“K“–‚È”Ô†‚ªŠ„‚è“–‚Ä‚ç‚ê‚é )
+extern	int			AddMenuItemWithStrLen(				int AddType /* MENUITEM_ADD_CHILD“™ */ , const TCHAR *ItemName, size_t ItemNameLength, int ItemID, int SeparatorFlag, const TCHAR *NewItemName DEFAULTPARAM( = NULL ) , size_t NewItemNameLength DEFAULTPARAM( = 0 ) , int NewItemID DEFAULTPARAM( = -1 ) ) ;	// ƒƒjƒ…[‚É€–Ú‚ğ’Ç‰Á‚·‚é( AddType:€–Úƒ^ƒCƒv( MENUITEM_ADD_CHILD “™( ‰ğà‚Í #define ‚Ì’è‹`‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢ ) )    ItemName:AddType ‚ª MENUITEM_ADD_CHILD‚Ìê‡‚Íe‚Æ‚È‚é€–Ú‚Ì–¼‘OAMENUITEM_ADD_INSERT‚Ìê‡‚Í‘}“üˆÊ’u‚Æ‚È‚é€–Ú‚Ì–¼‘OANULL ‚ğw’è‚·‚é‚Æ ItemID ‚ªg—p‚³‚ê‚é   ItemID:ItemName ‚Ì‘ã‚í‚è‚É¯•Ê”Ô†‚Åw’è‚·‚é‚à‚ÌAAddType–ˆ‚Ìˆá‚¢‚Í ItemName ‚Ì‰ğà‚Ì’Ê‚èA-1‚ğw’è‚·‚é‚Æ ItemName ‚ªg—p‚³‚ê‚é@@SeparatorFlag:‹æØ‚èü‚ğ’Ç‰Á‚·‚é‚©‚Ç‚¤‚©( TRUE:‹æØ‚èü‚ğ’Ç‰ÁA‚±‚Ìê‡ NewItemName ‚Æ NewItemID ‚Í–³‹‚³‚ê‚é  FALSE:’Ç‰Á‚·‚é‚Ì‚Í‹æØ‚èü‚Å‚Í‚È‚¢ )@@NewItemName:V‚µ‚¢€–Ú‚Ì–¼‘O  NewItemID:V‚µ‚¢€–Ú‚Ì¯•Ê”Ô†A-1‚ğw’è‚·‚é‚Æ“à•”‚Å“K“–‚È”Ô†‚ªŠ„‚è“–‚Ä‚ç‚ê‚é )
+extern	int			DeleteMenuItem(						const TCHAR *ItemName,                        int ItemID ) ;														// ƒƒjƒ…[‚©‚ç‘I‘ğ€–Ú‚ğíœ‚·‚é( ItemName:íœ‚·‚é€–Ú‚Ì–¼‘O( AddMenuItem ‚Å NewItemName ‚É“n‚µ‚½–¼‘O )ANULL ‚ğw’è‚·‚é‚Æ ItemID ‚ªg—p‚³‚ê‚é  ItemID:íœ‚·‚é€–Ú‚Ì¯•Ê”Ô†( AddMenuItem ‚Å NewItemID ‚É“n‚µ‚½”Ô† )A-1 ‚ğw’è‚·‚é‚Æ ItemName ‚ªg—p‚³‚ê‚é )
+extern	int			DeleteMenuItemWithStrLen(			const TCHAR *ItemName, size_t ItemNameLength, int ItemID ) ;														// ƒƒjƒ…[‚©‚ç‘I‘ğ€–Ú‚ğíœ‚·‚é( ItemName:íœ‚·‚é€–Ú‚Ì–¼‘O( AddMenuItem ‚Å NewItemName ‚É“n‚µ‚½–¼‘O )ANULL ‚ğw’è‚·‚é‚Æ ItemID ‚ªg—p‚³‚ê‚é  ItemID:íœ‚·‚é€–Ú‚Ì¯•Ê”Ô†( AddMenuItem ‚Å NewItemID ‚É“n‚µ‚½”Ô† )A-1 ‚ğw’è‚·‚é‚Æ ItemName ‚ªg—p‚³‚ê‚é )
+extern	int			CheckMenuItemSelect(				const TCHAR *ItemName,                        int ItemID ) ;														// ƒƒjƒ…[‚ª‘I‘ğ‚³‚ê‚½‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é( –ß‚è’l@ 0:‘I‘ğ‚³‚ê‚Ä‚¢‚È‚¢  1:‘I‘ğ‚³‚ê‚½   ItemName ‚Æ ItemID ‚É‚Â‚¢‚Ä‚ÍŠÖ” DeleteMenuItem ‚Ì’ß‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢ )
+extern	int			CheckMenuItemSelectWithStrLen(		const TCHAR *ItemName, size_t ItemNameLength, int ItemID ) ;														// ƒƒjƒ…[‚ª‘I‘ğ‚³‚ê‚½‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é( –ß‚è’l@ 0:‘I‘ğ‚³‚ê‚Ä‚¢‚È‚¢  1:‘I‘ğ‚³‚ê‚½   ItemName ‚Æ ItemID ‚É‚Â‚¢‚Ä‚ÍŠÖ” DeleteMenuItem ‚Ì’ß‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢ )
+extern	int			SetMenuItemEnable(					const TCHAR *ItemName,                        int ItemID, int EnableFlag ) ;										// ƒƒjƒ…[‚Ì€–Ú‚ğ‘I‘ğo—ˆ‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( EnableFlag:€–Ú‚ª‘I‘ğ‚Å‚«‚é‚©‚Ç‚¤‚©( TRUE:‘I‘ğ‚Å‚«‚é   FALSE:‘I‘ğ‚Å‚«‚È‚¢ )   ItemName ‚Æ ItemID ‚É‚Â‚¢‚Ä‚ÍŠÖ” DeleteMenuItem ‚Ì’ß‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢ )
+extern	int			SetMenuItemEnableWithStrLen(		const TCHAR *ItemName, size_t ItemNameLength, int ItemID, int EnableFlag ) ;										// ƒƒjƒ…[‚Ì€–Ú‚ğ‘I‘ğo—ˆ‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( EnableFlag:€–Ú‚ª‘I‘ğ‚Å‚«‚é‚©‚Ç‚¤‚©( TRUE:‘I‘ğ‚Å‚«‚é   FALSE:‘I‘ğ‚Å‚«‚È‚¢ )   ItemName ‚Æ ItemID ‚É‚Â‚¢‚Ä‚ÍŠÖ” DeleteMenuItem ‚Ì’ß‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢ )
+extern	int			SetMenuItemMark(					const TCHAR *ItemName,                        int ItemID, int Mark ) ;												// ƒƒjƒ…[‚Ì€–Ú‚Éƒ`ƒFƒbƒNƒ}[ƒN‚âƒ‰ƒWƒIƒ{ƒ^ƒ“‚ğ•\¦‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( Mark:İ’è‚·‚éƒ}[ƒN( MENUITEM_MARK_NONE “™( ‰ğà‚Í #define ‚Ì’è‹`‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢ )    ItemName ‚Æ ItemID ‚É‚Â‚¢‚Ä‚ÍŠÖ” DeleteMenuItem ‚Ì’ß‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢ ) )
+extern	int			SetMenuItemMarkWithStrLen(			const TCHAR *ItemName, size_t ItemNameLength, int ItemID, int Mark ) ;												// ƒƒjƒ…[‚Ì€–Ú‚Éƒ`ƒFƒbƒNƒ}[ƒN‚âƒ‰ƒWƒIƒ{ƒ^ƒ“‚ğ•\¦‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( Mark:İ’è‚·‚éƒ}[ƒN( MENUITEM_MARK_NONE “™( ‰ğà‚Í #define ‚Ì’è‹`‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢ )    ItemName ‚Æ ItemID ‚É‚Â‚¢‚Ä‚ÍŠÖ” DeleteMenuItem ‚Ì’ß‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢ ) )
+extern	int			CheckMenuItemSelectAll(				void ) ;																											// ƒƒjƒ…[‚Ì€–Ú‚ª‚Ç‚ê‚©‘I‘ğ‚³‚ê‚½‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é( –ß‚è’l  TRUE:‚Ç‚ê‚©‘I‘ğ‚³‚ê‚½  FALSE:‘I‘ğ‚³‚ê‚Ä‚¢‚È‚¢ )
 
-extern	int			AddMenuItem_Name(					const TCHAR *ParentItemName,                              const TCHAR *NewItemName                           ) ;	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«é¸æŠé …ç›®ã‚’è¿½åŠ ã™ã‚‹( ParentItemName:è¦ªã¨ãªã‚‹é …ç›®ã®åå‰ã€è¦ªãŒæŒã¤ãƒªã‚¹ãƒˆã®æœ«ç«¯ã«æ–°ã—ã„é …ç›®ã‚’è¿½åŠ ã—ã¾ã™  NewItemName:æ–°ã—ã„é …ç›®ã®åå‰ )
-extern	int			AddMenuItem_NameWithStrLen(			const TCHAR *ParentItemName, size_t ParentItemNameLength, const TCHAR *NewItemName, size_t NewItemNameLength ) ;	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«é¸æŠé …ç›®ã‚’è¿½åŠ ã™ã‚‹( ParentItemName:è¦ªã¨ãªã‚‹é …ç›®ã®åå‰ã€è¦ªãŒæŒã¤ãƒªã‚¹ãƒˆã®æœ«ç«¯ã«æ–°ã—ã„é …ç›®ã‚’è¿½åŠ ã—ã¾ã™  NewItemName:æ–°ã—ã„é …ç›®ã®åå‰ )
-extern	int			AddMenuLine_Name(					const TCHAR *ParentItemName ) ;																						// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ãƒªã‚¹ãƒˆã«åŒºåˆ‡ã‚Šç·šã‚’è¿½åŠ ã™ã‚‹( ParentItemName:åŒºåˆ‡ã‚Šç·šã‚’ä»˜ã‘ã‚‹é …ç›®ãƒªã‚¹ãƒˆã®è¦ªã®åå‰ã€ãƒªã‚¹ãƒˆã®æœ«ç«¯ã«åŒºåˆ‡ã‚Šç·šã‚’è¿½åŠ ã—ã¾ã™ )
-extern	int			AddMenuLine_NameWithStrLen(			const TCHAR *ParentItemName, size_t ParentItemNameLength ) ;														// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ãƒªã‚¹ãƒˆã«åŒºåˆ‡ã‚Šç·šã‚’è¿½åŠ ã™ã‚‹( ParentItemName:åŒºåˆ‡ã‚Šç·šã‚’ä»˜ã‘ã‚‹é …ç›®ãƒªã‚¹ãƒˆã®è¦ªã®åå‰ã€ãƒªã‚¹ãƒˆã®æœ«ç«¯ã«åŒºåˆ‡ã‚Šç·šã‚’è¿½åŠ ã—ã¾ã™ )
-extern	int			InsertMenuItem_Name(				const TCHAR *ItemName,                        const TCHAR *NewItemName                           ) ;				// æŒ‡å®šã®é …ç›®ã¨ã€æŒ‡å®šã®é …ç›®ã®ä¸€ã¤ä¸Šã®é …ç›®ã¨ã®é–“ã«æ–°ã—ã„é …ç›®ã‚’è¿½åŠ ã™ã‚‹
-extern	int			InsertMenuItem_NameWithStrLen(		const TCHAR *ItemName, size_t ItemNameLength, const TCHAR *NewItemName, size_t NewItemNameLength ) ;				// æŒ‡å®šã®é …ç›®ã¨ã€æŒ‡å®šã®é …ç›®ã®ä¸€ã¤ä¸Šã®é …ç›®ã¨ã®é–“ã«æ–°ã—ã„é …ç›®ã‚’è¿½åŠ ã™ã‚‹
-extern	int			InsertMenuLine_Name(				const TCHAR *ItemName                        ) ;																	// æŒ‡å®šã®é …ç›®ã¨ã€æŒ‡å®šã®é …ç›®ã®ä¸€ã¤ä¸Šã®é …ç›®ã¨ã®é–“ã«åŒºåˆ‡ã‚Šç·šã‚’è¿½åŠ ã™ã‚‹
-extern	int			InsertMenuLine_NameWithStrLen(		const TCHAR *ItemName, size_t ItemNameLength ) ;																	// æŒ‡å®šã®é …ç›®ã¨ã€æŒ‡å®šã®é …ç›®ã®ä¸€ã¤ä¸Šã®é …ç›®ã¨ã®é–“ã«åŒºåˆ‡ã‚Šç·šã‚’è¿½åŠ ã™ã‚‹
-extern	int			DeleteMenuItem_Name(				const TCHAR *ItemName                        ) ;																	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‹ã‚‰é¸æŠé …ç›®ã‚’å‰Šé™¤ã™ã‚‹
-extern	int			DeleteMenuItem_NameWithStrLen(		const TCHAR *ItemName, size_t ItemNameLength ) ;																	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‹ã‚‰é¸æŠé …ç›®ã‚’å‰Šé™¤ã™ã‚‹
-extern	int			CheckMenuItemSelect_Name(			const TCHAR *ItemName                        ) ;																	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãŒé¸æŠã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’å–å¾—ã™ã‚‹( æˆ»ã‚Šå€¤ã€€0:é¸æŠã•ã‚Œã¦ã„ãªã„  1:é¸æŠã•ã‚ŒãŸ )
-extern	int			CheckMenuItemSelect_NameWithStrLen(	const TCHAR *ItemName, size_t ItemNameLength ) ;																	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãŒé¸æŠã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’å–å¾—ã™ã‚‹( æˆ»ã‚Šå€¤ã€€0:é¸æŠã•ã‚Œã¦ã„ãªã„  1:é¸æŠã•ã‚ŒãŸ )
-extern	int			SetMenuItemEnable_Name(				const TCHAR *ItemName,                        int EnableFlag ) ;													// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é …ç›®ã‚’é¸æŠå‡ºæ¥ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( EnableFlagã€€1:é¸æŠã§ãã‚‹  0:é¸æŠã§ããªã„ )
-extern	int			SetMenuItemEnable_NameWithStrLen(	const TCHAR *ItemName, size_t ItemNameLength, int EnableFlag ) ;													// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é …ç›®ã‚’é¸æŠå‡ºæ¥ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( EnableFlagã€€1:é¸æŠã§ãã‚‹  0:é¸æŠã§ããªã„ )
-extern	int			SetMenuItemMark_Name(				const TCHAR *ItemName,                        int Mark ) ;															// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é …ç›®ã«ãƒã‚§ãƒƒã‚¯ãƒãƒ¼ã‚¯ã‚„ãƒ©ã‚¸ã‚ªãƒœã‚¿ãƒ³ã‚’è¡¨ç¤ºã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( Mark:è¨­å®šã™ã‚‹ãƒãƒ¼ã‚¯( MENUITEM_MARK_NONE ç­‰ ) )
-extern	int			SetMenuItemMark_NameWithStrLen(		const TCHAR *ItemName, size_t ItemNameLength, int Mark ) ;															// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é …ç›®ã«ãƒã‚§ãƒƒã‚¯ãƒãƒ¼ã‚¯ã‚„ãƒ©ã‚¸ã‚ªãƒœã‚¿ãƒ³ã‚’è¡¨ç¤ºã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( Mark:è¨­å®šã™ã‚‹ãƒãƒ¼ã‚¯( MENUITEM_MARK_NONE ç­‰ ) )
+extern	int			AddMenuItem_Name(					const TCHAR *ParentItemName,                              const TCHAR *NewItemName                           ) ;	// ƒƒjƒ…[‚É‘I‘ğ€–Ú‚ğ’Ç‰Á‚·‚é( ParentItemName:e‚Æ‚È‚é€–Ú‚Ì–¼‘OAe‚ª‚ÂƒŠƒXƒg‚Ì––’[‚ÉV‚µ‚¢€–Ú‚ğ’Ç‰Á‚µ‚Ü‚·  NewItemName:V‚µ‚¢€–Ú‚Ì–¼‘O )
+extern	int			AddMenuItem_NameWithStrLen(			const TCHAR *ParentItemName, size_t ParentItemNameLength, const TCHAR *NewItemName, size_t NewItemNameLength ) ;	// ƒƒjƒ…[‚É‘I‘ğ€–Ú‚ğ’Ç‰Á‚·‚é( ParentItemName:e‚Æ‚È‚é€–Ú‚Ì–¼‘OAe‚ª‚ÂƒŠƒXƒg‚Ì––’[‚ÉV‚µ‚¢€–Ú‚ğ’Ç‰Á‚µ‚Ü‚·  NewItemName:V‚µ‚¢€–Ú‚Ì–¼‘O )
+extern	int			AddMenuLine_Name(					const TCHAR *ParentItemName ) ;																						// ƒƒjƒ…[‚ÌƒŠƒXƒg‚É‹æØ‚èü‚ğ’Ç‰Á‚·‚é( ParentItemName:‹æØ‚èü‚ğ•t‚¯‚é€–ÚƒŠƒXƒg‚Ìe‚Ì–¼‘OAƒŠƒXƒg‚Ì––’[‚É‹æØ‚èü‚ğ’Ç‰Á‚µ‚Ü‚· )
+extern	int			AddMenuLine_NameWithStrLen(			const TCHAR *ParentItemName, size_t ParentItemNameLength ) ;														// ƒƒjƒ…[‚ÌƒŠƒXƒg‚É‹æØ‚èü‚ğ’Ç‰Á‚·‚é( ParentItemName:‹æØ‚èü‚ğ•t‚¯‚é€–ÚƒŠƒXƒg‚Ìe‚Ì–¼‘OAƒŠƒXƒg‚Ì––’[‚É‹æØ‚èü‚ğ’Ç‰Á‚µ‚Ü‚· )
+extern	int			InsertMenuItem_Name(				const TCHAR *ItemName,                        const TCHAR *NewItemName                           ) ;				// w’è‚Ì€–Ú‚ÆAw’è‚Ì€–Ú‚Ìˆê‚Âã‚Ì€–Ú‚Æ‚ÌŠÔ‚ÉV‚µ‚¢€–Ú‚ğ’Ç‰Á‚·‚é
+extern	int			InsertMenuItem_NameWithStrLen(		const TCHAR *ItemName, size_t ItemNameLength, const TCHAR *NewItemName, size_t NewItemNameLength ) ;				// w’è‚Ì€–Ú‚ÆAw’è‚Ì€–Ú‚Ìˆê‚Âã‚Ì€–Ú‚Æ‚ÌŠÔ‚ÉV‚µ‚¢€–Ú‚ğ’Ç‰Á‚·‚é
+extern	int			InsertMenuLine_Name(				const TCHAR *ItemName                        ) ;																	// w’è‚Ì€–Ú‚ÆAw’è‚Ì€–Ú‚Ìˆê‚Âã‚Ì€–Ú‚Æ‚ÌŠÔ‚É‹æØ‚èü‚ğ’Ç‰Á‚·‚é
+extern	int			InsertMenuLine_NameWithStrLen(		const TCHAR *ItemName, size_t ItemNameLength ) ;																	// w’è‚Ì€–Ú‚ÆAw’è‚Ì€–Ú‚Ìˆê‚Âã‚Ì€–Ú‚Æ‚ÌŠÔ‚É‹æØ‚èü‚ğ’Ç‰Á‚·‚é
+extern	int			DeleteMenuItem_Name(				const TCHAR *ItemName                        ) ;																	// ƒƒjƒ…[‚©‚ç‘I‘ğ€–Ú‚ğíœ‚·‚é
+extern	int			DeleteMenuItem_NameWithStrLen(		const TCHAR *ItemName, size_t ItemNameLength ) ;																	// ƒƒjƒ…[‚©‚ç‘I‘ğ€–Ú‚ğíœ‚·‚é
+extern	int			CheckMenuItemSelect_Name(			const TCHAR *ItemName                        ) ;																	// ƒƒjƒ…[‚ª‘I‘ğ‚³‚ê‚½‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é( –ß‚è’l@0:‘I‘ğ‚³‚ê‚Ä‚¢‚È‚¢  1:‘I‘ğ‚³‚ê‚½ )
+extern	int			CheckMenuItemSelect_NameWithStrLen(	const TCHAR *ItemName, size_t ItemNameLength ) ;																	// ƒƒjƒ…[‚ª‘I‘ğ‚³‚ê‚½‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é( –ß‚è’l@0:‘I‘ğ‚³‚ê‚Ä‚¢‚È‚¢  1:‘I‘ğ‚³‚ê‚½ )
+extern	int			SetMenuItemEnable_Name(				const TCHAR *ItemName,                        int EnableFlag ) ;													// ƒƒjƒ…[‚Ì€–Ú‚ğ‘I‘ğo—ˆ‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( EnableFlag@1:‘I‘ğ‚Å‚«‚é  0:‘I‘ğ‚Å‚«‚È‚¢ )
+extern	int			SetMenuItemEnable_NameWithStrLen(	const TCHAR *ItemName, size_t ItemNameLength, int EnableFlag ) ;													// ƒƒjƒ…[‚Ì€–Ú‚ğ‘I‘ğo—ˆ‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( EnableFlag@1:‘I‘ğ‚Å‚«‚é  0:‘I‘ğ‚Å‚«‚È‚¢ )
+extern	int			SetMenuItemMark_Name(				const TCHAR *ItemName,                        int Mark ) ;															// ƒƒjƒ…[‚Ì€–Ú‚Éƒ`ƒFƒbƒNƒ}[ƒN‚âƒ‰ƒWƒIƒ{ƒ^ƒ“‚ğ•\¦‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( Mark:İ’è‚·‚éƒ}[ƒN( MENUITEM_MARK_NONE “™ ) )
+extern	int			SetMenuItemMark_NameWithStrLen(		const TCHAR *ItemName, size_t ItemNameLength, int Mark ) ;															// ƒƒjƒ…[‚Ì€–Ú‚Éƒ`ƒFƒbƒNƒ}[ƒN‚âƒ‰ƒWƒIƒ{ƒ^ƒ“‚ğ•\¦‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( Mark:İ’è‚·‚éƒ}[ƒN( MENUITEM_MARK_NONE “™ ) )
 
-extern	int			AddMenuItem_ID(						int ParentItemID, const TCHAR *NewItemName,                           int NewItemID = -1 ) ;						// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«é¸æŠé …ç›®ã‚’è¿½åŠ ã™ã‚‹
-extern	int			AddMenuItem_IDWithStrLen(			int ParentItemID, const TCHAR *NewItemName, size_t NewItemNameLength, int NewItemID = -1 ) ;						// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«é¸æŠé …ç›®ã‚’è¿½åŠ ã™ã‚‹
-extern	int			AddMenuLine_ID(						int ParentItemID ) ;																								// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ãƒªã‚¹ãƒˆã«åŒºåˆ‡ã‚Šç·šã‚’è¿½åŠ ã™ã‚‹
-extern	int			InsertMenuItem_ID(					int ItemID, int NewItemID ) ;																						// æŒ‡å®šã®é …ç›®ã¨ã€æŒ‡å®šã®é …ç›®ã®ä¸€ã¤ä¸Šã®é …ç›®ã¨ã®é–“ã«æ–°ã—ã„é …ç›®ã‚’è¿½åŠ ã™ã‚‹
-extern	int			InsertMenuLine_ID(					int ItemID, int NewItemID ) ;																						// æŒ‡å®šã®é …ç›®ã¨ã€æŒ‡å®šã®é …ç›®ã®ä¸€ã¤ä¸Šã®é …ç›®ã¨ã®é–“ã«åŒºåˆ‡ã‚Šç·šã‚’è¿½åŠ ã™ã‚‹
-extern	int			DeleteMenuItem_ID(					int ItemID ) ;																										// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‹ã‚‰é¸æŠé …ç›®ã‚’å‰Šé™¤ã™ã‚‹
-extern	int			CheckMenuItemSelect_ID(				int ItemID ) ;																										// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãŒé¸æŠã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’å–å¾—ã™ã‚‹( æˆ»ã‚Šå€¤ã€€ã€€0:é¸æŠã•ã‚Œã¦ã„ãªã„  1:é¸æŠã•ã‚ŒãŸ )
-extern	int			SetMenuItemEnable_ID(				int ItemID, int EnableFlag ) ;																						// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é …ç›®ã‚’é¸æŠå‡ºæ¥ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( EnableFlagã€€1:é¸æŠã§ãã‚‹  0:é¸æŠã§ããªã„ )
-extern	int			SetMenuItemMark_ID(					int ItemID, int Mark ) ;																							// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é …ç›®ã«ãƒã‚§ãƒƒã‚¯ãƒãƒ¼ã‚¯ã‚„ãƒ©ã‚¸ã‚ªãƒœã‚¿ãƒ³ã‚’è¡¨ç¤ºã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( Mark:è¨­å®šã™ã‚‹ãƒãƒ¼ã‚¯( MENUITEM_MARK_NONE ç­‰ ) )
+extern	int			AddMenuItem_ID(						int ParentItemID, const TCHAR *NewItemName,                           int NewItemID DEFAULTPARAM( = -1 ) ) ;		// ƒƒjƒ…[‚É‘I‘ğ€–Ú‚ğ’Ç‰Á‚·‚é
+extern	int			AddMenuItem_IDWithStrLen(			int ParentItemID, const TCHAR *NewItemName, size_t NewItemNameLength, int NewItemID DEFAULTPARAM( = -1 ) ) ;		// ƒƒjƒ…[‚É‘I‘ğ€–Ú‚ğ’Ç‰Á‚·‚é
+extern	int			AddMenuLine_ID(						int ParentItemID ) ;																								// ƒƒjƒ…[‚ÌƒŠƒXƒg‚É‹æØ‚èü‚ğ’Ç‰Á‚·‚é
+extern	int			InsertMenuItem_ID(					int ItemID, int NewItemID ) ;																						// w’è‚Ì€–Ú‚ÆAw’è‚Ì€–Ú‚Ìˆê‚Âã‚Ì€–Ú‚Æ‚ÌŠÔ‚ÉV‚µ‚¢€–Ú‚ğ’Ç‰Á‚·‚é
+extern	int			InsertMenuLine_ID(					int ItemID, int NewItemID ) ;																						// w’è‚Ì€–Ú‚ÆAw’è‚Ì€–Ú‚Ìˆê‚Âã‚Ì€–Ú‚Æ‚ÌŠÔ‚É‹æØ‚èü‚ğ’Ç‰Á‚·‚é
+extern	int			DeleteMenuItem_ID(					int ItemID ) ;																										// ƒƒjƒ…[‚©‚ç‘I‘ğ€–Ú‚ğíœ‚·‚é
+extern	int			CheckMenuItemSelect_ID(				int ItemID ) ;																										// ƒƒjƒ…[‚ª‘I‘ğ‚³‚ê‚½‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é( –ß‚è’l@@0:‘I‘ğ‚³‚ê‚Ä‚¢‚È‚¢  1:‘I‘ğ‚³‚ê‚½ )
+extern	int			SetMenuItemEnable_ID(				int ItemID, int EnableFlag ) ;																						// ƒƒjƒ…[‚Ì€–Ú‚ğ‘I‘ğo—ˆ‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( EnableFlag@1:‘I‘ğ‚Å‚«‚é  0:‘I‘ğ‚Å‚«‚È‚¢ )
+extern	int			SetMenuItemMark_ID(					int ItemID, int Mark ) ;																							// ƒƒjƒ…[‚Ì€–Ú‚Éƒ`ƒFƒbƒNƒ}[ƒN‚âƒ‰ƒWƒIƒ{ƒ^ƒ“‚ğ•\¦‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( Mark:İ’è‚·‚éƒ}[ƒN( MENUITEM_MARK_NONE “™ ) )
 
-extern	int			DeleteMenuItemAll(					void ) ;																											// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®å…¨ã¦ã®é¸æŠé …ç›®ã‚’å‰Šé™¤ã™ã‚‹
-extern	int			ClearMenuItemSelect(				void ) ;																											// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãŒé¸æŠã•ã‚ŒãŸã‹ã©ã†ã‹ã®æƒ…å ±ã‚’ãƒªã‚»ãƒƒãƒˆ
-extern	int			GetMenuItemID(						const TCHAR *ItemName                        ) ;																	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é …ç›®åã‹ã‚‰é …ç›®è­˜åˆ¥ç•ªå·ã‚’å–å¾—ã™ã‚‹
-extern	int			GetMenuItemIDWithStrLen(			const TCHAR *ItemName, size_t ItemNameLength ) ;																	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é …ç›®åã‹ã‚‰é …ç›®è­˜åˆ¥ç•ªå·ã‚’å–å¾—ã™ã‚‹
-extern	int			GetMenuItemName(					int ItemID, TCHAR *NameBuffer ) ;																					// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é …ç›®è­˜åˆ¥ç•ªå·ã‹ã‚‰é …ç›®åã‚’å–å¾—ã™ã‚‹
-extern	int 		LoadMenuResource(					int MenuResourceID ) ;																								// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’ãƒªã‚½ãƒ¼ã‚¹ã‹ã‚‰èª­ã¿è¾¼ã‚€
-extern	int			SetMenuItemSelectCallBackFunction(	void (* CallBackFunction )( const TCHAR *ItemName, int ItemID ) ) ;													// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é¸æŠé …ç›®ãŒé¸æŠã•ã‚ŒãŸã¨ãã«å‘¼ã°ã‚Œã‚‹ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã‚’è¨­å®šã™ã‚‹( CallBackFunction:é …ç›®ãŒé¸æŠã•ã‚ŒãŸã¨ãã«å‘¼ã°ã‚Œã‚‹ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã€å¼•æ•°ã«é …ç›®åã¨é …ç›®ã®è­˜åˆ¥ç•ªå·ã‚’æ¸¡ã•ã‚Œã¦å‘¼ã°ã‚Œã‚‹ )
+extern	int			DeleteMenuItemAll(					void ) ;																											// ƒƒjƒ…[‚Ì‘S‚Ä‚Ì‘I‘ğ€–Ú‚ğíœ‚·‚é
+extern	int			ClearMenuItemSelect(				void ) ;																											// ƒƒjƒ…[‚ª‘I‘ğ‚³‚ê‚½‚©‚Ç‚¤‚©‚Ìî•ñ‚ğƒŠƒZƒbƒg
+#ifndef DX_COMPILE_TYPE_C_LANGUAGE
+extern	int			GetMenuItemID(						const TCHAR *ItemName                        ) ;																	// ƒƒjƒ…[‚Ì€–Ú–¼‚©‚ç€–Ú¯•Ê”Ô†‚ğæ“¾‚·‚é
+#endif // DX_COMPILE_TYPE_C_LANGUAGE
+extern	int			GetMenuItemIDDX(					const TCHAR *ItemName                        ) ;																	// ƒƒjƒ…[‚Ì€–Ú–¼‚©‚ç€–Ú¯•Ê”Ô†‚ğæ“¾‚·‚é
+extern	int			GetMenuItemIDWithStrLen(			const TCHAR *ItemName, size_t ItemNameLength ) ;																	// ƒƒjƒ…[‚Ì€–Ú–¼‚©‚ç€–Ú¯•Ê”Ô†‚ğæ“¾‚·‚é
+extern	int			GetMenuItemName(					int ItemID, TCHAR *NameBuffer ) ;																					// ƒƒjƒ…[‚Ì€–Ú¯•Ê”Ô†‚©‚ç€–Ú–¼‚ğæ“¾‚·‚é
+extern	int 		LoadMenuResource(					int MenuResourceID ) ;																								// ƒƒjƒ…[‚ğƒŠƒ\[ƒX‚©‚ç“Ç‚İ‚Ş
+extern	int			SetMenuItemSelectCallBackFunction(	void (* CallBackFunction )( const TCHAR *ItemName, int ItemID ) ) ;													// ƒƒjƒ…[‚Ì‘I‘ğ€–Ú‚ª‘I‘ğ‚³‚ê‚½‚Æ‚«‚ÉŒÄ‚Î‚ê‚éƒR[ƒ‹ƒoƒbƒNŠÖ”‚ğİ’è‚·‚é( CallBackFunction:€–Ú‚ª‘I‘ğ‚³‚ê‚½‚Æ‚«‚ÉŒÄ‚Î‚ê‚éƒR[ƒ‹ƒoƒbƒNŠÖ”Aˆø”‚É€–Ú–¼‚Æ€–Ú‚Ì¯•Ê”Ô†‚ğ“n‚³‚ê‚ÄŒÄ‚Î‚ê‚é )
 
-extern	int			SetWindowMenu(						int MenuID, int (* MenuProc )( WORD ID ) ) ;																		// (å¤ã„é–¢æ•°)ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã«ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¨­å®šã™ã‚‹
-extern	int			SetDisplayMenuFlag(					int Flag ) ;																										// (å¤ã„é–¢æ•°)ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¡¨ç¤ºã™ã‚‹ã‹ã©ã†ã‹ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
-extern	int			GetDisplayMenuFlag(					void ) ;																											// (å¤ã„é–¢æ•°)ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è¡¨ç¤ºã—ã¦ã„ã‚‹ã‹ã©ã†ã‹ã‚’å–å¾—ã™ã‚‹
-extern	int			GetUseMenuFlag(						void ) ;																											// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’ä½¿ç”¨ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹ã‚’å¾—ã‚‹
-extern	int			SetAutoMenuDisplayFlag(				int Flag ) ;																										// ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³æ™‚ã«ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’è‡ªå‹•ã§è¡¨ç¤ºã—ãŸã‚Šéè¡¨ç¤ºã«ã—ãŸã‚Šã™ã‚‹ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
-
-
-
-
-
-
-
-
+extern	int			SetWindowMenu(						int MenuID, int (* MenuProc )( WORD ID ) ) ;																		// (ŒÃ‚¢ŠÖ”)ƒEƒCƒ“ƒhƒE‚Éƒƒjƒ…[‚ğİ’è‚·‚é
+extern	int			SetDisplayMenuFlag(					int Flag ) ;																										// (ŒÃ‚¢ŠÖ”)ƒƒjƒ…[‚ğ•\¦‚·‚é‚©‚Ç‚¤‚©‚ğƒZƒbƒg‚·‚é
+extern	int			GetDisplayMenuFlag(					void ) ;																											// (ŒÃ‚¢ŠÖ”)ƒƒjƒ…[‚ğ•\¦‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é
+extern	int			GetUseMenuFlag(						void ) ;																											// ƒƒjƒ…[‚ğg—p‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğ“¾‚é
+extern	int			SetAutoMenuDisplayFlag(				int Flag ) ;																										// ƒtƒ‹ƒXƒNƒŠ[ƒ“‚Éƒƒjƒ…[‚ğ©“®‚Å•\¦‚µ‚½‚è”ñ•\¦‚É‚µ‚½‚è‚·‚é‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO‚ğƒZƒbƒg‚·‚é
 
 
 
 
-// DxNetwork.cppé–¢æ•°ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€
+
+
+
+
+
+
+
+
+// DxNetwork.cppŠÖ”ƒvƒƒgƒ^ƒCƒvéŒ¾
 
 #ifndef DX_NON_NETWORK
-extern	int			GetWinSockLastError( void ) ;				// WinSock ã§æœ€å¾Œã«ç™ºç”Ÿã—ãŸã‚¨ãƒ©ãƒ¼ã®ã‚³ãƒ¼ãƒ‰ã‚’å–å¾—ã™ã‚‹
+extern	int			GetWinSockLastError( void ) ;				// WinSock ‚ÅÅŒã‚É”­¶‚µ‚½ƒGƒ‰[‚ÌƒR[ƒh‚ğæ“¾‚·‚é
 #endif // DX_NON_NETWORK
 
 
@@ -230,19 +243,41 @@ extern	int			GetWinSockLastError( void ) ;				// WinSock ã§æœ€å¾Œã«ç™ºç”Ÿã—ã
 
 
 
+// DxInputString.cppŠÖ”ƒvƒƒgƒ^ƒCƒvéŒ¾
 
-// DxInput.cppé–¢æ•°ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€
+#ifndef DX_NON_KEYEX
+
+extern	int			SetUseTSFFlag( int UseFlag ) ;											// ‚h‚l‚d‚ÌŠ¿š•ÏŠ·Œó•â•\¦‚Ìˆ—‚É TSF ‚ğg—p‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:g—p‚·‚é( ƒfƒtƒHƒ‹ƒg )  FALSE:g—p‚µ‚È‚¢ )
+
+#endif // DX_NON_KEYEX
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// DxInput.cppŠÖ”ƒvƒƒgƒ^ƒCƒvéŒ¾
 
 #ifndef DX_NON_INPUT
 
-extern	int			SetKeyExclusiveCooperativeLevelFlag(	int Flag ) ;															// DirectInput ã®ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®å”èª¿ãƒ¬ãƒ™ãƒ«ã‚’æ’ä»–ãƒ¬ãƒ™ãƒ«ã«ã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( TRUE:æ’ä»–ãƒ¬ãƒ™ãƒ«ã«ã™ã‚‹  FALSE:æ¨™æº–ãƒ¬ãƒ™ãƒ«ã«ã™ã‚‹( ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ ) )ã€DxLib_Init ã®å‘¼ã³å‡ºã—å‰ã§ã®ã¿å®Ÿè¡Œå¯èƒ½ã€€
-extern	int			SetKeyboardNotDirectInputFlag(			int Flag ) ;															// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®å…¥åŠ›å‡¦ç†ã« DirectInput ã‚’ä½¿ã‚ãªã„ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( TRUE:DirectInput ã‚’ä½¿ã‚ãšã€Windowsæ¨™æº–æ©Ÿèƒ½ã‚’ä½¿ç”¨ã™ã‚‹ã€€ã€€FALSE:DirectInput ã‚’ä½¿ç”¨ã™ã‚‹ )
-extern	int			SetUseDirectInputFlag(					int Flag ) ;															// å…¥åŠ›å‡¦ç†ã« DirectInput ã‚’ä½¿ç”¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( TRUE:DirectInput ã‚’ä½¿ç”¨ã™ã‚‹ã€€ã€€FALSE:DirectInput ã‚’ä½¿ã‚ãšã€Windowsæ¨™æº–æ©Ÿèƒ½ã‚’ä½¿ç”¨ã™ã‚‹ )
-extern	int			SetUseXInputFlag(						int Flag ) ;															// Xbox360ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ã®å…¥åŠ›å‡¦ç†ã« XInput ã‚’ä½¿ç”¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( TRUE:XInput ã‚’ä½¿ç”¨ã™ã‚‹( ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ )ã€€ã€€FALSE:XInput ã‚’ä½¿ç”¨ã—ãªã„ )
-extern	int			GetJoypadGUID(							int PadIndex, GUID *GuidInstanceBuffer, GUID *GuidProductBuffer = NULL ) ;	// ã‚¸ãƒ§ã‚¤ãƒ‘ãƒƒãƒ‰ã®ï¼§ï¼µIï¼¤ã‚’å¾—ã‚‹
-extern	int			GetJoypadName(							int InputType, TCHAR *InstanceNameBuffer, TCHAR *ProductNameBuffer ) ;	// ã‚¸ãƒ§ã‚¤ãƒ‘ãƒƒãƒ‰ã®ãƒ‡ãƒã‚¤ã‚¹ç™»éŒ²åã¨è£½å“ç™»éŒ²åã‚’å–å¾—ã™ã‚‹( InstanceNameBuffer, ProductNameBuffer å…±ã« 260 ä»¥ä¸Šã®ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚ºãŒå¿…è¦ )
-extern	int			ConvertKeyCodeToVirtualKey(				int KeyCode ) ;															// ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®ã‚­ãƒ¼ã‚³ãƒ¼ãƒ‰( KEY_INPUT_A ãªã© )ã«å¯¾å¿œã™ã‚‹ Windows ã®ä»®æƒ³ã‚­ãƒ¼ã‚³ãƒ¼ãƒ‰( VK_LEFT ãªã© ) ã‚’å–å¾—ã™ã‚‹( KeyCode:å¤‰æ›ã—ãŸã„ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®ã‚­ãƒ¼ã‚³ãƒ¼ãƒ‰ã€€æˆ»ã‚Šå€¤ï¼šWindowsã®ä»®æƒ³ã‚­ãƒ¼ã‚³ãƒ¼ãƒ‰ )
-extern	int			ConvertVirtualKeyToKeyCode(				int VirtualKey ) ;														//  Windows ã®ä»®æƒ³ã‚­ãƒ¼ã‚³ãƒ¼ãƒ‰( VK_LEFT ãªã© ) ã«å¯¾å¿œã™ã‚‹ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®ã‚­ãƒ¼ã‚³ãƒ¼ãƒ‰( KEY_INPUT_A ãªã© )ã‚’å–å¾—ã™ã‚‹( VirtualKey:å¤‰æ›ã—ãŸã„Windowsã®ä»®æƒ³ã‚­ãƒ¼ã‚³ãƒ¼ãƒ‰ã€€æˆ»ã‚Šå€¤ï¼šï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®ã‚­ãƒ¼ã‚³ãƒ¼ãƒ‰ )
+extern	int			SetKeyExclusiveCooperativeLevelFlag(	int Flag ) ;															// DirectInput ‚ÌƒL[ƒ{[ƒh‚Ì‹¦’²ƒŒƒxƒ‹‚ğ”r‘¼ƒŒƒxƒ‹‚É‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:”r‘¼ƒŒƒxƒ‹‚É‚·‚é  FALSE:•W€ƒŒƒxƒ‹‚É‚·‚é( ƒfƒtƒHƒ‹ƒg ) )ADxLib_Init ‚ÌŒÄ‚Ño‚µ‘O‚Å‚Ì‚İÀs‰Â”\@
+extern	int			SetKeyboardNotDirectInputFlag(			int Flag ) ;															// ƒL[ƒ{[ƒh‚Ì“ü—Íˆ—‚É DirectInput ‚ğg‚í‚È‚¢‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:DirectInput ‚ğg‚í‚¸AWindows•W€‹@”\‚ğg—p‚·‚é@@FALSE:DirectInput ‚ğg—p‚·‚é )
+extern	int			SetUseDirectInputFlag(					int UseFlag ) ;															// “ü—Íˆ—‚É DirectInput ‚ğg—p‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:DirectInput ‚ğg—p‚·‚é@@FALSE:DirectInput ‚ğg‚í‚¸AWindows•W€‹@”\‚ğg—p‚·‚é )
+extern	int			SetDirectInputMouseMode(				int Mode ) ;															// ƒ}ƒEƒX‚Ì“ü—Íˆ—‚É DirectInput ‚ğg—p‚·‚éê‡‚Ì“®ìƒ‚[ƒh‚ğİ’è‚·‚é( 0:ƒEƒBƒ“ƒhƒE‚ªƒAƒNƒeƒBƒu‚Èê‡‚Ì‚İ DirectInput ‚ğg—p‚·‚é  1:ƒEƒBƒ“ƒhƒE‚ÌƒAƒNƒeƒBƒuó‘Ô‚ÉŠÖŒW‚È‚­ DirectInput ‚ğg—p‚·‚é )
+extern	int			SetUseXInputFlag(						int Flag ) ;															// Xbox360ƒRƒ“ƒgƒ[ƒ‰‚Ì“ü—Íˆ—‚É XInput ‚ğg—p‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:XInput ‚ğg—p‚·‚é( ƒfƒtƒHƒ‹ƒg )@@FALSE:XInput ‚ğg—p‚µ‚È‚¢ )
+extern	int			SetUseXboxControllerDirectInputFlag(	int Flag ) ;															// Xbox360ƒRƒ“ƒgƒ[ƒ‰‚â Xbox OneƒRƒ“ƒgƒ[ƒ‰‚ğ DirectInputƒRƒ“ƒgƒ[ƒ‰‚Æ‚µ‚Ä‚àŒŸo‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:DirectInputƒRƒ“ƒgƒ[ƒ‰‚Æ‚µ‚Ä‚àŒŸo‚·‚é  FALSE:DirectInputƒRƒ“ƒgƒ[ƒ‰‚Æ‚µ‚Ä‚ÍŒŸo‚µ‚È‚¢(ƒfƒtƒHƒ‹ƒg) )ADxLib_Init ‚ÌŒÄ‚Ño‚µ‘O‚Å‚Ì‚İÀs‰Â”\
+extern	int			GetJoypadGUID(							int PadIndex, GUID *GuidInstanceBuffer, GUID *GuidProductBuffer DEFAULTPARAM( = NULL ) ) ;	// ƒWƒ‡ƒCƒpƒbƒh‚Ì‚f‚tI‚c‚ğ“¾‚é
+extern	int			GetJoypadName(							int InputType, TCHAR *InstanceNameBuffer, TCHAR *ProductNameBuffer ) ;	// ƒWƒ‡ƒCƒpƒbƒh‚ÌƒfƒoƒCƒX“o˜^–¼‚Æ»•i“o˜^–¼‚ğæ“¾‚·‚é( InstanceNameBuffer, ProductNameBuffer ‹¤‚É 260 ˆÈã‚Ìƒoƒbƒtƒ@ƒTƒCƒY‚ª•K—v )
+extern	int			ConvertKeyCodeToVirtualKey(				int KeyCode ) ;															// ‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚ÌƒL[ƒR[ƒh( KEY_INPUT_A ‚È‚Ç )‚É‘Î‰‚·‚é Windows ‚Ì‰¼‘zƒL[ƒR[ƒh( VK_LEFT ‚È‚Ç ) ‚ğæ“¾‚·‚é( KeyCode:•ÏŠ·‚µ‚½‚¢‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚ÌƒL[ƒR[ƒh@–ß‚è’lFWindows‚Ì‰¼‘zƒL[ƒR[ƒh )
+extern	int			ConvertVirtualKeyToKeyCode(				int VirtualKey ) ;														//  Windows ‚Ì‰¼‘zƒL[ƒR[ƒh( VK_LEFT ‚È‚Ç ) ‚É‘Î‰‚·‚é‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚ÌƒL[ƒR[ƒh( KEY_INPUT_A ‚È‚Ç )‚ğæ“¾‚·‚é( VirtualKey:•ÏŠ·‚µ‚½‚¢Windows‚Ì‰¼‘zƒL[ƒR[ƒh@–ß‚è’lF‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚ÌƒL[ƒR[ƒh )
 
 #endif // DX_NON_INPUT
 
@@ -258,63 +293,79 @@ extern	int			ConvertVirtualKeyToKeyCode(				int VirtualKey ) ;														//  
 
 #ifndef DX_NOTUSE_DRAWFUNCTION
 
-// ç”»åƒã‹ã‚‰ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒãƒ³ãƒ‰ãƒ«ã‚’ä½œæˆã™ã‚‹é–¢æ•°
-extern	int			LoadGraphToResource(				int ResourceID ) ;																														// ç”»åƒãƒªã‚½ãƒ¼ã‚¹ã‹ã‚‰ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒãƒ³ãƒ‰ãƒ«ã‚’ä½œæˆã™ã‚‹
-extern	int			LoadDivGraphToResource(				int ResourceID, int AllNum, int XNum, int YNum, int   XSize, int   YSize, int *HandleArray ) ;											// ç”»åƒãƒªã‚½ãƒ¼ã‚¹ã‚’åˆ†å‰²ã—ã¦ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒãƒ³ãƒ‰ãƒ«ã‚’ä½œæˆã™ã‚‹
-extern	int			LoadDivGraphFToResource(			int ResourceID, int AllNum, int XNum, int YNum, float XSize, float YSize, int *HandleArray ) ;											// ç”»åƒãƒªã‚½ãƒ¼ã‚¹ã‚’åˆ†å‰²ã—ã¦ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒãƒ³ãƒ‰ãƒ«ã‚’ä½œæˆã™ã‚‹( floatå‹ )
-extern	int			LoadGraphToResource(				const TCHAR *ResourceName,                            const TCHAR *ResourceType                            ) ;																				// ç”»åƒãƒªã‚½ãƒ¼ã‚¹ã‹ã‚‰ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒãƒ³ãƒ‰ãƒ«ã‚’ä½œæˆã™ã‚‹
-extern	int			LoadGraphToResourceWithStrLen(		const TCHAR *ResourceName, size_t ResourceNameLength, const TCHAR *ResourceType, size_t ResourceTypeLength ) ;																				// ç”»åƒãƒªã‚½ãƒ¼ã‚¹ã‹ã‚‰ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒãƒ³ãƒ‰ãƒ«ã‚’ä½œæˆã™ã‚‹
-extern	int			LoadDivGraphToResource(				const TCHAR *ResourceName,                            const TCHAR *ResourceType,                            int AllNum, int XNum, int YNum, int   XSize, int   YSize, int *HandleArray ) ;	// ç”»åƒãƒªã‚½ãƒ¼ã‚¹ã‚’åˆ†å‰²ã—ã¦ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒãƒ³ãƒ‰ãƒ«ã‚’ä½œæˆã™ã‚‹
-extern	int			LoadDivGraphToResourceWithStrLen(	const TCHAR *ResourceName, size_t ResourceNameLength, const TCHAR *ResourceType, size_t ResourceTypeLength, int AllNum, int XNum, int YNum, int   XSize, int   YSize, int *HandleArray ) ;	// ç”»åƒãƒªã‚½ãƒ¼ã‚¹ã‚’åˆ†å‰²ã—ã¦ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒãƒ³ãƒ‰ãƒ«ã‚’ä½œæˆã™ã‚‹
-extern	int			LoadDivGraphFToResource(			const TCHAR *ResourceName,                            const TCHAR *ResourceType,                            int AllNum, int XNum, int YNum, float XSize, float YSize, int *HandleArray ) ;	// ç”»åƒãƒªã‚½ãƒ¼ã‚¹ã‚’åˆ†å‰²ã—ã¦ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒãƒ³ãƒ‰ãƒ«ã‚’ä½œæˆã™ã‚‹( floatå‹ )
-extern	int			LoadDivGraphFToResourceWithStrLen(	const TCHAR *ResourceName, size_t ResourceNameLength, const TCHAR *ResourceType, size_t ResourceTypeLength, int AllNum, int XNum, int YNum, float XSize, float YSize, int *HandleArray ) ;	// ç”»åƒãƒªã‚½ãƒ¼ã‚¹ã‚’åˆ†å‰²ã—ã¦ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒãƒ³ãƒ‰ãƒ«ã‚’ä½œæˆã™ã‚‹( floatå‹ )
+// ‰æ‘œ‚©‚çƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚éŠÖ”
+extern	int			LoadGraphToResource(				int ResourceID ) ;																														// ‰æ‘œƒŠƒ\[ƒX‚©‚çƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é
+extern	int			LoadDivGraphToResource(				int ResourceID, int AllNum, int XNum, int YNum, int   XSize, int   YSize, int *HandleArray ) ;											// ‰æ‘œƒŠƒ\[ƒX‚ğ•ªŠ„‚µ‚ÄƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é
+extern	int			LoadDivGraphFToResource(			int ResourceID, int AllNum, int XNum, int YNum, float XSize, float YSize, int *HandleArray ) ;											// ‰æ‘œƒŠƒ\[ƒX‚ğ•ªŠ„‚µ‚ÄƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é( floatŒ^ )
+#ifndef DX_COMPILE_TYPE_C_LANGUAGE
+extern	int			LoadGraphToResource(				const TCHAR *ResourceName,                            const TCHAR *ResourceType                            ) ;																				// ‰æ‘œƒŠƒ\[ƒX‚©‚çƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é
+extern	int			LoadGraphToResourceWithStrLen(		const TCHAR *ResourceName, size_t ResourceNameLength, const TCHAR *ResourceType, size_t ResourceTypeLength ) ;																				// ‰æ‘œƒŠƒ\[ƒX‚©‚çƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é
+extern	int			LoadDivGraphToResource(				const TCHAR *ResourceName,                            const TCHAR *ResourceType,                            int AllNum, int XNum, int YNum, int   XSize, int   YSize, int *HandleArray ) ;	// ‰æ‘œƒŠƒ\[ƒX‚ğ•ªŠ„‚µ‚ÄƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é
+extern	int			LoadDivGraphToResourceWithStrLen(	const TCHAR *ResourceName, size_t ResourceNameLength, const TCHAR *ResourceType, size_t ResourceTypeLength, int AllNum, int XNum, int YNum, int   XSize, int   YSize, int *HandleArray ) ;	// ‰æ‘œƒŠƒ\[ƒX‚ğ•ªŠ„‚µ‚ÄƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é
+extern	int			LoadDivGraphFToResource(			const TCHAR *ResourceName,                            const TCHAR *ResourceType,                            int AllNum, int XNum, int YNum, float XSize, float YSize, int *HandleArray ) ;	// ‰æ‘œƒŠƒ\[ƒX‚ğ•ªŠ„‚µ‚ÄƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é( floatŒ^ )
+extern	int			LoadDivGraphFToResourceWithStrLen(	const TCHAR *ResourceName, size_t ResourceNameLength, const TCHAR *ResourceType, size_t ResourceTypeLength, int AllNum, int XNum, int YNum, float XSize, float YSize, int *HandleArray ) ;	// ‰æ‘œƒŠƒ\[ƒX‚ğ•ªŠ„‚µ‚ÄƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é( floatŒ^ )
+#endif // DX_COMPILE_TYPE_C_LANGUAGE
+extern	int			LoadGraphToResource2(				const TCHAR *ResourceName,                            const TCHAR *ResourceType                            ) ;																				// ‰æ‘œƒŠƒ\[ƒX‚©‚çƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é
+extern	int			LoadGraphToResourceWithStrLen2(		const TCHAR *ResourceName, size_t ResourceNameLength, const TCHAR *ResourceType, size_t ResourceTypeLength ) ;																				// ‰æ‘œƒŠƒ\[ƒX‚©‚çƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é
+extern	int			LoadDivGraphToResource2(			const TCHAR *ResourceName,                            const TCHAR *ResourceType,                            int AllNum, int XNum, int YNum, int   XSize, int   YSize, int *HandleArray ) ;	// ‰æ‘œƒŠƒ\[ƒX‚ğ•ªŠ„‚µ‚ÄƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é
+extern	int			LoadDivGraphToResourceWithStrLen2(	const TCHAR *ResourceName, size_t ResourceNameLength, const TCHAR *ResourceType, size_t ResourceTypeLength, int AllNum, int XNum, int YNum, int   XSize, int   YSize, int *HandleArray ) ;	// ‰æ‘œƒŠƒ\[ƒX‚ğ•ªŠ„‚µ‚ÄƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é
+extern	int			LoadDivGraphFToResource2(			const TCHAR *ResourceName,                            const TCHAR *ResourceType,                            int AllNum, int XNum, int YNum, float XSize, float YSize, int *HandleArray ) ;	// ‰æ‘œƒŠƒ\[ƒX‚ğ•ªŠ„‚µ‚ÄƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é( floatŒ^ )
+extern	int			LoadDivGraphFToResourceWithStrLen2(	const TCHAR *ResourceName, size_t ResourceNameLength, const TCHAR *ResourceType, size_t ResourceTypeLength, int AllNum, int XNum, int YNum, float XSize, float YSize, int *HandleArray ) ;	// ‰æ‘œƒŠƒ\[ƒX‚ğ•ªŠ„‚µ‚ÄƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é( floatŒ^ )
+#ifndef DX_NON_DIRECT3D11
+extern	int			CreateGraphFromID3D11Texture2D(     const void *pID3D11Texture2D ) ;							// ID3D11Texture2D ‚©‚çƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ğì¬‚·‚é
+#endif // DX_NON_DIRECT3D11
 
-// ç”»åƒæƒ…å ±é–¢ä¿‚é–¢æ•°
-extern	const void*	GetGraphID3D11Texture2D(		int GrHandle ) ;												// ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒãƒ³ãƒ‰ãƒ«ãŒæŒã¤ ID3D11Texture2D ã‚’å–å¾—ã™ã‚‹( Direct3D11 ã‚’ä½¿ç”¨ã—ã¦ã„ã‚‹å ´åˆã®ã¿æœ‰åŠ¹ )( æˆ»ã‚Šå€¤ã‚’ ID3D11Texture2D * ã«ã‚­ãƒ£ã‚¹ãƒˆã—ã¦ãã ã•ã„ )
-extern	const void*	GetGraphID3D11RenderTargetView(	int GrHandle ) ;												// ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒãƒ³ãƒ‰ãƒ«ãŒæŒã¤ ID3D11RenderTargetView ã‚’å–å¾—ã™ã‚‹( Direct3D11 ã‚’ä½¿ç”¨ã—ã¦ã„ã¦ã€ä¸”ã¤ MakeScreen ã§ä½œæˆã—ãŸã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒãƒ³ãƒ‰ãƒ«ã§ã®ã¿æœ‰åŠ¹ )( æˆ»ã‚Šå€¤ã‚’ ID3D11RenderTargetView * ã«ã‚­ãƒ£ã‚¹ãƒˆã—ã¦ãã ã•ã„ )
-extern	const void*	GetGraphID3D11DepthStencilView(	int GrHandle ) ;												// ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒãƒ³ãƒ‰ãƒ«ãŒæŒã¤ ID3D11DepthStencilView ã‚’å–å¾—ã™ã‚‹( Direct3D11 ã‚’ä½¿ç”¨ã—ã¦ã„ã¦ã€ä¸”ã¤ MakeScreen ã§ä½œæˆã—ãŸã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒãƒ³ãƒ‰ãƒ«ã§ã®ã¿æœ‰åŠ¹ )( æˆ»ã‚Šå€¤ã‚’ ID3D11DepthStencilView * ã«ã‚­ãƒ£ã‚¹ãƒˆã—ã¦ãã ã•ã„ )
+// ‰æ‘œî•ñŠÖŒWŠÖ”
+extern	const void*	GetGraphID3D11Texture2D(		int GrHandle ) ;												// ƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ª‚Â ID3D11Texture2D ‚ğæ“¾‚·‚é( Direct3D11 ‚ğg—p‚µ‚Ä‚¢‚éê‡‚Ì‚İ—LŒø )( –ß‚è’l‚ğ ID3D11Texture2D * ‚ÉƒLƒƒƒXƒg‚µ‚Ä‚­‚¾‚³‚¢ )
+extern	const void*	GetGraphID3D11RenderTargetView(	int GrHandle ) ;												// ƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ª‚Â ID3D11RenderTargetView ‚ğæ“¾‚·‚é( Direct3D11 ‚ğg—p‚µ‚Ä‚¢‚ÄAŠ‚Â MakeScreen ‚Åì¬‚µ‚½ƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚Å‚Ì‚İ—LŒø )( –ß‚è’l‚ğ ID3D11RenderTargetView * ‚ÉƒLƒƒƒXƒg‚µ‚Ä‚­‚¾‚³‚¢ )
+extern	const void*	GetGraphID3D11DepthStencilView(	int GrHandle ) ;												// ƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚ª‚Â ID3D11DepthStencilView ‚ğæ“¾‚·‚é( Direct3D11 ‚ğg—p‚µ‚Ä‚¢‚ÄAŠ‚Â MakeScreen ‚Åì¬‚µ‚½ƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚Å‚Ì‚İ—LŒø )( –ß‚è’l‚ğ ID3D11DepthStencilView * ‚ÉƒLƒƒƒXƒg‚µ‚Ä‚­‚¾‚³‚¢ )
 
-// ç”»é¢é–¢ä¿‚é–¢æ•°
-extern	int			BltBackScreenToWindow(			HWND Window, int ClientX, int ClientY ) ;										// è£ç”»é¢ã®å†…å®¹ã‚’æŒ‡å®šã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã«è»¢é€ã™ã‚‹
-extern	int			BltRectBackScreenToWindow(		HWND Window, RECT BackScreenRect, RECT WindowClientRect ) ;						// è£ç”»é¢ã®æŒ‡å®šã®é ˜åŸŸã‚’ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆé ˜åŸŸã®æŒ‡å®šã®é ˜åŸŸã«è»¢é€ã™ã‚‹
-extern	int			SetScreenFlipTargetWindow(		HWND TargetWindow, double ScaleX = 1.0 , double ScaleY = 1.0 ) ;				// ScreenFlip ã§ç”»åƒã‚’è»¢é€ã™ã‚‹å…ˆã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’è¨­å®šã™ã‚‹( NULL ã‚’æŒ‡å®šã™ã‚‹ã¨è¨­å®šè§£é™¤ )
-extern	int			GetDesktopScreenGraph(			int x1, int y1, int x2, int y2, int GrHandle, int DestX = 0 , int DestY = 0 ) ;	// ãƒ‡ã‚¹ã‚¯ãƒˆãƒƒãƒ—ç”»é¢ã‹ã‚‰æŒ‡å®šé ˜åŸŸã®ç”»åƒæƒ…å ±ã‚’ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒãƒ³ãƒ‰ãƒ«ã«è»¢é€ã™ã‚‹
+// ‰æ–ÊŠÖŒWŠÖ”
+extern	int			BltBackScreenToWindow(			HWND Window, int ClientX, int ClientY ) ;										// — ‰æ–Ê‚Ì“à—e‚ğw’è‚ÌƒEƒCƒ“ƒhƒE‚É“]‘—‚·‚é
+extern	int			BltRectBackScreenToWindow(		HWND Window, RECT BackScreenRect, RECT WindowClientRect ) ;						// — ‰æ–Ê‚Ìw’è‚Ì—Ìˆæ‚ğƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒg—Ìˆæ‚Ìw’è‚Ì—Ìˆæ‚É“]‘—‚·‚é
+extern	int			SetScreenFlipTargetWindow(		HWND TargetWindow, double ScaleX DEFAULTPARAM( = 1.0 ) , double ScaleY DEFAULTPARAM( = 1.0 ) ) ;					// ScreenFlip ‚Å‰æ‘œ‚ğ“]‘—‚·‚éæ‚ÌƒEƒCƒ“ƒhƒE‚ğİ’è‚·‚é( NULL ‚ğw’è‚·‚é‚Æİ’è‰ğœ )
+extern	int			GetDesktopScreenGraph(			int x1, int y1, int x2, int y2, int GrHandle, int DestX DEFAULTPARAM( = 0 ) , int DestY DEFAULTPARAM( = 0 ) ) ;		// ƒfƒXƒNƒgƒbƒv‰æ–Ê‚©‚çw’è—Ìˆæ‚Ì‰æ‘œî•ñ‚ğƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚É“]‘—‚·‚é
+extern	void *		GetDesktopScreenGraphMemImage(	int x1, int y1, int x2, int y2, int *Width, int *Height, int *Stride, int ColorBitDepth DEFAULTPARAM( = 32 ) ) ;	// ƒfƒXƒNƒgƒbƒv‰æ–Ê‚©‚çw’è—Ìˆæ‚Ì‰æ‘œ‚Ìƒƒ‚ƒŠƒCƒ[ƒW‚Ìæ“ªƒAƒhƒŒƒX‚ÆƒCƒ[ƒW‚Ì•E‚‚³EƒXƒgƒ‰ƒCƒh‚ğæ“¾‚·‚é( ƒCƒ[ƒW‚ÌƒtƒH[ƒ}ƒbƒg‚Í ColorBitDepth = 32( ƒoƒCƒg‡‚Å B8G8R8X8 ‚Ì 32bitƒJƒ‰[ ) ColorBitDepth = 24( ƒoƒCƒg‡‚Å B8G8R8 ‚Ì 24bitƒJƒ‰[ ) )
+extern	int			GetOtherWindowGraph(			HWND Window, int x1, int y1, int x2, int y2, int GrHandle, int DestX DEFAULTPARAM( = 0 ) , int DestY DEFAULTPARAM( = 0 ) ) ;		// w’è‚ÌƒEƒBƒ“ƒhƒE‚Ìw’è—Ìˆæ‚Ì‰æ‘œî•ñ‚ğƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹‚É“]‘—‚·‚é
 
-// ãã®ä»–è¨­å®šé–¢ä¿‚é–¢æ•°
-extern	int			SetMultiThreadFlag(								int Flag ) ;									// DirectDraw ã‚„ Direct3D ã®å”èª¿ãƒ¬ãƒ™ãƒ«ã‚’ãƒãƒ«ãƒã‚¹ãƒ¬ãƒƒãƒ‰å¯¾å¿œã«ã™ã‚‹ã‹ã©ã†ã‹ã‚’ã‚»ãƒƒãƒˆã™ã‚‹( TRUE:ãƒãƒ«ãƒã‚¹ãƒ¬ãƒƒãƒ‰å¯¾å¿œã«ã™ã‚‹  FALSE:ãƒãƒ«ãƒã‚¹ãƒ¬ãƒƒãƒ‰å¯¾å¿œã«ã—ãªã„( ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ ) )
-extern	int			SetUseDirectDrawDeviceIndex(					int Index ) ;									// ä½¿ç”¨ã™ã‚‹ DirectDraw ãƒ‡ãƒã‚¤ã‚¹ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’è¨­å®šã™ã‚‹
-extern	int			SetAeroDisableFlag(								int Flag ) ;									// Vista,7 ã® Windows Aero ã‚’ç„¡åŠ¹ã«ã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( TRUE:ç„¡åŠ¹ã«ã™ã‚‹( ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ )  FALSE:æœ‰åŠ¹ã«ã™ã‚‹ )( DxLib_Init ã®å‰ã«å‘¼ã¶å¿…è¦ãŒã‚ã‚Šã¾ã™ )
-extern	int			SetUseDirect3D9Ex(								int Flag ) ;									// Vistaä»¥é™ã®ç’°å¢ƒã§ Direct3D9Ex ã‚’ä½¿ç”¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( TRUE:ä½¿ç”¨ã™ã‚‹( ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ )  FALSE:ä½¿ç”¨ã—ãªã„ )( DxLib_Init ã®å‰ã«å‘¼ã¶å¿…è¦ãŒã‚ã‚Šã¾ã™ )
-extern	int			SetUseDirect3D11(								int Flag ) ;									// Direct3D11 ã‚’ä½¿ç”¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( TRUE:ä½¿ç”¨ã™ã‚‹  FALSE:ä½¿ç”¨ã—ãªã„ )
-extern	int			SetUseDirect3D11MinFeatureLevel(				int Level /* DX_DIRECT3D_11_FEATURE_LEVEL_10_0 ãªã© */ ) ;		// Direct3D11 ã§ä½¿ç”¨ã™ã‚‹æœ€ä½æ©Ÿèƒ½ãƒ¬ãƒ™ãƒ«ã‚’æŒ‡å®šã™ã‚‹é–¢æ•°ã§ã™ã€å°šã€DX_DIRECT3D_11_FEATURE_LEVEL_11_0 ã‚ˆã‚Šä½ã„æ©Ÿèƒ½ãƒ¬ãƒ™ãƒ«ã§ã®æ­£å¸¸ãªå‹•ä½œã¯ä¿è¨¼ã—ã¾ã›ã‚“( ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯ DX_DIRECT3D_11_FEATURE_LEVEL_11_0 )
-extern	int			SetUseDirect3D11WARPDriver(						int Flag ) ;									// D3D_DRIVER_TYPE_WARP ã‚¿ã‚¤ãƒ—ã® Direct3D 11 ãƒ‰ãƒ©ã‚¤ãƒã‚’ä½¿ç”¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( TRUE:ä½¿ç”¨ã™ã‚‹  FALSE:ä½¿ç”¨ã—ãªã„( ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ ) )
-extern	int			SetUseDirect3DVersion(							int Version /* DX_DIRECT3D_9 ãªã© */ ) ;		// ä½¿ç”¨ã™ã‚‹ Direct3D ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚’è¨­å®šã™ã‚‹ã€DxLib_Init å‘¼ã³å‡ºã—ã®å‰ã§ã®ã¿ä½¿ç”¨å¯èƒ½ã€€
-extern	int			GetUseDirect3DVersion(							void ) ;										// ä½¿ç”¨ã—ã¦ã„ã‚‹ Direct3D ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚’å–å¾—ã™ã‚‹( DX_DIRECT3D_9 ãªã© )
-extern	int			GetUseDirect3D11FeatureLevel(					void ) ;										// ä½¿ç”¨ã—ã¦ã„ã‚‹ Direct3D11 ã® FeatureLevel ( DX_DIRECT3D_11_FEATURE_LEVEL_9_1 ç­‰ )ã‚’å–å¾—ã™ã‚‹( æˆ»ã‚Šå€¤ã€€-1ï¼šã‚¨ãƒ©ãƒ¼ã€€-1ä»¥å¤–ï¼šFeature Level )
-extern	int			SetUseDirectDrawFlag(							int Flag ) ;									// ( åŒåŠ¹æœã®SetUseSoftwareRenderModeFlag ã‚’ä½¿ç”¨ã—ã¦ä¸‹ã•ã„ )DirectDrawã‚’ä½¿ç”¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹
-extern	int			SetUseGDIFlag(									int Flag ) ;									// GDIæç”»ã‚’ä½¿ç”¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹
-extern	int			GetUseGDIFlag(									void ) ;										// GDIæç”»ã‚’ä½¿ç”¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’å–å¾—ã™ã‚‹
-extern	int			SetDDrawUseGuid(								const GUID *Guid ) ;							// DirectDrawãŒä½¿ç”¨ã™ã‚‹GUIDã‚’è¨­å®šã™ã‚‹
-extern	const void*	GetUseDDrawObj(									void ) ;										// ç¾åœ¨ä½¿ç”¨ã—ã¦ã„ã‚‹DirectDrawã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å–å¾—ã™ã‚‹( æˆ»ã‚Šå€¤ã‚’ IDirectDraw7 * ã«ã‚­ãƒ£ã‚¹ãƒˆã—ã¦ä¸‹ã•ã„ )
-extern	const GUID*	GetDirectDrawDeviceGUID(						int Number ) ;									// æœ‰åŠ¹ãª DirectDraw ãƒ‡ãƒã‚¤ã‚¹ã® GUID ã‚’å–å¾—ã™ã‚‹
-extern	int			GetDirectDrawDeviceDescription(					int Number, char *StringBuffer ) ;				// æœ‰åŠ¹ãª DirectDraw ãƒ‡ãƒã‚¤ã‚¹ã®åå‰ã‚’å–å¾—ã™ã‚‹
-extern	int			GetDirectDrawDeviceNum(							void ) ;										// æœ‰åŠ¹ãª DirectDraw ãƒ‡ãƒã‚¤ã‚¹ã®æ•°ã‚’å–å¾—ã™ã‚‹
-extern	const void*	GetUseDirect3DDevice9(							void ) ;										// ä½¿ç”¨ä¸­ã®Direct3DDevice9ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—ã™ã‚‹( æˆ»ã‚Šå€¤ã‚’ IDirect3DDevice9 * ã«ã‚­ãƒ£ã‚¹ãƒˆã—ã¦ä¸‹ã•ã„ )
-extern	const void*	GetUseDirect3D9BackBufferSurface(				void ) ;										// ä½¿ç”¨ä¸­ã®ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã®Direct3DSurface9ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—ã™ã‚‹( æˆ»ã‚Šå€¤ã‚’ D_IDirect3DSurface9 * ã«ã‚­ãƒ£ã‚¹ãƒˆã—ã¦ãã ã•ã„ )
-extern	const void*	GetUseDirect3D11Device(							void ) ;										// ä½¿ç”¨ä¸­ã®ID3D11Deviceã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—ã™ã‚‹( æˆ»ã‚Šå€¤ã‚’ ID3D11Device * ã«ã‚­ãƒ£ã‚¹ãƒˆã—ã¦ä¸‹ã•ã„ )
-extern	const void*	GetUseDirect3D11DeviceContext(					void ) ;										// ä½¿ç”¨ä¸­ã®ID3D11DeviceContextã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—ã™ã‚‹( æˆ»ã‚Šå€¤ã‚’ ID3D11DeviceContext * ã«ã‚­ãƒ£ã‚¹ãƒˆã—ã¦ä¸‹ã•ã„ )
-extern	const void*	GetUseDirect3D11BackBufferTexture2D(			void ) ;										// ä½¿ç”¨ä¸­ã®ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã®ID3D11Texture2Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—ã™ã‚‹( æˆ»ã‚Šå€¤ã‚’ ID3D11Texture2D * ã«ã‚­ãƒ£ã‚¹ãƒˆã—ã¦ãã ã•ã„ )
-extern	const void*	GetUseDirect3D11BackBufferRenderTargetView(		void ) ;										// ä½¿ç”¨ä¸­ã®ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã®ID3D11RenderTargetViewã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—ã™ã‚‹( æˆ»ã‚Šå€¤ã‚’ ID3D11RenderTargetView * ã«ã‚­ãƒ£ã‚¹ãƒˆã—ã¦ãã ã•ã„ )
-extern	const void*	GetUseDirect3D11DepthStencilTexture2D(			void ) ;										// ä½¿ç”¨ä¸­ã®æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒãƒƒãƒ•ã‚¡ã®ID3D11Texture2Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—ã™ã‚‹( æˆ»ã‚Šå€¤ã‚’ ID3D11Texture2D * ã«ã‚­ãƒ£ã‚¹ãƒˆã—ã¦ãã ã•ã„ )
-extern	int			SetDrawScreen_ID3D11RenderTargetView(			const void *pID3D11RenderTargetView, const void *pID3D11DepthStencilView = NULL ) ;		// æŒ‡å®šã® ID3D11RenderTargetView ã‚’æç”»å¯¾è±¡ã«ã™ã‚‹( pID3D11DepthStencilView ãŒ NULL ã®å ´åˆã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒãƒƒãƒ•ã‚¡ã‚’ä½¿ç”¨ã™ã‚‹ )
-extern	int			RefreshDxLibDirect3DSetting(					void ) ;										// ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªãŒè¡Œã£ãŸDirect3Dã®è¨­å®šã‚’å†åº¦è¡Œã†( ç‰¹æ®Šç”¨é€” )
+// ‚»‚Ì‘¼İ’èŠÖŒWŠÖ”
+extern	int			SetMultiThreadFlag(								int Flag ) ;									// DirectDraw ‚â Direct3D ‚Ì‹¦’²ƒŒƒxƒ‹‚ğƒ}ƒ‹ƒ`ƒXƒŒƒbƒh‘Î‰‚É‚·‚é‚©‚Ç‚¤‚©‚ğƒZƒbƒg‚·‚é( TRUE:ƒ}ƒ‹ƒ`ƒXƒŒƒbƒh‘Î‰‚É‚·‚é  FALSE:ƒ}ƒ‹ƒ`ƒXƒŒƒbƒh‘Î‰‚É‚µ‚È‚¢( ƒfƒtƒHƒ‹ƒg ) )
+extern	int			SetUseDirectDrawDeviceIndex(					int Index ) ;									// g—p‚·‚é DirectDraw ƒfƒoƒCƒX‚ÌƒCƒ“ƒfƒbƒNƒX‚ğİ’è‚·‚é
+extern	int			SetAeroDisableFlag(								int Flag ) ;									// Vista,7 ‚Ì Windows Aero ‚ğ–³Œø‚É‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:–³Œø‚É‚·‚é( ƒfƒtƒHƒ‹ƒg )  FALSE:—LŒø‚É‚·‚é )( DxLib_Init ‚Ì‘O‚ÉŒÄ‚Ô•K—v‚ª‚ ‚è‚Ü‚· )
+extern	int			SetUseDirect3D9Ex(								int Flag ) ;									// VistaˆÈ~‚ÌŠÂ‹«‚Å Direct3D9Ex ‚ğg—p‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:g—p‚·‚é( ƒfƒtƒHƒ‹ƒg )  FALSE:g—p‚µ‚È‚¢ )( DxLib_Init ‚Ì‘O‚ÉŒÄ‚Ô•K—v‚ª‚ ‚è‚Ü‚· )
+extern	int			SetUseDirect3D11(								int Flag ) ;									// Direct3D11 ‚ğg—p‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:g—p‚·‚é  FALSE:g—p‚µ‚È‚¢ )
+extern	int			SetUseDirect3D11MinFeatureLevel(				int Level /* DX_DIRECT3D_11_FEATURE_LEVEL_10_0 ‚È‚Ç */ ) ;		// Direct3D11 ‚Åg—p‚·‚éÅ’á‹@”\ƒŒƒxƒ‹‚ğw’è‚·‚éŠÖ”‚Å‚·A®ADX_DIRECT3D_11_FEATURE_LEVEL_11_0 ‚æ‚è’á‚¢‹@”\ƒŒƒxƒ‹‚Å‚Ì³í‚È“®ì‚Í•ÛØ‚µ‚Ü‚¹‚ñ( ƒfƒtƒHƒ‹ƒg‚Í DX_DIRECT3D_11_FEATURE_LEVEL_11_0 )
+extern	int			SetUseDirect3D11WARPDriver(						int Flag ) ;									// D3D_DRIVER_TYPE_WARP ƒ^ƒCƒv‚Ì Direct3D 11 ƒhƒ‰ƒCƒo‚ğg—p‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:g—p‚·‚é  FALSE:g—p‚µ‚È‚¢( ƒfƒtƒHƒ‹ƒg ) )
+extern	int			SetUseDirect3DVersion(							int Version /* DX_DIRECT3D_9 ‚È‚Ç */ ) ;		// g—p‚·‚é Direct3D ‚Ìƒo[ƒWƒ‡ƒ“‚ğİ’è‚·‚éADxLib_Init ŒÄ‚Ño‚µ‚Ì‘O‚Å‚Ì‚İg—p‰Â”\@
+extern	int			GetUseDirect3DVersion(							void ) ;										// g—p‚µ‚Ä‚¢‚é Direct3D ‚Ìƒo[ƒWƒ‡ƒ“‚ğæ“¾‚·‚é( DX_DIRECT3D_9 ‚È‚Ç )
+extern	int			GetUseDirect3D11FeatureLevel(					void ) ;										// g—p‚µ‚Ä‚¢‚é Direct3D11 ‚Ì FeatureLevel ( DX_DIRECT3D_11_FEATURE_LEVEL_9_1 “™ )‚ğæ“¾‚·‚é( –ß‚è’l@-1FƒGƒ‰[@-1ˆÈŠOFFeature Level )
+extern	int			SetUseDirect3D11AdapterIndex(					int Index ) ;									// g—p‚·‚éƒOƒ‰ƒtƒBƒbƒNƒXƒfƒoƒCƒX‚ÌƒAƒ_ƒvƒ^[‚ÌƒCƒ“ƒfƒbƒNƒX‚ğİ’è‚·‚é
+extern	int			SetUseDirect3D11BGRASupport(					int Flag ) ;									// D3D11Device ì¬‚É D3D11_CREATE_DEVICE_BGRA_SUPPORT ‚ğw’è‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:w’è‚·‚é  FALSE:w’è‚µ‚È‚¢( ƒfƒtƒHƒ‹ƒg ) )
+extern	int			GetUseDirect3D11BGRASupport(					void ) ;										// D3D11Device ì¬‚É D3D11_CREATE_DEVICE_BGRA_SUPPORT ‚ğw’è‚·‚é‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é
+extern	int			SetUseDirectDrawFlag(							int Flag ) ;									// ( “¯Œø‰Ê‚ÌSetUseSoftwareRenderModeFlag ‚ğg—p‚µ‚Ä‰º‚³‚¢ )DirectDraw‚ğg—p‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é
+extern	int			SetUseGDIFlag(									int Flag ) ;									// GDI•`‰æ‚ğg—p‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é
+extern	int			GetUseGDIFlag(									void ) ;										// GDI•`‰æ‚ğg—p‚·‚é‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é
+extern	int			SetDDrawUseGuid(								const GUID *Guid ) ;							// DirectDraw‚ªg—p‚·‚éGUID‚ğİ’è‚·‚é
+extern	const void*	GetUseDDrawObj(									void ) ;										// Œ»İg—p‚µ‚Ä‚¢‚éDirectDrawƒIƒuƒWƒFƒNƒg‚ÌƒAƒhƒŒƒX‚ğæ“¾‚·‚é( –ß‚è’l‚ğ IDirectDraw7 * ‚ÉƒLƒƒƒXƒg‚µ‚Ä‰º‚³‚¢ )
+extern	const GUID*	GetDirectDrawDeviceGUID(						int Number ) ;									// —LŒø‚È DirectDraw ƒfƒoƒCƒX‚Ì GUID ‚ğæ“¾‚·‚é
+extern	int			GetDirectDrawDeviceDescription(					int Number, char *StringBuffer ) ;				// —LŒø‚È DirectDraw ƒfƒoƒCƒX‚Ì–¼‘O‚ğæ“¾‚·‚é
+extern	int			GetDirectDrawDeviceNum(							void ) ;										// —LŒø‚È DirectDraw ƒfƒoƒCƒX‚Ì”‚ğæ“¾‚·‚é
+extern	const void*	GetUseDirect3DDevice9(							void ) ;										// g—p’†‚ÌDirect3DDevice9ƒIƒuƒWƒFƒNƒg‚ğæ“¾‚·‚é( –ß‚è’l‚ğ IDirect3DDevice9 * ‚ÉƒLƒƒƒXƒg‚µ‚Ä‰º‚³‚¢ )
+extern	const void*	GetUseDirect3D9BackBufferSurface(				void ) ;										// g—p’†‚ÌƒoƒbƒNƒoƒbƒtƒ@‚ÌDirect3DSurface9ƒIƒuƒWƒFƒNƒg‚ğæ“¾‚·‚é( –ß‚è’l‚ğ D_IDirect3DSurface9 * ‚ÉƒLƒƒƒXƒg‚µ‚Ä‚­‚¾‚³‚¢ )
+extern	const void*	GetUseDirect3D11Device(							void ) ;										// g—p’†‚ÌID3D11DeviceƒIƒuƒWƒFƒNƒg‚ğæ“¾‚·‚é( –ß‚è’l‚ğ ID3D11Device * ‚ÉƒLƒƒƒXƒg‚µ‚Ä‰º‚³‚¢ )
+extern	const void*	GetUseDirect3D11DeviceContext(					void ) ;										// g—p’†‚ÌID3D11DeviceContextƒIƒuƒWƒFƒNƒg‚ğæ“¾‚·‚é( –ß‚è’l‚ğ ID3D11DeviceContext * ‚ÉƒLƒƒƒXƒg‚µ‚Ä‰º‚³‚¢ )
+extern	const void*	GetUseDirect3D11BackBufferTexture2D(			void ) ;										// g—p’†‚ÌƒoƒbƒNƒoƒbƒtƒ@‚ÌID3D11Texture2DƒIƒuƒWƒFƒNƒg‚ğæ“¾‚·‚é( –ß‚è’l‚ğ ID3D11Texture2D * ‚ÉƒLƒƒƒXƒg‚µ‚Ä‚­‚¾‚³‚¢ )
+extern	const void*	GetUseDirect3D11BackBufferRenderTargetView(		void ) ;										// g—p’†‚ÌƒoƒbƒNƒoƒbƒtƒ@‚ÌID3D11RenderTargetViewƒIƒuƒWƒFƒNƒg‚ğæ“¾‚·‚é( –ß‚è’l‚ğ ID3D11RenderTargetView * ‚ÉƒLƒƒƒXƒg‚µ‚Ä‚­‚¾‚³‚¢ )
+extern	const void*	GetUseDirect3D11DepthStencilTexture2D(			void ) ;										// g—p’†‚Ì[“xƒXƒeƒ“ƒVƒ‹ƒoƒbƒtƒ@‚ÌID3D11Texture2DƒIƒuƒWƒFƒNƒg‚ğæ“¾‚·‚é( –ß‚è’l‚ğ ID3D11Texture2D * ‚ÉƒLƒƒƒXƒg‚µ‚Ä‚­‚¾‚³‚¢ )
+extern	int			SetDrawScreen_ID3D11RenderTargetView(			const void *pID3D11RenderTargetView, const void *pID3D11DepthStencilView DEFAULTPARAM( = NULL ) ) ;		// w’è‚Ì ID3D11RenderTargetView ‚ğ•`‰æ‘ÎÛ‚É‚·‚é( pID3D11DepthStencilView ‚ª NULL ‚Ìê‡‚ÍƒfƒtƒHƒ‹ƒg‚Ì[“xƒXƒeƒ“ƒVƒ‹ƒoƒbƒtƒ@‚ğg—p‚·‚é )
+extern	int			RefreshDxLibDirect3DSetting(					void ) ;										// ‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚ªs‚Á‚½Direct3D‚Ìİ’è‚ğÄ“xs‚¤( “Áê—p“r )
 
 #ifndef DX_NON_MEDIA_FOUNDATION
-extern	int			SetUseMediaFoundationFlag(						int Flag ) ;									// Media Foundation ã‚’ä½¿ç”¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( TRUE:ä½¿ç”¨ã™ã‚‹( ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ )  FALSE:ä½¿ç”¨ã—ãªã„ )
+extern	int			SetUseMediaFoundationFlag(						int Flag ) ;									// Media Foundation ‚ğg—p‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:g—p‚·‚é( ƒfƒtƒHƒ‹ƒg )  FALSE:g—p‚µ‚È‚¢ )
 #endif // DX_NON_MEDIA_FOUNDATION
 
-// è‰²æƒ…å ±å–å¾—ç”¨é–¢æ•°
-extern	int			ColorKaiseki(				const void *PixelData, COLORDATA* ColorData ) ;																				// è‰²ãƒ“ãƒƒãƒˆæƒ…å ±è§£æ
+// Fî•ñæ“¾—pŠÖ”
+extern	int			ColorKaiseki(				const void *PixelData, COLORDATA* ColorData ) ;																				// Fƒrƒbƒgî•ñ‰ğÍ
 
 
 
@@ -325,10 +376,10 @@ extern	int			ColorKaiseki(				const void *PixelData, COLORDATA* ColorData ) ;			
 
 
 
-// DxMask.cpp é–¢æ•°ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€
+// DxMask.cpp ŠÖ”ƒvƒƒgƒ^ƒCƒvéŒ¾
 #ifndef DX_NON_MASK
 
-extern	int			BmpBltToMask(					HBITMAP Bmp, int BmpPointX, int BmpPointY, int MaskHandle ) ;									// ãƒã‚¹ã‚¯ãƒãƒ³ãƒ‰ãƒ«ã«ï¼¢ï¼­ï¼°ãƒ‡ãƒ¼ã‚¿ã‚’è»¢é€ã™ã‚‹
+extern	int			BmpBltToMask(					HBITMAP Bmp, int BmpPointX, int BmpPointY, int MaskHandle ) ;									// ƒ}ƒXƒNƒnƒ“ƒhƒ‹‚É‚a‚l‚oƒf[ƒ^‚ğ“]‘—‚·‚é
 
 #endif // DX_NON_MASK
 
@@ -342,19 +393,19 @@ extern	int			BmpBltToMask(					HBITMAP Bmp, int BmpPointX, int BmpPointY, int Ma
 
 
 
-// DxFont.cpp é–¢æ•°ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€
+// DxFont.cpp ŠÖ”ƒvƒƒgƒ^ƒCƒvéŒ¾
 
 #ifndef DX_NON_FONT
 
-extern	HANDLE		AddFontFile(					const TCHAR *FontFilePath                            ) ;										// æŒ‡å®šã®ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚·ã‚¹ãƒ†ãƒ ã«è¿½åŠ ã™ã‚‹( æˆ»ã‚Šå€¤  NULL:å¤±æ•—  NULLä»¥å¤–:ãƒ•ã‚©ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ«( WindowsOS ã®ã‚‚ã®ãªã®ã§ã€ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®ãƒ•ã‚©ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ«ã¨ã¯åˆ¥ç‰©ã§ã™ ) )
-extern	HANDLE		AddFontFileWithStrLen(			const TCHAR *FontFilePath, size_t FontFilePathLength ) ;										// æŒ‡å®šã®ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚·ã‚¹ãƒ†ãƒ ã«è¿½åŠ ã™ã‚‹( æˆ»ã‚Šå€¤  NULL:å¤±æ•—  NULLä»¥å¤–:ãƒ•ã‚©ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ«( WindowsOS ã®ã‚‚ã®ãªã®ã§ã€ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®ãƒ•ã‚©ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ«ã¨ã¯åˆ¥ç‰©ã§ã™ ) )
-extern	HANDLE		AddFontFileFromMem(				const void *FontFileImage, int FontFileImageSize ) ;											// æŒ‡å®šã®ãƒ¡ãƒ¢ãƒªã‚¢ãƒ‰ãƒ¬ã‚¹ã«å±•é–‹ã—ãŸãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’ã‚·ã‚¹ãƒ†ãƒ ã«è¿½åŠ ã™ã‚‹( æˆ»ã‚Šå€¤  NULL:å¤±æ•—  NULLä»¥å¤–:ãƒ•ã‚©ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ«( WindowsOS ã®ã‚‚ã®ãªã®ã§ã€ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®ãƒ•ã‚©ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ«ã¨ã¯åˆ¥ç‰©ã§ã™ ) )
-extern	int			RemoveFontFile(					HANDLE FontHandle ) ;																			// æŒ‡å®šã®ãƒ•ã‚©ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ«ã‚’ã‚·ã‚¹ãƒ†ãƒ ã‹ã‚‰å‰Šé™¤ã™ã‚‹( å¼•æ•°ã¯ AddFontFile ã‚„ AddFontFileFromMem ã®æˆ»ã‚Šå€¤ )
+extern	HANDLE		AddFontFile(					const TCHAR *FontFilePath                            ) ;										// w’è‚ÌƒtƒHƒ“ƒgƒtƒ@ƒCƒ‹‚ğƒVƒXƒeƒ€‚É’Ç‰Á‚·‚é( –ß‚è’l  NULL:¸”s  NULLˆÈŠO:ƒtƒHƒ“ƒgƒnƒ“ƒhƒ‹( WindowsOS ‚Ì‚à‚Ì‚È‚Ì‚ÅA‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚ÌƒtƒHƒ“ƒgƒnƒ“ƒhƒ‹‚Æ‚Í•Ê•¨‚Å‚· ) )
+extern	HANDLE		AddFontFileWithStrLen(			const TCHAR *FontFilePath, size_t FontFilePathLength ) ;										// w’è‚ÌƒtƒHƒ“ƒgƒtƒ@ƒCƒ‹‚ğƒVƒXƒeƒ€‚É’Ç‰Á‚·‚é( –ß‚è’l  NULL:¸”s  NULLˆÈŠO:ƒtƒHƒ“ƒgƒnƒ“ƒhƒ‹( WindowsOS ‚Ì‚à‚Ì‚È‚Ì‚ÅA‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚ÌƒtƒHƒ“ƒgƒnƒ“ƒhƒ‹‚Æ‚Í•Ê•¨‚Å‚· ) )
+extern	HANDLE		AddFontFileFromMem(				const void *FontFileImage, int FontFileImageSize ) ;											// w’è‚Ìƒƒ‚ƒŠƒAƒhƒŒƒX‚É“WŠJ‚µ‚½ƒtƒHƒ“ƒgƒtƒ@ƒCƒ‹ƒCƒ[ƒW‚ğƒVƒXƒeƒ€‚É’Ç‰Á‚·‚é( –ß‚è’l  NULL:¸”s  NULLˆÈŠO:ƒtƒHƒ“ƒgƒnƒ“ƒhƒ‹( WindowsOS ‚Ì‚à‚Ì‚È‚Ì‚ÅA‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚ÌƒtƒHƒ“ƒgƒnƒ“ƒhƒ‹‚Æ‚Í•Ê•¨‚Å‚· ) )
+extern	int			RemoveFontFile(					HANDLE FontHandle ) ;																			// w’è‚ÌƒtƒHƒ“ƒgƒnƒ“ƒhƒ‹‚ğƒVƒXƒeƒ€‚©‚çíœ‚·‚é( ˆø”‚Í AddFontFile ‚â AddFontFileFromMem ‚Ì–ß‚è’l )
 
 #ifndef DX_NON_SAVEFUNCTION
 
-extern	int			CreateFontDataFile(				const TCHAR *SaveFilePath,                            const TCHAR *FontName,                        int Size, int BitDepth /* DX_FONTIMAGE_BIT_1ç­‰ */ , int Thick, int Italic = FALSE , int CharSet = -1 , const TCHAR *SaveCharaList = NULL                                  ) ;				// ãƒ•ã‚©ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½œæˆã™ã‚‹
-extern	int			CreateFontDataFileWithStrLen(	const TCHAR *SaveFilePath, size_t SaveFilePathLength, const TCHAR *FontName, size_t FontNameLength, int Size, int BitDepth /* DX_FONTIMAGE_BIT_1ç­‰ */ , int Thick, int Italic = FALSE , int CharSet = -1 , const TCHAR *SaveCharaList = NULL , size_t SaveCharaListLength = 0 ) ;				// ãƒ•ã‚©ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½œæˆã™ã‚‹
+extern	int			CreateFontDataFile(				const TCHAR *SaveFilePath,                            const TCHAR *FontName,                        int Size, int BitDepth /* DX_FONTIMAGE_BIT_1“™ */ , int Thick, int Italic DEFAULTPARAM( = FALSE ) , int CharSet DEFAULTPARAM( = -1 ) , const TCHAR *SaveCharaList DEFAULTPARAM( = NULL )                                  ) ;				// ƒtƒHƒ“ƒgƒf[ƒ^ƒtƒ@ƒCƒ‹‚ğì¬‚·‚é
+extern	int			CreateFontDataFileWithStrLen(	const TCHAR *SaveFilePath, size_t SaveFilePathLength, const TCHAR *FontName, size_t FontNameLength, int Size, int BitDepth /* DX_FONTIMAGE_BIT_1“™ */ , int Thick, int Italic DEFAULTPARAM( = FALSE ) , int CharSet DEFAULTPARAM( = -1 ) , const TCHAR *SaveCharaList DEFAULTPARAM( = NULL ) , size_t SaveCharaListLength DEFAULTPARAM( = 0 ) ) ;				// ƒtƒHƒ“ƒgƒf[ƒ^ƒtƒ@ƒCƒ‹‚ğì¬‚·‚é
 
 #endif // DX_NON_SAVEFUNCTION
 #endif // DX_NON_FONT
@@ -367,29 +418,27 @@ extern	int			CreateFontDataFileWithStrLen(	const TCHAR *SaveFilePath, size_t Sav
 
 
 
-// åŸºæœ¬ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒ‡ãƒ¼ã‚¿ã®ãƒ­ãƒ¼ãƒ‰ï¼‹ï¼¤ï¼©ï¼¢é–¢ä¿‚
-extern	HBITMAP		CreateDIBGraph(								const TCHAR *FileName,                                                                                                                                                               int ReverseFlag,          COLORDATA *SrcColor ) ;					// ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ï¼¤ï¼©ï¼¢ãƒ‡ãƒ¼ã‚¿ã‚’ä½œæˆã™ã‚‹
-extern	HBITMAP		CreateDIBGraphWithStrLen(					const TCHAR *FileName, size_t FileNameLength,                                                                                                                                        int ReverseFlag,          COLORDATA *SrcColor ) ;					// ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ï¼¤ï¼©ï¼¢ãƒ‡ãƒ¼ã‚¿ã‚’ä½œæˆã™ã‚‹
-extern	HBITMAP		CreateDIBGraphToMem(						const BITMAPINFO *BmpInfo, const void *GraphData,                                                                                                                                    int ReverseFlag,          COLORDATA *SrcColor ) ;					// ï¼¢ï¼­ï¼°ãƒ‡ãƒ¼ã‚¿ã‹ã‚‰ï¼¤ï¼©ï¼¢ãƒ‡ãƒ¼ã‚¿ã‚¯ã‚’ä½œæˆã™ã‚‹
-extern	int			CreateDIBGraph_plus_Alpha(					const TCHAR *FileName,                        HBITMAP *RGBBmp, HBITMAP *AlphaBmp,                                                                                                    int ReverseFlag = FALSE , COLORDATA *SrcColor = NULL ) ;			// ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ï¼¤ï¼©ï¼¢ãƒ‡ãƒ¼ã‚¿ã¨ãƒã‚¹ã‚¯ç”¨ï¼¤ï¼©ï¼¢ãƒ‡ãƒ¼ã‚¿ã‚’ä½œæˆã™ã‚‹
-extern	int			CreateDIBGraph_plus_AlphaWithStrLen(		const TCHAR *FileName, size_t FileNameLength, HBITMAP *RGBBmp, HBITMAP *AlphaBmp,                                                                                                    int ReverseFlag = FALSE , COLORDATA *SrcColor = NULL ) ;			// ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ï¼¤ï¼©ï¼¢ãƒ‡ãƒ¼ã‚¿ã¨ãƒã‚¹ã‚¯ç”¨ï¼¤ï¼©ï¼¢ãƒ‡ãƒ¼ã‚¿ã‚’ä½œæˆã™ã‚‹
-extern	HBITMAP		CreateDIBGraphVer2(							const TCHAR *FileName,                        const void *MemImage, int MemImageSize,                                             int ImageType,                                     int ReverseFlag,          COLORDATA *SrcColor ) ;					// ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«è‹¥ã—ãã¯ãƒ¡ãƒ¢ãƒªä¸Šã«å±•é–‹ã•ã‚ŒãŸç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã‚¤ãƒ¡ãƒ¼ã‚¸ã‹ã‚‰ï¼¤ï¼©ï¼¢ãƒ‡ãƒ¼ã‚¿ã‚’ä½œæˆã™ã‚‹
-extern	HBITMAP		CreateDIBGraphVer2WithStrLen(				const TCHAR *FileName, size_t FileNameLength, const void *MemImage, int MemImageSize,                                             int ImageType,                                     int ReverseFlag,          COLORDATA *SrcColor ) ;					// ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«è‹¥ã—ãã¯ãƒ¡ãƒ¢ãƒªä¸Šã«å±•é–‹ã•ã‚ŒãŸç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã‚¤ãƒ¡ãƒ¼ã‚¸ã‹ã‚‰ï¼¤ï¼©ï¼¢ãƒ‡ãƒ¼ã‚¿ã‚’ä½œæˆã™ã‚‹
-extern	int			CreateDIBGraphVer2_plus_Alpha(				const TCHAR *FileName,                        const void *MemImage, int MemImageSize, const void *AlphaImage, int AlphaImageSize, int ImageType, HBITMAP *RGBBmp, HBITMAP *AlphaBmp, int ReverseFlag,          COLORDATA *SrcColor ) ;					// ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«è‹¥ã—ãã¯ãƒ¡ãƒ¢ãƒªä¸Šã«å±•é–‹ã•ã‚ŒãŸç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã‚¤ãƒ¡ãƒ¼ã‚¸ã‹ã‚‰ï¼¤ï¼©ï¼¢ãƒ‡ãƒ¼ã‚¿ã¨ãƒã‚¹ã‚¯ç”¨ï¼¤ï¼©ï¼¢ãƒ‡ãƒ¼ã‚¿ã‚’ä½œæˆã™ã‚‹
-extern	int			CreateDIBGraphVer2_plus_AlphaWithStrLen(	const TCHAR *FileName, size_t FileNameLength, const void *MemImage, int MemImageSize, const void *AlphaImage, int AlphaImageSize, int ImageType, HBITMAP *RGBBmp, HBITMAP *AlphaBmp, int ReverseFlag,          COLORDATA *SrcColor ) ;					// ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«è‹¥ã—ãã¯ãƒ¡ãƒ¢ãƒªä¸Šã«å±•é–‹ã•ã‚ŒãŸç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã‚¤ãƒ¡ãƒ¼ã‚¸ã‹ã‚‰ï¼¤ï¼©ï¼¢ãƒ‡ãƒ¼ã‚¿ã¨ãƒã‚¹ã‚¯ç”¨ï¼¤ï¼©ï¼¢ãƒ‡ãƒ¼ã‚¿ã‚’ä½œæˆã™ã‚‹
-extern	int			ConvBitmapToGraphImage(						const BITMAPINFO *BmpInfo, void *GraphData, BASEIMAGE *GraphImage, int CopyFlag ) ;																																			// ï¼¢ï¼­ï¼°ãƒ‡ãƒ¼ã‚¿ã‹ã‚‰åŸºæœ¬ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒ‡ãƒ¼ã‚¿ã‚’æ§‹ç¯‰ã™ã‚‹( Ret 0:æ­£å¸¸çµ‚äº†  1:ã‚³ãƒ”ãƒ¼ã‚’è¡Œã£ãŸ  -1:ã‚¨ãƒ©ãƒ¼ )
-extern	int			ConvGraphImageToBitmap(						const BASEIMAGE *GraphImage, BITMAPINFO *BmpInfo, void **GraphData, int CopyFlag, int FullColorConv = TRUE ) ;																												// åŸºæœ¬ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒ‡ãƒ¼ã‚¿ã‚’ï¼¢ï¼­ï¼°ãƒ‡ãƒ¼ã‚¿ã«å¤‰æ›ã™ã‚‹GraphImage ã‚’ ï¼¢ï¼­ï¼° ã«å¤‰æ›ã™ã‚‹(ã‚¢ãƒ«ãƒ•ã‚¡ãƒ‡ãƒ¼ã‚¿ã¯ã‚ã£ã¦ã‚‚ç„¡è¦–ã•ã‚Œã‚‹)( æˆ»ã‚Šå€¤ã€€0:æ­£å¸¸çµ‚äº†  1:ã‚³ãƒ”ãƒ¼ã‚’è¡Œã£ãŸ  -1:ã‚¨ãƒ©ãƒ¼ )
+// Šî–{ƒCƒ[ƒWƒf[ƒ^‚Ìƒ[ƒh{‚c‚h‚aŠÖŒW
+extern	HBITMAP		CreateDIBGraph(								const TCHAR *FileName,                                                                                                                                                               int ReverseFlag,                          COLORDATA *SrcColor ) ;							// ‰æ‘œƒtƒ@ƒCƒ‹‚©‚ç‚c‚h‚aƒf[ƒ^‚ğì¬‚·‚é
+extern	HBITMAP		CreateDIBGraphWithStrLen(					const TCHAR *FileName, size_t FileNameLength,                                                                                                                                        int ReverseFlag,                          COLORDATA *SrcColor ) ;							// ‰æ‘œƒtƒ@ƒCƒ‹‚©‚ç‚c‚h‚aƒf[ƒ^‚ğì¬‚·‚é
+extern	HBITMAP		CreateDIBGraphToMem(						const BITMAPINFO *BmpInfo, const void *GraphData,                                                                                                                                    int ReverseFlag,                          COLORDATA *SrcColor ) ;							// ‚a‚l‚oƒf[ƒ^‚©‚ç‚c‚h‚aƒf[ƒ^ƒN‚ğì¬‚·‚é
+extern	int			CreateDIBGraph_plus_Alpha(					const TCHAR *FileName,                        HBITMAP *RGBBmp, HBITMAP *AlphaBmp,                                                                                                    int ReverseFlag DEFAULTPARAM( = FALSE ) , COLORDATA *SrcColor DEFAULTPARAM( = NULL ) ) ;	// ‰æ‘œƒtƒ@ƒCƒ‹‚©‚ç‚c‚h‚aƒf[ƒ^‚Æƒ}ƒXƒN—p‚c‚h‚aƒf[ƒ^‚ğì¬‚·‚é
+extern	int			CreateDIBGraph_plus_AlphaWithStrLen(		const TCHAR *FileName, size_t FileNameLength, HBITMAP *RGBBmp, HBITMAP *AlphaBmp,                                                                                                    int ReverseFlag DEFAULTPARAM( = FALSE ) , COLORDATA *SrcColor DEFAULTPARAM( = NULL ) ) ;	// ‰æ‘œƒtƒ@ƒCƒ‹‚©‚ç‚c‚h‚aƒf[ƒ^‚Æƒ}ƒXƒN—p‚c‚h‚aƒf[ƒ^‚ğì¬‚·‚é
+extern	HBITMAP		CreateDIBGraphVer2(							const TCHAR *FileName,                        const void *MemImage, int MemImageSize,                                             int ImageType,                                     int ReverseFlag,                          COLORDATA *SrcColor ) ;							// ‰æ‘œƒtƒ@ƒCƒ‹á‚µ‚­‚Íƒƒ‚ƒŠã‚É“WŠJ‚³‚ê‚½‰æ‘œƒtƒ@ƒCƒ‹ƒCƒ[ƒW‚©‚ç‚c‚h‚aƒf[ƒ^‚ğì¬‚·‚é
+extern	HBITMAP		CreateDIBGraphVer2WithStrLen(				const TCHAR *FileName, size_t FileNameLength, const void *MemImage, int MemImageSize,                                             int ImageType,                                     int ReverseFlag,                          COLORDATA *SrcColor ) ;							// ‰æ‘œƒtƒ@ƒCƒ‹á‚µ‚­‚Íƒƒ‚ƒŠã‚É“WŠJ‚³‚ê‚½‰æ‘œƒtƒ@ƒCƒ‹ƒCƒ[ƒW‚©‚ç‚c‚h‚aƒf[ƒ^‚ğì¬‚·‚é
+extern	int			CreateDIBGraphVer2_plus_Alpha(				const TCHAR *FileName,                        const void *MemImage, int MemImageSize, const void *AlphaImage, int AlphaImageSize, int ImageType, HBITMAP *RGBBmp, HBITMAP *AlphaBmp, int ReverseFlag,                          COLORDATA *SrcColor ) ;							// ‰æ‘œƒtƒ@ƒCƒ‹á‚µ‚­‚Íƒƒ‚ƒŠã‚É“WŠJ‚³‚ê‚½‰æ‘œƒtƒ@ƒCƒ‹ƒCƒ[ƒW‚©‚ç‚c‚h‚aƒf[ƒ^‚Æƒ}ƒXƒN—p‚c‚h‚aƒf[ƒ^‚ğì¬‚·‚é
+extern	int			CreateDIBGraphVer2_plus_AlphaWithStrLen(	const TCHAR *FileName, size_t FileNameLength, const void *MemImage, int MemImageSize, const void *AlphaImage, int AlphaImageSize, int ImageType, HBITMAP *RGBBmp, HBITMAP *AlphaBmp, int ReverseFlag,                          COLORDATA *SrcColor ) ;							// ‰æ‘œƒtƒ@ƒCƒ‹á‚µ‚­‚Íƒƒ‚ƒŠã‚É“WŠJ‚³‚ê‚½‰æ‘œƒtƒ@ƒCƒ‹ƒCƒ[ƒW‚©‚ç‚c‚h‚aƒf[ƒ^‚Æƒ}ƒXƒN—p‚c‚h‚aƒf[ƒ^‚ğì¬‚·‚é
+extern	int			ConvBitmapToGraphImage(						const BITMAPINFO *BmpInfo, void *GraphData, BASEIMAGE *GraphImage, int CopyFlag ) ;																																			// ‚a‚l‚oƒf[ƒ^‚©‚çŠî–{ƒCƒ[ƒWƒf[ƒ^‚ğ\’z‚·‚é( Ret 0:³íI—¹  1:ƒRƒs[‚ğs‚Á‚½  -1:ƒGƒ‰[ )
+extern	int			ConvGraphImageToBitmap(						const BASEIMAGE *GraphImage, BITMAPINFO *BmpInfo, void **GraphData, int CopyFlag, int FullColorConv DEFAULTPARAM( = TRUE ) ) ;																								// Šî–{ƒCƒ[ƒWƒf[ƒ^‚ğ‚a‚l‚oƒf[ƒ^‚É•ÏŠ·‚·‚éGraphImage ‚ğ ‚a‚l‚o ‚É•ÏŠ·‚·‚é(ƒAƒ‹ƒtƒ@ƒf[ƒ^‚Í‚ ‚Á‚Ä‚à–³‹‚³‚ê‚é)( –ß‚è’l@0:³íI—¹  1:ƒRƒs[‚ğs‚Á‚½  -1:ƒGƒ‰[ )
 
-// åŸºæœ¬ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“é–¢ä¿‚
-extern	int			UpdateLayerdWindowForBaseImage(                       const BASEIMAGE *BaseImage ) ;																										// åŸºæœ¬ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒ‡ãƒ¼ã‚¿ã‚’ä½¿ç”¨ã—ã¦ UpdateLayerdWindow ã‚’è¡Œã†
-extern	int			UpdateLayerdWindowForBaseImageRect(                   const BASEIMAGE *BaseImage, int x1, int y1, int x2, int y2 ) ;																		// åŸºæœ¬ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒ‡ãƒ¼ã‚¿ã®æŒ‡å®šã®ç¯„å›²ã‚’ä½¿ç”¨ã—ã¦ UpdateLayerdWindow ã‚’è¡Œã†
-extern	int			UpdateLayerdWindowForPremultipliedAlphaBaseImage(     const BASEIMAGE *BaseImage ) ;																										// ä¹—ç®—æ¸ˆã¿ã‚¢ãƒ«ãƒ•ã‚¡ã®åŸºæœ¬ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒ‡ãƒ¼ã‚¿ã‚’ä½¿ç”¨ã—ã¦ UpdateLayerdWindow ã‚’è¡Œã†
-extern	int			UpdateLayerdWindowForPremultipliedAlphaBaseImageRect( const BASEIMAGE *BaseImage, int x1, int y1, int x2, int y2 ) ;																		// ä¹—ç®—æ¸ˆã¿ã‚¢ãƒ«ãƒ•ã‚¡ã®åŸºæœ¬ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒ‡ãƒ¼ã‚¿ã®æŒ‡å®šã®ç¯„å›²ã‚’ä½¿ç”¨ã—ã¦ UpdateLayerdWindow ã‚’è¡Œã†
+// Šî–{ƒCƒ[ƒWƒf[ƒ^\‘¢‘ÌŠÖŒW
+extern	int			UpdateLayerdWindowForBaseImage(                       const BASEIMAGE *BaseImage ) ;																										// Šî–{ƒCƒ[ƒWƒf[ƒ^‚ğg—p‚µ‚Ä UpdateLayerdWindow ‚ğs‚¤
+extern	int			UpdateLayerdWindowForBaseImageRect(                   const BASEIMAGE *BaseImage, int x1, int y1, int x2, int y2 ) ;																		// Šî–{ƒCƒ[ƒWƒf[ƒ^‚Ìw’è‚Ì”ÍˆÍ‚ğg—p‚µ‚Ä UpdateLayerdWindow ‚ğs‚¤
+extern	int			UpdateLayerdWindowForPremultipliedAlphaBaseImage(     const BASEIMAGE *BaseImage ) ;																										// æZÏ‚İƒAƒ‹ƒtƒ@‚ÌŠî–{ƒCƒ[ƒWƒf[ƒ^‚ğg—p‚µ‚Ä UpdateLayerdWindow ‚ğs‚¤
+extern	int			UpdateLayerdWindowForPremultipliedAlphaBaseImageRect( const BASEIMAGE *BaseImage, int x1, int y1, int x2, int y2 ) ;																		// æZÏ‚İƒAƒ‹ƒtƒ@‚ÌŠî–{ƒCƒ[ƒWƒf[ƒ^‚Ìw’è‚Ì”ÍˆÍ‚ğg—p‚µ‚Ä UpdateLayerdWindow ‚ğs‚¤
 
-// ãƒ‡ã‚¹ã‚¯ãƒˆãƒƒãƒ—ã‚­ãƒ£ãƒ—ãƒãƒ£
-extern	int			GetDesktopScreenBaseImage( int x1, int y1, int x2, int y2, BASEIMAGE *BaseImage, int DestX, int DestY ) ;						// ãƒ‡ã‚¹ã‚¯ãƒˆãƒƒãƒ—ã®æŒ‡å®šã®é ˜åŸŸã‚’åŸºæœ¬ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒ‡ãƒ¼ã‚¿ã«è»¢é€ã™ã‚‹
-
-
+// ƒfƒXƒNƒgƒbƒvƒLƒƒƒvƒ`ƒƒ
+extern	int			GetDesktopScreenBaseImage( int x1, int y1, int x2, int y2, BASEIMAGE *BaseImage, int DestX, int DestY ) ;						// ƒfƒXƒNƒgƒbƒv‚Ìw’è‚Ì—Ìˆæ‚ğŠî–{ƒCƒ[ƒWƒf[ƒ^‚É“]‘—‚·‚é
 
 
 
@@ -398,16 +447,18 @@ extern	int			GetDesktopScreenBaseImage( int x1, int y1, int x2, int y2, BASEIMAG
 
 
 
-// DxSoftImage.cppé–¢æ•°ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€
+
+
+// DxSoftImage.cppŠÖ”ƒvƒƒgƒ^ƒCƒvéŒ¾
 #ifndef DX_NON_SOFTIMAGE
 
-extern	int			UpdateLayerdWindowForSoftImage(                       int SIHandle ) ;												// ã‚½ãƒ•ãƒˆã‚¦ã‚¨ã‚¢ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒãƒ³ãƒ‰ãƒ«ã‚’ä½¿ç”¨ã—ã¦ UpdateLayerdWindow ã‚’è¡Œã†
-extern	int			UpdateLayerdWindowForSoftImageRect(                   int SIHandle, int x1, int y1, int x2, int y2 ) ;				// ã‚½ãƒ•ãƒˆã‚¦ã‚¨ã‚¢ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒãƒ³ãƒ‰ãƒ«ã®æŒ‡å®šã®ç¯„å›²ã‚’ä½¿ç”¨ã—ã¦ UpdateLayerdWindow ã‚’è¡Œã†
-extern	int			UpdateLayerdWindowForPremultipliedAlphaSoftImage(     int SIHandle ) ;												// ä¹—ç®—æ¸ˆã¿ã‚¢ãƒ«ãƒ•ã‚¡ã®ã‚½ãƒ•ãƒˆã‚¦ã‚¨ã‚¢ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒãƒ³ãƒ‰ãƒ«ã‚’ä½¿ç”¨ã—ã¦ UpdateLayerdWindow ã‚’è¡Œã†
-extern	int			UpdateLayerdWindowForPremultipliedAlphaSoftImageRect( int SIHandle, int x1, int y1, int x2, int y2 ) ;				// ä¹—ç®—æ¸ˆã¿ã‚¢ãƒ«ãƒ•ã‚¡ã®ã‚½ãƒ•ãƒˆã‚¦ã‚¨ã‚¢ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒãƒ³ãƒ‰ãƒ«ã®æŒ‡å®šã®ç¯„å›²ã‚’ä½¿ç”¨ã—ã¦ UpdateLayerdWindow ã‚’è¡Œã†
+extern	int			UpdateLayerdWindowForSoftImage(                       int SIHandle ) ;												// ƒ\ƒtƒgƒEƒGƒAƒCƒ[ƒWƒnƒ“ƒhƒ‹‚ğg—p‚µ‚Ä UpdateLayerdWindow ‚ğs‚¤
+extern	int			UpdateLayerdWindowForSoftImageRect(                   int SIHandle, int x1, int y1, int x2, int y2 ) ;				// ƒ\ƒtƒgƒEƒGƒAƒCƒ[ƒWƒnƒ“ƒhƒ‹‚Ìw’è‚Ì”ÍˆÍ‚ğg—p‚µ‚Ä UpdateLayerdWindow ‚ğs‚¤
+extern	int			UpdateLayerdWindowForPremultipliedAlphaSoftImage(     int SIHandle ) ;												// æZÏ‚İƒAƒ‹ƒtƒ@‚Ìƒ\ƒtƒgƒEƒGƒAƒCƒ[ƒWƒnƒ“ƒhƒ‹‚ğg—p‚µ‚Ä UpdateLayerdWindow ‚ğs‚¤
+extern	int			UpdateLayerdWindowForPremultipliedAlphaSoftImageRect( int SIHandle, int x1, int y1, int x2, int y2 ) ;				// æZÏ‚İƒAƒ‹ƒtƒ@‚Ìƒ\ƒtƒgƒEƒGƒAƒCƒ[ƒWƒnƒ“ƒhƒ‹‚Ìw’è‚Ì”ÍˆÍ‚ğg—p‚µ‚Ä UpdateLayerdWindow ‚ğs‚¤
 
-// ãƒ‡ã‚¹ã‚¯ãƒˆãƒƒãƒ—ã‚­ãƒ£ãƒ—ãƒãƒ£
-extern	int			GetDesktopScreenSoftImage( int x1, int y1, int x2, int y2, int SIHandle,         int DestX, int DestY ) ;						// ãƒ‡ã‚¹ã‚¯ãƒˆãƒƒãƒ—ã®æŒ‡å®šã®é ˜åŸŸã‚’ã‚½ãƒ•ãƒˆã‚¦ã‚¨ã‚¢ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒãƒ³ãƒ‰ãƒ«ã«è»¢é€ã™ã‚‹
+// ƒfƒXƒNƒgƒbƒvƒLƒƒƒvƒ`ƒƒ
+extern	int			GetDesktopScreenSoftImage( int x1, int y1, int x2, int y2, int SIHandle,         int DestX, int DestY ) ;						// ƒfƒXƒNƒgƒbƒv‚Ìw’è‚Ì—Ìˆæ‚ğƒ\ƒtƒgƒEƒGƒAƒCƒ[ƒWƒnƒ“ƒhƒ‹‚É“]‘—‚·‚é
 
 #endif // DX_NON_SOFTIMAGE
 
@@ -420,25 +471,31 @@ extern	int			GetDesktopScreenSoftImage( int x1, int y1, int x2, int y2, int SIHa
 
 
 
-// DxSound.cppé–¢æ•°ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€
+// DxSound.cppŠÖ”ƒvƒƒgƒ^ƒCƒvéŒ¾
 #ifndef DX_NON_SOUND
 
-// ã‚µã‚¦ãƒ³ãƒ‰ãƒ‡ãƒ¼ã‚¿ç®¡ç†ç³»é–¢æ•°
-extern	int			LoadSoundMemByResource(              const TCHAR *ResourceName,                            const TCHAR *ResourceType,                            int BufferNum = 1 ) ;				// ã‚µã‚¦ãƒ³ãƒ‰ãƒªã‚½ãƒ¼ã‚¹ã‹ã‚‰ã‚µã‚¦ãƒ³ãƒ‰ãƒãƒ³ãƒ‰ãƒ«ã‚’ä½œæˆã™ã‚‹
-extern	int			LoadSoundMemByResourceWithStrLen(    const TCHAR *ResourceName, size_t ResourceNameLength, const TCHAR *ResourceType, size_t ResourceTypeLength, int BufferNum = 1 ) ;				// ã‚µã‚¦ãƒ³ãƒ‰ãƒªã‚½ãƒ¼ã‚¹ã‹ã‚‰ã‚µã‚¦ãƒ³ãƒ‰ãƒãƒ³ãƒ‰ãƒ«ã‚’ä½œæˆã™ã‚‹
+// ƒTƒEƒ“ƒhƒf[ƒ^ŠÇ—ŒnŠÖ”
+extern	int			LoadSoundMemByResource(              const TCHAR *ResourceName,                            const TCHAR *ResourceType,                            int BufferNum DEFAULTPARAM( = 1 ) ) ;		// ƒTƒEƒ“ƒhƒŠƒ\[ƒX‚©‚çƒTƒEƒ“ƒhƒnƒ“ƒhƒ‹‚ğì¬‚·‚é
+extern	int			LoadSoundMemByResourceWithStrLen(    const TCHAR *ResourceName, size_t ResourceNameLength, const TCHAR *ResourceType, size_t ResourceTypeLength, int BufferNum DEFAULTPARAM( = 1 ) ) ;		// ƒTƒEƒ“ƒhƒŠƒ\[ƒX‚©‚çƒTƒEƒ“ƒhƒnƒ“ƒhƒ‹‚ğì¬‚·‚é
 
-// è¨­å®šé–¢ä¿‚é–¢æ•°
-extern	int			SetUseSoftwareMixingSoundFlag(       int Flag ) ;																																	// ã‚µã‚¦ãƒ³ãƒ‰ã®å‡¦ç†ã‚’ã‚½ãƒ•ãƒˆã‚¦ã‚¨ã‚¢ã§è¡Œã†ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( TRUE:ã‚½ãƒ•ãƒˆã‚¦ã‚¨ã‚¢  FALSE:ãƒãƒ¼ãƒ‰ã‚¦ã‚¨ã‚¢( ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ ) )
-extern	int			SetEnableXAudioFlag(                 int Flag ) ;																																	// ã‚µã‚¦ãƒ³ãƒ‰ã®å†ç”Ÿã«XAudioã‚’ä½¿ç”¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹( TRUE:ä½¿ç”¨ã™ã‚‹  FALSE:ä½¿ç”¨ã—ãªã„( ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ ) )
+// İ’èŠÖŒWŠÖ”
+extern	int			SetUseSoftwareMixingSoundFlag(       int Flag ) ;																																	// ƒTƒEƒ“ƒh‚Ìˆ—‚ğƒ\ƒtƒgƒEƒGƒA‚Ås‚¤‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:ƒ\ƒtƒgƒEƒGƒA  FALSE:ƒn[ƒhƒEƒGƒA( ƒfƒtƒHƒ‹ƒg ) )
+extern	int			SetEnableXAudioFlag(                 int Flag ) ;																																	// ƒTƒEƒ“ƒh‚ÌÄ¶‚ÉXAudio‚ğg—p‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( TRUE:g—p‚·‚é  FALSE:g—p‚µ‚È‚¢( ƒfƒtƒHƒ‹ƒg ) )
+extern	int			SetEnableWASAPIFlag(                 int Flag, int IsExclusive DEFAULTPARAM( = TRUE ) , int DevicePeriod DEFAULTPARAM( = -1 ) , int SamplePerSec DEFAULTPARAM( = 44100 ) ) ;		// ƒTƒEƒ“ƒh‚ÌÄ¶‚ÉWASAPI‚ğg—p‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( Flag  TRUE:g—p‚·‚é  FALSE:g—p‚µ‚È‚¢( ƒfƒtƒHƒ‹ƒg ), IsExclusive  TRUE:”r‘¼ƒ‚[ƒh‚ğg—p‚·‚é  FALSE:”r‘¼ƒ‚[ƒh‚ğg—p‚µ‚È‚¢, DevicePeriod Ä¶’x‰„ŠÔA100ƒiƒm•b’PˆÊ( 100000 ‚Å 10ƒ~ƒŠ•b )A-1‚ÅƒfƒtƒHƒ‹ƒg’l, SamplePerSec ƒTƒ“ƒvƒŠƒ“ƒOƒŒ[ƒg )
+#ifndef DX_NON_ASIO
+extern	int			SetEnableASIOFlag(                   int Flag, int BufferSize DEFAULTPARAM( = -1 ) , int SamplePerSec DEFAULTPARAM( = 44100 ) ) ;													// ƒTƒEƒ“ƒh‚ÌÄ¶‚ÉASIO‚ğg—p‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( Flag  TRUE:g—p‚·‚é  FALSE:g—p‚µ‚È‚¢( ƒfƒtƒHƒ‹ƒg ), BufferSize Ä¶ƒoƒbƒtƒ@‚ÌƒTƒCƒYA¬‚³‚¢‚Ù‚Ç’x‰„‚ª­‚È‚­‚È‚è‚Ü‚·‚ªAˆ—‚ªŠÔ‚É‡‚í‚¸‚ÉƒuƒcƒuƒcƒmƒCƒY‚ª”­¶‚·‚é‰Â”\«‚à‚‚­‚È‚è‚Ü‚·( -1 ‚ÅƒfƒtƒHƒ‹ƒg’l ), SamplePerSec ƒTƒ“ƒvƒŠƒ“ƒOƒŒ[ƒg )
+extern	int			SetUseASIODriverIndex(               int Index ) ;																																	// ƒTƒEƒ“ƒh‚ÌÄ¶‚Ég—p‚·‚éASIOƒhƒ‰ƒCƒo[‚Ì”Ô†‚ğİ’è‚·‚é( ƒfƒtƒHƒ‹ƒg‚Å‚Í 0 )
+#endif // DX_NON_ASIO
+extern	int			SetEnableMMEwaveOutFlag(             int Flag, int BufferSamples DEFAULTPARAM( = -1 ) , int SamplePerSec DEFAULTPARAM( = 44100 ) ) ;												// ƒTƒEƒ“ƒh‚ÌÄ¶‚Éƒ}ƒ‹ƒ`ƒƒfƒBƒAAPI‚Ì waveOut ‚ğg—p‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é( Flag  TRUE:g—p‚·‚é  FALSE:g—p‚µ‚È‚¢( ƒfƒtƒHƒ‹ƒg ), BufferSamples Ä¶ƒoƒbƒtƒ@‚ÌƒTƒCƒYA¬‚³‚¢‚Ù‚Ç’x‰„‚ª­‚È‚­‚È‚è‚Ü‚·‚ªAˆ—‚ªŠÔ‚É‡‚í‚¸‚ÉƒuƒcƒuƒcƒmƒCƒY‚ª”­¶‚·‚é‰Â”\«‚à‚‚­‚È‚è‚Ü‚·( -1 ‚ÅƒfƒtƒHƒ‹ƒg’l ), SamplePerSec ƒTƒ“ƒvƒŠƒ“ƒOƒŒ[ƒg )
 
-// æƒ…å ±å–å¾—ç³»é–¢æ•°
-extern	const void*	GetDSoundObj(                        void ) ;	/* æˆ»ã‚Šå€¤ã‚’ IDirectSound * ã«ã‚­ãƒ£ã‚¹ãƒˆã—ã¦ä¸‹ã•ã„ */																					// ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªãŒä½¿ç”¨ã—ã¦ã„ã‚‹ DirectSound ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—ã™ã‚‹
+// î•ñæ“¾ŒnŠÖ”
+extern	const void*	GetDSoundObj(                        void ) ;	/* –ß‚è’l‚ğ IDirectSound * ‚ÉƒLƒƒƒXƒg‚µ‚Ä‰º‚³‚¢ */																					// ‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‚ªg—p‚µ‚Ä‚¢‚é DirectSound ƒIƒuƒWƒFƒNƒg‚ğæ“¾‚·‚é
 
-// ï¼­ï¼©ï¼¤ï¼©åˆ¶å¾¡é–¢æ•°
-extern	int			LoadMusicMemByResource(				const TCHAR *ResourceName,                            const TCHAR *ResourceType                            ) ;									// ãƒªã‚½ãƒ¼ã‚¹ä¸Šã®ï¼­ï¼©ï¼¤ï¼©ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ï¼­ï¼©ï¼¤ï¼©ãƒãƒ³ãƒ‰ãƒ«ã‚’ä½œæˆã™ã‚‹
-extern	int			LoadMusicMemByResourceWithStrLen(	const TCHAR *ResourceName, size_t ResourceNameLength, const TCHAR *ResourceType, size_t ResourceTypeLength ) ;									// ãƒªã‚½ãƒ¼ã‚¹ä¸Šã®ï¼­ï¼©ï¼¤ï¼©ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ï¼­ï¼©ï¼¤ï¼©ãƒãƒ³ãƒ‰ãƒ«ã‚’ä½œæˆã™ã‚‹
-extern	int			PlayMusicByResource(				const TCHAR *ResourceName,                            const TCHAR *ResourceType,                            int PlayType ) ;	// ãƒªã‚½ãƒ¼ã‚¹ã‹ã‚‰ï¼­ï¼©ï¼¤ï¼©ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚“ã§æ¼”å¥ã™ã‚‹
-extern	int			PlayMusicByResourceWithStrLen(		const TCHAR *ResourceName, size_t ResourceNameLength, const TCHAR *ResourceType, size_t ResourceTypeLength, int PlayType ) ;	// ãƒªã‚½ãƒ¼ã‚¹ã‹ã‚‰ï¼­ï¼©ï¼¤ï¼©ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚“ã§æ¼”å¥ã™ã‚‹
+// ‚l‚h‚c‚h§ŒäŠÖ”
+extern	int			LoadMusicMemByResource(				const TCHAR *ResourceName,                            const TCHAR *ResourceType                            ) ;									// ƒŠƒ\[ƒXã‚Ì‚l‚h‚c‚hƒtƒ@ƒCƒ‹‚©‚ç‚l‚h‚c‚hƒnƒ“ƒhƒ‹‚ğì¬‚·‚é
+extern	int			LoadMusicMemByResourceWithStrLen(	const TCHAR *ResourceName, size_t ResourceNameLength, const TCHAR *ResourceType, size_t ResourceTypeLength ) ;									// ƒŠƒ\[ƒXã‚Ì‚l‚h‚c‚hƒtƒ@ƒCƒ‹‚©‚ç‚l‚h‚c‚hƒnƒ“ƒhƒ‹‚ğì¬‚·‚é
+extern	int			PlayMusicByResource(				const TCHAR *ResourceName,                            const TCHAR *ResourceType,                            int PlayType ) ;	// ƒŠƒ\[ƒX‚©‚ç‚l‚h‚c‚hƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚ñ‚Å‰‰‘t‚·‚é
+extern	int			PlayMusicByResourceWithStrLen(		const TCHAR *ResourceName, size_t ResourceNameLength, const TCHAR *ResourceType, size_t ResourceTypeLength, int PlayType ) ;	// ƒŠƒ\[ƒX‚©‚ç‚l‚h‚c‚hƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚ñ‚Å‰‰‘t‚·‚é
 
 #endif // DX_NON_SOUND
 
@@ -460,5 +517,5 @@ extern	int			PlayMusicByResourceWithStrLen(		const TCHAR *ResourceName, size_t R
 
 #endif // DX_NON_NAMESPACE
 
-#endif // __DXFUNCTIONWIN
+#endif // DX_FUNCTIONWIN_H
 

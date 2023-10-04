@@ -1,18 +1,17 @@
 ﻿
-#ifndef	__EFFEKSEERRENDERER_DX11_BASE_PRE_H__
-#define	__EFFEKSEERRENDERER_DX11_BASE_PRE_H__
+#ifndef __EFFEKSEERRENDERER_DX11_BASE_PRE_H__
+#define __EFFEKSEERRENDERER_DX11_BASE_PRE_H__
 
 //----------------------------------------------------------------------------------
 // Include
 //----------------------------------------------------------------------------------
 #include <Effekseer.h>
 
-#include <windows.h>
 #include <d3d11.h>
+#include <windows.h>
 
 #if _WIN32
-#pragma comment(lib, "gdiplus.lib")
-#pragma comment(lib, "d3d11.lib" )
+#pragma comment(lib, "d3d11.lib")
 #endif
 
 //----------------------------------------------------------------------------------
@@ -28,14 +27,14 @@ class Renderer;
 //----------------------------------------------------------------------------------
 //
 //----------------------------------------------------------------------------------
-}
+} // namespace EffekseerRendererDX11
 //----------------------------------------------------------------------------------
 //
 //----------------------------------------------------------------------------------
-#endif	// __EFFEKSEERRENDERER_DX11_PRE_BASE_H__
+#endif // __EFFEKSEERRENDERER_DX11_PRE_BASE_H__
 
-#ifndef	__EFFEKSEERRENDERER_RENDERER_H__
-#define	__EFFEKSEERRENDERER_RENDERER_H__
+#ifndef __EFFEKSEERRENDERER_RENDERER_H__
+#define __EFFEKSEERRENDERER_RENDERER_H__
 
 //----------------------------------------------------------------------------------
 // Include
@@ -45,34 +44,137 @@ class Renderer;
 //-----------------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------------
+
+namespace Effekseer
+{
+namespace Backend
+{
+class VertexBuffer;
+class IndexBuffer;
+class GraphicsDevice;
+} // namespace Backend
+} // namespace Effekseer
+
 namespace EffekseerRenderer
 {
-//-----------------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------------
+
+class Renderer;
+using RendererRef = ::Effekseer::RefPtr<Renderer>;
 
 /**
-	@brief	背景を歪ませるエフェクトを描画する前に実行されるコールバック
+	@brief	Specify a shader for renderer from external class
+	@note
+	For Effekseer tools
+*/
+struct ExternalShaderSettings
+{
+	Effekseer::Backend::ShaderRef StandardShader;
+	Effekseer::Backend::ShaderRef ModelShader;
+	Effekseer::AlphaBlendType Blend;
+};
+
+/**
+	@brief	
+	\~english A callback to distort a background before drawing
+	\~japanese 背景を歪ませるエフェクトを描画する前に実行されるコールバック
+	
 */
 class DistortingCallback
 {
 public:
-	DistortingCallback() {}
-	virtual ~DistortingCallback() {}
+	DistortingCallback()
+	{
+	}
+	virtual ~DistortingCallback()
+	{
+	}
 
-	virtual bool OnDistorting() { return false; }
+	/**
+	@brief	
+	\~english A callback
+	\~japanese コールバック
+	@note
+	\~english Don't hold renderer in the instance
+	\~japanese インスタンス内にrendererを保持してはいけない
+	*/
+	virtual bool OnDistorting(Renderer* renderer)
+	{
+		return false;
+	}
 };
-//-----------------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------------
-class Renderer
-	: ::Effekseer::IReference
+
+/**
+	@brief
+	\~english A status of UV when particles are rendered.
+	\~japanese パーティクルを描画する時のUVの状態
+*/
+enum class UVStyle
+{
+	Normal,
+	VerticalFlipped,
+};
+
+/**
+	@brief
+	\~english A type of texture which is rendered when textures are not assigned.
+	\~japanese テクスチャが設定されていないときに描画されるテクスチャの種類
+*/
+enum class ProxyTextureType
+{
+	White,
+	Normal,
+};
+
+class CommandList : public ::Effekseer::IReference
+{
+public:
+	CommandList() = default;
+	virtual ~CommandList() = default;
+};
+
+class SingleFrameMemoryPool : public ::Effekseer::IReference
+{
+public:
+	SingleFrameMemoryPool() = default;
+	virtual ~SingleFrameMemoryPool() = default;
+
+	/**
+		@brief
+		\~English	notify that new frame is started.
+		\~Japanese	新規フレームが始ったことを通知する。
+	*/
+	virtual void NewFrame()
+	{
+	}
+};
+
+struct DepthReconstructionParameter
+{
+	float DepthBufferScale = 1.0f;
+	float DepthBufferOffset = 0.0f;
+	float ProjectionMatrix33 = 0.0f;
+	float ProjectionMatrix34 = 0.0f;
+	float ProjectionMatrix43 = 0.0f;
+	float ProjectionMatrix44 = 0.0f;
+};
+
+::Effekseer::ModelLoaderRef CreateModelLoader(::Effekseer::Backend::GraphicsDeviceRef gprahicsDevice, ::Effekseer::FileInterfaceRef fileInterface = nullptr);
+
+class Renderer : public ::Effekseer::IReference
 {
 protected:
-	Renderer() {}
-	virtual ~Renderer() {}
+	Renderer();
+	virtual ~Renderer();
+
+	class Impl;
+	std::unique_ptr<Impl> impl;
 
 public:
+	/**
+		@brief	only for Effekseer backend developer. Effekseer User doesn't need it.
+	*/
+	Impl* GetImpl();
+
 	/**
 		@brief	デバイスロストが発生した時に実行する。
 	*/
@@ -82,11 +184,6 @@ public:
 		@brief	デバイスがリセットされた時に実行する。
 	*/
 	virtual void OnResetDevice() = 0;
-
-	/**
-		@brief	このインスタンスを破棄する。
-	*/
-	virtual void Destroy() = 0;
 
 	/**
 		@brief	ステートを復帰するかどうかのフラグを設定する。
@@ -104,117 +201,130 @@ public:
 	virtual bool EndRendering() = 0;
 
 	/**
-		@brief	ライトの方向を取得する。
+		@brief	Get the direction of light
 	*/
-	virtual const ::Effekseer::Vector3D& GetLightDirection() const = 0;
+	virtual ::Effekseer::Vector3D GetLightDirection() const;
 
 	/**
-		@brief	ライトの方向を設定する。
+		@brief	Specifiy the direction of light
 	*/
-	virtual void SetLightDirection( const ::Effekseer::Vector3D& direction ) = 0;
+	virtual void SetLightDirection(const ::Effekseer::Vector3D& direction);
 
 	/**
-		@brief	ライトの色を取得する。
+		@brief	Get the color of light
 	*/
-	virtual const ::Effekseer::Color& GetLightColor() const = 0;
+	virtual const ::Effekseer::Color& GetLightColor() const;
 
 	/**
-		@brief	ライトの色を設定する。
+		@brief	Specify the color of light
 	*/
-	virtual void SetLightColor( const ::Effekseer::Color& color ) = 0;
+	virtual void SetLightColor(const ::Effekseer::Color& color);
 
 	/**
-		@brief	ライトの環境光の色を取得する。
+		@brief	Get the color of ambient
 	*/
-	virtual const ::Effekseer::Color& GetLightAmbientColor() const = 0;
+	virtual const ::Effekseer::Color& GetLightAmbientColor() const;
 
 	/**
-		@brief	ライトの環境光の色を設定する。
+		@brief	Specify the color of ambient
 	*/
-	virtual void SetLightAmbientColor( const ::Effekseer::Color& color ) = 0;
+	virtual void SetLightAmbientColor(const ::Effekseer::Color& color);
 
-		/**
+	/**
 		@brief	最大描画スプライト数を取得する。
 	*/
 	virtual int32_t GetSquareMaxCount() const = 0;
 
 	/**
-		@brief	投影行列を取得する。
+		@brief	Get a projection matrix
 	*/
-	virtual const ::Effekseer::Matrix44& GetProjectionMatrix() const = 0;
+	virtual ::Effekseer::Matrix44 GetProjectionMatrix() const;
 
 	/**
-		@brief	投影行列を設定する。
+		@brief	Set a projection matrix
 	*/
-	virtual void SetProjectionMatrix( const ::Effekseer::Matrix44& mat ) = 0;
+	virtual void SetProjectionMatrix(const ::Effekseer::Matrix44& mat);
 
 	/**
-		@brief	カメラ行列を取得する。
+		@brief	Get a camera matrix
 	*/
-	virtual const ::Effekseer::Matrix44& GetCameraMatrix() const = 0;
+	virtual ::Effekseer::Matrix44 GetCameraMatrix() const;
 
 	/**
-		@brief	カメラ行列を設定する。
+		@brief	Set a camera matrix
 	*/
-	virtual void SetCameraMatrix( const ::Effekseer::Matrix44& mat ) = 0;
+	virtual void SetCameraMatrix(const ::Effekseer::Matrix44& mat);
 
 	/**
-		@brief	カメラプロジェクション行列を取得する。
+		@brief	Get a camera projection matrix
 	*/
-	virtual ::Effekseer::Matrix44& GetCameraProjectionMatrix() = 0;
+	virtual ::Effekseer::Matrix44 GetCameraProjectionMatrix() const;
 
 	/**
 		@brief	Get a front direction of camera
+		@note
+		We don't recommend to use it without understanding of internal code.
 	*/
-	virtual ::Effekseer::Vector3D GetCameraFrontDirection() const = 0;
+	virtual ::Effekseer::Vector3D GetCameraFrontDirection() const;
 
 	/**
 		@brief	Get a position of camera
+		@note
+		We don't recommend to use it without understanding of internal code.
 	*/
-	virtual ::Effekseer::Vector3D GetCameraPosition() const = 0;
+	virtual ::Effekseer::Vector3D GetCameraPosition() const;
 
 	/**
 		@brief	Set a front direction and position of camera manually
+		@param front (Right Hand) a direction from focus to eye, (Left Hand) a direction from eye to focus,
 		@note
 		These are set based on camera matrix automatically.
 		It is failed on some platform.
 	*/
-	virtual void SetCameraParameter(const ::Effekseer::Vector3D& front, const ::Effekseer::Vector3D& position) = 0;
+	virtual void SetCameraParameter(const ::Effekseer::Vector3D& front, const ::Effekseer::Vector3D& position);
 
 	/**
 		@brief	スプライトレンダラーを生成する。
 	*/
-	virtual ::Effekseer::SpriteRenderer* CreateSpriteRenderer() = 0;
+	virtual ::Effekseer::SpriteRendererRef CreateSpriteRenderer() = 0;
 
 	/**
 		@brief	リボンレンダラーを生成する。
 	*/
-	virtual ::Effekseer::RibbonRenderer* CreateRibbonRenderer() = 0;
+	virtual ::Effekseer::RibbonRendererRef CreateRibbonRenderer() = 0;
 
 	/**
 		@brief	リングレンダラーを生成する。
 	*/
-	virtual ::Effekseer::RingRenderer* CreateRingRenderer() = 0;
+	virtual ::Effekseer::RingRendererRef CreateRingRenderer() = 0;
 
 	/**
 		@brief	モデルレンダラーを生成する。
 	*/
-	virtual ::Effekseer::ModelRenderer* CreateModelRenderer() = 0;
+	virtual ::Effekseer::ModelRendererRef CreateModelRenderer() = 0;
 
 	/**
 		@brief	軌跡レンダラーを生成する。
 	*/
-	virtual ::Effekseer::TrackRenderer* CreateTrackRenderer() = 0;
+	virtual ::Effekseer::TrackRendererRef CreateTrackRenderer() = 0;
 
 	/**
 		@brief	標準のテクスチャ読込クラスを生成する。
 	*/
-	virtual ::Effekseer::TextureLoader* CreateTextureLoader( ::Effekseer::FileInterface* fileInterface = NULL ) = 0;
+	virtual ::Effekseer::TextureLoaderRef CreateTextureLoader(::Effekseer::FileInterfaceRef fileInterface = nullptr) = 0;
 
 	/**
 		@brief	標準のモデル読込クラスを生成する。
 	*/
-	virtual ::Effekseer::ModelLoader* CreateModelLoader( ::Effekseer::FileInterface* fileInterface = NULL ) = 0;
+	virtual ::Effekseer::ModelLoaderRef CreateModelLoader(::Effekseer::FileInterfaceRef fileInterface = nullptr) = 0;
+
+	/**
+	@brief
+	\~english Create default material loader
+	\~japanese 標準のマテリアル読込クラスを生成する。
+
+	*/
+	virtual ::Effekseer::MaterialLoaderRef CreateMaterialLoader(::Effekseer::FileInterfaceRef fileInterface = nullptr) = 0;
 
 	/**
 		@brief	レンダーステートを強制的にリセットする。
@@ -232,54 +342,198 @@ public:
 	virtual void SetDistortingCallback(DistortingCallback* callback) = 0;
 
 	/**
-	@brief	
+	@brief
 	\~english Get draw call count
 	\~japanese ドローコールの回数を取得する
 	*/
-	virtual int32_t GetDrawCallCount() const = 0;
+	virtual int32_t GetDrawCallCount() const;
 
 	/**
 	@brief
 	\~english Get the number of vertex drawn
 	\~japanese 描画された頂点数をリセットする
 	*/
-	virtual int32_t GetDrawVertexCount() const = 0;
+	virtual int32_t GetDrawVertexCount() const;
 
 	/**
 	@brief
 	\~english Reset draw call count
 	\~japanese ドローコールの回数をリセットする
 	*/
-	virtual void ResetDrawCallCount() = 0;
+	virtual void ResetDrawCallCount();
 
 	/**
 	@brief
 	\~english Reset the number of vertex drawn
 	\~japanese 描画された頂点数をリセットする
 	*/
-	virtual void ResetDrawVertexCount() = 0;
+	virtual void ResetDrawVertexCount();
 
 	/**
-	@brief	描画モードを設定する。
+	@brief
+	\~english Get a render mode.
+	\~japanese 描画モードを取得する。
 	*/
-	virtual void SetRenderMode( Effekseer::RenderMode renderMode ) = 0;
+	virtual Effekseer::RenderMode GetRenderMode() const;
 
 	/**
-	@brief	描画モードを取得する。
+	@brief
+	\~english Specify a render mode.
+	\~japanese 描画モードを設定する。
 	*/
-	virtual Effekseer::RenderMode GetRenderMode() = 0;
+	virtual void SetRenderMode(Effekseer::RenderMode renderMode);
+
+	/**
+	@brief
+	\~english Get an UV Style of texture when particles are rendered.
+	\~japanese パーティクルを描画するときのUVの状態を取得する。
+	*/
+	virtual UVStyle GetTextureUVStyle() const;
+
+	/**
+	@brief
+	\~english Set an UV Style of texture when particles are rendered.
+	\~japanese パーティクルを描画するときのUVの状態を設定する。
+	*/
+	virtual void SetTextureUVStyle(UVStyle style);
+
+	/**
+	@brief
+	\~english Get an UV Style of background when particles are rendered.
+	\~japanese パーティクルを描画するときの背景のUVの状態を取得する。
+	*/
+	virtual UVStyle GetBackgroundTextureUVStyle() const;
+
+	/**
+	@brief
+	\~english Set an UV Style of background when particles are rendered.
+	\~japanese パーティクルを描画するときの背景のUVの状態を設定する。
+	*/
+	virtual void SetBackgroundTextureUVStyle(UVStyle style);
+
+	/**
+	@brief
+	\~english Get a current time (s)
+	\~japanese 現在の時間を取得する。(秒)
+	*/
+	virtual float GetTime() const;
+
+	/**
+	@brief
+	\~english Set a current time (s)
+	\~japanese 現在の時間を設定する。(秒)
+	*/
+	virtual void SetTime(float time);
+
+	/**
+	@brief
+	\~English	specify a command list to render.  This function is available except DirectX9, DirectX11 and OpenGL.
+	\~Japanese	描画に使用するコマンドリストを設定する。この関数はDirectX9、DirectX11、OpenGL以外で使用できる。
+	*/
+	virtual void SetCommandList(Effekseer::RefPtr<CommandList> commandList)
+	{
+	}
+
+	/**
+		@brief	\~English	Get a background texture.
+		\~Japanese	背景を取得する。
+		@note
+		\~English	Textures are generated by a function specific to each backend or SetBackground.
+		\~Japanese	テクスチャは各バックエンド固有の関数かSetBackgroundで生成される。
+	*/
+	virtual const ::Effekseer::Backend::TextureRef& GetBackground();
+
+	/**
+	@brief
+	\~English	Specify a background texture.
+	\~Japanese	背景のテクスチャを設定する。
+	*/
+	virtual void SetBackground(::Effekseer::Backend::TextureRef texture);
+
+	/**
+	@brief
+	\~English	Create a proxy texture
+	\~Japanese	代替のテクスチャを生成する
+	*/
+	virtual ::Effekseer::Backend::TextureRef CreateProxyTexture(ProxyTextureType type);
+
+	/**
+	@brief
+	\~English	Delete a proxy texture
+	\~Japanese	代替のテクスチャを削除する
+	*/
+	virtual void DeleteProxyTexture(Effekseer::Backend::TextureRef& texture);
+
+	/**
+		@brief	
+		\~English	Get a depth texture and parameters to reconstruct from z to depth
+		\~Japanese	深度画像とZから深度を復元するためのパラメーターを取得する。
+	*/
+	virtual void GetDepth(::Effekseer::Backend::TextureRef& texture, DepthReconstructionParameter& reconstructionParam);
+
+	/**
+		@brief	
+		\~English	Specify a depth texture and parameters to reconstruct from z to depth
+		\~Japanese	深度画像とZから深度を復元するためのパラメーターを設定する。
+	*/
+	virtual void SetDepth(::Effekseer::Backend::TextureRef texture, const DepthReconstructionParameter& reconstructionParam);
+
+	/**
+		@brief
+		\~English	Specify whether maintain gamma color in a linear color space
+		\~Japanese	リニア空間でもガンマカラーを維持するようにするか、を設定する。
+
+	*/
+	virtual void SetMaintainGammaColorInLinearColorSpace(bool value);
+
+	/**
+		@brief	
+		\~English	Get the graphics device
+		\~Japanese	グラフィクスデバイスを取得する。
+	*/
+	virtual Effekseer::Backend::GraphicsDeviceRef GetGraphicsDevice() const;
+
+	/**
+		@brief	Get external shader settings
+		@note
+		For	Effekseer tools
+	*/
+	virtual std::shared_ptr<ExternalShaderSettings> GetExternalShaderSettings() const;
+
+	/**
+		@brief	Specify external shader settings
+		@note
+		For	Effekseer tools
+	*/
+	virtual void SetExternalShaderSettings(const std::shared_ptr<ExternalShaderSettings>& settings);
 };
 
 //----------------------------------------------------------------------------------
 //
 //----------------------------------------------------------------------------------
-}
+} // namespace EffekseerRenderer
 //----------------------------------------------------------------------------------
 //
 //----------------------------------------------------------------------------------
-#endif	// __EFFEKSEERRENDERER_RENDERER_H__
-#ifndef	__EFFEKSEERRENDERER_DX11_RENDERER_H__
-#define	__EFFEKSEERRENDERER_DX11_RENDERER_H__
+#endif // __EFFEKSEERRENDERER_RENDERER_H__
+#ifndef __EFFEKSEERRENDERER_TEXTURELOADER_H__
+#define __EFFEKSEERRENDERER_TEXTURELOADER_H__
+
+#include <Effekseer.h>
+
+namespace EffekseerRenderer
+{
+
+::Effekseer::TextureLoaderRef CreateTextureLoader(::Effekseer::Backend::GraphicsDeviceRef gprahicsDevice,
+												  ::Effekseer::FileInterfaceRef fileInterface = nullptr,
+												  ::Effekseer::ColorSpaceType colorSpaceType = ::Effekseer::ColorSpaceType::Gamma);
+
+} // namespace EffekseerRenderer
+
+#endif // __EFFEKSEERRENDERER_TEXTURELOADER_H__
+
+#ifndef __EFFEKSEERRENDERER_DX11_RENDERER_H__
+#define __EFFEKSEERRENDERER_DX11_RENDERER_H__
 
 //----------------------------------------------------------------------------------
 // Include
@@ -294,120 +548,102 @@ namespace EffekseerRendererDX11
 //
 //----------------------------------------------------------------------------------
 
-/**
-@brief	テクスチャ読込クラスを生成する。
-*/
-::Effekseer::TextureLoader* CreateTextureLoader(ID3D11Device* device, ID3D11DeviceContext* context, ::Effekseer::FileInterface* fileInterface = NULL);
+::Effekseer::Backend::GraphicsDeviceRef CreateGraphicsDevice(ID3D11Device* device,
+															 ID3D11DeviceContext* context);
+
+::Effekseer::MaterialLoaderRef CreateMaterialLoader(::Effekseer::Backend::GraphicsDeviceRef graphicsDevice, ::Effekseer::FileInterfaceRef fileInterface = nullptr);
+
+::Effekseer::Backend::TextureRef CreateTexture(::Effekseer::Backend::GraphicsDeviceRef gprahicsDevice, ID3D11ShaderResourceView* srv, ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv);
 
 /**
-@brief	モデル読込クラスを生成する。
-*/
-::Effekseer::ModelLoader* CreateModelLoader(ID3D11Device* device, ::Effekseer::FileInterface* fileInterface = NULL);
+		@brief	\~English	Properties in a texture
+				\~Japanese	テクスチャ内のプロパティ
 
-
-/**
-	@brief	描画クラス
+		@note	\~English	You need not to release pointers
+				\~Japanese	ポインタの解放する必要はない
 */
-class Renderer
-	: public ::EffekseerRenderer::Renderer
+struct TextureProperty
+{
+	ID3D11ShaderResourceView* ShaderResourceViewPtr = nullptr;
+	ID3D11RenderTargetView* RenderTargetViewPtr = nullptr;
+	ID3D11DepthStencilView* DepthStencilViewPtr = nullptr;
+};
+
+TextureProperty GetTextureProperty(::Effekseer::Backend::TextureRef texture);
+
+class Renderer;
+using RendererRef = ::Effekseer::RefPtr<Renderer>;
+
+class Renderer : public ::EffekseerRenderer::Renderer
 {
 protected:
-	Renderer() {}
-	virtual ~Renderer() {}
+	Renderer()
+	{
+	}
+	virtual ~Renderer()
+	{
+	}
 
 public:
 	/**
-		@brief	インスタンスを生成する。
-		@param	device		DirectXのデバイス
-		@param	context		DirectXのコンテキスト
-		@param	squareMaxCount	最大描画スプライト数
-		@param	depthFunc	奥行きの計算方法
-		@return	インスタンス
+		@brief
+		\~english	Create an instance
+		\~japanese	インスタンスを生成する。
+		@param	graphicsDevice	GraphicsDevice
+		@param	squareMaxCount
+		\~english	the number of maximum sprites
+		\~japanese	最大描画スプライト数
+		@param	depthFunc	a func to compare a dpeth
+		@param	isMSAAEnabled whether is MSAA enabled
+		@return	instance
 	*/
-	static Renderer* Create(
-		ID3D11Device* device, 
-		ID3D11DeviceContext* context, 
-		int32_t squareMaxCount, 
-		D3D11_COMPARISON_FUNC depthFunc = D3D11_COMPARISON_LESS);
+	static RendererRef Create(::Effekseer::Backend::GraphicsDeviceRef graphicsDevice,
+							  int32_t squareMaxCount,
+							  D3D11_COMPARISON_FUNC depthFunc = D3D11_COMPARISON_LESS_EQUAL,
+							  bool isMSAAEnabled = false);
+	/**
+		@brief
+		\~english	Create an instance
+		\~japanese	インスタンスを生成する。
+		@param	device		Device of DirectX
+		@param	context		Context of DirectX
+		@param	squareMaxCount
+		\~english	the number of maximum sprites
+		\~japanese	最大描画スプライト数
+		@param	depthFunc	a func to compare a dpeth
+		@param	isMSAAEnabled whether is MSAA enabled
+		@return	instance
+	*/
+	static RendererRef Create(ID3D11Device* device,
+							  ID3D11DeviceContext* context,
+							  int32_t squareMaxCount,
+							  D3D11_COMPARISON_FUNC depthFunc = D3D11_COMPARISON_LESS_EQUAL,
+							  bool isMSAAEnabled = false);
 
 	virtual ID3D11Device* GetDevice() = 0;
 
 	virtual ID3D11DeviceContext* GetContext() = 0;
 
 	/**
-		@brief	\~English	Get background
-				\~Japanese	背景を取得する
-	*/
-	virtual Effekseer::TextureData* GetBackground() = 0;
-
-	/**
 		@brief	\~English	Set background
 				\~Japanese	背景を設定する
 	*/
-	virtual void SetBackground(ID3D11ShaderResourceView* background) = 0;
+	[[deprecated("please use EffekseerRenderer::SetBackground")]] virtual void SetBackground(ID3D11ShaderResourceView* background) = 0;
+
+	/**
+		@brief	\~English	Reset internal states for DefferedContext
+				\~Japanese	DefferedContextのために、内部の状態をリセットする。
+		@note	\~English	Please call before BeginRendering after FinishCommandList
+				\~Japanese	FinishCommandListの後でBeginRenderingの前に呼んでください。
+	*/
+	virtual void ResetStateForDefferedContext() = 0;
 };
 
 //----------------------------------------------------------------------------------
 //
 //----------------------------------------------------------------------------------
-/**
-@brief	\~English	Model
-		\~Japanese	モデル
-*/
-class Model 
-	: public Effekseer::Model
-{
-private:
-
-public:
-
-	struct InternalModel
-	{
-		ID3D11Buffer*		VertexBuffer;
-		ID3D11Buffer*		IndexBuffer;
-		int32_t				VertexCount;
-		int32_t				IndexCount;
-		int32_t				FaceCount;
-
-		InternalModel()
-		{
-			VertexBuffer = nullptr;
-			IndexBuffer = nullptr;
-			VertexCount = 0;
-			IndexCount = 0;
-			FaceCount = 0;
-		}
-
-		virtual ~InternalModel()
-		{
-			ES_SAFE_RELEASE(VertexBuffer);
-			ES_SAFE_RELEASE(IndexBuffer);
-		}
-	};
-
-	InternalModel*				InternalModels = nullptr;
-	int32_t						ModelCount;
-
-	Model( uint8_t* data, int32_t size )
-		: Effekseer::Model	( data, size )
-		, InternalModels(nullptr)
-		, ModelCount(0)
-	{
-		this->m_vertexSize = sizeof(VertexWithIndex);
-	}
-
-	virtual ~Model()
-	{
-		ES_SAFE_DELETE_ARRAY(InternalModels);
-	}
-};
-
-
+} // namespace EffekseerRendererDX11
 //----------------------------------------------------------------------------------
 //
 //----------------------------------------------------------------------------------
-}
-//----------------------------------------------------------------------------------
-//
-//----------------------------------------------------------------------------------
-#endif	// __EFFEKSEERRENDERER_DX11_RENDERER_H__
+#endif // __EFFEKSEERRENDERER_DX11_RENDERER_H__
