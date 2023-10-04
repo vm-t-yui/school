@@ -2,6 +2,8 @@
 // @brief  ショット処理.
 //-----------------------------------------------------------------------------
 #include "Shot.h"
+#include "Enemy.h"
+#include "EnemyParam.h"
 
 //----------------------------//
 // ショット関数群.
@@ -20,7 +22,7 @@ void Shot::Init()
 }
 
 // アップデート.
-void Shot::Update(Enemy& enemy, Enemy)
+void Shot::Update(Enemy& enemy, const EnemyParam& param)
 {
 	// 自機の弾iの移動ルーチン( 存在状態を保持している変数の内容がtrue(存在する)の場合のみ行う )
 	if (VisibleFlag == true)
@@ -37,7 +39,7 @@ void Shot::Update(Enemy& enemy, Enemy)
 
 	// 弾のあたり判定.
 	// 弾iが存在している場合のみ次の処理に映る
-	if (VisibleFlag == 1 && enemy.Life > 0)
+	if (VisibleFlag == 1 && param.Life > 0)
 	{
 		// エネミーとの当たり判定
 		if (((X > enemy.X && X < enemy.X + enemy.W) ||
@@ -48,13 +50,7 @@ void Shot::Update(Enemy& enemy, Enemy)
 			// 接触している場合は当たった弾の存在を消す
 			VisibleFlag = 0;
 
-			// エネミーの顔を歪めているかどうかを保持する変数に『歪めている』を表すTRUEを代入
-			enemy.DamageFlag = true;
-
-			// エネミーの顔を歪めている時間を測るカウンタ変数に０を代入
-			enemy.DamageCounter = 0;
-
-			enemy.Life -= 1;
+			enemy.OnDamage(1);
 		}
 	}
 }

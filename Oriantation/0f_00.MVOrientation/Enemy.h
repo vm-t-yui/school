@@ -6,8 +6,8 @@
 
 #include "DxLib.h"
 #include "Common.h"
-#include "EnemyUiHp.h"
-#include "EnemyParamUI.h"
+
+class EnemyParamUI;
 
 // エネミークラス.
 class Enemy
@@ -26,7 +26,11 @@ public:
 	bool	RightMove;
 
 	// 関数宣言.
-	void Init();	// 初期化.
-	void Update(EnemyParamUI& enemyParamUI);	// アップデート.
-	void Draw(const EnemyParam& param);	// 描画.
+	void Init(EnemyParamUI& enemyParamUI);	// 初期化.
+	void Update();	// アップデート.
+	void Draw(const EnemyParam& param);		// 描画.
+	void OnDamage(int damage);
+
+private:
+	EnemyParamUI* paramUI = nullptr;
 };

@@ -162,6 +162,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyParamUI.cpp" />
     <ClCompile Include="EnemyUiHp.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -171,13 +172,11 @@
     <ClInclude Include="Common.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyParam.h" />
+    <ClInclude Include="EnemyParamModel.h" />
     <ClInclude Include="EnemyParamUI.h" />
     <ClInclude Include="EnemyUiHp.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Shot.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="EnemyParamUI.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

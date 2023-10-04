@@ -6,6 +6,6 @@
 class EnemyUiHp
 {
 public:
-	void Draw();
+	void Draw(const EnemyParam& param);
 };
 

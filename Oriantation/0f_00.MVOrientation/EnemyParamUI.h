@@ -1,7 +1,8 @@
 #pragma once
 
-#include "EnemyUiHp.h"
-#include "EnemyParam.h"
+class EnemyParam;
+class EnemyParamModel;
+class EnemyUiHp;
 
 /// <summary>
 /// Enemy‚ÌUI‚Æ‚è‚Ü‚Æ‚ß (Controller, Presenter)
@@ -10,12 +11,12 @@
 class EnemyParamUI
 {
 public:
-	const EnemyParam& GetParam() const { return param; }
-	void OnChangeParam(const EnemyParam& param) { this->param = param; }
+	const EnemyParam& GetParam() const { return paramModel.GetParam(); }
 	void Draw();
+	void OnDamage(int damage);
 
 private:
-	EnemyParam param;
+	EnemyParamModel paramModel;
 	EnemyUiHp hpUi;
 };
 

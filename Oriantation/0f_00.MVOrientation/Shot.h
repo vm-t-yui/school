@@ -6,7 +6,9 @@
 
 #include "DxLib.h"
 #include "Common.h"
-#include "Enemy.h"
+
+class Enemy;
+class EnemyParam;
 
 // ショット.
 class Shot
@@ -20,6 +22,6 @@ public:
 	int		H;
 
 	void Init();				// 初期化.
-	void Update(Enemy& enemy, Enemy);	// アップデート.
+	void Update(Enemy& enemy, const EnemyParam& param);	// アップデート.
 	void Draw();				// 描画.
 };

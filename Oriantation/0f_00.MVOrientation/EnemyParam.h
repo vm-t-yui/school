@@ -3,7 +3,7 @@
 #include "Common.h"
 
 /// <summary>
-/// Enemyのパラメータ　（Model）
+/// Enemyのパラメータ　（DB）
 /// </summary>
 class EnemyParam
 {

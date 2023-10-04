@@ -19,6 +19,9 @@
     <ClCompile Include="Player.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyParamUI.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
     <ClCompile Include="EnemyUiHp.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -45,10 +48,8 @@
     <ClInclude Include="EnemyUiHp.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="EnemyParamUI.cpp">
+    <ClInclude Include="EnemyParamModel.h">
       <Filter>ソース ファイル</Filter>
-    </None>
+    </ClInclude>
   </ItemGroup>
 </Project>

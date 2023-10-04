@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Shot.h"
 #include "EnemyParam.h"
+#include "EnemyParamModel.h"
 #include "EnemyUiHp.h"
 #include "EnemyParamUI.h"
 #include "Enemy.h"
@@ -47,7 +48,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	// 各初期化を呼ぶ.
 	player.Init();
-	enemy.Init();
+	enemy.Init(enemyParamUI);
 	for (int i = 0; i < SHOT; i++)
 	{
 		shot[i].Init();
@@ -61,10 +62,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 		// 各アップデート関数を呼ぶ.
 		player.Update(shot);
-		enemy.Update(enemyParamUI);
+		enemy.Update();
 		for (int i = 0; i < SHOT; i++)
 		{
-			shot[i].Update(enemy);
+			shot[i].Update(enemy, enemyParamUI.GetParam());
 		}
 
 		// 各描画関数を呼ぶ.
@@ -74,6 +75,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		}
 		player.Draw();
 		enemy.Draw(enemyParamUI.GetParam());
+		enemyParamUI.Draw();
 
 		// 裏画面の内容を表画面にコピーする（描画の確定）.
 		ScreenFlip();

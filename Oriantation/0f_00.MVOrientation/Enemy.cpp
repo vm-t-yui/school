@@ -1,15 +1,16 @@
 ﻿//-----------------------------------------------------------------------------
 // @brief  エネミー処理.
 //-----------------------------------------------------------------------------
-#include"EnemyUiHp.h"
 #include"EnemyParam.h"
+#include"EnemyUiHp.h"
+#include"EnemyParamModel.h"
 #include"EnemyParamUI.h"
-#include"enemy.h"
+#include"Enemy.h"
 
 //----------------------------//
 // 初期化.
 //----------------------------//
-void Enemy::Init()
+void Enemy::Init(EnemyParamUI& enemyParamUI)
 {
 	// エネミーのグラフィックをメモリにロード＆表示座標を初期化
 	char* enemyGlaphStr = "data/texture/EpicEnemy.png";
@@ -26,12 +27,16 @@ void Enemy::Init()
 	GetGraphSize(Graph, &W, &H);
 
 	RightMove = true;
+
+	// OnDamageの時に呼びたいがためだけにポインタ保持。危険
+	// ★ここが呼び出す処理の関数ポインタになると、そもそもEnemyはControllerを意識しなくてよくなる★
+	paramUI = &enemyParamUI;
 }
 
 //----------------------------//
 // アップデート.
 //----------------------------//
-void Enemy::Update(EnemyParamUI& enemyParamUI)
+void Enemy::Update()
 {
 	// エネミーの座標を移動している方向に移動する
 	if (RightMove == true)
@@ -59,9 +64,6 @@ void Enemy::Update(EnemyParamUI& enemyParamUI)
 	// ダメージを受けているかどうかで処理を分岐
 	if (DamageFlag == true)
 	{
-		auto param = enemyParamUI.GetParam();
-		param.Life = param.Life - 1;
-
 		DamageCounter++;
 
 		if (DamageCounter == 5)
@@ -69,8 +71,6 @@ void Enemy::Update(EnemyParamUI& enemyParamUI)
 			// 『ダメージをうけていない』を表すFALSEを代入
 			DamageFlag = false;
 		}
-
-		enemyParamUI.OnChangeParam(param);
 	}
 }
 
@@ -79,6 +79,8 @@ void Enemy::Update(EnemyParamUI& enemyParamUI)
 //----------------------------//
 void Enemy::Draw(const EnemyParam& param)
 {
+	// ★EnemyUIを持っているのにあえて外部から受け取っている
+	// ★データベースであるEnemyParamがどこに保持されているかを意識する必要がない
 	if (param.Life > 0)
 	{
 		// ダメージを受けている場合はダメージ時のグラフィックを描画する
@@ -91,4 +93,20 @@ void Enemy::Draw(const EnemyParam& param)
 			DrawGraph(X, Y, Graph, TRUE);
 		}
 	}
+}
+
+/// <summary>
+/// ダメージを受けたとき
+/// </summary>
+void Enemy::OnDamage(int damage)
+{
+	// エネミーの顔を歪めているかどうかを保持する変数に『歪めている』を表すTRUEを代入
+	DamageFlag = true;
+
+	// エネミーの顔を歪めている時間を測るカウンタ変数に０を代入
+	DamageCounter = 0;
+
+	// ControllerであるparamUIにダメージ処理を飛ばしている
+	// パラメータがあるかどうか、どこが持っているか等を知る必要がなく、ただControllerが必要とする関数を呼ぶだけ
+	paramUI->OnDamage(damage);
 }
