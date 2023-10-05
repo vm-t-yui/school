@@ -43,16 +43,20 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	// 各初期化を呼ぶ.
 	player.Init();
 
+	// std::function(OnDamageDelegate)は、メンバ関数への参照とクラスインスタンスの参照のセットである「関数オブジェクト」を扱う型
+	// ほんとはこういうイメージで渡したい
+	//OnDamageDelegate onDamage = (enemyParamUI.&OnDamage, &enemyParamUI);
 
-	// std::functionは、メンバ関数への参照とクラスインスタンスの参照のセットである「関数オブジェクト」を扱う型
+	// しかしそう簡単にはいかない…
 	// ↓のやり方で
 	// &EnemyParamUI::OnDamage(メンバ関数へのポインタ)とenemyParamUI(クラスインスタンス)への参照から関数オブジェクトを生成し、
 	// OnDamageDelegate（std::function）に代入できる
 	//OnDamageDelegate onDamage = std::bind(std::mem_fn(&EnemyParamUI::OnDamage), std::ref(enemyParamUI), std::placeholders::_1);
 	 
-	// ↑の記述が冗長だなあ…と感じるなら
-	// 返り値が関数オブジェクトとなる匿名関数（ラムダ式）を作ることで、ほぼ同様の動作をさせる
+	// 細かい仕組みが多く、全部理解するのは大変！！
+	// そこで、返り値が関数オブジェクトとなる匿名関数（ラムダ式）を作ることで、ほぼ同様の動作をさせる
 	// ↑のやり方と違い、匿名関数の中で何か処理できてしまうところが難点ではあるが、見ればわかるので別に気にしない
+	// これを機に匿名関数もバンバン覚えたいところ
 	OnDamageDelegate onDamage = [&enemyParamUI](int damage) -> void { enemyParamUI.OnDamage(damage); };
 	enemy.Init(onDamage);
 	for (int i = 0; i < SHOT; i++)
