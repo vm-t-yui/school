@@ -10,9 +10,6 @@
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="StateMachine.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="EnemyParamUI.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>

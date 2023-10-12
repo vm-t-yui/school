@@ -14,7 +14,7 @@
 void Enemy::Init(OnDamageDelegate onDamageDelegate)
 {
 	// エネミーのグラフィックをメモリにロード＆表示座標を初期化
-	char* enemyGlaphStr = "data/texture/EpicEnemy.png";
+	char* enemyGlaphStr = (char*)"data/texture/EpicEnemy.png";
 	Graph = LoadGraph(enemyGlaphStr);
 	DamageGraph = LoadGraph(enemyGlaphStr);
 	GraphFilter(DamageGraph, DX_GRAPH_FILTER_HSB, 0, 0, 0, 256);
@@ -36,7 +36,7 @@ void Enemy::Init(OnDamageDelegate onDamageDelegate)
 	auto enter = [this]() { EnterNormal(); };
 	auto update = [this]() { UpdateNormal(); };
 	auto exit = [this](){ ExitNormal(); };
-	//stateMachine.AddState(Normal, enter, update, exit);
+	stateMachine.AddState(Normal, enter, update, exit);
 }
 
 // アップデート.
