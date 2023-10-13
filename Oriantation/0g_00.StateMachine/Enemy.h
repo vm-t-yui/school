@@ -19,7 +19,6 @@ public:
 	int		Graph;
 	bool	DamageFlag;
 	int		DamageCounter;
-	int		DamageGraph;
 	int		W;
 	int		H;
 

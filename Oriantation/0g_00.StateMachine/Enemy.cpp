@@ -13,11 +13,8 @@
 //----------------------------//
 void Enemy::Init(OnDamageDelegate onDamageDelegate)
 {
-	// エネミーのグラフィックをメモリにロード＆表示座標を初期化
+	// 表示座標を初期化
 	char* enemyGlaphStr = (char*)"data/texture/EpicEnemy.png";
-	Graph = LoadGraph(enemyGlaphStr);
-	DamageGraph = LoadGraph(enemyGlaphStr);
-	GraphFilter(DamageGraph, DX_GRAPH_FILTER_HSB, 0, 0, 0, 256);
 	X = 0;
 	Y = 50;
 
