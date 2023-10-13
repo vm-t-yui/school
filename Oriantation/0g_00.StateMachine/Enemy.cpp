@@ -39,7 +39,6 @@ void Enemy::Init(OnDamageDelegate onDamageDelegate)
 void Enemy::Update()
 {
 	// TODO: ステートマシンの更新
-	stateMachine.Update();
 }
 
 ////// ステート:通常 ////
