@@ -8,7 +8,7 @@
 template <class TState> class StateMachine
 {
 public:
-	typedef const std::function<void(void)> Delegate;
+	typedef std::function<void(void)> Delegate;
 
 private:
 	class StateDelegateSet
@@ -16,10 +16,14 @@ private:
 	public:
 		TState state;
 		Delegate enter, update, exit;
+
+		// 変数初期化警告が出るので、デフォルトコンストラクタで初期化
+		StateDelegateSet() : state(TState()){}
 	};
 
 	TState currentState;
 	std::map<TState, StateDelegateSet> stateFuncMap;
+	bool isInitialized = false;
 
 public:
 	/// <summary>
@@ -37,12 +41,19 @@ public:
 	}
 
 	/// <summary>
-	/// ステートの変更
+	/// ステートの設定
 	/// </summary>
-	void ChangeState(TState state)
+	void SetState(TState state)
 	{
+		// 初回はenterだけ呼ぶ
+		if (isInitialized == false)
+		{
+			isInitialized = true;
+			currentState = state;
+			stateFuncMap[currentState].enter();
+		}
 		// 直前のstateのexitを呼んでステートを更新
-		if (currentState != state)
+		else if (currentState != state)
 		{
 			stateFuncMap[currentState].exit();
 			currentState = state;

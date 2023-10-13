@@ -33,10 +33,6 @@ void Enemy::Init(OnDamageDelegate onDamageDelegate)
 	onDamage = onDamageDelegate;
 
 	// TODO: ステートマシンの初期化、Entry
-	auto enter = [this]() { EnterNormal(); };
-	auto update = [this]() { UpdateNormal(); };
-	auto exit = [this](){ ExitNormal(); };
-	stateMachine.AddState(Normal, enter, update, exit);
 }
 
 // アップデート.
