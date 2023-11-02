@@ -1,4 +1,4 @@
-#include "DxLib.h"
+﻿#include "DxLib.h"
 #include "Stage.h"
 
 // ステージの初期化処理

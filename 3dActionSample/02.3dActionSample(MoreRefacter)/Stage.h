@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 // ステージ情報構造体
 class Stage

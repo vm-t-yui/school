@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 // 入力
 class Input

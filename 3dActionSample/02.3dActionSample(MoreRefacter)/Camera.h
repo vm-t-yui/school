@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #define CAMERA_ANGLE_SPEED				0.05f		// 旋回速度
 #define CAMERA_PLAYER_TARGET_HEIGHT		400.0f		// プレイヤー座標からどれだけ高い位置を注視点とするか
