@@ -1,17 +1,17 @@
 #pragma once
 
-// ƒXƒe[ƒWî•ñ\‘¢‘Ì
+// ã‚¹ãƒ†ãƒ¼ã‚¸æƒ…å ±æ§‹é€ ä½“
 class Stage
 {
 public:
 	int GetModelHandle()const { return ModelHandle; }
 
-	void Initialize();						// ƒXƒe[ƒW‚Ì‰Šú‰»ˆ—
-	void Finalie();							// ƒXƒe[ƒW‚ÌŒãn––ˆ—
+	void Initialize();						// ã‚¹ãƒ†ãƒ¼ã‚¸ã®åˆæœŸåŒ–å‡¦ç†
+	void Finalie();							// ã‚¹ãƒ†ãƒ¼ã‚¸ã®å¾Œå§‹æœ«å‡¦ç†
 	void Draw();
 
 private:
-	int		ModelHandle;				// ƒ‚ƒfƒ‹ƒnƒ“ƒhƒ‹
+	int		ModelHandle;				// ãƒ¢ãƒ‡ãƒ«ãƒãƒ³ãƒ‰ãƒ«
 };
 
 

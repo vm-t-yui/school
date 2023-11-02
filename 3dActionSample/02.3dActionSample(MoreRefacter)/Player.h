@@ -1,85 +1,85 @@
 
-// ƒvƒŒƒCƒ„[ŠÖŒW‚Ì’è‹`
-#define PLAYER_PLAY_ANIM_SPEED			250.0f		// ƒAƒjƒ[ƒVƒ‡ƒ“‘¬“x
-#define PLAYER_MOVE_SPEED				30.0f		// ˆÚ“®‘¬“x
-#define PLAYER_ANIM_BLEND_SPEED			0.1f		// ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒuƒŒƒ“ƒh—¦•Ï‰»‘¬“x
-#define PLAYER_ANGLE_SPEED				0.2f		// Šp“x•Ï‰»‘¬“x
-#define PLAYER_JUMP_POWER				100.0f		// ƒWƒƒƒ“ƒv—Í
-#define PLAYER_FALL_UP_POWER			20.0f		// ‘«‚ð“¥‚ÝŠO‚µ‚½Žž‚ÌƒWƒƒƒ“ƒv—Í
-#define PLAYER_GRAVITY					3.0f		// d—Í
-#define PLAYER_MAX_HITCOLL				2048		// ˆ—‚·‚éƒRƒŠƒWƒ‡ƒ“ƒ|ƒŠƒSƒ“‚ÌÅ‘å”
-#define PLAYER_ENUM_DEFAULT_SIZE		800.0f		// ŽüˆÍ‚Ìƒ|ƒŠƒSƒ“ŒŸo‚ÉŽg—p‚·‚é‹…‚Ì‰ŠúƒTƒCƒY
-#define PLAYER_HIT_WIDTH				200.0f		// “–‚½‚è”»’èƒJƒvƒZƒ‹‚Ì”¼Œa
-#define PLAYER_HIT_HEIGHT				700.0f		// “–‚½‚è”»’èƒJƒvƒZƒ‹‚Ì‚‚³
-#define PLAYER_HIT_TRYNUM				16			// •Ç‰Ÿ‚µo‚µˆ—‚ÌÅ‘åŽŽs‰ñ”
-#define PLAYER_HIT_SLIDE_LENGTH			5.0f		// ˆê“x‚Ì•Ç‰Ÿ‚µo‚µˆ—‚ÅƒXƒ‰ƒCƒh‚³‚¹‚é‹——£
-#define PLAYER_SHADOW_SIZE				200.0f		// ‰e‚Ì‘å‚«‚³
-#define PLAYER_SHADOW_HEIGHT			700.0f		// ‰e‚ª—Ž‚¿‚é‚‚³
+// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼é–¢ä¿‚ã®å®šç¾©
+#define PLAYER_PLAY_ANIM_SPEED			250.0f		// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³é€Ÿåº¦
+#define PLAYER_MOVE_SPEED				30.0f		// ç§»å‹•é€Ÿåº¦
+#define PLAYER_ANIM_BLEND_SPEED			0.1f		// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒ–ãƒ¬ãƒ³ãƒ‰çŽ‡å¤‰åŒ–é€Ÿåº¦
+#define PLAYER_ANGLE_SPEED				0.2f		// è§’åº¦å¤‰åŒ–é€Ÿåº¦
+#define PLAYER_JUMP_POWER				100.0f		// ã‚¸ãƒ£ãƒ³ãƒ—åŠ›
+#define PLAYER_FALL_UP_POWER			20.0f		// è¶³ã‚’è¸ã¿å¤–ã—ãŸæ™‚ã®ã‚¸ãƒ£ãƒ³ãƒ—åŠ›
+#define PLAYER_GRAVITY					3.0f		// é‡åŠ›
+#define PLAYER_MAX_HITCOLL				2048		// å‡¦ç†ã™ã‚‹ã‚³ãƒªã‚¸ãƒ§ãƒ³ãƒãƒªã‚´ãƒ³ã®æœ€å¤§æ•°
+#define PLAYER_ENUM_DEFAULT_SIZE		800.0f		// å‘¨å›²ã®ãƒãƒªã‚´ãƒ³æ¤œå‡ºã«ä½¿ç”¨ã™ã‚‹çƒã®åˆæœŸã‚µã‚¤ã‚º
+#define PLAYER_HIT_WIDTH				200.0f		// å½“ãŸã‚Šåˆ¤å®šã‚«ãƒ—ã‚»ãƒ«ã®åŠå¾„
+#define PLAYER_HIT_HEIGHT				700.0f		// å½“ãŸã‚Šåˆ¤å®šã‚«ãƒ—ã‚»ãƒ«ã®é«˜ã•
+#define PLAYER_HIT_TRYNUM				16			// å£æŠ¼ã—å‡ºã—å‡¦ç†ã®æœ€å¤§è©¦è¡Œå›žæ•°
+#define PLAYER_HIT_SLIDE_LENGTH			5.0f		// ä¸€åº¦ã®å£æŠ¼ã—å‡ºã—å‡¦ç†ã§ã‚¹ãƒ©ã‚¤ãƒ‰ã•ã›ã‚‹è·é›¢
+#define PLAYER_SHADOW_SIZE				200.0f		// å½±ã®å¤§ãã•
+#define PLAYER_SHADOW_HEIGHT			700.0f		// å½±ãŒè½ã¡ã‚‹é«˜ã•
 
 class Input;
 class Camera;
 class Stage;
 
-// ó‘Ô
+// çŠ¶æ…‹
 enum class PlayerState : int
 {
-	STAND = 0,		// —§‚¿Ž~‚Ü‚è
-	RUN = 1,		// ‘–‚è
-	JUMP = 2,		// ƒWƒƒƒ“ƒv
+	STAND = 0,		// ç«‹ã¡æ­¢ã¾ã‚Š
+	RUN = 1,		// èµ°ã‚Š
+	JUMP = 2,		// ã‚¸ãƒ£ãƒ³ãƒ—
 };
 
-// ƒAƒjƒ[ƒVƒ‡ƒ“Ží•Ê
+// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ç¨®åˆ¥
 enum class PlayerAnimKind : int
 {
-	NONE = -1,		// ‚È‚µ
-	UNKNOWN = 0,	// •s–¾
-	RUN = 1,		// ‘–‚è
-	JUMP = 2,		// ƒWƒƒƒ“ƒv
-	FALL = 3,		// —Ž‰º’†
-	STOP = 4,		// —§‚¿Ž~‚Ü‚è
+	NONE = -1,		// ãªã—
+	UNKNOWN = 0,	// ä¸æ˜Ž
+	RUN = 1,		// èµ°ã‚Š
+	JUMP = 2,		// ã‚¸ãƒ£ãƒ³ãƒ—
+	FALL = 3,		// è½ä¸‹ä¸­
+	STOP = 4,		// ç«‹ã¡æ­¢ã¾ã‚Š
 };
 
-// ƒvƒŒƒCƒ„[î•ñ\‘¢‘Ì
+// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æƒ…å ±æ§‹é€ ä½“
 class Player
 {
 public:
-	void Initialize();						// ‰Šú‰»
-	void Finalize();						// ŒãŽn––
+	void Initialize();						// åˆæœŸåŒ–
+	void Finalize();						// å¾Œå§‹æœ«
 	void Update(const Input& input, const Camera& camera, const Stage& stage);						
 	void Draw(const Stage& stage);
 
 	const VECTOR& GetPosition() const { return Position; }
 
 private:
-	VECTOR		Position;				// À•W
-	VECTOR		TargetMoveDirection;	// ƒ‚ƒfƒ‹‚ªŒü‚­‚×‚«•ûŒü‚ÌƒxƒNƒgƒ‹
-	float		Angle;					// ƒ‚ƒfƒ‹‚ªŒü‚¢‚Ä‚¢‚é•ûŒü‚ÌŠp“x
-	float		JumpPower;				// ‚xŽ²•ûŒü‚Ì‘¬“x
-	int			ModelHandle;			// ƒ‚ƒfƒ‹ƒnƒ“ƒhƒ‹
-	int			ShadowHandle;			// ‰e‰æ‘œƒnƒ“ƒhƒ‹
-	PlayerState	State;					// ó‘Ô
+	VECTOR		Position;				// åº§æ¨™
+	VECTOR		TargetMoveDirection;	// ãƒ¢ãƒ‡ãƒ«ãŒå‘ãã¹ãæ–¹å‘ã®ãƒ™ã‚¯ãƒˆãƒ«
+	float		Angle;					// ãƒ¢ãƒ‡ãƒ«ãŒå‘ã„ã¦ã„ã‚‹æ–¹å‘ã®è§’åº¦
+	float		JumpPower;				// ï¼¹è»¸æ–¹å‘ã®é€Ÿåº¦
+	int			ModelHandle;			// ãƒ¢ãƒ‡ãƒ«ãƒãƒ³ãƒ‰ãƒ«
+	int			ShadowHandle;			// å½±ç”»åƒãƒãƒ³ãƒ‰ãƒ«
+	PlayerState	State;					// çŠ¶æ…‹
 
-	int			CurrentPlayAnim;		// Ä¶‚µ‚Ä‚¢‚éƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒAƒ^ƒbƒ`”Ô†( -1:‰½‚àƒAƒjƒ[ƒVƒ‡ƒ“‚ªƒAƒ^ƒbƒ`‚³‚ê‚Ä‚¢‚È‚¢ )
-	float		CurrentAnimCount;		// Ä¶‚µ‚Ä‚¢‚éƒAƒjƒ[ƒVƒ‡ƒ“‚ÌÄ¶ŽžŠÔ
-	int			PrevPlayAnim;			// ‘O‚ÌÄ¶ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒAƒ^ƒbƒ`”Ô†( -1:‰½‚àƒAƒjƒ[ƒVƒ‡ƒ“‚ªƒAƒ^ƒbƒ`‚³‚ê‚Ä‚¢‚È‚¢ )
-	float		PrevAnimCount;			// ‘O‚ÌÄ¶ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌÄ¶ŽžŠÔ
-	float		AnimBlendRate;			// Œ»Ý‚Æ‰ß‹Ž‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒuƒŒƒ“ƒh—¦
+	int			CurrentPlayAnim;		// å†ç”Ÿã—ã¦ã„ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚¢ã‚¿ãƒƒãƒç•ªå·( -1:ä½•ã‚‚ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒã‚¢ã‚¿ãƒƒãƒã•ã‚Œã¦ã„ãªã„ )
+	float		CurrentAnimCount;		// å†ç”Ÿã—ã¦ã„ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å†ç”Ÿæ™‚é–“
+	int			PrevPlayAnim;			// å‰ã®å†ç”Ÿã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚¢ã‚¿ãƒƒãƒç•ªå·( -1:ä½•ã‚‚ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒã‚¢ã‚¿ãƒƒãƒã•ã‚Œã¦ã„ãªã„ )
+	float		PrevAnimCount;			// å‰ã®å†ç”Ÿã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å†ç”Ÿæ™‚é–“
+	float		AnimBlendRate;			// ç¾åœ¨ã¨éŽåŽ»ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒ–ãƒ¬ãƒ³ãƒ‰çŽ‡
 
-	void Move(VECTOR MoveVector, const Stage& stage);	// ˆÚ“®ˆ—
+	void Move(VECTOR MoveVector, const Stage& stage);	// ç§»å‹•å‡¦ç†
 
-	// ŒŸo‚³‚ê‚½ƒ|ƒŠƒSƒ“‚ª•Çƒ|ƒŠƒSƒ“( ‚w‚y•½–Ê‚É‚’¼‚Èƒ|ƒŠƒSƒ“ )‚©°ƒ|ƒŠƒSƒ“( ‚w‚y•½–Ê‚É‚’¼‚Å‚Í‚È‚¢ƒ|ƒŠƒSƒ“ )‚©‚ð”»’f‚µA•Û‘¶‚·‚é
+	// æ¤œå‡ºã•ã‚ŒãŸãƒãƒªã‚´ãƒ³ãŒå£ãƒãƒªã‚´ãƒ³( ï¼¸ï¼ºå¹³é¢ã«åž‚ç›´ãªãƒãƒªã‚´ãƒ³ )ã‹åºŠãƒãƒªã‚´ãƒ³( ï¼¸ï¼ºå¹³é¢ã«åž‚ç›´ã§ã¯ãªã„ãƒãƒªã‚´ãƒ³ )ã‹ã‚’åˆ¤æ–­ã—ã€ä¿å­˜ã™ã‚‹
 	void CheckKabeAndYuka(MV1_COLL_RESULT_POLY** Kabe, MV1_COLL_RESULT_POLY** Yuka, int& KabeNum, int& YukaNum, MV1_COLL_RESULT_POLY_DIM HitDim);
 
-	// •Çƒ|ƒŠƒSƒ“‚Æ‚Ì“–‚½‚è‚ðƒ`ƒFƒbƒN‚µAˆÚ“®ƒxƒNƒgƒ‹‚ð•â³‚·‚é
+	// å£ãƒãƒªã‚´ãƒ³ã¨ã®å½“ãŸã‚Šã‚’ãƒã‚§ãƒƒã‚¯ã—ã€ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«ã‚’è£œæ­£ã™ã‚‹
 	void FixNowPositionWithKabe(VECTOR& NowPos, const VECTOR& OldPos, const VECTOR& MoveVector, bool IsMove,  MV1_COLL_RESULT_POLY** Kabe, int KabeNum);
 	void FixNowPositionWithKabeInternal(VECTOR& NowPos, MV1_COLL_RESULT_POLY** Kabe, int KabeNum);
 
-	// °ƒ|ƒŠƒSƒ“‚Æ‚Ì“–‚½‚è‚ðƒ`ƒFƒbƒN‚µAˆÚ“®ƒxƒNƒgƒ‹‚ð•â³‚·‚é
+	// åºŠãƒãƒªã‚´ãƒ³ã¨ã®å½“ãŸã‚Šã‚’ãƒã‚§ãƒƒã‚¯ã—ã€ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«ã‚’è£œæ­£ã™ã‚‹
 	void FixNowPositionWithYuka(VECTOR& NowPos, bool IsMove, MV1_COLL_RESULT_POLY** Yuka, int YukaNum);
 
 
-	void UpdateAngle();									// ‰ñ“]§Œä
-	void PlayAnim(PlayerAnimKind PlayAnim);				// V‚½‚ÈƒAƒjƒ[ƒVƒ‡ƒ“‚ðÄ¶‚·‚é
-	void UpdateAnimation();								// ƒAƒjƒ[ƒVƒ‡ƒ“ˆ—
-	void DrawShadow(const Stage& stage);				// ‰e‚ð•`‰æ
+	void UpdateAngle();									// å›žè»¢åˆ¶å¾¡
+	void PlayAnim(PlayerAnimKind PlayAnim);				// æ–°ãŸãªã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å†ç”Ÿã™ã‚‹
+	void UpdateAnimation();								// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å‡¦ç†
+	void DrawShadow(const Stage& stage);				// å½±ã‚’æç”»
 };

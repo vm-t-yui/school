@@ -1,17 +1,17 @@
 #include "DxLib.h"
 #include "Input.h"
 
-// �X�V
+// 更新
 void Input::Update()
 {
 	int Old;
 
-	// �ЂƂO�̃t���[���̓��͂�ϐ��ɂƂ��Ă���
+	// ひとつ前のフレームの入力を変数にとっておく
 	Old = NowFrameInput;
 
-	// ���݂̓��͏�Ԃ��擾
+	// 現在の入力状態を取得
 	NowFrameInput = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 
-	// ���̃t���[���ŐV���ɉ����ꂽ�{�^���̃r�b�g���������Ă���l�� NowFrameNewInput �ɑ������
+	// 今のフレームで新たに押されたボタンのビットだけ立っている値を NowFrameNewInput に代入する
 	NowFrameNewInput = NowFrameInput & ~Old;
 }

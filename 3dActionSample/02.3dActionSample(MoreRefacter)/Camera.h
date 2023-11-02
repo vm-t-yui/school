@@ -1,9 +1,9 @@
 #pragma once
 
-#define CAMERA_ANGLE_SPEED				0.05f		// ù‰ñ‘¬“x
-#define CAMERA_PLAYER_TARGET_HEIGHT		400.0f		// ƒvƒŒƒCƒ„[À•W‚©‚ç‚Ç‚ê‚¾‚¯‚‚¢ˆÊ’u‚ğ’‹“_‚Æ‚·‚é‚©
-#define CAMERA_PLAYER_LENGTH			1600.0f		// ƒvƒŒƒCƒ„[‚Æ‚Ì‹——£
-#define CAMERA_COLLISION_SIZE			50.0f		// ƒJƒƒ‰‚Ì“–‚½‚è”»’èƒTƒCƒY
+#define CAMERA_ANGLE_SPEED				0.05f		// æ—‹å›é€Ÿåº¦
+#define CAMERA_PLAYER_TARGET_HEIGHT		400.0f		// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼åº§æ¨™ã‹ã‚‰ã©ã‚Œã ã‘é«˜ã„ä½ç½®ã‚’æ³¨è¦–ç‚¹ã¨ã™ã‚‹ã‹
+#define CAMERA_PLAYER_LENGTH			1600.0f		// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨ã®è·é›¢
+#define CAMERA_COLLISION_SIZE			50.0f		// ã‚«ãƒ¡ãƒ©ã®å½“ãŸã‚Šåˆ¤å®šã‚µã‚¤ã‚º
 
 class Input;
 class Player;
@@ -12,16 +12,16 @@ class Stage;
 class Camera
 {
 public:
-	void Initialize();						// ƒJƒƒ‰‚Ì‰Šú‰»ˆ—
-	void Update(const Input& input, const Player& player, const Stage& stage);		// ƒJƒƒ‰‚Ìˆ—
+	void Initialize();						// ã‚«ãƒ¡ãƒ©ã®åˆæœŸåŒ–å‡¦ç†
+	void Update(const Input& input, const Player& player, const Stage& stage);		// ã‚«ãƒ¡ãƒ©ã®å‡¦ç†
 
 	const VECTOR& GetEye() const { return Eye; }
 	const VECTOR& GetTarget() const { return Target; }
 
 private:
-	float		AngleH;					// …•½Šp“x
-	float		AngleV;					// ‚’¼Šp“x
-	VECTOR		Eye;					// ƒJƒƒ‰À•W
-	VECTOR		Target;					// ’‹“_À•W
+	float		AngleH;					// æ°´å¹³è§’åº¦
+	float		AngleV;					// å‚ç›´è§’åº¦
+	VECTOR		Eye;					// ã‚«ãƒ¡ãƒ©åº§æ¨™
+	VECTOR		Target;					// æ³¨è¦–ç‚¹åº§æ¨™
 };
 

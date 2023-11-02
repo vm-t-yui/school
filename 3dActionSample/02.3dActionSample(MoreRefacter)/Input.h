@@ -1,6 +1,6 @@
 #pragma once
 
-// “ü—Í
+// å…¥åŠ›
 class Input
 {
 public:
@@ -10,8 +10,8 @@ public:
 	int GetNowFrameNewInput() const { return NowFrameNewInput; }
 
 private:
-	int		NowFrameInput;				// Œ»İ‚ÌƒtƒŒ[ƒ€‚Å‰Ÿ‚³‚ê‚Ä‚¢‚éƒ{ƒ^ƒ“
-	int		NowFrameNewInput;			// Œ»İ‚ÌƒtƒŒ[ƒ€‚ÅV‚½‚É‰Ÿ‚³‚ê‚½ƒ{ƒ^ƒ“
+	int		NowFrameInput;				// ç¾åœ¨ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã§æŠ¼ã•ã‚Œã¦ã„ã‚‹ãƒœã‚¿ãƒ³
+	int		NowFrameNewInput;			// ç¾åœ¨ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã§æ–°ãŸã«æŠ¼ã•ã‚ŒãŸãƒœã‚¿ãƒ³
 };
 
 
