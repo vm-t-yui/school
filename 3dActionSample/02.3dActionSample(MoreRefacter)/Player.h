@@ -65,7 +65,15 @@ private:
 	float		PrevAnimCount;			// 前の再生アニメーションの再生時間
 	float		AnimBlendRate;			// 現在と過去のアニメーションのブレンド率
 
-	void Move(VECTOR MoveVector, const Stage& stage);	// 移動処理
+
+	// ルートフレームのＺ軸方向の移動パラメータを無効にする
+	void DisableRootFrameZMove();
+
+	// パッド入力によって移動パラメータを設定する
+	bool UpdateMoveParameterWithPad(const Input& input, const Camera& camera, VECTOR& UpMoveVec, VECTOR& LeftMoveVec, VECTOR& MoveVec);
+	
+	// 移動処理
+	void Move(const VECTOR& MoveVector, const Stage& stage);
 
 	// 検出されたポリゴンが壁ポリゴン( ＸＺ平面に垂直なポリゴン )か床ポリゴン( ＸＺ平面に垂直ではないポリゴン )かを判断し、保存する
 	void CheckKabeAndYuka(MV1_COLL_RESULT_POLY** Kabe, MV1_COLL_RESULT_POLY** Yuka, int& KabeNum, int& YukaNum, MV1_COLL_RESULT_POLY_DIM HitDim);
