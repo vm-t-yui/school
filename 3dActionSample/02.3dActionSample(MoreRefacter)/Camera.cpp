@@ -23,7 +23,7 @@ void Camera::Update(const Input& input, const Player& player, const Stage& stage
 		// 「←」ボタンが押されていたら水平角度をマイナスする
 		if (input.GetNowFrameInput() & PAD_INPUT_LEFT)
 		{
-			AngleH -= CAMERA_ANGLE_SPEED;
+			AngleH -= AngleSpeed;
 
 			// －１８０度以下になったら角度値が大きくなりすぎないように３６０度を足す
 			if (AngleH < -DX_PI_F)
@@ -35,7 +35,7 @@ void Camera::Update(const Input& input, const Player& player, const Stage& stage
 		// 「→」ボタンが押されていたら水平角度をプラスする
 		if (input.GetNowFrameInput() & PAD_INPUT_RIGHT)
 		{
-			AngleH += CAMERA_ANGLE_SPEED;
+			AngleH += AngleSpeed;
 
 			// １８０度以上になったら角度値が大きくなりすぎないように３６０度を引く
 			if (AngleH > DX_PI_F)
@@ -47,7 +47,7 @@ void Camera::Update(const Input& input, const Player& player, const Stage& stage
 		// 「↑」ボタンが押されていたら垂直角度をマイナスする
 		if (input.GetNowFrameInput() & PAD_INPUT_UP)
 		{
-			AngleV -= CAMERA_ANGLE_SPEED;
+			AngleV -= AngleSpeed;
 
 			// ある一定角度以下にはならないようにする
 			if (AngleV < -DX_PI_F / 2.0f + 0.6f)
@@ -59,7 +59,7 @@ void Camera::Update(const Input& input, const Player& player, const Stage& stage
 		// 「↓」ボタンが押されていたら垂直角度をプラスする
 		if (input.GetNowFrameInput() & PAD_INPUT_DOWN)
 		{
-			AngleV += CAMERA_ANGLE_SPEED;
+			AngleV += AngleSpeed;
 
 			// ある一定角度以上にはならないようにする
 			if (AngleV > DX_PI_F / 2.0f - 0.6f)
@@ -70,7 +70,7 @@ void Camera::Update(const Input& input, const Player& player, const Stage& stage
 	}
 
 	// カメラの注視点はプレイヤー座標から規定値分高い座標
-	Target = VAdd(player.GetPosition(), VGet(0.0f, CAMERA_PLAYER_TARGET_HEIGHT, 0.0f));
+	Target = VAdd(player.GetPosition(), VGet(0.0f, CameraPlayerTargetHeight, 0.0f));
 
 	// カメラの座標を決定する
 	{
@@ -86,7 +86,7 @@ void Camera::Update(const Input& input, const Player& player, const Stage& stage
 		RotZ = MGetRotZ(AngleV);
 
 		// カメラからプレイヤーまでの初期距離をセット
-		CameraPlayerLength = CAMERA_PLAYER_LENGTH;
+		CameraPlayerLength = ToPlayerLength;
 
 		// カメラの座標を算出
 		// Ｘ軸にカメラとプレイヤーとの距離分だけ伸びたベクトルを
@@ -95,7 +95,7 @@ void Camera::Update(const Input& input, const Player& player, const Stage& stage
 		Eye = VAdd(VTransform(VTransform(VGet(-CameraPlayerLength, 0.0f, 0.0f), RotZ), RotY), Target);
 
 		// 注視点からカメラの座標までの間にステージのポリゴンがあるか調べる
-		HitResult = MV1CollCheck_Capsule(stage.GetModelHandle(), -1, Target, Eye, CAMERA_COLLISION_SIZE);
+		HitResult = MV1CollCheck_Capsule(stage.GetModelHandle(), -1, Target, Eye, CollisionSize);
 		HitNum = HitResult.HitNum;
 		MV1CollResultPolyDimTerminate(HitResult);
 		if (HitNum != 0)
@@ -121,7 +121,7 @@ void Camera::Update(const Input& input, const Player& player, const Stage& stage
 				TestPosition = VAdd(VTransform(VTransform(VGet(-TestLength, 0.0f, 0.0f), RotZ), RotY), Target);
 
 				// 新しい座標で壁に当たるかテスト
-				HitResult = MV1CollCheck_Capsule(stage.GetModelHandle(), -1, Target, TestPosition, CAMERA_COLLISION_SIZE);
+				HitResult = MV1CollCheck_Capsule(stage.GetModelHandle(), -1, Target, TestPosition, CollisionSize);
 				HitNum = HitResult.HitNum;
 				MV1CollResultPolyDimTerminate(HitResult);
 				if (HitNum != 0)
