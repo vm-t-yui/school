@@ -52,9 +52,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	
 	// ＤＸライブラリ初期化処理
 	if (DxLib_Init() == -1)
-		{
-			return -1;
-		}
+	{
+		return -1;
+	}
 
 	// グラフィックの描画先を裏画面にセット
 	SetDrawScreen(DX_SCREEN_BACK);
@@ -79,11 +79,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	// ショットのグラフィックをメモリにロード.
 	Shot shot[SHOT];
-	int shotGraph;
-	shotGraph = LoadGraph("data/texture/shot.png");
 	for (int i = 0; i < SHOT; i++)
 	{
-		shot[i].Graph = shotGraph;
+		shot[i].Graph = LoadGraph("data/texture/shot.png");
 	}
 
 	// 弾が画面上に存在しているか保持する変数に『存在していない』を意味するfalseを代入しておく
@@ -93,10 +91,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	}
 
 	// 弾のグラフィックのサイズをえる
-	int shotW, shotH;
-	GetGraphSize(shotGraph, &shotW, &shotH);
 	for (int i = 0; i < SHOT; i++)
 	{
+		int shotW, shotH;
+		GetGraphSize(shot[i].Graph, &shotW, &shotH);
 		shot[i].W = shotW;
 		shot[i].H = shotH;
 	}
@@ -154,7 +152,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 							// プレイヤーと弾の画像のサイズを得る
 							GetGraphSize(player.Graph, &Bw, &Bh);
-							GetGraphSize(shotGraph, &Sw, &Sh);
+							GetGraphSize(shot[i].Graph, &Sw, &Sh);
 
 							// 弾iの位置をセット、位置はプレイヤーの中心にする
 							shot[i].X = (Bw - Sw) / 2 + player.X;
@@ -269,7 +267,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 				}
 
 				// 画面に弾iを描画する
-				DrawGraph(shot[i].X, shot[i].Y, shotGraph, FALSE);
+				DrawGraph(shot[i].X, shot[i].Y, shot[i].Graph, FALSE);
 			}
 
 			// 弾のあたり判定.
