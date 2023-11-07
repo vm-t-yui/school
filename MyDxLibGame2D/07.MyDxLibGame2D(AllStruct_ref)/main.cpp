@@ -269,7 +269,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 				}
 
 				// 画面に弾iを描画する
-				DrawGraph(shot[i].X, shot[i].Y, shotGraph, FALSE);
+				DrawGraph(shot[i].X, shot[i].Y, shot[i].Graph, FALSE);
 			}
 
 			// 弾のあたり判定.
