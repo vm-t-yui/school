@@ -1,24 +1,24 @@
-#include "DxLib.h"
+ï»¿#include "DxLib.h"
 #include "Stage.h"
 
-// ƒXƒe[ƒW‚Ì‰Šú‰»ˆ—
+// ã‚¹ãƒ†ãƒ¼ã‚¸ã®åˆæœŸåŒ–å‡¦ç†
 void Stage::Initialize()
 {
-	// ƒXƒe[ƒWƒ‚ƒfƒ‹‚Ì“Ç‚İ‚İ
+	// ã‚¹ãƒ†ãƒ¼ã‚¸ãƒ¢ãƒ‡ãƒ«ã®èª­ã¿è¾¼ã¿
 	ModelHandle = MV1LoadModel("ColTestStage.mqo");
 
-	// ƒ‚ƒfƒ‹‘S‘Ì‚ÌƒRƒŠƒWƒ‡ƒ“î•ñ‚ÌƒZƒbƒgƒAƒbƒv
+	// ãƒ¢ãƒ‡ãƒ«å…¨ä½“ã®ã‚³ãƒªã‚¸ãƒ§ãƒ³æƒ…å ±ã®ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—
 	MV1SetupCollInfo(ModelHandle, -1);
 }
 
-// ƒXƒe[ƒW‚ÌŒãn––ˆ—
+// ã‚¹ãƒ†ãƒ¼ã‚¸ã®å¾Œå§‹æœ«å‡¦ç†
 void Stage::Finalie()
 {
-	// ƒXƒe[ƒWƒ‚ƒfƒ‹‚ÌŒãn––
+	// ã‚¹ãƒ†ãƒ¼ã‚¸ãƒ¢ãƒ‡ãƒ«ã®å¾Œå§‹æœ«
 	MV1DeleteModel(ModelHandle);
 }
 
-// •`‰æ
+// æç”»
 void Stage::Draw()
 {
 	MV1DrawModel(ModelHandle);
