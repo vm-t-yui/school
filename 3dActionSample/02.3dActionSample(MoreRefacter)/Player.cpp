@@ -355,6 +355,8 @@ void Player::FixNowPositionWithKabe(VECTOR& NowPos, const VECTOR& OldPos, const 
 		return;
 	}
 
+	// ポジション補正するかどうか…だが、実は移動していない時もFixNowPositionWithKabeInternalをすることで
+	// ほぼ同様の処理ができるので、丸ごと不要疑惑がある
 	bool DoFixPos = false;
 
 	// 移動したかどうかで処理を分岐
@@ -410,7 +412,7 @@ void Player::FixNowPositionWithKabe(VECTOR& NowPos, const VECTOR& OldPos, const 
 
 				// どのポリゴンにもあたらなかったら、壁に当たったフラグを倒した上でループから抜ける
 				// NowPosを更新したうえで壁に当たらなかったことにするので、のちの押し出し処理を行わない
-				if (isHitKabePolygon)
+				if (isHitKabePolygon == false)
 				{
 					DoFixPos = false;
 					break;
@@ -444,7 +446,7 @@ void Player::FixNowPositionWithKabe(VECTOR& NowPos, const VECTOR& OldPos, const 
 }
 
 /// <summary>
-/// FixNowPositionWithKabeの一部が長いので処理分離 HACK: そもそも元の関数の役割がでかいので設計がイケてない
+/// FixNowPositionWithKabeの一部が長いので処理分離 HACK: そもそも元の関数の役割がでかいので設計がイケてない。ちょっとだけ違う押し出し処理を二回やっている…
 /// </summary>
 void Player::FixNowPositionWithKabeInternal(VECTOR& NowPos, MV1_COLL_RESULT_POLY** Kabe, int KabeNum)
 {

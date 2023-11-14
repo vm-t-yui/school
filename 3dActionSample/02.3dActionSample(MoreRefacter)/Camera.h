@@ -23,5 +23,7 @@ private:
 	float		AngleV;					// 垂直角度
 	VECTOR		Eye;					// カメラ座標
 	VECTOR		Target;					// 注視点座標
+
+	void FixCameraPosition(const Stage& stage);
 };
 
