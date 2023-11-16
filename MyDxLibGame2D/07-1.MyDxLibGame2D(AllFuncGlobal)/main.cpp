@@ -227,7 +227,7 @@ void InitializeShot()
 	for (int i = 0; i < SHOT; i++)
 	{
 		// ショットのグラフィックをメモリにロード.
-		shot[i].Graph = LoadGraph("data/texture/shot[i].png");
+		shot[i].Graph = LoadGraph("data/texture/shot.png");
 
 		// 弾が画面上に存在しているか保持する変数に『存在していない』を意味するfalseを代入しておく
 		shot[i].visibleFlag = false;
@@ -283,7 +283,7 @@ void DrawShot()
 			}
 
 			// 画面に弾iを描画する
-			DrawGraph(shot[i].X, shot[i].Y, shot[i].Graph, FALSE);
+ 			DrawGraph(shot[i].X, shot[i].Y, shot[i].Graph, FALSE);
 		}
 	}
 }
