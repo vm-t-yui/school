@@ -354,95 +354,96 @@ void Player::FixNowPositionWithKabe(VECTOR& NowPos, const VECTOR& OldPos, const 
 	{
 		return;
 	}
+	FixNowPositionWithKabeInternal(NowPos, Kabe, KabeNum);
 
-	// ポジション補正するかどうか…だが、実は移動していない時もFixNowPositionWithKabeInternalをすることで
-	// ほぼ同様の処理ができるので、丸ごと不要疑惑がある
-	bool DoFixPos = false;
+	//// ポジション補正するかどうか…だが、実は移動していない時もFixNowPositionWithKabeInternalをすることで
+	//// ほぼ同様の処理ができるので、丸ごと不要疑惑がある
+	//bool DoFixPos = false;
 
-	// 移動したかどうかで処理を分岐
-	if (IsMove)
-	{
-		// 壁ポリゴンの数だけ繰り返し
-		for (int i = 0; i < KabeNum; i++)
-		{
-			// i番目の壁ポリゴンのアドレスを壁ポリゴンポインタ配列から取得
-			auto Poly = Kabe[i];
+	//// 移動したかどうかで処理を分岐
+	//if (IsMove)
+	//{
+	//	// 壁ポリゴンの数だけ繰り返し
+	//	for (int i = 0; i < KabeNum; i++)
+	//	{
+	//		// i番目の壁ポリゴンのアドレスを壁ポリゴンポインタ配列から取得
+	//		auto Poly = Kabe[i];
 
-			// ポリゴンとプレイヤーが当たっていなかったら次のカウントへ
-			if (HitCheck_Capsule_Triangle(NowPos, VAdd(NowPos, VGet(0.0f, HitHeight, 0.0f)), HitWidth, Poly->Position[0], Poly->Position[1], Poly->Position[2]) == TRUE)
-			{
-				// ここにきたらポリゴンとプレイヤーが当たっているということなので、いったんポジション補正を行う状態にする
-				DoFixPos = true;
+	//		// ポリゴンとプレイヤーが当たっていなかったら次のカウントへ
+	//		if (HitCheck_Capsule_Triangle(NowPos, VAdd(NowPos, VGet(0.0f, HitHeight, 0.0f)), HitWidth, Poly->Position[0], Poly->Position[1], Poly->Position[2]) == TRUE)
+	//		{
+	//			// ここにきたらポリゴンとプレイヤーが当たっているということなので、いったんポジション補正を行う状態にする
+	//			DoFixPos = true;
 
-				// 壁に当たったら壁に遮られない移動成分だけ移動する
-				VECTOR MoveNormalCross;	// 進行方向ベクトルと壁ポリゴンの法線ベクトルに垂直なベクトル
-				VECTOR SlideVec;		// プレイヤーをスライドさせるベクトル
+	//			// 壁に当たったら壁に遮られない移動成分だけ移動する
+	//			VECTOR MoveNormalCross;	// 進行方向ベクトルと壁ポリゴンの法線ベクトルに垂直なベクトル
+	//			VECTOR SlideVec;		// プレイヤーをスライドさせるベクトル
 
-				// 進行方向ベクトルと壁ポリゴンの法線ベクトルに垂直なベクトルを算出
-				MoveNormalCross = VCross(MoveVector, Poly->Normal);
+	//			// 進行方向ベクトルと壁ポリゴンの法線ベクトルに垂直なベクトルを算出
+	//			MoveNormalCross = VCross(MoveVector, Poly->Normal);
 
-				// 算出したベクトルと壁ポリゴンの法線ベクトルに垂直なベクトルを算出、これが
-				// 元の移動成分から壁方向の移動成分を抜いたベクトル
-				// このベクトルを使ってスライドすることで、壁にそって移動した場合の位置に近い場所が出る
-				// かつ壁からははみ出ない
-				SlideVec = VCross(Poly->Normal, MoveNormalCross);
+	//			// 算出したベクトルと壁ポリゴンの法線ベクトルに垂直なベクトルを算出、これが
+	//			// 元の移動成分から壁方向の移動成分を抜いたベクトル
+	//			// このベクトルを使ってスライドすることで、壁にそって移動した場合の位置に近い場所が出る
+	//			// かつ壁からははみ出ない
+	//			SlideVec = VCross(Poly->Normal, MoveNormalCross);
 
-				// NowPosは移動後の座標
-				// 元々は移動ベクトルを現在の座標に足したもの
-				// それを移動量と関係なく完全に上書きしている
+	//			// NowPosは移動後の座標
+	//			// 元々は移動ベクトルを現在の座標に足したもの
+	//			// それを移動量と関係なく完全に上書きしている
 
-				// それを移動前の座標に足したものを新たな座標とする
-				NowPos = VAdd(OldPos, SlideVec);
+	//			// それを移動前の座標に足したものを新たな座標とする
+	//			NowPos = VAdd(OldPos, SlideVec);
 
-				// 新たな移動座標で壁ポリゴンと当たっていないかどうかを判定する
-				bool isHitKabePolygon = false;
-				for (int j = 0; j < KabeNum; j++)
-				{
-					// j番目の壁ポリゴンのアドレスを壁ポリゴンポインタ配列から取得
-					Poly = Kabe[j];
+	//			// 新たな移動座標で壁ポリゴンと当たっていないかどうかを判定する
+	//			bool isHitKabePolygon = false;
+	//			for (int j = 0; j < KabeNum; j++)
+	//			{
+	//				// j番目の壁ポリゴンのアドレスを壁ポリゴンポインタ配列から取得
+	//				Poly = Kabe[j];
 
-					// 当たっていたらループから抜ける
-					if (HitCheck_Capsule_Triangle(NowPos, VAdd(NowPos, VGet(0.0f, HitHeight, 0.0f)), HitWidth, Poly->Position[0], Poly->Position[1], Poly->Position[2]) == TRUE)
-					{
-						// NowPosを更新したうえで壁に当たったことにするので、のちの押し出し処理を行う
-						isHitKabePolygon = true;
-						break;
-					}
-				}
+	//				// 当たっていたらループから抜ける
+	//				if (HitCheck_Capsule_Triangle(NowPos, VAdd(NowPos, VGet(0.0f, HitHeight, 0.0f)), HitWidth, Poly->Position[0], Poly->Position[1], Poly->Position[2]) == TRUE)
+	//				{
+	//					// NowPosを更新したうえで壁に当たったことにするので、のちの押し出し処理を行う
+	//					isHitKabePolygon = true;
+	//					break;
+	//				}
+	//			}
 
-				// どのポリゴンにもあたらなかったら、壁に当たったフラグを倒した上でループから抜ける
-				// NowPosを更新したうえで壁に当たらなかったことにするので、のちの押し出し処理を行わない
-				if (isHitKabePolygon == false)
-				{
-					DoFixPos = false;
-					break;
-				}
-			}
-		}
-	}
-	else
-	{
-		// 移動していない場合の処理
-		// 壁ポリゴンの数だけ繰り返し
-		for (int i = 0; i < KabeNum; i++)
-		{
-			// i番目の壁ポリゴンのアドレスを壁ポリゴンポインタ配列から取得
-			auto Poly = Kabe[i];
+	//			// どのポリゴンにもあたらなかったら、壁に当たったフラグを倒した上でループから抜ける
+	//			// NowPosを更新したうえで壁に当たらなかったことにするので、のちの押し出し処理を行わない
+	//			if (isHitKabePolygon == false)
+	//			{
+	//				DoFixPos = false;
+	//				break;
+	//			}
+	//		}
+	//	}
+	//}
+	//else
+	//{
+	//	// 移動していない場合の処理
+	//	// 壁ポリゴンの数だけ繰り返し
+	//	for (int i = 0; i < KabeNum; i++)
+	//	{
+	//		// i番目の壁ポリゴンのアドレスを壁ポリゴンポインタ配列から取得
+	//		auto Poly = Kabe[i];
 
-			// ポリゴンに当たっていたらポジション補正を行う
-			if (HitCheck_Capsule_Triangle(NowPos, VAdd(NowPos, VGet(0.0f, HitHeight, 0.0f)), HitWidth, Poly->Position[0], Poly->Position[1], Poly->Position[2]) == TRUE)
-			{
-				DoFixPos = true;
-				break;
-			}
-		}
-	}
+	//		// ポリゴンに当たっていたらポジション補正を行う
+	//		if (HitCheck_Capsule_Triangle(NowPos, VAdd(NowPos, VGet(0.0f, HitHeight, 0.0f)), HitWidth, Poly->Position[0], Poly->Position[1], Poly->Position[2]) == TRUE)
+	//		{
+	//			DoFixPos = true;
+	//			break;
+	//		}
+	//	}
+	//}
 
-	// 壁に当たるなどして、ポジションの補正が必要な場合、補正を行う
-	if (DoFixPos)
-	{
-		FixNowPositionWithKabeInternal(NowPos, Kabe, KabeNum);
-	}
+	//// 壁に当たるなどして、ポジションの補正が必要な場合、補正を行う
+	//if (DoFixPos)
+	//{
+	//	FixNowPositionWithKabeInternal(NowPos, Kabe, KabeNum);
+	//}
 }
 
 /// <summary>
