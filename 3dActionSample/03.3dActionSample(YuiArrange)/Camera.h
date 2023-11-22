@@ -15,7 +15,9 @@ public:
 	static constexpr float ToPlayerLength			= 1600.0f;	// プレイヤーとの距離
 	static constexpr float CollisionSize			= 50.0f	 ;	// カメラの当たり判定サイズ
 
-	void Initialize();						// カメラの初期化処理
+	Camera();
+	~Camera();
+
 	void Update(const Input& input, const Player& player, const Stage& stage);		// カメラの処理
 
 	const VECTOR& GetEye() const { return Eye; }

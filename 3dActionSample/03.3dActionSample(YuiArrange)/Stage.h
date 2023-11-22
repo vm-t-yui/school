@@ -8,10 +8,13 @@ class Player;
 class Stage
 {
 public:
+	Stage();
+	~Stage();
+
 	int GetModelHandle() const { return ModelHandle; }
 
-	void Initialize();			// 初期化処理
-	void Finalie();				// 後始末処理
+	void Load();			// 初期化処理
+	void Unload();			// 後始末処理
 
 	// 当たり判定をして、補正後のポジションを返す
 	VECTOR CheckCollision(Player& player, const VECTOR& CheckPosition, const VECTOR& MoveVector);

@@ -2,6 +2,24 @@
 #include "Input.h"
 
 /// <summary>
+/// コンストラクタ
+/// </summary>
+Input::Input()
+	: NowFrameInput		(0)
+	, NowFrameNewInput	(0)
+{
+	// 処理なし
+}
+
+/// <summary>
+/// デストラクタ
+/// </summary>
+Input::~Input()
+{
+	// 処理なし
+}
+
+/// <summary>
 /// 更新
 /// </summary>
 void Input::Update()

@@ -23,16 +23,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	// 初期化
 	if (DxLib_Init() < 0)
+	{
 		return -1;
+	}
 
-	Input		input;			// 入力情報
-	Player		player;			// プレイヤー
-	Stage		stage;			// ステージ
-	Camera		camera;			// カメラ
+	Input*	input = new Input();	// 入力情報
+	Player*	player = new Player();	// プレイヤー
+	Stage*	stage = new Stage();	// ステージ
+	Camera*	camera = new Camera();	// カメラ
 
-	player.Initialize();
-	stage.Initialize();
-	camera.Initialize();
+	player->Load();
+	stage->Load();
 
 	// 描画先を裏画面にする
 	SetDrawScreen(DX_SCREEN_BACK);
@@ -45,12 +46,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		// 画面をクリア
 		ClearDrawScreen();
 
-		input.Update();
-		player.Update(input, camera, stage);
-		camera.Update(input, player, stage);
+		input->Update();
+		player->Update(*input, *camera, *stage);
+		camera->Update(*input, *player, *stage);
 		
-		stage.Draw();
-		player.Draw(stage);
+		stage->Draw();
+		player->Draw(*stage);
 
 		// 裏画面の内容を表画面に反映
 		ScreenFlip();
@@ -66,8 +67,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	}
 
 	// 後始末
-	player.Finalize();
-	stage.Finalie();
+	player->Unload();
+	stage->Unload();
+	delete(input);
+	delete(player);
+	delete(stage);
+	delete(camera);
 	DxLib_End();
 
 	// ソフト終了

@@ -26,9 +26,13 @@ public:
 		FALL = 3,		// 落下中
 		STOP = 4,		// 立ち止まり
 	};
-	void Initialize();						// 初期化
-	void Finalize();						// 後始末
-	void Update(const Input& input, const Camera& camera, Stage& stage);						
+
+	Player();
+	~Player();
+
+	void Load();		// ロード
+	void Unload();		// アンロード
+	void Update(const Input& input, const Camera& camera, Stage& stage);
 	void Draw(const Stage& stage);
 
 	void OnHitRoof();	// 天井に当たった時
@@ -37,7 +41,7 @@ public:
 
 	const VECTOR& GetPosition() const { return Position; }
 	bool GetIsMove() const { return IsMove; }
-	State GetState() const { return State; }
+	State GetState() const { return CurrentState; }
 	float GetJumpPower() const { return CurrentJumpPower; }
 
 	// プレイヤー関係の定義
@@ -60,7 +64,7 @@ private:
 	float		CurrentJumpPower;		// Ｙ軸方向の速度
 	int			ModelHandle;			// モデルハンドル
 	int			ShadowHandle;			// 影画像ハンドル
-	State		State;					// 状態
+	State		CurrentState;			// 状態
 
 	int			CurrentPlayAnim;		// 再生しているアニメーションのアタッチ番号( -1:何もアニメーションがアタッチされていない )
 	float		CurrentAnimCount;		// 再生しているアニメーションの再生時間
@@ -73,13 +77,14 @@ private:
 	void DisableRootFrameZMove();
 
 	// パッド入力によって移動パラメータを設定する
-	bool UpdateMoveParameterWithPad(const Input& input, const Camera& camera, VECTOR& UpMoveVec, VECTOR& LeftMoveVec, VECTOR& MoveVec);
+	State UpdateMoveParameterWithPad(const Input& input, const Camera& camera, VECTOR& UpMoveVec, VECTOR& LeftMoveVec, VECTOR& MoveVec);
 	
 	// 移動処理
 	void Move(const VECTOR& MoveVector, Stage& stage);
 
-	void UpdateAngle();									// 回転制御
-	void PlayAnim(AnimKind PlayAnim);					// 新たなアニメーションを再生する
-	void UpdateAnimation();								// アニメーション処理
-	void DrawShadow(const Stage& stage);				// 影を描画
+	void UpdateAnimationState(State prevState);	// アニメーションステートの更新
+	void UpdateAngle();							// 回転制御
+	void PlayAnim(AnimKind PlayAnim);			// 新たなアニメーションを再生する
+	void UpdateAnimation();						// アニメーション処理
+	void DrawShadow(const Stage& stage);		// 影を描画
 };

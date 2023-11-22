@@ -5,32 +5,45 @@
 #include "Stage.h"
 #include "Player.h"
 
+/// <summary>
+/// コンストラクタ
+/// </summary>
+Player::Player()
+	:  Position				(VGet(0.0f, 0.0f, 0.0f))
+	 , TargetMoveDirection	(VGet(1.0f, 0.0f, 0.0f))
+	 , Angle				(0.0f)
+	 , CurrentJumpPower		(0.0f)
+	 , ModelHandle			(-1)
+	 , ShadowHandle			(-1)
+	 , CurrentState			(State::STAND)
+	 , CurrentPlayAnim		(-1)
+	 , CurrentAnimCount		(0)
+	 , PrevPlayAnim			(-1)
+	 , PrevAnimCount		(0)
+	 , AnimBlendRate		(1.0f)
+	 , IsMove				(false)
+{
+	// 処理なし
+}
+
+/// <summary>
+/// デストラクタ
+/// </summary>
+Player::~Player()
+{
+	Unload();
+}
 
 /// <summary>
 /// 初期化
 /// </summary>
-void Player::Initialize()
+void Player::Load()
 {
-	// 初期座標は原点
-	Position = VGet(0.0f, 0.0f, 0.0f);
-
-	// 回転値は０
-	Angle = 0.0f;
-
-	// ジャンプ力は初期状態では０
-	CurrentJumpPower = 0.0f;
-
 	// モデルの読み込み
 	ModelHandle = MV1LoadModel("DxChara.x");
 
 	// 影描画用の画像の読み込み
 	ShadowHandle = LoadGraph("Shadow.tga");
-
-	// 初期状態では「立ち止り」状態
-	State = State::STAND;
-
-	// 初期状態でプレイヤーが向くべき方向はＸ軸方向
-	TargetMoveDirection = VGet(1.0f, 0.0f, 0.0f);
 
 	// アニメーションのブレンド率を初期化
 	AnimBlendRate = 1.0f;
@@ -40,20 +53,26 @@ void Player::Initialize()
 	PrevPlayAnim = -1;
 
 	// ただ立っているアニメーションを再生
-	// TODO: マジックナンバーの4が何なのか解析して定数化
-	PlayAnim(AnimKind::STOP);			// HACK: 中ではアタッチとカウンタの初期化をしているだけ
+	PlayAnim(AnimKind::STOP);
 }
 
 /// <summary>
-/// 後始末
+/// アンロード
 /// </summary>
-void Player::Finalize()
+void Player::Unload()
 {
 	// モデルの削除
-	MV1DeleteModel(ModelHandle);
-
+	if (ShadowHandle >= 0)
+	{
+		MV1DeleteModel(ModelHandle);
+		ModelHandle = -1;
+	}
 	// 影用画像の削除
-	DeleteGraph(ShadowHandle);
+	if (ShadowHandle >= 0)
+	{
+		DeleteGraph(ShadowHandle);
+		ShadowHandle = -1;
+	}
 }
 
 /// <summary>
@@ -68,56 +87,11 @@ void Player::Update(const Input& input, const Camera& camera, Stage& stage)
 	VECTOR	UpMoveVec;		// 方向ボタン「↑」を入力をしたときのプレイヤーの移動方向ベクトル
 	VECTOR	LeftMoveVec;	// 方向ボタン「←」を入力をしたときのプレイヤーの移動方向ベクトル
 	VECTOR	MoveVec;		// このフレームの移動ベクトル
-	auto IsPressMoveButton = UpdateMoveParameterWithPad(input, camera, UpMoveVec, LeftMoveVec, MoveVec);
+	State prevState = CurrentState;
+	CurrentState = UpdateMoveParameterWithPad(input, camera, UpMoveVec, LeftMoveVec, MoveVec);
 
-	// 移動ボタンが押されたかどうかで処理を分岐
-	if (IsPressMoveButton)
-	{
-		// 移動ベクトルを正規化したものをプレイヤーが向くべき方向として保存
-		TargetMoveDirection = VNorm(MoveVec);
-
-		// プレイヤーが向くべき方向ベクトルをプレイヤーのスピード倍したものを移動ベクトルとする
-		MoveVec = VScale(TargetMoveDirection, MoveSpeed);
-
-		// もし今まで「立ち止まり」状態だったら
-		if (State == State::STAND)
-		{
-			// 走りアニメーションを再生する
-			PlayAnim(AnimKind::RUN);
-
-			// 状態を「走り」にする
-			State = State::RUN;
-		}
-	}
-	else
-	{
-		// このフレームで移動していなくて、且つ状態が「走り」だったら
-		if (State == State::RUN)
-		{
-			// 立ち止りアニメーションを再生する
-			PlayAnim(AnimKind::STOP);
-
-			// 状態を「立ち止り」にする
-			State = State::STAND;
-		}
-	}
-
-	// 状態が「ジャンプ」の場合は
-	if (State == State::JUMP)
-	{
-		// Ｙ軸方向の速度を重力分減算する
-		CurrentJumpPower -= Gravity;
-
-		// もし落下していて且つ再生されているアニメーションが上昇中用のものだった場合は
-		if (CurrentJumpPower < 0.0f && MV1GetAttachAnim(ModelHandle, CurrentPlayAnim) == 2)
-		{
-			// 落下中ようのアニメーションを再生する
-			PlayAnim(AnimKind::JUMP);
-		}
-
-		// 移動ベクトルのＹ成分をＹ軸方向の速度にする
-		MoveVec.y = CurrentJumpPower;
-	}
+	// アニメーションステートの更新
+	UpdateAnimationState(prevState);
 
 	// プレイヤーの移動方向にモデルの方向を近づける
 	UpdateAngle();
@@ -171,8 +145,10 @@ void Player::DisableRootFrameZMove()
 /// <summary>
 /// パッド入力によって移動パラメータを設定する
 /// </summary>
-bool Player::UpdateMoveParameterWithPad(const Input& input, const Camera& camera, VECTOR& UpMoveVec, VECTOR& LeftMoveVec, VECTOR& MoveVec)
+Player::State Player::UpdateMoveParameterWithPad(const Input& input, const Camera& camera, VECTOR& UpMoveVec, VECTOR& LeftMoveVec, VECTOR& MoveVec)
 {
+	State nextState = CurrentState;
+
 	// プレイヤーの移動方向のベクトルを算出
 	// 方向ボタン「↑」を押したときのプレイヤーの移動ベクトルはカメラの視線方向からＹ成分を抜いたもの
 	UpMoveVec = VSub(camera.GetTarget(), camera.GetEye());
@@ -235,19 +211,53 @@ bool Player::UpdateMoveParameterWithPad(const Input& input, const Camera& camera
 			}
 
 		// プレイヤーの状態が「ジャンプ」ではなく、且つボタン１が押されていたらジャンプする
-		if (State != State::JUMP && (input.GetNowFrameNewInput() & PAD_INPUT_A))
+		if (CurrentState != State::JUMP && (input.GetNowFrameNewInput() & PAD_INPUT_A))
 		{
-			// 状態を「ジャンプ」にする
-			State = State::JUMP;
-
 			// Ｙ軸方向の速度をセット
 			CurrentJumpPower = JumpPower;
 
-			// ジャンプアニメーションの再生
-			PlayAnim(AnimKind::JUMP);
+			// 状態を「ジャンプ」にする
+			nextState = State::JUMP;
 		}
 	}
-	return IsPressMoveButton;
+
+	// ジャンプ状態なら重力適用
+	if (CurrentState == State::JUMP)
+	{
+		// Ｙ軸方向の速度を重力分減算する
+		CurrentJumpPower -= Gravity;
+	}
+
+	// 移動ボタンが押されたかどうかで処理を分岐
+	if (IsPressMoveButton)
+	{
+		// もし今まで「立ち止まり」状態だったら
+		if (CurrentState == State::STAND)
+		{
+			// 状態を「走り」にする
+			nextState = State::RUN;
+		}
+
+		// 移動ベクトルを正規化したものをプレイヤーが向くべき方向として保存
+		TargetMoveDirection = VNorm(MoveVec);
+
+		// プレイヤーが向くべき方向ベクトルをプレイヤーのスピード倍したものを移動ベクトルとする
+		MoveVec = VScale(TargetMoveDirection, MoveSpeed);
+	}
+	else
+	{
+		// このフレームで移動していなくて、且つ状態が「走り」だったら
+		if (CurrentState == State::RUN)
+		{
+			// 状態を「立ち止り」にする
+			nextState = State::STAND;
+		}
+	}
+
+	// 移動ベクトルのＹ成分をＹ軸方向の速度にする
+	MoveVec.y = CurrentJumpPower;
+
+	return nextState;
 }
 
 /// <summary>
@@ -276,7 +286,38 @@ void Player::Move(const VECTOR& MoveVector, Stage& stage)
 	MV1SetPosition(ModelHandle, Position);
 }
 
-// プレイヤーの回転制御
+/// <summary>
+/// アニメーションステートの更新
+/// </summary>
+void Player::UpdateAnimationState(State prevState)
+{
+	// 立ち止まりから走りに変わったら
+	if (prevState == State::STAND && CurrentState == State::RUN)
+	{
+		// 走りアニメーションを再生する
+		PlayAnim(AnimKind::RUN);
+	}
+	// 走りから立ち止まりに変わったら
+	else if (prevState == State::RUN && CurrentState == State::STAND)
+	{
+		// 立ち止りアニメーションを再生する
+		PlayAnim(AnimKind::STOP);
+	}
+	// 状態が「ジャンプ」の場合は
+	else if (CurrentState == State::JUMP)
+	{
+		// もし落下していて且つ再生されているアニメーションが上昇中用のものだった場合は
+		if (CurrentJumpPower < 0.0f && MV1GetAttachAnim(ModelHandle, CurrentPlayAnim) == 2)
+		{
+			// 落下中ようのアニメーションを再生する
+			PlayAnim(AnimKind::JUMP);
+		}
+	}
+}
+
+/// <summary>
+/// プレイヤーの回転制御
+/// </summary>
 void Player::UpdateAngle()
 {
 	// プレイヤーの移動方向にモデルの方向を近づける
@@ -326,7 +367,9 @@ void Player::UpdateAngle()
 	MV1SetRotationXYZ(ModelHandle, VGet(0.0f, Angle + DX_PI_F, 0.0f));
 }
 
-// プレイヤーのアニメーションを再生する
+/// <summary>
+/// プレイヤーのアニメーションを再生する
+/// </summary>
 void Player::PlayAnim(AnimKind PlayAnim)
 {
 	// HACK: 指定した番号のアニメーションをアタッチし、直前に再生していたアニメーションの情報をprevに移行している
@@ -349,7 +392,9 @@ void Player::PlayAnim(AnimKind PlayAnim)
 	AnimBlendRate = PrevPlayAnim == -1 ? 1.0f : 0.0f;
 }
 
-// プレイヤーのアニメーション処理
+/// <summary>
+/// プレイヤーのアニメーション処理
+/// </summary>
 void Player::UpdateAnimation()
 {
 	float AnimTotalTime;		// 再生しているアニメーションの総時間
@@ -409,7 +454,9 @@ void Player::UpdateAnimation()
 	}
 }
 
-// プレイヤーの影を描画
+/// <summary>
+/// プレイヤーの影を描画
+/// </summary>
 void Player::DrawShadow(const Stage& stage)
 {
 	MV1_COLL_RESULT_POLY_DIM HitResultDim;
@@ -505,20 +552,20 @@ void Player::OnHitFloor()
 	CurrentJumpPower = 0.0f;
 
 	// もしジャンプ中だった場合は着地状態にする
-	if (State == State::JUMP)
+	if (CurrentState == State::JUMP)
 	{
 		// 移動していたかどうかで着地後の状態と再生するアニメーションを分岐する
 		if (IsMove)
 		{
 			// 移動している場合は走り状態に
 			PlayAnim(AnimKind::RUN);
-			State = State::RUN;
+			CurrentState = State::RUN;
 		}
 		else
 		{
 			// 移動していない場合は立ち止り状態に
 			PlayAnim(AnimKind::STOP);
-			State = State::STAND;
+			CurrentState = State::STAND;
 		}
 
 		// 着地時はアニメーションのブレンドは行わない
@@ -531,10 +578,10 @@ void Player::OnHitFloor()
 /// </summary>
 void Player::OnFall()
 {
-	if (State != State::JUMP)
+	if (CurrentState != State::JUMP)
 	{
 		// ジャンプ中(落下中）にする
-		State = State::JUMP;
+		CurrentState = State::JUMP;
 
 		// ちょっとだけジャンプする
 		CurrentJumpPower = FallUpPower;

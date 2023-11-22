@@ -6,6 +6,9 @@
 class Input
 {
 public:
+	Input();
+	~Input();
+
 	void	Update();
 
 	int GetNowFrameInput() const { return NowFrameInput; }

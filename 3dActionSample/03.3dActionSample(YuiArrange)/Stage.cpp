@@ -3,26 +3,51 @@
 #include "Player.h"
 
 /// <summary>
-/// 初期化
+/// コンストラクタ
 /// </summary>
-void Stage::Initialize()
+Stage::Stage()
+	:  ModelHandle		(-1)
+	 , HitDim			({ 0, nullptr })
+	 , isCreatedHitDim	(false)
+	 , WallNum			(0)
+	 , FloorNum			(0)
+	 , Wall				{ nullptr }
+	 , Floor			{ nullptr }
+{
+	// 処理なし
+}
+
+/// <summary>
+/// デストラクタ
+/// </summary>
+Stage::~Stage()
+{
+	Unload();
+}
+
+/// <summary>
+/// ロード
+/// </summary>
+void Stage::Load()
 {
 	// ステージモデルの読み込み
 	ModelHandle = MV1LoadModel("ColTestStage.mqo");
 
 	// モデル全体のコリジョン情報のセットアップ
 	MV1SetupCollInfo(ModelHandle, -1);
-
-	isCreatedHitDim = false;
 }
 
 /// <summary>
-/// 終了
+/// アンロード
 /// </summary>
-void Stage::Finalie()
+void Stage::Unload()
 {
 	// ステージモデルの後始末
-	MV1DeleteModel(ModelHandle);
+	if (ModelHandle >= 0)
+	{
+		MV1DeleteModel(ModelHandle);
+		ModelHandle = -1;
+	}
 	if (isCreatedHitDim)
 	{
 		MV1CollResultPolyDimTerminate(HitDim);

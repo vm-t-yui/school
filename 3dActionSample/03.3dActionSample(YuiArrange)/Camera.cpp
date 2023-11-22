@@ -4,16 +4,29 @@
 #include "Player.h"
 #include "Stage.h"
 
+
 /// <summary>
-/// 初期化
+/// コンストラクタ
 /// </summary>
-void Camera::Initialize()
+Camera::Camera()
+	:  AngleH	(0)
+	 , AngleV	(0)
+	 , Eye		(VGet(0,0,0))	
+	 , Target	(VGet(0, 0, 0))
 {
 	// カメラの初期水平角度は１８０度
 	AngleH = DX_PI_F;
 
 	// 垂直角度は０度
 	AngleV = 0.0f;
+}
+
+/// <summary>
+/// デストラクタ
+/// </summary>
+Camera::~Camera()
+{
+	// 処理なし
 }
 
 /// <summary>
