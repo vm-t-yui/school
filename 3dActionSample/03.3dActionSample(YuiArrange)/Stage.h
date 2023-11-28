@@ -17,7 +17,7 @@ public:
 	void Unload();			// 後始末処理
 
 	// 当たり判定をして、補正後のポジションを返す
-	VECTOR CheckCollision(Player& player, const VECTOR& CheckPosition, const VECTOR& MoveVector);
+	VECTOR CheckCollision(Player& player, const VECTOR& MoveVector);
 
 	void Draw();
 

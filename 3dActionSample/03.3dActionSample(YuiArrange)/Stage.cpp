@@ -58,7 +58,7 @@ void Stage::Unload()
 /// <summary>
 /// 当たり判定をして、補正した移動先のポジションを返す
 /// </summary>
-VECTOR Stage::CheckCollision(Player& player, const VECTOR& CheckPosition, const VECTOR& MoveVector)
+VECTOR Stage::CheckCollision(Player& player, const VECTOR& MoveVector)
 {
 	// 検出したプレイヤーの周囲のポリゴン情報を開放する
 	if (isCreatedHitDim)
@@ -67,24 +67,25 @@ VECTOR Stage::CheckCollision(Player& player, const VECTOR& CheckPosition, const 
 		isCreatedHitDim = false;
 	}
 
-	VECTOR FixedPos = CheckPosition;
+	VECTOR OldPos = player.GetPosition();			// 移動前の座標	
+	VECTOR NextPos = VAdd(OldPos, MoveVector);		// 移動後の座標
 
 	// プレイヤーの周囲にあるステージポリゴンを取得する
 	// ( 検出する範囲は移動距離も考慮する )
-	HitDim = MV1CollCheck_Sphere(ModelHandle, -1, CheckPosition, DefaultSize + VSize(MoveVector));
+	HitDim = MV1CollCheck_Sphere(ModelHandle, -1, OldPos, DefaultSize + VSize(MoveVector));
 
 	// 検出されたポリゴンが壁ポリゴン( ＸＺ平面に垂直なポリゴン )か床ポリゴン( ＸＺ平面に垂直ではないポリゴン )かを判断し、保存する
-	AnalyzeWallAndFloor(CheckPosition);
+	AnalyzeWallAndFloor(OldPos);
 
 	// 壁ポリゴンとの当たり判定処理
 	// 壁ポリゴンとの当たりをチェックし、移動ベクトルを補正する
-	FixedPos = CheckHitWithWall(player, FixedPos);
+	NextPos = CheckHitWithWall(player, NextPos);
 
 	// 床ポリゴンとの当たり判定
 	// 床ポリゴンとの当たりをチェックし、移動ベクトルを補正する
-	FixedPos = CheckHitWithFloor(player, FixedPos);
+	NextPos = CheckHitWithFloor(player, NextPos);
 
-	return FixedPos;
+	return NextPos;
 }
 
 /// <summary>
@@ -215,15 +216,13 @@ VECTOR Stage::CheckHitWithFloor(Player& player, const VECTOR& CheckPosition)
 		return FixedPos;
 	}
 
-	// 当たったかどうかのフラグを初期化
-	bool IsHitFloor = false;
-
 	// ジャンプ中且つ上昇中の場合は処理を分岐
 	if (player.GetState() == Player::State::JUMP
 		&& player.GetJumpPower() > 0.0f)
 	{
 		// 天井に頭をぶつける処理を行う
 		// 一番低い天井にぶつける為の判定用変数を初期化
+		bool IsHitRoof = false;
 		float MinY = 0.0f;
 
 		// 床ポリゴンの数だけ繰り返し
@@ -240,10 +239,10 @@ VECTOR Stage::CheckHitWithFloor(Player& player, const VECTOR& CheckPosition)
 			if (LineRes.HitFlag == TRUE)
 			{
 				// 既にポリゴンに当たっていて、且つ今まで検出した天井ポリゴンより高い場合は何もしない
-				if (!(IsHitFloor == true && MinY < LineRes.Position.y))
+				if (!(IsHitRoof == true && MinY < LineRes.Position.y))
 				{
 					// ポリゴンに当たったフラグを立てる
-					IsHitFloor = true;
+					IsHitRoof = true;
 
 					// 接触したＹ座標を保存する
 					MinY = LineRes.Position.y;
@@ -252,7 +251,7 @@ VECTOR Stage::CheckHitWithFloor(Player& player, const VECTOR& CheckPosition)
 		}
 
 		// 接触したポリゴンがあれば
-		if (IsHitFloor == true)
+		if (IsHitRoof == true)
 		{
 			// 接触した場合はプレイヤーのＹ座標を接触座標を元に更新
 			FixedPos.y = MinY - HitHeight;
@@ -263,6 +262,7 @@ VECTOR Stage::CheckHitWithFloor(Player& player, const VECTOR& CheckPosition)
 	{
 		// 下降中かジャンプ中ではない場合の処理
 		// 一番高い床ポリゴンにぶつける為の判定用変数を初期化
+		bool IsHitFloor = false;
 		float MaxY = 0.0f;
 
 		// 床ポリゴンの数だけ繰り返し

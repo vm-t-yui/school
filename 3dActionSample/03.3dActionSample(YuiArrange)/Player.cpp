@@ -277,10 +277,7 @@ void Player::Move(const VECTOR& MoveVector, Stage& stage)
 	}
 
 	// 当たり判定をして、新しい座標を保存する
-	VECTOR OldPos = Position;							// 移動前の座標	
-	VECTOR NextPos = VAdd(Position, MoveVector);		// 移動後の座標
-
-	Position = stage.CheckCollision(*this, NextPos, MoveVector);
+	Position = stage.CheckCollision(*this, MoveVector);
 
 	// プレイヤーのモデルの座標を更新する
 	MV1SetPosition(ModelHandle, Position);
@@ -307,9 +304,16 @@ void Player::UpdateAnimationState(State prevState)
 	else if (CurrentState == State::JUMP)
 	{
 		// もし落下していて且つ再生されているアニメーションが上昇中用のものだった場合は
-		if (CurrentJumpPower < 0.0f && MV1GetAttachAnim(ModelHandle, CurrentPlayAnim) == 2)
+		if (CurrentJumpPower < 0.0f)
 		{
 			// 落下中ようのアニメーションを再生する
+			if (MV1GetAttachAnim(ModelHandle, CurrentPlayAnim) == static_cast<int>(AnimKind::JUMP))
+			{
+				PlayAnim(AnimKind::FALL);
+			}
+		}
+		else
+		{
 			PlayAnim(AnimKind::JUMP);
 		}
 	}
