@@ -1,11 +1,11 @@
-#include "DxLib.h"
+ï»¿#include "DxLib.h"
 #include "Camera.h"
 #include "Input.h"
 #include "Player.h"
 #include "Stage.h"
 
 /// <summary>
-/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 /// </summary>
 Camera::Camera()
 	:  angleH	(0)
@@ -13,71 +13,71 @@ Camera::Camera()
 	 , position	(VGet(0, 0, 0))	
 	 , target	(VGet(0, 0, 0))
 {
-	// ƒJƒƒ‰‚Ì‰Šú…•½Šp“x‚Í‚P‚W‚O“x
+	// ã‚«ãƒ¡ãƒ©ã®åˆæœŸæ°´å¹³è§’åº¦ã¯ï¼‘ï¼˜ï¼åº¦
 	angleH = DX_PI_F;
 
-	// ‚’¼Šp“x‚Í‚O“x
+	// å‚ç›´è§’åº¦ã¯ï¼åº¦
 	angleV = 0.0f;
 }
 
 /// <summary>
-/// ƒfƒXƒgƒ‰ƒNƒ^
+/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 /// </summary>
 Camera::~Camera()
 {
-	// ˆ—‚È‚µ
+	// å‡¦ç†ãªã—
 }
 
 /// <summary>
-/// XV
+/// æ›´æ–°
 /// </summary>
 void Camera::Update(const Input& input, const Player& player, const Stage& stage)
 {
-	// ƒpƒbƒh‚Ì‚Rƒ{ƒ^ƒ“‚©AƒVƒtƒgƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚éê‡‚Ì‚İŠp“x•ÏX‘€ì‚ğs‚¤
+	// ãƒ‘ãƒƒãƒ‰ã®ï¼“ãƒœã‚¿ãƒ³ã‹ã€ã‚·ãƒ•ãƒˆã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ã‚‹å ´åˆã®ã¿è§’åº¦å¤‰æ›´æ“ä½œã‚’è¡Œã†
 	if (CheckHitKey(KEY_INPUT_LSHIFT) || (input.GetNowFrameInput() & PAD_INPUT_C))
 	{
-		// u©vƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚Ä‚¢‚½‚ç…•½Šp“x‚ğƒ}ƒCƒiƒX‚·‚é
+		// ã€Œâ†ã€ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚Œã¦ã„ãŸã‚‰æ°´å¹³è§’åº¦ã‚’ãƒã‚¤ãƒŠã‚¹ã™ã‚‹
 		if (input.GetNowFrameInput() & PAD_INPUT_LEFT)
 		{
 			angleH -= AngleSpeed;
 
-			// |‚P‚W‚O“xˆÈ‰º‚É‚È‚Á‚½‚çŠp“x’l‚ª‘å‚«‚­‚È‚è‚·‚¬‚È‚¢‚æ‚¤‚É‚R‚U‚O“x‚ğ‘«‚·
+			// ï¼ï¼‘ï¼˜ï¼åº¦ä»¥ä¸‹ã«ãªã£ãŸã‚‰è§’åº¦å€¤ãŒå¤§ãããªã‚Šã™ããªã„ã‚ˆã†ã«ï¼“ï¼–ï¼åº¦ã‚’è¶³ã™
 			if (angleH < -DX_PI_F)
 			{
 				angleH += DX_TWO_PI_F;
 			}
 		}
 
-		// u¨vƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚Ä‚¢‚½‚ç…•½Šp“x‚ğƒvƒ‰ƒX‚·‚é
+		// ã€Œâ†’ã€ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚Œã¦ã„ãŸã‚‰æ°´å¹³è§’åº¦ã‚’ãƒ—ãƒ©ã‚¹ã™ã‚‹
 		if (input.GetNowFrameInput() & PAD_INPUT_RIGHT)
 		{
 			angleH += AngleSpeed;
 
-			// ‚P‚W‚O“xˆÈã‚É‚È‚Á‚½‚çŠp“x’l‚ª‘å‚«‚­‚È‚è‚·‚¬‚È‚¢‚æ‚¤‚É‚R‚U‚O“x‚ğˆø‚­
+			// ï¼‘ï¼˜ï¼åº¦ä»¥ä¸Šã«ãªã£ãŸã‚‰è§’åº¦å€¤ãŒå¤§ãããªã‚Šã™ããªã„ã‚ˆã†ã«ï¼“ï¼–ï¼åº¦ã‚’å¼•ã
 			if (angleH > DX_PI_F)
 			{
 				angleH -= DX_TWO_PI_F;
 			}
 		}
 
-		// uªvƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚Ä‚¢‚½‚ç‚’¼Šp“x‚ğƒ}ƒCƒiƒX‚·‚é
+		// ã€Œâ†‘ã€ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚Œã¦ã„ãŸã‚‰å‚ç›´è§’åº¦ã‚’ãƒã‚¤ãƒŠã‚¹ã™ã‚‹
 		if (input.GetNowFrameInput() & PAD_INPUT_UP)
 		{
 			angleV -= AngleSpeed;
 
-			// ‚ ‚éˆê’èŠp“xˆÈ‰º‚É‚Í‚È‚ç‚È‚¢‚æ‚¤‚É‚·‚é
+			// ã‚ã‚‹ä¸€å®šè§’åº¦ä»¥ä¸‹ã«ã¯ãªã‚‰ãªã„ã‚ˆã†ã«ã™ã‚‹
 			if (angleV < -DX_PI_F * 0.5f + 0.6f)
 			{
 				angleV = -DX_PI_F * 0.5f + 0.6f;
 			}
 		}
 
-		// u«vƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚Ä‚¢‚½‚ç‚’¼Šp“x‚ğƒvƒ‰ƒX‚·‚é
+		// ã€Œâ†“ã€ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚Œã¦ã„ãŸã‚‰å‚ç›´è§’åº¦ã‚’ãƒ—ãƒ©ã‚¹ã™ã‚‹
 		if (input.GetNowFrameInput() & PAD_INPUT_DOWN)
 		{
 			angleV += AngleSpeed;
 
-			// ‚ ‚éˆê’èŠp“xˆÈã‚É‚Í‚È‚ç‚È‚¢‚æ‚¤‚É‚·‚é
+			// ã‚ã‚‹ä¸€å®šè§’åº¦ä»¥ä¸Šã«ã¯ãªã‚‰ãªã„ã‚ˆã†ã«ã™ã‚‹
 			if (angleV > DX_PI_F * 0.5f - 0.6f)
 			{
 				angleV = DX_PI_F * 0.5f - 0.6f;
@@ -85,70 +85,70 @@ void Camera::Update(const Input& input, const Player& player, const Stage& stage
 		}
 	}
 
-	// ƒJƒƒ‰‚Ì’‹“_‚ÍƒvƒŒƒCƒ„[À•W‚©‚ç‹K’è’l•ª‚‚¢À•W
+	// ã‚«ãƒ¡ãƒ©ã®æ³¨è¦–ç‚¹ã¯ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼åº§æ¨™ã‹ã‚‰è¦å®šå€¤åˆ†é«˜ã„åº§æ¨™
 	target = VAdd(player.GetPosition(), VGet(0.0f, CameraPlayerTargetHeight, 0.0f));
 
-	// ƒJƒƒ‰‚ÌÀ•W‚ğ•â³‚·‚é
+	// ã‚«ãƒ¡ãƒ©ã®åº§æ¨™ã‚’è£œæ­£ã™ã‚‹
 	FixCameraPosition(stage);
 
-	// ƒJƒƒ‰‚Ìî•ñ‚ğƒ‰ƒCƒuƒ‰ƒŠ‚ÌƒJƒƒ‰‚É”½‰f‚³‚¹‚é
+	// ã‚«ãƒ¡ãƒ©ã®æƒ…å ±ã‚’ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®ã‚«ãƒ¡ãƒ©ã«åæ˜ ã•ã›ã‚‹
 	SetCameraPositionAndTarget_UpVecY(position, target);
 }
 
 /// <summary>
-/// ƒJƒƒ‰À•W‚ğ•â³‚·‚é
+/// ã‚«ãƒ¡ãƒ©åº§æ¨™ã‚’è£œæ­£ã™ã‚‹
 /// </summary>
 void Camera::FixCameraPosition(const Stage& stage)
 {
-	// …•½•ûŒü‚Ì‰ñ“]‚Í‚x²‰ñ“]
+	// æ°´å¹³æ–¹å‘ã®å›è»¢ã¯ï¼¹è»¸å›è»¢
 	auto rotY = MGetRotY(angleH);
 
-	// ‚’¼•ûŒü‚Ì‰ñ“]‚Í‚y²‰ñ“] )
+	// å‚ç›´æ–¹å‘ã®å›è»¢ã¯ï¼ºè»¸å›è»¢ )
 	auto rotZ = MGetRotZ(angleV);
 
-	// ƒJƒƒ‰‚©‚çƒvƒŒƒCƒ„[‚Ü‚Å‚Ì‰Šú‹——£‚ğƒZƒbƒg
+	// ã‚«ãƒ¡ãƒ©ã‹ã‚‰ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¾ã§ã®åˆæœŸè·é›¢ã‚’ã‚»ãƒƒãƒˆ
 	float cameraPlayerLength = ToPlayerLength;
 
-	// ƒJƒƒ‰‚ÌÀ•W‚ğZo
-	// ‚w²‚ÉƒJƒƒ‰‚ÆƒvƒŒƒCƒ„[‚Æ‚Ì‹——£•ª‚¾‚¯L‚Ñ‚½ƒxƒNƒgƒ‹‚ğ
-	// ‚’¼•ûŒü‰ñ“]( ‚y²‰ñ“] )‚³‚¹‚½‚ ‚Æ…•½•ûŒü‰ñ“]( ‚x²‰ñ“] )‚µ‚ÄX‚É
-	// ’‹“_‚ÌÀ•W‚ğ‘«‚µ‚½‚à‚Ì‚ªƒJƒƒ‰‚ÌÀ•W
+	// ã‚«ãƒ¡ãƒ©ã®åº§æ¨™ã‚’ç®—å‡º
+	// ï¼¸è»¸ã«ã‚«ãƒ¡ãƒ©ã¨ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨ã®è·é›¢åˆ†ã ã‘ä¼¸ã³ãŸãƒ™ã‚¯ãƒˆãƒ«ã‚’
+	// å‚ç›´æ–¹å‘å›è»¢( ï¼ºè»¸å›è»¢ )ã•ã›ãŸã‚ã¨æ°´å¹³æ–¹å‘å›è»¢( ï¼¹è»¸å›è»¢ )ã—ã¦æ›´ã«
+	// æ³¨è¦–ç‚¹ã®åº§æ¨™ã‚’è¶³ã—ãŸã‚‚ã®ãŒã‚«ãƒ¡ãƒ©ã®åº§æ¨™
 	position = VAdd(VTransform(VTransform(VGet(-cameraPlayerLength, 0.0f, 0.0f), rotZ), rotY), target);
 
-	// ‚ ‚½‚ç‚È‚¢ˆÊ’u‚Ü‚ÅƒvƒŒƒCƒ„[‚É‹ß‚Ã‚­
-	// ƒ|ƒŠƒSƒ“‚É“–‚½‚ç‚È‚¢‹——£‚ğƒZƒbƒg
+	// ã‚ãŸã‚‰ãªã„ä½ç½®ã¾ã§ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«è¿‘ã¥ã
+	// ãƒãƒªã‚´ãƒ³ã«å½“ãŸã‚‰ãªã„è·é›¢ã‚’ã‚»ãƒƒãƒˆ
 	float notHitLength = 0.0f;
 
-	// ƒ|ƒŠƒSƒ“‚É“–‚½‚é‹——£‚ğƒZƒbƒg
+	// ãƒãƒªã‚´ãƒ³ã«å½“ãŸã‚‹è·é›¢ã‚’ã‚»ãƒƒãƒˆ
 	float hitLength = cameraPlayerLength;
 
-	// ’‹“_‚©‚çƒJƒƒ‰‚ÌÀ•W‚Ü‚Å‚ÌŠÔ‚ÉƒXƒe[ƒW‚Ìƒ|ƒŠƒSƒ“‚ª‚ ‚é‚©’²‚×‚é
+	// æ³¨è¦–ç‚¹ã‹ã‚‰ã‚«ãƒ¡ãƒ©ã®åº§æ¨™ã¾ã§ã®é–“ã«ã‚¹ãƒ†ãƒ¼ã‚¸ã®ãƒãƒªã‚´ãƒ³ãŒã‚ã‚‹ã‹èª¿ã¹ã‚‹
 	do
 	{
-		// “–‚½‚é‚©‚Ç‚¤‚©ƒeƒXƒg‚·‚é‹——£‚ğƒZƒbƒg( “–‚½‚ç‚È‚¢‹——£‚Æ“–‚½‚é‹——£‚Ì’†ŠÔ )
+		// å½“ãŸã‚‹ã‹ã©ã†ã‹ãƒ†ã‚¹ãƒˆã™ã‚‹è·é›¢ã‚’ã‚»ãƒƒãƒˆ( å½“ãŸã‚‰ãªã„è·é›¢ã¨å½“ãŸã‚‹è·é›¢ã®ä¸­é–“ )
 		float testLength = notHitLength + (hitLength - notHitLength) * 0.5f;
 
-		// ƒeƒXƒg—p‚ÌƒJƒƒ‰À•W‚ğZo
+		// ãƒ†ã‚¹ãƒˆç”¨ã®ã‚«ãƒ¡ãƒ©åº§æ¨™ã‚’ç®—å‡º
 		auto testPosition = VAdd(VTransform(VTransform(VGet(-testLength, 0.0f, 0.0f), rotZ), rotY), target);
 
-		// V‚µ‚¢À•W‚Å•Ç‚É“–‚½‚é‚©ƒeƒXƒg
+		// æ–°ã—ã„åº§æ¨™ã§å£ã«å½“ãŸã‚‹ã‹ãƒ†ã‚¹ãƒˆ
 		auto hitResult = MV1CollCheck_Capsule(stage.GetModelHandle(), -1, target, testPosition, CollisionSize);
 		int hitNum = hitResult.HitNum;
 		MV1CollResultPolyDimTerminate(hitResult);
 		if (hitNum != 0)
 		{
-			// “–‚½‚Á‚½‚ç“–‚½‚é‹——£‚ğ testLength ‚É•ÏX‚·‚é
+			// å½“ãŸã£ãŸã‚‰å½“ãŸã‚‹è·é›¢ã‚’ testLength ã«å¤‰æ›´ã™ã‚‹
 			hitLength = testLength;
 
-			// ƒJƒƒ‰‚ÌÀ•W‚ğƒZƒbƒg
+			// ã‚«ãƒ¡ãƒ©ã®åº§æ¨™ã‚’ã‚»ãƒƒãƒˆ
 			position = testPosition;
 		}
 		else
 		{
-			// “–‚½‚ç‚È‚©‚Á‚½‚ç“–‚½‚ç‚È‚¢‹——£‚ğ testLength ‚É•ÏX‚·‚é
+			// å½“ãŸã‚‰ãªã‹ã£ãŸã‚‰å½“ãŸã‚‰ãªã„è·é›¢ã‚’ testLength ã«å¤‰æ›´ã™ã‚‹
 			notHitLength = testLength;
 		}
 
-		// hitLength ‚Æ NoHitLength ‚ª\•ª‚É‹ß‚Ã‚¢‚Ä‚¢‚È‚©‚Á‚½‚çƒ‹[ƒv
+		// hitLength ã¨ NoHitLength ãŒååˆ†ã«è¿‘ã¥ã„ã¦ã„ãªã‹ã£ãŸã‚‰ãƒ«ãƒ¼ãƒ—
 	} while (hitLength - notHitLength > 0.1f);
 }

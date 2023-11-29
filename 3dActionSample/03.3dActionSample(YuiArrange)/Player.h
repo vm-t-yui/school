@@ -1,92 +1,92 @@
-#pragma once
+ï»¿#pragma once
 
 class Input;
 class Camera;
 class Stage;
 
 /// <summary>
-/// ƒvƒŒƒCƒ„[
+/// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
 /// </summary>
 class Player
 {
 public:
-	// ó‘Ô
+	// çŠ¶æ…‹
 	enum class State : int
 	{
-		Stand = 0,		// —§‚¿~‚Ü‚è
-		Run = 1,		// ‘–‚è
-		Jump = 2,		// ƒWƒƒƒ“ƒv
+		Stand = 0,		// ç«‹ã¡æ­¢ã¾ã‚Š
+		Run = 1,		// èµ°ã‚Š
+		Jump = 2,		// ã‚¸ãƒ£ãƒ³ãƒ—
 	};
 
-	// ƒvƒŒƒCƒ„[‚ÌƒAƒjƒ[ƒVƒ‡ƒ“í•Ê
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ç¨®åˆ¥
 	enum class AnimKind : int
 	{
-		None = -1,		// ‚È‚µ
-		Unknown = 0,	// •s–¾
-		Run = 1,		// ‘–‚è
-		Jump = 2,		// ƒWƒƒƒ“ƒv
-		Fall = 3,		// —‰º’†
-		Stop = 4,		// —§‚¿~‚Ü‚è
+		None = -1,		// ãªã—
+		Unknown = 0,	// ä¸æ˜
+		Run = 1,		// èµ°ã‚Š
+		Jump = 2,		// ã‚¸ãƒ£ãƒ³ãƒ—
+		Fall = 3,		// è½ä¸‹ä¸­
+		Stop = 4,		// ç«‹ã¡æ­¢ã¾ã‚Š
 	};
 
 	Player();
 	~Player();
 
-	void Load();		// ƒ[ƒh
-	void Unload();		// ƒAƒ“ƒ[ƒh
+	void Load();		// ãƒ­ãƒ¼ãƒ‰
+	void Unload();		// ã‚¢ãƒ³ãƒ­ãƒ¼ãƒ‰
 	void Update(const Input& input, const Camera& camera, Stage& stage);
 	void Draw(const Stage& stage);
 
-	void OnHitRoof();	// “Vˆä‚É“–‚½‚Á‚½
-	void OnHitFloor();	// °‚É“–‚½‚Á‚½
-	void OnFall();		// —‰º‚ªŠm’è‚µ‚½‚Æ‚«
+	void OnHitRoof();	// å¤©äº•ã«å½“ãŸã£ãŸæ™‚
+	void OnHitFloor();	// åºŠã«å½“ãŸã£ãŸæ™‚
+	void OnFall();		// è½ä¸‹ãŒç¢ºå®šã—ãŸã¨ã
 
 	const VECTOR& GetPosition() const { return position; }
 	bool GetIsMove() const { return isMove; }
 	State GetState() const { return currentState; }
 	float GetJumpPower() const { return currentJumpPower; }
 
-	// ƒvƒŒƒCƒ„[ŠÖŒW‚Ì’è‹`
-	static constexpr float	FallUpPower = 20.0f;	// ‘«‚ğ“¥‚İŠO‚µ‚½‚ÌƒWƒƒƒ“ƒv—Í
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼é–¢ä¿‚ã®å®šç¾©
+	static constexpr float	FallUpPower = 20.0f;	// è¶³ã‚’è¸ã¿å¤–ã—ãŸæ™‚ã®ã‚¸ãƒ£ãƒ³ãƒ—åŠ›
 
 private:
-	// ƒvƒŒƒCƒ„[ŠÖŒW‚Ì’è‹`
-	static constexpr float	PlayAnimSpeed	= 250.0f;	// ƒAƒjƒ[ƒVƒ‡ƒ“‘¬“x
-	static constexpr float	MoveSpeed		= 30.0f;	// ˆÚ“®‘¬“x
-	static constexpr float	AnimBlendSpeed	= 0.1f;		// ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒuƒŒƒ“ƒh—¦•Ï‰»‘¬“x
-	static constexpr float	AngleSpeed		= 0.2f;		// Šp“x•Ï‰»‘¬“x
-	static constexpr float	JumpPower		= 100.0f;	// ƒWƒƒƒ“ƒv—Í
-	static constexpr float	Gravity			= 3.0f;		// d—Í
-	static constexpr float	ShadowSize		= 200.0f;	// ‰e‚Ì‘å‚«‚³
-	static constexpr float	ShadowHeight	= 700.0f;	// ‰e‚ª—‚¿‚é‚‚³
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼é–¢ä¿‚ã®å®šç¾©
+	static constexpr float	PlayAnimSpeed	= 250.0f;	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³é€Ÿåº¦
+	static constexpr float	MoveSpeed		= 30.0f;	// ç§»å‹•é€Ÿåº¦
+	static constexpr float	AnimBlendSpeed	= 0.1f;		// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒ–ãƒ¬ãƒ³ãƒ‰ç‡å¤‰åŒ–é€Ÿåº¦
+	static constexpr float	AngleSpeed		= 0.2f;		// è§’åº¦å¤‰åŒ–é€Ÿåº¦
+	static constexpr float	JumpPower		= 100.0f;	// ã‚¸ãƒ£ãƒ³ãƒ—åŠ›
+	static constexpr float	Gravity			= 3.0f;		// é‡åŠ›
+	static constexpr float	ShadowSize		= 200.0f;	// å½±ã®å¤§ãã•
+	static constexpr float	ShadowHeight	= 700.0f;	// å½±ãŒè½ã¡ã‚‹é«˜ã•
 
-	VECTOR		position;				// À•W
-	VECTOR		targetMoveDirection;	// ƒ‚ƒfƒ‹‚ªŒü‚­‚×‚«•ûŒü‚ÌƒxƒNƒgƒ‹
-	float		angle;					// ƒ‚ƒfƒ‹‚ªŒü‚¢‚Ä‚¢‚é•ûŒü‚ÌŠp“x
-	float		currentJumpPower;		// ‚x²•ûŒü‚Ì‘¬“x
-	int			modelHandle;			// ƒ‚ƒfƒ‹ƒnƒ“ƒhƒ‹
-	int			shadowHandle;			// ‰e‰æ‘œƒnƒ“ƒhƒ‹
-	State		currentState;			// ó‘Ô
+	VECTOR		position;				// åº§æ¨™
+	VECTOR		targetMoveDirection;	// ãƒ¢ãƒ‡ãƒ«ãŒå‘ãã¹ãæ–¹å‘ã®ãƒ™ã‚¯ãƒˆãƒ«
+	float		angle;					// ãƒ¢ãƒ‡ãƒ«ãŒå‘ã„ã¦ã„ã‚‹æ–¹å‘ã®è§’åº¦
+	float		currentJumpPower;		// ï¼¹è»¸æ–¹å‘ã®é€Ÿåº¦
+	int			modelHandle;			// ãƒ¢ãƒ‡ãƒ«ãƒãƒ³ãƒ‰ãƒ«
+	int			shadowHandle;			// å½±ç”»åƒãƒãƒ³ãƒ‰ãƒ«
+	State		currentState;			// çŠ¶æ…‹
 
-	int			currentPlayAnim;		// Ä¶‚µ‚Ä‚¢‚éƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒAƒ^ƒbƒ`”Ô†( -1:‰½‚àƒAƒjƒ[ƒVƒ‡ƒ“‚ªƒAƒ^ƒbƒ`‚³‚ê‚Ä‚¢‚È‚¢ )
-	float		currentAnimCount;		// Ä¶‚µ‚Ä‚¢‚éƒAƒjƒ[ƒVƒ‡ƒ“‚ÌÄ¶ŠÔ
-	int			prevPlayAnim;			// ‘O‚ÌÄ¶ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒAƒ^ƒbƒ`”Ô†( -1:‰½‚àƒAƒjƒ[ƒVƒ‡ƒ“‚ªƒAƒ^ƒbƒ`‚³‚ê‚Ä‚¢‚È‚¢ )
-	float		prevAnimCount;			// ‘O‚ÌÄ¶ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌÄ¶ŠÔ
-	float		animBlendRate;			// Œ»İ‚Æ‰ß‹‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒuƒŒƒ“ƒh—¦
-	bool		isMove;					// ‚»‚ÌƒtƒŒ[ƒ€‚Å“®‚¢‚½‚©‚Ç‚¤‚©
+	int			currentPlayAnim;		// å†ç”Ÿã—ã¦ã„ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚¢ã‚¿ãƒƒãƒç•ªå·( -1:ä½•ã‚‚ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒã‚¢ã‚¿ãƒƒãƒã•ã‚Œã¦ã„ãªã„ )
+	float		currentAnimCount;		// å†ç”Ÿã—ã¦ã„ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å†ç”Ÿæ™‚é–“
+	int			prevPlayAnim;			// å‰ã®å†ç”Ÿã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚¢ã‚¿ãƒƒãƒç•ªå·( -1:ä½•ã‚‚ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒã‚¢ã‚¿ãƒƒãƒã•ã‚Œã¦ã„ãªã„ )
+	float		prevAnimCount;			// å‰ã®å†ç”Ÿã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å†ç”Ÿæ™‚é–“
+	float		animBlendRate;			// ç¾åœ¨ã¨éå»ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒ–ãƒ¬ãƒ³ãƒ‰ç‡
+	bool		isMove;					// ãã®ãƒ•ãƒ¬ãƒ¼ãƒ ã§å‹•ã„ãŸã‹ã©ã†ã‹
 
-	// ƒ‹[ƒgƒtƒŒ[ƒ€‚Ì‚y²•ûŒü‚ÌˆÚ“®ƒpƒ‰ƒ[ƒ^‚ğ–³Œø‚É‚·‚é
+	// ãƒ«ãƒ¼ãƒˆãƒ•ãƒ¬ãƒ¼ãƒ ã®ï¼ºè»¸æ–¹å‘ã®ç§»å‹•ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’ç„¡åŠ¹ã«ã™ã‚‹
 	void DisableRootFrameZMove();
 
-	// ƒpƒbƒh“ü—Í‚É‚æ‚Á‚ÄˆÚ“®ƒpƒ‰ƒ[ƒ^‚ğİ’è‚·‚é
+	// ãƒ‘ãƒƒãƒ‰å…¥åŠ›ã«ã‚ˆã£ã¦ç§»å‹•ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’è¨­å®šã™ã‚‹
 	State UpdateMoveParameterWithPad(const Input& input, const Camera& camera, VECTOR& upMoveVec, VECTOR& leftMoveVec, VECTOR& moveVec);
 	
-	// ˆÚ“®ˆ—
+	// ç§»å‹•å‡¦ç†
 	void Move(const VECTOR& MoveVector, Stage& stage);
 
-	void UpdateAnimationState(State prevState);	// ƒAƒjƒ[ƒVƒ‡ƒ“ƒXƒe[ƒg‚ÌXV
-	void UpdateAngle();							// ‰ñ“]§Œä
-	void PlayAnim(AnimKind playAnim);			// V‚½‚ÈƒAƒjƒ[ƒVƒ‡ƒ“‚ğÄ¶‚·‚é
-	void UpdateAnimation();						// ƒAƒjƒ[ƒVƒ‡ƒ“ˆ—
-	void DrawShadow(const Stage& stage);		// ‰e‚ğ•`‰æ
+	void UpdateAnimationState(State prevState);	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã®æ›´æ–°
+	void UpdateAngle();							// å›è»¢åˆ¶å¾¡
+	void PlayAnim(AnimKind playAnim);			// æ–°ãŸãªã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å†ç”Ÿã™ã‚‹
+	void UpdateAnimation();						// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å‡¦ç†
+	void DrawShadow(const Stage& stage);		// å½±ã‚’æç”»
 };

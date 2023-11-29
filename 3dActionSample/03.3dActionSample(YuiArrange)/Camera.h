@@ -1,33 +1,33 @@
-#pragma once
+ï»¿#pragma once
 
 class Input;
 class Player;
 class Stage;
 
 /// <summary>
-/// ƒJƒƒ‰
+/// ã‚«ãƒ¡ãƒ©
 /// </summary>
 class Camera
 {
 public:
-	static constexpr float AngleSpeed				= 0.05f	 ;	// ù‰ñ‘¬“x
-	static constexpr float CameraPlayerTargetHeight	= 400.0f ;	// ƒvƒŒƒCƒ„[À•W‚©‚ç‚Ç‚ê‚¾‚¯‚‚¢ˆÊ’u‚ğ’‹“_‚Æ‚·‚é‚©
-	static constexpr float ToPlayerLength			= 1600.0f;	// ƒvƒŒƒCƒ„[‚Æ‚Ì‹——£
-	static constexpr float CollisionSize			= 50.0f	 ;	// ƒJƒƒ‰‚Ì“–‚½‚è”»’èƒTƒCƒY
+	static constexpr float AngleSpeed				= 0.05f	 ;	// æ—‹å›é€Ÿåº¦
+	static constexpr float CameraPlayerTargetHeight	= 400.0f ;	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼åº§æ¨™ã‹ã‚‰ã©ã‚Œã ã‘é«˜ã„ä½ç½®ã‚’æ³¨è¦–ç‚¹ã¨ã™ã‚‹ã‹
+	static constexpr float ToPlayerLength			= 1600.0f;	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨ã®è·é›¢
+	static constexpr float CollisionSize			= 50.0f	 ;	// ã‚«ãƒ¡ãƒ©ã®å½“ãŸã‚Šåˆ¤å®šã‚µã‚¤ã‚º
 
 	Camera();
 	~Camera();
 
-	void Update(const Input& input, const Player& player, const Stage& stage);		// ƒJƒƒ‰‚Ìˆ—
+	void Update(const Input& input, const Player& player, const Stage& stage);		// ã‚«ãƒ¡ãƒ©ã®å‡¦ç†
 
 	const VECTOR& GetPosition() const { return position; }
 	const VECTOR& GetTarget()	const { return target; }
 
 private:
-	float		angleH;					// …•½Šp“x
-	float		angleV;					// ‚’¼Šp“x
-	VECTOR		position;				// ƒJƒƒ‰À•W
-	VECTOR		target;					// ’‹“_À•W
+	float		angleH;					// æ°´å¹³è§’åº¦
+	float		angleV;					// å‚ç›´è§’åº¦
+	VECTOR		position;				// ã‚«ãƒ¡ãƒ©åº§æ¨™
+	VECTOR		target;					// æ³¨è¦–ç‚¹åº§æ¨™
 
 	void FixCameraPosition(const Stage& stage);
 };

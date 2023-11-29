@@ -1,4 +1,4 @@
-#include <math.h>
+ï»¿#include <math.h>
 #include "DxLib.h"
 #include "Camera.h"
 #include "Input.h"
@@ -6,7 +6,7 @@
 #include "Player.h"
 
 /// <summary>
-/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 /// </summary>
 Player::Player()
 	:  position				(VGet(0.0f, 0.0f, 0.0f))
@@ -23,11 +23,11 @@ Player::Player()
 	 , animBlendRate		(1.0f)
 	 , isMove				(false)
 {
-	// ˆ—‚È‚µ
+	// å‡¦ç†ãªã—
 }
 
 /// <summary>
-/// ƒfƒXƒgƒ‰ƒNƒ^
+/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 /// </summary>
 Player::~Player()
 {
@@ -35,39 +35,39 @@ Player::~Player()
 }
 
 /// <summary>
-/// ‰Šú‰»
+/// åˆæœŸåŒ–
 /// </summary>
 void Player::Load()
 {
-	// ƒ‚ƒfƒ‹‚Ì“Ç‚Ýž‚Ý
+	// ãƒ¢ãƒ‡ãƒ«ã®èª­ã¿è¾¼ã¿
 	modelHandle = MV1LoadModel("DxChara.x");
 
-	// ‰e•`‰æ—p‚Ì‰æ‘œ‚Ì“Ç‚Ýž‚Ý
+	// å½±æç”»ç”¨ã®ç”»åƒã®èª­ã¿è¾¼ã¿
 	shadowHandle = LoadGraph("Shadow.tga");
 
-	// ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒuƒŒƒ“ƒh—¦‚ð‰Šú‰»
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒ–ãƒ¬ãƒ³ãƒ‰çŽ‡ã‚’åˆæœŸåŒ–
 	animBlendRate = 1.0f;
 
-	// ‰Šúó‘Ô‚Å‚ÍƒAƒjƒ[ƒVƒ‡ƒ“‚ÍƒAƒ^ƒbƒ`‚³‚ê‚Ä‚¢‚È‚¢‚É‚·‚é
+	// åˆæœŸçŠ¶æ…‹ã§ã¯ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã¯ã‚¢ã‚¿ãƒƒãƒã•ã‚Œã¦ã„ãªã„ã«ã™ã‚‹
 	currentPlayAnim = -1;
 	prevPlayAnim = -1;
 
-	// ‚½‚¾—§‚Á‚Ä‚¢‚éƒAƒjƒ[ƒVƒ‡ƒ“‚ðÄ¶
+	// ãŸã ç«‹ã£ã¦ã„ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å†ç”Ÿ
 	PlayAnim(AnimKind::Stop);
 }
 
 /// <summary>
-/// ƒAƒ“ƒ[ƒh
+/// ã‚¢ãƒ³ãƒ­ãƒ¼ãƒ‰
 /// </summary>
 void Player::Unload()
 {
-	// ƒ‚ƒfƒ‹‚Ìíœ
+	// ãƒ¢ãƒ‡ãƒ«ã®å‰Šé™¤
 	if (shadowHandle >= 0)
 	{
 		MV1DeleteModel(modelHandle);
 		modelHandle = -1;
 	}
-	// ‰e—p‰æ‘œ‚Ìíœ
+	// å½±ç”¨ç”»åƒã®å‰Šé™¤
 	if (shadowHandle >= 0)
 	{
 		DeleteGraph(shadowHandle);
@@ -76,35 +76,35 @@ void Player::Unload()
 }
 
 /// <summary>
-/// XV
+/// æ›´æ–°
 /// </summary>
 void Player::Update(const Input& input, const Camera& camera, Stage& stage)
 {
-	// ƒ‹[ƒgƒtƒŒ[ƒ€‚Ì‚yŽ²•ûŒü‚ÌˆÚ“®ƒpƒ‰ƒ[ƒ^‚ð–³Œø‚É‚·‚é
+	// ãƒ«ãƒ¼ãƒˆãƒ•ãƒ¬ãƒ¼ãƒ ã®ï¼ºè»¸æ–¹å‘ã®ç§»å‹•ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’ç„¡åŠ¹ã«ã™ã‚‹
 	DisableRootFrameZMove();
 
-	// ƒpƒbƒh“ü—Í‚É‚æ‚Á‚ÄˆÚ“®ƒpƒ‰ƒ[ƒ^‚ðÝ’è‚·‚é
-	VECTOR	upMoveVec;		// •ûŒüƒ{ƒ^ƒ“uªv‚ð“ü—Í‚ð‚µ‚½‚Æ‚«‚ÌƒvƒŒƒCƒ„[‚ÌˆÚ“®•ûŒüƒxƒNƒgƒ‹
-	VECTOR	leftMoveVec;	// •ûŒüƒ{ƒ^ƒ“u©v‚ð“ü—Í‚ð‚µ‚½‚Æ‚«‚ÌƒvƒŒƒCƒ„[‚ÌˆÚ“®•ûŒüƒxƒNƒgƒ‹
-	VECTOR	moveVec;		// ‚±‚ÌƒtƒŒ[ƒ€‚ÌˆÚ“®ƒxƒNƒgƒ‹
+	// ãƒ‘ãƒƒãƒ‰å…¥åŠ›ã«ã‚ˆã£ã¦ç§»å‹•ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’è¨­å®šã™ã‚‹
+	VECTOR	upMoveVec;		// æ–¹å‘ãƒœã‚¿ãƒ³ã€Œâ†‘ã€ã‚’å…¥åŠ›ã‚’ã—ãŸã¨ãã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç§»å‹•æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«
+	VECTOR	leftMoveVec;	// æ–¹å‘ãƒœã‚¿ãƒ³ã€Œâ†ã€ã‚’å…¥åŠ›ã‚’ã—ãŸã¨ãã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç§»å‹•æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«
+	VECTOR	moveVec;		// ã“ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã®ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«
 	State prevState = currentState;
 	currentState = UpdateMoveParameterWithPad(input, camera, upMoveVec, leftMoveVec, moveVec);
 
-	// ƒAƒjƒ[ƒVƒ‡ƒ“ƒXƒe[ƒg‚ÌXV
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã®æ›´æ–°
 	UpdateAnimationState(prevState);
 
-	// ƒvƒŒƒCƒ„[‚ÌˆÚ“®•ûŒü‚Éƒ‚ƒfƒ‹‚Ì•ûŒü‚ð‹ß‚Ã‚¯‚é
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç§»å‹•æ–¹å‘ã«ãƒ¢ãƒ‡ãƒ«ã®æ–¹å‘ã‚’è¿‘ã¥ã‘ã‚‹
 	UpdateAngle();
 
-	// ˆÚ“®ƒxƒNƒgƒ‹‚ðŒ³‚ÉƒRƒŠƒWƒ‡ƒ“‚ðl—¶‚µ‚Â‚ÂƒvƒŒƒCƒ„[‚ðˆÚ“®
+	// ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«ã‚’å…ƒã«ã‚³ãƒªã‚¸ãƒ§ãƒ³ã‚’è€ƒæ…®ã—ã¤ã¤ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ç§»å‹•
 	Move(moveVec, stage);
 
-	// ƒAƒjƒ[ƒVƒ‡ƒ“ˆ—
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å‡¦ç†
 	UpdateAnimation();
 }
 
 /// <summary>
-/// •`‰æ
+/// æç”»
 /// </summary>
 void Player::Draw(const Stage& stage)
 {
@@ -113,160 +113,160 @@ void Player::Draw(const Stage& stage)
 }
 
 /// <summary>
-/// ƒ‹[ƒgƒtƒŒ[ƒ€‚Ì‚yŽ²•ûŒü‚ÌˆÚ“®ƒpƒ‰ƒ[ƒ^‚ð–³Œø‚É‚·‚é
+/// ãƒ«ãƒ¼ãƒˆãƒ•ãƒ¬ãƒ¼ãƒ ã®ï¼ºè»¸æ–¹å‘ã®ç§»å‹•ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’ç„¡åŠ¹ã«ã™ã‚‹
 /// </summary>
 void Player::DisableRootFrameZMove()
 {
 	// HACK:
-	// EDXƒ‰ƒCƒuƒ‰ƒŠ‚Ìƒ‚ƒfƒ‹ƒtƒ@ƒCƒ‹“à‚É‚ÍA•¡”‚ÌƒƒbƒVƒ…iƒ|ƒŠƒSƒ“‚ÌW‡j‚âƒJƒƒ‰Aƒ‰ƒCƒg‚ð“ü‚ê‚é‚±‚Æ‚ª‚Å‚«‚é
-	// E’u‚¢‚½•¡”‚Ìƒtƒ@ƒCƒ‹‚ÍAeŽqŠÖŒW‚ð‚Â‚¯‚½‚èAUnity‚ÌƒqƒGƒ‰ƒ‹ƒL[‚Ý‚½‚¢‚ÉAŠK‘w\‘¢‚ªì‚ê‚é
-	// E‚±‚ÌŠK‘w‚»‚ê‚¼‚ê‚É‚Í–¼‘O‚ª•t‚¯‚ç‚ê‚é Root-Meshes-Model1
+	// ãƒ»DXãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®ãƒ¢ãƒ‡ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«å†…ã«ã¯ã€è¤‡æ•°ã®ãƒ¡ãƒƒã‚·ãƒ¥ï¼ˆãƒãƒªã‚´ãƒ³ã®é›†åˆï¼‰ã‚„ã‚«ãƒ¡ãƒ©ã€ãƒ©ã‚¤ãƒˆã‚’å…¥ã‚Œã‚‹ã“ã¨ãŒã§ãã‚‹
+	// ãƒ»ç½®ã„ãŸè¤‡æ•°ã®ãƒ•ã‚¡ã‚¤ãƒ«ã¯ã€è¦ªå­é–¢ä¿‚ã‚’ã¤ã‘ãŸã‚Šã€Unityã®ãƒ’ã‚¨ãƒ©ãƒ«ã‚­ãƒ¼ã¿ãŸã„ã«ã€éšŽå±¤æ§‹é€ ãŒä½œã‚Œã‚‹
+	// ãƒ»ã“ã®éšŽå±¤ãã‚Œãžã‚Œã«ã¯åå‰ãŒä»˜ã‘ã‚‰ã‚Œã‚‹ Root-Meshes-Model1
 	//											         |-Model2
-	// E‚±‚Ì–¼‘O‚Ì•t‚¢‚½ŠK‘w‚Ì‚±‚Æ‚ðDXƒ‰ƒCƒuƒ‰ƒŠ‚Å‚ÍƒtƒŒ[ƒ€‚Æ‚¢‚¤
-	// Eˆê”Ôe‚ÌŠK‘w‚ðuƒ‹[ƒgƒtƒŒ[ƒ€v‚ÆŒÄ‚ÔBƒ‹[ƒgƒtƒŒ[ƒ€‚Íˆê‚Â
+	// ãƒ»ã“ã®åå‰ã®ä»˜ã„ãŸéšŽå±¤ã®ã“ã¨ã‚’DXãƒ©ã‚¤ãƒ–ãƒ©ãƒªã§ã¯ãƒ•ãƒ¬ãƒ¼ãƒ ã¨ã„ã†
+	// ãƒ»ä¸€ç•ªè¦ªã®éšŽå±¤ã‚’ã€Œãƒ«ãƒ¼ãƒˆãƒ•ãƒ¬ãƒ¼ãƒ ã€ã¨å‘¼ã¶ã€‚ãƒ«ãƒ¼ãƒˆãƒ•ãƒ¬ãƒ¼ãƒ ã¯ä¸€ã¤
 	// 
-	// HACK: ‰½‚Ì‚½‚ß‚ÉHƒ‚ƒfƒ‹‚Ìˆê”ÔeƒtƒŒ[ƒ€ieŠK‘wj‚ÌZŽ²•ûŒü‚ÌˆÚ“®ƒpƒ‰ƒ[ƒ^‚ðƒ[ƒ‚É‚µ‚Ä‚¢‚é
+	// HACK: ä½•ã®ãŸã‚ã«ï¼Ÿãƒ¢ãƒ‡ãƒ«ã®ä¸€ç•ªè¦ªãƒ•ãƒ¬ãƒ¼ãƒ ï¼ˆè¦ªéšŽå±¤ï¼‰ã®Zè»¸æ–¹å‘ã®ç§»å‹•ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’ã‚¼ãƒ­ã«ã—ã¦ã„ã‚‹
 
 	MATRIX localMatrix;
 
-	// ƒ†[ƒU[s—ñ‚ð‰ðœ‚·‚é
+	// ãƒ¦ãƒ¼ã‚¶ãƒ¼è¡Œåˆ—ã‚’è§£é™¤ã™ã‚‹
 	MV1ResetFrameUserLocalMatrix(modelHandle, 2);
 
-	// Œ»Ý‚Ìƒ‹[ƒgƒtƒŒ[ƒ€‚Ìs—ñ‚ðŽæ“¾‚·‚é
+	// ç¾åœ¨ã®ãƒ«ãƒ¼ãƒˆãƒ•ãƒ¬ãƒ¼ãƒ ã®è¡Œåˆ—ã‚’å–å¾—ã™ã‚‹
 	localMatrix = MV1GetFrameLocalMatrix(modelHandle, 2);
 
-	// ‚yŽ²•ûŒü‚Ì•½sˆÚ“®¬•ª‚ð–³Œø‚É‚·‚é
+	// ï¼ºè»¸æ–¹å‘ã®å¹³è¡Œç§»å‹•æˆåˆ†ã‚’ç„¡åŠ¹ã«ã™ã‚‹
 	localMatrix.m[3][2] = 0.0f;
 
-	// ƒ†[ƒU[s—ñ‚Æ‚µ‚Ä•½sˆÚ“®¬•ª‚ð–³Œø‚É‚µ‚½s—ñ‚ðƒ‹[ƒgƒtƒŒ[ƒ€‚ÉƒZƒbƒg‚·‚é
+	// ãƒ¦ãƒ¼ã‚¶ãƒ¼è¡Œåˆ—ã¨ã—ã¦å¹³è¡Œç§»å‹•æˆåˆ†ã‚’ç„¡åŠ¹ã«ã—ãŸè¡Œåˆ—ã‚’ãƒ«ãƒ¼ãƒˆãƒ•ãƒ¬ãƒ¼ãƒ ã«ã‚»ãƒƒãƒˆã™ã‚‹
 	MV1SetFrameUserLocalMatrix(modelHandle, 2, localMatrix);
 }
 
 /// <summary>
-/// ƒpƒbƒh“ü—Í‚É‚æ‚Á‚ÄˆÚ“®ƒpƒ‰ƒ[ƒ^‚ðÝ’è‚·‚é
+/// ãƒ‘ãƒƒãƒ‰å…¥åŠ›ã«ã‚ˆã£ã¦ç§»å‹•ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’è¨­å®šã™ã‚‹
 /// </summary>
 Player::State Player::UpdateMoveParameterWithPad(const Input& input, const Camera& camera, VECTOR& upMoveVec, VECTOR& leftMoveVec, VECTOR& moveVec)
 {
 	State nextState = currentState;
 
-	// ƒvƒŒƒCƒ„[‚ÌˆÚ“®•ûŒü‚ÌƒxƒNƒgƒ‹‚ðŽZo
-	// •ûŒüƒ{ƒ^ƒ“uªv‚ð‰Ÿ‚µ‚½‚Æ‚«‚ÌƒvƒŒƒCƒ„[‚ÌˆÚ“®ƒxƒNƒgƒ‹‚ÍƒJƒƒ‰‚ÌŽ‹ü•ûŒü‚©‚ç‚x¬•ª‚ð”²‚¢‚½‚à‚Ì
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç§»å‹•æ–¹å‘ã®ãƒ™ã‚¯ãƒˆãƒ«ã‚’ç®—å‡º
+	// æ–¹å‘ãƒœã‚¿ãƒ³ã€Œâ†‘ã€ã‚’æŠ¼ã—ãŸã¨ãã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«ã¯ã‚«ãƒ¡ãƒ©ã®è¦–ç·šæ–¹å‘ã‹ã‚‰ï¼¹æˆåˆ†ã‚’æŠœã„ãŸã‚‚ã®
 	upMoveVec = VSub(camera.GetTarget(), camera.GetPosition());
 	upMoveVec.y = 0.0f;
 
-	// •ûŒüƒ{ƒ^ƒ“u©v‚ð‰Ÿ‚µ‚½‚Æ‚«‚ÌƒvƒŒƒCƒ„[‚ÌˆÚ“®ƒxƒNƒgƒ‹‚Íã‚ð‰Ÿ‚µ‚½‚Æ‚«‚Ì•ûŒüƒxƒNƒgƒ‹‚Æ‚xŽ²‚Ìƒvƒ‰ƒX•ûŒü‚ÌƒxƒNƒgƒ‹‚É‚’¼‚È•ûŒü
+	// æ–¹å‘ãƒœã‚¿ãƒ³ã€Œâ†ã€ã‚’æŠ¼ã—ãŸã¨ãã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«ã¯ä¸Šã‚’æŠ¼ã—ãŸã¨ãã®æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã¨ï¼¹è»¸ã®ãƒ—ãƒ©ã‚¹æ–¹å‘ã®ãƒ™ã‚¯ãƒˆãƒ«ã«åž‚ç›´ãªæ–¹å‘
 	leftMoveVec = VCross(upMoveVec, VGet(0.0f, 1.0f, 0.0f));
 
-	// “ñ‚Â‚ÌƒxƒNƒgƒ‹‚ð³‹K‰»( ƒxƒNƒgƒ‹‚Ì’·‚³‚ð‚PD‚O‚É‚·‚é‚±‚Æ )
+	// äºŒã¤ã®ãƒ™ã‚¯ãƒˆãƒ«ã‚’æ­£è¦åŒ–( ãƒ™ã‚¯ãƒˆãƒ«ã®é•·ã•ã‚’ï¼‘ï¼Žï¼ã«ã™ã‚‹ã“ã¨ )
 	upMoveVec = VNorm(upMoveVec);
 	leftMoveVec = VNorm(leftMoveVec);
 
-	// ‚±‚ÌƒtƒŒ[ƒ€‚Å‚ÌˆÚ“®ƒxƒNƒgƒ‹‚ð‰Šú‰»
+	// ã“ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã§ã®ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«ã‚’åˆæœŸåŒ–
 	moveVec = VGet(0.0f, 0.0f, 0.0f);
 
-	// ˆÚ“®‚µ‚½‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO‚ð‰Šúó‘Ô‚Å‚ÍuˆÚ“®‚µ‚Ä‚¢‚È‚¢v‚ð•\‚·FALSE‚É‚·‚é
+	// ç§»å‹•ã—ãŸã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°ã‚’åˆæœŸçŠ¶æ…‹ã§ã¯ã€Œç§»å‹•ã—ã¦ã„ãªã„ã€ã‚’è¡¨ã™FALSEã«ã™ã‚‹
 	bool isPressMoveButton = false;
 
-	// ƒpƒbƒh‚Ì‚Rƒ{ƒ^ƒ“‚Æ¶ƒVƒtƒg‚ª‚Ç‚¿‚ç‚à‰Ÿ‚³‚ê‚Ä‚¢‚È‚©‚Á‚½‚çƒvƒŒƒCƒ„[‚ÌˆÚ“®ˆ—
+	// ãƒ‘ãƒƒãƒ‰ã®ï¼“ãƒœã‚¿ãƒ³ã¨å·¦ã‚·ãƒ•ãƒˆãŒã©ã¡ã‚‰ã‚‚æŠ¼ã•ã‚Œã¦ã„ãªã‹ã£ãŸã‚‰ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç§»å‹•å‡¦ç†
 	if (CheckHitKey(KEY_INPUT_LSHIFT) == 0 && (input.GetNowFrameInput() & PAD_INPUT_C) == 0)
 	{
-		// •ûŒüƒ{ƒ^ƒ“u©v‚ª“ü—Í‚³‚ê‚½‚çƒJƒƒ‰‚ÌŒ©‚Ä‚¢‚é•ûŒü‚©‚çŒ©‚Ä¶•ûŒü‚ÉˆÚ“®‚·‚é
+		// æ–¹å‘ãƒœã‚¿ãƒ³ã€Œâ†ã€ãŒå…¥åŠ›ã•ã‚ŒãŸã‚‰ã‚«ãƒ¡ãƒ©ã®è¦‹ã¦ã„ã‚‹æ–¹å‘ã‹ã‚‰è¦‹ã¦å·¦æ–¹å‘ã«ç§»å‹•ã™ã‚‹
 		if (input.GetNowFrameInput() & PAD_INPUT_LEFT)
 		{
-			// ˆÚ“®ƒxƒNƒgƒ‹‚Éu©v‚ª“ü—Í‚³‚ê‚½Žž‚ÌˆÚ“®ƒxƒNƒgƒ‹‚ð‰ÁŽZ‚·‚é
+			// ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«ã«ã€Œâ†ã€ãŒå…¥åŠ›ã•ã‚ŒãŸæ™‚ã®ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«ã‚’åŠ ç®—ã™ã‚‹
 			moveVec = VAdd(moveVec, leftMoveVec);
 
-			// ˆÚ“®‚µ‚½‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO‚ðuˆÚ“®‚µ‚½v‚É‚·‚é
+			// ç§»å‹•ã—ãŸã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°ã‚’ã€Œç§»å‹•ã—ãŸã€ã«ã™ã‚‹
 			isPressMoveButton = true;
 		}
 		else
-			// •ûŒüƒ{ƒ^ƒ“u¨v‚ª“ü—Í‚³‚ê‚½‚çƒJƒƒ‰‚ÌŒ©‚Ä‚¢‚é•ûŒü‚©‚çŒ©‚Ä‰E•ûŒü‚ÉˆÚ“®‚·‚é
+			// æ–¹å‘ãƒœã‚¿ãƒ³ã€Œâ†’ã€ãŒå…¥åŠ›ã•ã‚ŒãŸã‚‰ã‚«ãƒ¡ãƒ©ã®è¦‹ã¦ã„ã‚‹æ–¹å‘ã‹ã‚‰è¦‹ã¦å³æ–¹å‘ã«ç§»å‹•ã™ã‚‹
 			if (input.GetNowFrameInput() & PAD_INPUT_RIGHT)
 			{
-				// ˆÚ“®ƒxƒNƒgƒ‹‚Éu©v‚ª“ü—Í‚³‚ê‚½Žž‚ÌˆÚ“®ƒxƒNƒgƒ‹‚ð”½“]‚µ‚½‚à‚Ì‚ð‰ÁŽZ‚·‚é
+				// ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«ã«ã€Œâ†ã€ãŒå…¥åŠ›ã•ã‚ŒãŸæ™‚ã®ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«ã‚’åè»¢ã—ãŸã‚‚ã®ã‚’åŠ ç®—ã™ã‚‹
 				moveVec = VAdd(moveVec, VScale(leftMoveVec, -1.0f));
 
-				// ˆÚ“®‚µ‚½‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO‚ðuˆÚ“®‚µ‚½v‚É‚·‚é
+				// ç§»å‹•ã—ãŸã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°ã‚’ã€Œç§»å‹•ã—ãŸã€ã«ã™ã‚‹
 				isPressMoveButton = true;
 			}
 
-		// •ûŒüƒ{ƒ^ƒ“uªv‚ª“ü—Í‚³‚ê‚½‚çƒJƒƒ‰‚ÌŒ©‚Ä‚¢‚é•ûŒü‚ÉˆÚ“®‚·‚é
+		// æ–¹å‘ãƒœã‚¿ãƒ³ã€Œâ†‘ã€ãŒå…¥åŠ›ã•ã‚ŒãŸã‚‰ã‚«ãƒ¡ãƒ©ã®è¦‹ã¦ã„ã‚‹æ–¹å‘ã«ç§»å‹•ã™ã‚‹
 		if (input.GetNowFrameInput() & PAD_INPUT_UP)
 		{
-			// ˆÚ“®ƒxƒNƒgƒ‹‚Éuªv‚ª“ü—Í‚³‚ê‚½Žž‚ÌˆÚ“®ƒxƒNƒgƒ‹‚ð‰ÁŽZ‚·‚é
+			// ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«ã«ã€Œâ†‘ã€ãŒå…¥åŠ›ã•ã‚ŒãŸæ™‚ã®ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«ã‚’åŠ ç®—ã™ã‚‹
 			moveVec = VAdd(moveVec, upMoveVec);
 
-			// ˆÚ“®‚µ‚½‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO‚ðuˆÚ“®‚µ‚½v‚É‚·‚é
+			// ç§»å‹•ã—ãŸã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°ã‚’ã€Œç§»å‹•ã—ãŸã€ã«ã™ã‚‹
 			isPressMoveButton = true;
 		}
 		else
-			// •ûŒüƒ{ƒ^ƒ“u«v‚ª“ü—Í‚³‚ê‚½‚çƒJƒƒ‰‚Ì•ûŒü‚ÉˆÚ“®‚·‚é
+			// æ–¹å‘ãƒœã‚¿ãƒ³ã€Œâ†“ã€ãŒå…¥åŠ›ã•ã‚ŒãŸã‚‰ã‚«ãƒ¡ãƒ©ã®æ–¹å‘ã«ç§»å‹•ã™ã‚‹
 			if (input.GetNowFrameInput() & PAD_INPUT_DOWN)
 			{
-				// ˆÚ“®ƒxƒNƒgƒ‹‚Éuªv‚ª“ü—Í‚³‚ê‚½Žž‚ÌˆÚ“®ƒxƒNƒgƒ‹‚ð”½“]‚µ‚½‚à‚Ì‚ð‰ÁŽZ‚·‚é
+				// ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«ã«ã€Œâ†‘ã€ãŒå…¥åŠ›ã•ã‚ŒãŸæ™‚ã®ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«ã‚’åè»¢ã—ãŸã‚‚ã®ã‚’åŠ ç®—ã™ã‚‹
 				moveVec = VAdd(moveVec, VScale(upMoveVec, -1.0f));
 
-				// ˆÚ“®‚µ‚½‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO‚ðuˆÚ“®‚µ‚½v‚É‚·‚é
+				// ç§»å‹•ã—ãŸã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°ã‚’ã€Œç§»å‹•ã—ãŸã€ã«ã™ã‚‹
 				isPressMoveButton = true;
 			}
 
-		// ƒvƒŒƒCƒ„[‚Ìó‘Ô‚ªuƒWƒƒƒ“ƒvv‚Å‚Í‚È‚­AŠŽ‚Âƒ{ƒ^ƒ“‚P‚ª‰Ÿ‚³‚ê‚Ä‚¢‚½‚çƒWƒƒƒ“ƒv‚·‚é
+		// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®çŠ¶æ…‹ãŒã€Œã‚¸ãƒ£ãƒ³ãƒ—ã€ã§ã¯ãªãã€ä¸”ã¤ãƒœã‚¿ãƒ³ï¼‘ãŒæŠ¼ã•ã‚Œã¦ã„ãŸã‚‰ã‚¸ãƒ£ãƒ³ãƒ—ã™ã‚‹
 		if (currentState != State::Jump && (input.GetNowFrameNewInput() & PAD_INPUT_A))
 		{
-			// ‚xŽ²•ûŒü‚Ì‘¬“x‚ðƒZƒbƒg
+			// ï¼¹è»¸æ–¹å‘ã®é€Ÿåº¦ã‚’ã‚»ãƒƒãƒˆ
 			currentJumpPower = JumpPower;
 
-			// ó‘Ô‚ðuƒWƒƒƒ“ƒvv‚É‚·‚é
+			// çŠ¶æ…‹ã‚’ã€Œã‚¸ãƒ£ãƒ³ãƒ—ã€ã«ã™ã‚‹
 			nextState = State::Jump;
 		}
 	}
 
-	// ƒWƒƒƒ“ƒvó‘Ô‚È‚çd—Í“K—p
+	// ã‚¸ãƒ£ãƒ³ãƒ—çŠ¶æ…‹ãªã‚‰é‡åŠ›é©ç”¨
 	if (currentState == State::Jump)
 	{
-		// ‚xŽ²•ûŒü‚Ì‘¬“x‚ðd—Í•ªŒ¸ŽZ‚·‚é
+		// ï¼¹è»¸æ–¹å‘ã®é€Ÿåº¦ã‚’é‡åŠ›åˆ†æ¸›ç®—ã™ã‚‹
 		currentJumpPower -= Gravity;
 	}
 
-	// ˆÚ“®ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚©‚Ç‚¤‚©‚Åˆ—‚ð•ªŠò
+	// ç§»å‹•ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸã‹ã©ã†ã‹ã§å‡¦ç†ã‚’åˆ†å²
 	if (isPressMoveButton)
 	{
-		// ‚à‚µ¡‚Ü‚Åu—§‚¿Ž~‚Ü‚èvó‘Ô‚¾‚Á‚½‚ç
+		// ã‚‚ã—ä»Šã¾ã§ã€Œç«‹ã¡æ­¢ã¾ã‚Šã€çŠ¶æ…‹ã ã£ãŸã‚‰
 		if (currentState == State::Stand)
 		{
-			// ó‘Ô‚ðu‘–‚èv‚É‚·‚é
+			// çŠ¶æ…‹ã‚’ã€Œèµ°ã‚Šã€ã«ã™ã‚‹
 			nextState = State::Run;
 		}
 
-		// ˆÚ“®ƒxƒNƒgƒ‹‚ð³‹K‰»‚µ‚½‚à‚Ì‚ðƒvƒŒƒCƒ„[‚ªŒü‚­‚×‚«•ûŒü‚Æ‚µ‚Ä•Û‘¶
+		// ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«ã‚’æ­£è¦åŒ–ã—ãŸã‚‚ã®ã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒå‘ãã¹ãæ–¹å‘ã¨ã—ã¦ä¿å­˜
 		targetMoveDirection = VNorm(moveVec);
 
-		// ƒvƒŒƒCƒ„[‚ªŒü‚­‚×‚«•ûŒüƒxƒNƒgƒ‹‚ðƒvƒŒƒCƒ„[‚ÌƒXƒs[ƒh”{‚µ‚½‚à‚Ì‚ðˆÚ“®ƒxƒNƒgƒ‹‚Æ‚·‚é
+		// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒå‘ãã¹ãæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¹ãƒ”ãƒ¼ãƒ‰å€ã—ãŸã‚‚ã®ã‚’ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«ã¨ã™ã‚‹
 		moveVec = VScale(targetMoveDirection, MoveSpeed);
 	}
 	else
 	{
-		// ‚±‚ÌƒtƒŒ[ƒ€‚ÅˆÚ“®‚µ‚Ä‚¢‚È‚­‚ÄAŠŽ‚Âó‘Ô‚ªu‘–‚èv‚¾‚Á‚½‚ç
+		// ã“ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã§ç§»å‹•ã—ã¦ã„ãªãã¦ã€ä¸”ã¤çŠ¶æ…‹ãŒã€Œèµ°ã‚Šã€ã ã£ãŸã‚‰
 		if (currentState == State::Run)
 		{
-			// ó‘Ô‚ðu—§‚¿Ž~‚èv‚É‚·‚é
+			// çŠ¶æ…‹ã‚’ã€Œç«‹ã¡æ­¢ã‚Šã€ã«ã™ã‚‹
 			nextState = State::Stand;
 		}
 	}
 
-	// ˆÚ“®ƒxƒNƒgƒ‹‚Ì‚x¬•ª‚ð‚xŽ²•ûŒü‚Ì‘¬“x‚É‚·‚é
+	// ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«ã®ï¼¹æˆåˆ†ã‚’ï¼¹è»¸æ–¹å‘ã®é€Ÿåº¦ã«ã™ã‚‹
 	moveVec.y = currentJumpPower;
 
 	return nextState;
 }
 
 /// <summary>
-/// ˆÚ“®ˆ—
+/// ç§»å‹•å‡¦ç†
 /// </summary>
 void Player::Move(const VECTOR& MoveVector, Stage& stage)
 {
-	// HACK: ˆÚ“®‹——£‚ª0.01–¢–ž‚Å”÷–­‚ÉˆÚ“®‚µ‚Ä‚¢‚½ê‡‚Í‚¶‚ñ‚í‚èˆÚ“®‚µ‚ÄƒoƒO‚é
-	// xŽ²‚©yŽ²•ûŒü‚É 0.01f ˆÈãˆÚ“®‚µ‚½ê‡‚ÍuˆÚ“®‚µ‚½vƒtƒ‰ƒO‚ð‚P‚É‚·‚é
+	// HACK: ç§»å‹•è·é›¢ãŒ0.01æœªæº€ã§å¾®å¦™ã«ç§»å‹•ã—ã¦ã„ãŸå ´åˆã¯ã˜ã‚“ã‚ã‚Šç§»å‹•ã—ã¦ãƒã‚°ã‚‹
+	// xè»¸ã‹yè»¸æ–¹å‘ã« 0.01f ä»¥ä¸Šç§»å‹•ã—ãŸå ´åˆã¯ã€Œç§»å‹•ã—ãŸã€ãƒ•ãƒ©ã‚°ã‚’ï¼‘ã«ã™ã‚‹
 	if (fabs(MoveVector.x) > 0.01f || fabs(MoveVector.z) > 0.01f)
 	{
 		isMove = true;
@@ -276,37 +276,37 @@ void Player::Move(const VECTOR& MoveVector, Stage& stage)
 		isMove = false;
 	}
 
-	// “–‚½‚è”»’è‚ð‚µ‚ÄAV‚µ‚¢À•W‚ð•Û‘¶‚·‚é
+	// å½“ãŸã‚Šåˆ¤å®šã‚’ã—ã¦ã€æ–°ã—ã„åº§æ¨™ã‚’ä¿å­˜ã™ã‚‹
 	position = stage.CheckCollision(*this, MoveVector);
 
-	// ƒvƒŒƒCƒ„[‚Ìƒ‚ƒfƒ‹‚ÌÀ•W‚ðXV‚·‚é
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ãƒ¢ãƒ‡ãƒ«ã®åº§æ¨™ã‚’æ›´æ–°ã™ã‚‹
 	MV1SetPosition(modelHandle, position);
 }
 
 /// <summary>
-/// ƒAƒjƒ[ƒVƒ‡ƒ“ƒXƒe[ƒg‚ÌXV
+/// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã®æ›´æ–°
 /// </summary>
 void Player::UpdateAnimationState(State prevState)
 {
-	// —§‚¿Ž~‚Ü‚è‚©‚ç‘–‚è‚É•Ï‚í‚Á‚½‚ç
+	// ç«‹ã¡æ­¢ã¾ã‚Šã‹ã‚‰èµ°ã‚Šã«å¤‰ã‚ã£ãŸã‚‰
 	if (prevState == State::Stand && currentState == State::Run)
 	{
-		// ‘–‚èƒAƒjƒ[ƒVƒ‡ƒ“‚ðÄ¶‚·‚é
+		// èµ°ã‚Šã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å†ç”Ÿã™ã‚‹
 		PlayAnim(AnimKind::Run);
 	}
-	// ‘–‚è‚©‚ç—§‚¿Ž~‚Ü‚è‚É•Ï‚í‚Á‚½‚ç
+	// èµ°ã‚Šã‹ã‚‰ç«‹ã¡æ­¢ã¾ã‚Šã«å¤‰ã‚ã£ãŸã‚‰
 	else if (prevState == State::Run && currentState == State::Stand)
 	{
-		// —§‚¿Ž~‚èƒAƒjƒ[ƒVƒ‡ƒ“‚ðÄ¶‚·‚é
+		// ç«‹ã¡æ­¢ã‚Šã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å†ç”Ÿã™ã‚‹
 		PlayAnim(AnimKind::Stop);
 	}
-	// ó‘Ô‚ªuƒWƒƒƒ“ƒvv‚Ìê‡‚Í
+	// çŠ¶æ…‹ãŒã€Œã‚¸ãƒ£ãƒ³ãƒ—ã€ã®å ´åˆã¯
 	else if (currentState == State::Jump)
 	{
-		// ‚à‚µ—Ž‰º‚µ‚Ä‚¢‚ÄŠŽ‚ÂÄ¶‚³‚ê‚Ä‚¢‚éƒAƒjƒ[ƒVƒ‡ƒ“‚ªã¸’†—p‚Ì‚à‚Ì‚¾‚Á‚½ê‡‚Í
+		// ã‚‚ã—è½ä¸‹ã—ã¦ã„ã¦ä¸”ã¤å†ç”Ÿã•ã‚Œã¦ã„ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒä¸Šæ˜‡ä¸­ç”¨ã®ã‚‚ã®ã ã£ãŸå ´åˆã¯
 		if (currentJumpPower < 0.0f)
 		{
-			// —Ž‰º’†‚æ‚¤‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ðÄ¶‚·‚é
+			// è½ä¸‹ä¸­ã‚ˆã†ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å†ç”Ÿã™ã‚‹
 			if (MV1GetAttachAnim(modelHandle, currentPlayAnim) == static_cast<int>(AnimKind::Jump))
 			{
 				PlayAnim(AnimKind::Fall);
@@ -320,23 +320,23 @@ void Player::UpdateAnimationState(State prevState)
 }
 
 /// <summary>
-/// ƒvƒŒƒCƒ„[‚Ì‰ñ“]§Œä
+/// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å›žè»¢åˆ¶å¾¡
 /// </summary>
 void Player::UpdateAngle()
 {
-	// ƒvƒŒƒCƒ„[‚ÌˆÚ“®•ûŒü‚Éƒ‚ƒfƒ‹‚Ì•ûŒü‚ð‹ß‚Ã‚¯‚é
-	float targetAngle;			// –Ú•WŠp“x
-	float difference;			// –Ú•WŠp“x‚ÆŒ»Ý‚ÌŠp“x‚Æ‚Ì·
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç§»å‹•æ–¹å‘ã«ãƒ¢ãƒ‡ãƒ«ã®æ–¹å‘ã‚’è¿‘ã¥ã‘ã‚‹
+	float targetAngle;			// ç›®æ¨™è§’åº¦
+	float difference;			// ç›®æ¨™è§’åº¦ã¨ç¾åœ¨ã®è§’åº¦ã¨ã®å·®
 
-	// –Ú•W‚Ì•ûŒüƒxƒNƒgƒ‹‚©‚çŠp“x’l‚ðŽZo‚·‚é
+	// ç›®æ¨™ã®æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã‹ã‚‰è§’åº¦å€¤ã‚’ç®—å‡ºã™ã‚‹
 	targetAngle = static_cast<float>(atan2(targetMoveDirection.x, targetMoveDirection.z));
 
-	// –Ú•W‚ÌŠp“x‚ÆŒ»Ý‚ÌŠp“x‚Æ‚Ì·‚ðŠ„‚èo‚·
-	// Å‰‚Í’Pƒ‚Éˆø‚«ŽZ
+	// ç›®æ¨™ã®è§’åº¦ã¨ç¾åœ¨ã®è§’åº¦ã¨ã®å·®ã‚’å‰²ã‚Šå‡ºã™
+	// æœ€åˆã¯å˜ç´”ã«å¼•ãç®—
 	difference = targetAngle - angle;
 
-	// ‚ ‚é•ûŒü‚©‚ç‚ ‚é•ûŒü‚Ì·‚ª‚P‚W‚O“xˆÈã‚É‚È‚é‚±‚Æ‚Í–³‚¢‚Ì‚Å
-	// ·‚Ì’l‚ª‚P‚W‚O“xˆÈã‚É‚È‚Á‚Ä‚¢‚½‚çC³‚·‚é
+	// ã‚ã‚‹æ–¹å‘ã‹ã‚‰ã‚ã‚‹æ–¹å‘ã®å·®ãŒï¼‘ï¼˜ï¼åº¦ä»¥ä¸Šã«ãªã‚‹ã“ã¨ã¯ç„¡ã„ã®ã§
+	// å·®ã®å€¤ãŒï¼‘ï¼˜ï¼åº¦ä»¥ä¸Šã«ãªã£ã¦ã„ãŸã‚‰ä¿®æ­£ã™ã‚‹
 	if (difference < -DX_PI_F)
 	{
 		difference += DX_TWO_PI_F;
@@ -346,10 +346,10 @@ void Player::UpdateAngle()
 		difference -= DX_TWO_PI_F;
 	}
 
-	// Šp“x‚Ì·‚ª‚O‚É‹ß‚Ã‚¯‚é
+	// è§’åº¦ã®å·®ãŒï¼ã«è¿‘ã¥ã‘ã‚‹
 	if (difference > 0.0f)
 	{
-		// ·‚ªƒvƒ‰ƒX‚Ìê‡‚Íˆø‚­
+		// å·®ãŒãƒ—ãƒ©ã‚¹ã®å ´åˆã¯å¼•ã
 		difference -= AngleSpeed;
 		if (difference < 0.0f)
 		{
@@ -358,7 +358,7 @@ void Player::UpdateAngle()
 	}
 	else
 	{
-		// ·‚ªƒ}ƒCƒiƒX‚Ìê‡‚Í‘«‚·
+		// å·®ãŒãƒžã‚¤ãƒŠã‚¹ã®å ´åˆã¯è¶³ã™
 		difference += AngleSpeed;
 		if (difference > 0.0f)
 		{
@@ -366,44 +366,44 @@ void Player::UpdateAngle()
 		}
 	}
 
-	// ƒ‚ƒfƒ‹‚ÌŠp“x‚ðXV
+	// ãƒ¢ãƒ‡ãƒ«ã®è§’åº¦ã‚’æ›´æ–°
 	angle = targetAngle - difference;
 	MV1SetRotationXYZ(modelHandle, VGet(0.0f, angle + DX_PI_F, 0.0f));
 }
 
 /// <summary>
-/// ƒvƒŒƒCƒ„[‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ðÄ¶‚·‚é
+/// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å†ç”Ÿã™ã‚‹
 /// </summary>
 void Player::PlayAnim(AnimKind nextPlayAnim)
 {
-	// HACK: Žw’è‚µ‚½”Ô†‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ðƒAƒ^ƒbƒ`‚µA’¼‘O‚ÉÄ¶‚µ‚Ä‚¢‚½ƒAƒjƒ[ƒVƒ‡ƒ“‚Ìî•ñ‚ðprev‚ÉˆÚs‚µ‚Ä‚¢‚é
-	// “ü‚ê‘Ö‚¦‚ðs‚¤‚Ì‚ÅA‚P‚Â‘O‚Ìƒ‚[ƒVƒ‡ƒ“‚ª‚ª—LŒø‚¾‚Á‚½‚çƒfƒ^ƒbƒ`‚·‚é
+	// HACK: æŒ‡å®šã—ãŸç•ªå·ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ã‚¢ã‚¿ãƒƒãƒã—ã€ç›´å‰ã«å†ç”Ÿã—ã¦ã„ãŸã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®æƒ…å ±ã‚’prevã«ç§»è¡Œã—ã¦ã„ã‚‹
+	// å…¥ã‚Œæ›¿ãˆã‚’è¡Œã†ã®ã§ã€ï¼‘ã¤å‰ã®ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ãŒãŒæœ‰åŠ¹ã ã£ãŸã‚‰ãƒ‡ã‚¿ãƒƒãƒã™ã‚‹
 	if (prevPlayAnim != -1)
 	{
 		MV1DetachAnim(modelHandle, prevPlayAnim);
 		prevPlayAnim = -1;
 	}
 
-	// ¡‚Ü‚ÅÄ¶’†‚Ìƒ‚[ƒVƒ‡ƒ“‚¾‚Á‚½‚à‚Ì‚Ìî•ñ‚ðPrev‚ÉˆÚ“®‚·‚é
+	// ä»Šã¾ã§å†ç”Ÿä¸­ã®ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã ã£ãŸã‚‚ã®ã®æƒ…å ±ã‚’Prevã«ç§»å‹•ã™ã‚‹
 	prevPlayAnim = currentPlayAnim;
 	prevAnimCount = currentAnimCount;
 
-	// V‚½‚ÉŽw’è‚Ìƒ‚[ƒVƒ‡ƒ“‚ðƒ‚ƒfƒ‹‚ÉƒAƒ^ƒbƒ`‚µ‚ÄAƒAƒ^ƒbƒ`”Ô†‚ð•Û‘¶‚·‚é
+	// æ–°ãŸã«æŒ‡å®šã®ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ãƒ¢ãƒ‡ãƒ«ã«ã‚¢ã‚¿ãƒƒãƒã—ã¦ã€ã‚¢ã‚¿ãƒƒãƒç•ªå·ã‚’ä¿å­˜ã™ã‚‹
 	currentPlayAnim = MV1AttachAnim(modelHandle, static_cast<int>(nextPlayAnim));
 	currentAnimCount = 0.0f;
 
-	// ƒuƒŒƒ“ƒh—¦‚ÍPrev‚ª—LŒø‚Å‚Í‚È‚¢ê‡‚Í‚PD‚O‚†( Œ»Ýƒ‚[ƒVƒ‡ƒ“‚ª‚P‚O‚O“‚Ìó‘Ô )‚É‚·‚é
+	// ãƒ–ãƒ¬ãƒ³ãƒ‰çŽ‡ã¯PrevãŒæœ‰åŠ¹ã§ã¯ãªã„å ´åˆã¯ï¼‘ï¼Žï¼ï½†( ç¾åœ¨ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ãŒï¼‘ï¼ï¼ï¼…ã®çŠ¶æ…‹ )ã«ã™ã‚‹
 	animBlendRate = prevPlayAnim == -1 ? 1.0f : 0.0f;
 }
 
 /// <summary>
-/// ƒvƒŒƒCƒ„[‚ÌƒAƒjƒ[ƒVƒ‡ƒ“ˆ—
+/// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å‡¦ç†
 /// </summary>
 void Player::UpdateAnimation()
 {
-	float animTotalTime;		// Ä¶‚µ‚Ä‚¢‚éƒAƒjƒ[ƒVƒ‡ƒ“‚Ì‘ŽžŠÔ
+	float animTotalTime;		// å†ç”Ÿã—ã¦ã„ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ç·æ™‚é–“
 
-	// ƒuƒŒƒ“ƒh—¦‚ª‚PˆÈ‰º‚Ìê‡‚Í‚P‚É‹ß‚Ã‚¯‚é
+	// ãƒ–ãƒ¬ãƒ³ãƒ‰çŽ‡ãŒï¼‘ä»¥ä¸‹ã®å ´åˆã¯ï¼‘ã«è¿‘ã¥ã‘ã‚‹
 	if (animBlendRate < 1.0f)
 	{
 		animBlendRate += AnimBlendSpeed;
@@ -413,69 +413,69 @@ void Player::UpdateAnimation()
 		}
 	}
 
-	// Ä¶‚µ‚Ä‚¢‚éƒAƒjƒ[ƒVƒ‡ƒ“‚P‚Ìˆ—
+	// å†ç”Ÿã—ã¦ã„ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ï¼‘ã®å‡¦ç†
 	if (currentPlayAnim != -1)
 	{
-		// ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì‘ŽžŠÔ‚ðŽæ“¾
+		// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ç·æ™‚é–“ã‚’å–å¾—
 		animTotalTime = MV1GetAttachAnimTotalTime(modelHandle, currentPlayAnim);
 
-		// Ä¶ŽžŠÔ‚ði‚ß‚é
+		// å†ç”Ÿæ™‚é–“ã‚’é€²ã‚ã‚‹
 		currentAnimCount += PlayAnimSpeed;
 
-		// Ä¶ŽžŠÔ‚ª‘ŽžŠÔ‚É“ž’B‚µ‚Ä‚¢‚½‚çÄ¶ŽžŠÔ‚ðƒ‹[ƒv‚³‚¹‚é
+		// å†ç”Ÿæ™‚é–“ãŒç·æ™‚é–“ã«åˆ°é”ã—ã¦ã„ãŸã‚‰å†ç”Ÿæ™‚é–“ã‚’ãƒ«ãƒ¼ãƒ—ã•ã›ã‚‹
 		if (currentAnimCount >= animTotalTime)
 		{
 			currentAnimCount = static_cast<float>(fmod(currentAnimCount, animTotalTime));
 		}
 
-		// •ÏX‚µ‚½Ä¶ŽžŠÔ‚ðƒ‚ƒfƒ‹‚É”½‰f‚³‚¹‚é
+		// å¤‰æ›´ã—ãŸå†ç”Ÿæ™‚é–“ã‚’ãƒ¢ãƒ‡ãƒ«ã«åæ˜ ã•ã›ã‚‹
 		MV1SetAttachAnimTime(modelHandle, currentPlayAnim, currentAnimCount);
 
-		// ƒAƒjƒ[ƒVƒ‡ƒ“‚P‚Ìƒ‚ƒfƒ‹‚É‘Î‚·‚é”½‰f—¦‚ðƒZƒbƒg
+		// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ï¼‘ã®ãƒ¢ãƒ‡ãƒ«ã«å¯¾ã™ã‚‹åæ˜ çŽ‡ã‚’ã‚»ãƒƒãƒˆ
 		MV1SetAttachAnimBlendRate(modelHandle, currentPlayAnim, animBlendRate);
 	}
 
-	// Ä¶‚µ‚Ä‚¢‚éƒAƒjƒ[ƒVƒ‡ƒ“‚Q‚Ìˆ—
+	// å†ç”Ÿã—ã¦ã„ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ï¼’ã®å‡¦ç†
 	if (prevPlayAnim != -1)
 	{
-		// ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì‘ŽžŠÔ‚ðŽæ“¾
+		// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ç·æ™‚é–“ã‚’å–å¾—
 		animTotalTime = MV1GetAttachAnimTotalTime(modelHandle, prevPlayAnim);
 
-		// Ä¶ŽžŠÔ‚ði‚ß‚é
+		// å†ç”Ÿæ™‚é–“ã‚’é€²ã‚ã‚‹
 		prevAnimCount += PlayAnimSpeed;
 
-		// Ä¶ŽžŠÔ‚ª‘ŽžŠÔ‚É“ž’B‚µ‚Ä‚¢‚½‚çÄ¶ŽžŠÔ‚ðƒ‹[ƒv‚³‚¹‚é
+		// å†ç”Ÿæ™‚é–“ãŒç·æ™‚é–“ã«åˆ°é”ã—ã¦ã„ãŸã‚‰å†ç”Ÿæ™‚é–“ã‚’ãƒ«ãƒ¼ãƒ—ã•ã›ã‚‹
 		if (prevAnimCount > animTotalTime)
 		{
 			prevAnimCount = static_cast<float>(fmod(prevAnimCount, animTotalTime));
 		}
 
-		// •ÏX‚µ‚½Ä¶ŽžŠÔ‚ðƒ‚ƒfƒ‹‚É”½‰f‚³‚¹‚é
+		// å¤‰æ›´ã—ãŸå†ç”Ÿæ™‚é–“ã‚’ãƒ¢ãƒ‡ãƒ«ã«åæ˜ ã•ã›ã‚‹
 		MV1SetAttachAnimTime(modelHandle, prevPlayAnim, prevAnimCount);
 
-		// ƒAƒjƒ[ƒVƒ‡ƒ“‚Q‚Ìƒ‚ƒfƒ‹‚É‘Î‚·‚é”½‰f—¦‚ðƒZƒbƒg
+		// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ï¼’ã®ãƒ¢ãƒ‡ãƒ«ã«å¯¾ã™ã‚‹åæ˜ çŽ‡ã‚’ã‚»ãƒƒãƒˆ
 		MV1SetAttachAnimBlendRate(modelHandle, prevPlayAnim, 1.0f - animBlendRate);
 	}
 }
 
 /// <summary>
-/// ƒvƒŒƒCƒ„[‚Ì‰e‚ð•`‰æ
+/// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å½±ã‚’æç”»
 /// </summary>
 void Player::DrawShadow(const Stage& stage)
 {
-	// ƒ‰ƒCƒeƒBƒ“ƒO‚ð–³Œø‚É‚·‚é
+	// ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã‚’ç„¡åŠ¹ã«ã™ã‚‹
 	SetUseLighting(FALSE);
 
-	// ‚yƒoƒbƒtƒ@‚ð—LŒø‚É‚·‚é
+	// ï¼ºãƒãƒƒãƒ•ã‚¡ã‚’æœ‰åŠ¹ã«ã™ã‚‹
 	SetUseZBuffer3D(TRUE);
 
-	// ƒeƒNƒXƒ`ƒƒƒAƒhƒŒƒXƒ‚[ƒh‚ð CLAMP ‚É‚·‚é( ƒeƒNƒXƒ`ƒƒ‚Ì’[‚æ‚èæ‚Í’[‚Ìƒhƒbƒg‚ª‰„X‘±‚­ )
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚¢ãƒ‰ãƒ¬ã‚¹ãƒ¢ãƒ¼ãƒ‰ã‚’ CLAMP ã«ã™ã‚‹( ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ç«¯ã‚ˆã‚Šå…ˆã¯ç«¯ã®ãƒ‰ãƒƒãƒˆãŒå»¶ã€…ç¶šã )
 	SetTextureAddressMode(DX_TEXADDRESS_CLAMP);
 
-	// ƒvƒŒƒCƒ„[‚Ì’¼‰º‚É‘¶Ý‚·‚é’n–Ê‚Ìƒ|ƒŠƒSƒ“‚ðŽæ“¾
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç›´ä¸‹ã«å­˜åœ¨ã™ã‚‹åœ°é¢ã®ãƒãƒªã‚´ãƒ³ã‚’å–å¾—
 	auto hitResultDim = MV1CollCheck_Capsule(stage.GetModelHandle(), -1, position, VAdd(position, VGet(0.0f, -ShadowHeight, 0.0f)), ShadowSize);
 
-	// ’¸“_ƒf[ƒ^‚Å•Ï‰»‚ª–³‚¢•”•ª‚ðƒZƒbƒg
+	// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã§å¤‰åŒ–ãŒç„¡ã„éƒ¨åˆ†ã‚’ã‚»ãƒƒãƒˆ
 	VERTEX3D vertex[3];
 	vertex[0].dif = GetColorU8(255, 255, 255, 255);
 	vertex[0].spc = GetColorU8(0, 0, 0, 0);
@@ -484,22 +484,22 @@ void Player::DrawShadow(const Stage& stage)
 	vertex[1] = vertex[0];
 	vertex[2] = vertex[0];
 
-	// ‹…‚Ì’¼‰º‚É‘¶Ý‚·‚éƒ|ƒŠƒSƒ“‚Ì”‚¾‚¯ŒJ‚è•Ô‚µ
+	// çƒã®ç›´ä¸‹ã«å­˜åœ¨ã™ã‚‹ãƒãƒªã‚´ãƒ³ã®æ•°ã ã‘ç¹°ã‚Šè¿”ã—
 	auto hitResult = hitResultDim.Dim;
 	for (int i = 0; i < hitResultDim.HitNum; i++, hitResult++)
 	{
-		// ƒ|ƒŠƒSƒ“‚ÌÀ•W‚Í’n–Êƒ|ƒŠƒSƒ“‚ÌÀ•W
+		// ãƒãƒªã‚´ãƒ³ã®åº§æ¨™ã¯åœ°é¢ãƒãƒªã‚´ãƒ³ã®åº§æ¨™
 		vertex[0].pos = hitResult->Position[0];
 		vertex[1].pos = hitResult->Position[1];
 		vertex[2].pos = hitResult->Position[2];
 
-		// ‚¿‚å‚Á‚ÆŽ‚¿ã‚°‚Äd‚È‚ç‚È‚¢‚æ‚¤‚É‚·‚é
+		// ã¡ã‚‡ã£ã¨æŒã¡ä¸Šã’ã¦é‡ãªã‚‰ãªã„ã‚ˆã†ã«ã™ã‚‹
 		auto slideVec = VScale(hitResult->Normal, 0.5f);
 		vertex[0].pos = VAdd(vertex[0].pos, slideVec);
 		vertex[1].pos = VAdd(vertex[1].pos, slideVec);
 		vertex[2].pos = VAdd(vertex[2].pos, slideVec);
 
-		// ƒ|ƒŠƒSƒ“‚Ì•s“§–¾“x‚ðÝ’è‚·‚é
+		// ãƒãƒªã‚´ãƒ³ã®ä¸é€æ˜Žåº¦ã‚’è¨­å®šã™ã‚‹
 		vertex[0].dif.a = 0;
 		vertex[1].dif.a = 0;
 		vertex[2].dif.a = 0;
@@ -512,7 +512,7 @@ void Player::DrawShadow(const Stage& stage)
 		if (hitResult->Position[2].y > position.y - ShadowHeight)
 			vertex[2].dif.a = static_cast<BYTE>(128 * (1.0f - static_cast<float>(fabs(hitResult->Position[2].y - position.y) / ShadowHeight)));
 
-		// ‚t‚u’l‚Í’n–Êƒ|ƒŠƒSƒ“‚ÆƒvƒŒƒCƒ„[‚Ì‘Š‘ÎÀ•W‚©‚çŠ„‚èo‚·
+		// ï¼µï¼¶å€¤ã¯åœ°é¢ãƒãƒªã‚´ãƒ³ã¨ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç›¸å¯¾åº§æ¨™ã‹ã‚‰å‰²ã‚Šå‡ºã™
 		vertex[0].u = (hitResult->Position[0].x - position.x) / (ShadowSize * 2.0f) + 0.5f;
 		vertex[0].v = (hitResult->Position[0].z - position.z) / (ShadowSize * 2.0f) + 0.5f;
 		vertex[1].u = (hitResult->Position[1].x - position.x) / (ShadowSize * 2.0f) + 0.5f;
@@ -520,73 +520,73 @@ void Player::DrawShadow(const Stage& stage)
 		vertex[2].u = (hitResult->Position[2].x - position.x) / (ShadowSize * 2.0f) + 0.5f;
 		vertex[2].v = (hitResult->Position[2].z - position.z) / (ShadowSize * 2.0f) + 0.5f;
 
-		// ‰eƒ|ƒŠƒSƒ“‚ð•`‰æ
+		// å½±ãƒãƒªã‚´ãƒ³ã‚’æç”»
 		DrawPolygon3D(vertex, 1, shadowHandle, TRUE);
 	}
 
-	// ŒŸo‚µ‚½’n–Êƒ|ƒŠƒSƒ“î•ñ‚ÌŒãŽn––
+	// æ¤œå‡ºã—ãŸåœ°é¢ãƒãƒªã‚´ãƒ³æƒ…å ±ã®å¾Œå§‹æœ«
 	MV1CollResultPolyDimTerminate(hitResultDim);
 
-	// ƒ‰ƒCƒeƒBƒ“ƒO‚ð—LŒø‚É‚·‚é
+	// ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã‚’æœ‰åŠ¹ã«ã™ã‚‹
 	SetUseLighting(TRUE);
 
-	// ‚yƒoƒbƒtƒ@‚ð–³Œø‚É‚·‚é
+	// ï¼ºãƒãƒƒãƒ•ã‚¡ã‚’ç„¡åŠ¹ã«ã™ã‚‹
 	SetUseZBuffer3D(FALSE);
 }
 
 /// <summary>
-/// “Vˆä‚É“–‚½‚Á‚½Žž
+/// å¤©äº•ã«å½“ãŸã£ãŸæ™‚
 /// </summary>
 void Player::OnHitRoof()
 {
-	// ‚xŽ²•ûŒü‚Ì‘¬“x‚Í”½“]
+	// ï¼¹è»¸æ–¹å‘ã®é€Ÿåº¦ã¯åè»¢
 	currentJumpPower = -currentJumpPower;
 }
 
 /// <summary>
-/// °‚É“–‚½‚Á‚½Žž
+/// åºŠã«å½“ãŸã£ãŸæ™‚
 /// </summary>
 void Player::OnHitFloor()
 {
-	// ‚xŽ²•ûŒü‚ÌˆÚ“®‘¬“x‚Í‚O‚É
+	// ï¼¹è»¸æ–¹å‘ã®ç§»å‹•é€Ÿåº¦ã¯ï¼ã«
 	currentJumpPower = 0.0f;
 
-	// ‚à‚µƒWƒƒƒ“ƒv’†‚¾‚Á‚½ê‡‚Í’…’nó‘Ô‚É‚·‚é
+	// ã‚‚ã—ã‚¸ãƒ£ãƒ³ãƒ—ä¸­ã ã£ãŸå ´åˆã¯ç€åœ°çŠ¶æ…‹ã«ã™ã‚‹
 	if (currentState == State::Jump)
 	{
-		// ˆÚ“®‚µ‚Ä‚¢‚½‚©‚Ç‚¤‚©‚Å’…’nŒã‚Ìó‘Ô‚ÆÄ¶‚·‚éƒAƒjƒ[ƒVƒ‡ƒ“‚ð•ªŠò‚·‚é
+		// ç§»å‹•ã—ã¦ã„ãŸã‹ã©ã†ã‹ã§ç€åœ°å¾Œã®çŠ¶æ…‹ã¨å†ç”Ÿã™ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’åˆ†å²ã™ã‚‹
 		if (isMove)
 		{
-			// ˆÚ“®‚µ‚Ä‚¢‚éê‡‚Í‘–‚èó‘Ô‚É
+			// ç§»å‹•ã—ã¦ã„ã‚‹å ´åˆã¯èµ°ã‚ŠçŠ¶æ…‹ã«
 			PlayAnim(AnimKind::Run);
 			currentState = State::Run;
 		}
 		else
 		{
-			// ˆÚ“®‚µ‚Ä‚¢‚È‚¢ê‡‚Í—§‚¿Ž~‚èó‘Ô‚É
+			// ç§»å‹•ã—ã¦ã„ãªã„å ´åˆã¯ç«‹ã¡æ­¢ã‚ŠçŠ¶æ…‹ã«
 			PlayAnim(AnimKind::Stop);
 			currentState = State::Stand;
 		}
 
-		// ’…’nŽž‚ÍƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒuƒŒƒ“ƒh‚Ís‚í‚È‚¢
+		// ç€åœ°æ™‚ã¯ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒ–ãƒ¬ãƒ³ãƒ‰ã¯è¡Œã‚ãªã„
 		animBlendRate = 1.0f;
 	}
 }
 
 /// <summary>
-/// —Ž‰º‚ªŠm’è‚µ‚½‚Æ‚«
+/// è½ä¸‹ãŒç¢ºå®šã—ãŸã¨ã
 /// </summary>
 void Player::OnFall()
 {
 	if (currentState != State::Jump)
 	{
-		// ƒWƒƒƒ“ƒv’†(—Ž‰º’†j‚É‚·‚é
+		// ã‚¸ãƒ£ãƒ³ãƒ—ä¸­(è½ä¸‹ä¸­ï¼‰ã«ã™ã‚‹
 		currentState = State::Jump;
 
-		// ‚¿‚å‚Á‚Æ‚¾‚¯ƒWƒƒƒ“ƒv‚·‚é
+		// ã¡ã‚‡ã£ã¨ã ã‘ã‚¸ãƒ£ãƒ³ãƒ—ã™ã‚‹
 		currentJumpPower = FallUpPower;
 
-		// ƒAƒjƒ[ƒVƒ‡ƒ“‚Í—Ž‰º’†‚Ì‚à‚Ì‚É‚·‚é
+		// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã¯è½ä¸‹ä¸­ã®ã‚‚ã®ã«ã™ã‚‹
 		PlayAnim(AnimKind::Jump);
 	}
 }
