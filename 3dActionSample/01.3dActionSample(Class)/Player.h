@@ -1,3 +1,4 @@
+#pragma once
 
 // プレイヤー関係の定義
 #define PLAYER_PLAY_ANIM_SPEED			250.0f		// アニメーション速度
