@@ -216,7 +216,7 @@ VECTOR Stage::CheckHitWithFloor(Player& player, const VECTOR& checkPosition)
 			auto poly = floor[i];	// i番目の床ポリゴンのアドレス
 
 			// 足先から頭の高さまでの間でポリゴンと接触しているかどうかを判定
-			HITRESULT_LINE lineResult;					// 線分とポリゴンとの当たり判定の結果を代入する構造体
+			HITRESULT_LINE lineResult;	// 線分とポリゴンとの当たり判定の結果を代入する構造体
 			lineResult = HitCheck_Line_Triangle(fixedPos, VAdd(fixedPos, VGet(0.0f, HitHeight, 0.0f)), poly->Position[0], poly->Position[1], poly->Position[2]);
 
 			// 接触していなかったら何もしない
@@ -254,7 +254,7 @@ VECTOR Stage::CheckHitWithFloor(Player& player, const VECTOR& checkPosition)
 			auto poly = floor[i];	// i番目の床ポリゴンのアドレス
 
 			// ジャンプ中かどうかで処理を分岐
-			HITRESULT_LINE lineResult;					// 線分とポリゴンとの当たり判定の結果を代入する構造体
+			HITRESULT_LINE lineResult;	// 線分とポリゴンとの当たり判定の結果を代入する構造体
 			if (player.GetState() == Player::State::Jump)
 			{
 				// ジャンプ中の場合は頭の先から足先より少し低い位置の間で当たっているかを判定
