@@ -9,19 +9,19 @@
 /// コンストラクタ
 /// </summary>
 Player::Player()
-	:  Position				(VGet(0.0f, 0.0f, 0.0f))
-	 , TargetMoveDirection	(VGet(1.0f, 0.0f, 0.0f))
-	 , Angle				(0.0f)
-	 , CurrentJumpPower		(0.0f)
-	 , ModelHandle			(-1)
-	 , ShadowHandle			(-1)
-	 , CurrentState			(State::STAND)
-	 , CurrentPlayAnim		(-1)
-	 , CurrentAnimCount		(0)
-	 , PrevPlayAnim			(-1)
-	 , PrevAnimCount		(0)
-	 , AnimBlendRate		(1.0f)
-	 , IsMove				(false)
+	:  position				(VGet(0.0f, 0.0f, 0.0f))
+	 , targetMoveDirection	(VGet(1.0f, 0.0f, 0.0f))
+	 , angle				(0.0f)
+	 , currentJumpPower		(0.0f)
+	 , modelHandle			(-1)
+	 , shadowHandle			(-1)
+	 , currentState			(State::Stand)
+	 , currentPlayAnim		(-1)
+	 , currentAnimCount		(0)
+	 , prevPlayAnim			(-1)
+	 , prevAnimCount		(0)
+	 , animBlendRate		(1.0f)
+	 , isMove				(false)
 {
 	// 処理なし
 }
@@ -40,20 +40,20 @@ Player::~Player()
 void Player::Load()
 {
 	// モデルの読み込み
-	ModelHandle = MV1LoadModel("DxChara.x");
+	modelHandle = MV1LoadModel("DxChara.x");
 
 	// 影描画用の画像の読み込み
-	ShadowHandle = LoadGraph("Shadow.tga");
+	shadowHandle = LoadGraph("Shadow.tga");
 
 	// アニメーションのブレンド率を初期化
-	AnimBlendRate = 1.0f;
+	animBlendRate = 1.0f;
 
 	// 初期状態ではアニメーションはアタッチされていないにする
-	CurrentPlayAnim = -1;
-	PrevPlayAnim = -1;
+	currentPlayAnim = -1;
+	prevPlayAnim = -1;
 
 	// ただ立っているアニメーションを再生
-	PlayAnim(AnimKind::STOP);
+	PlayAnim(AnimKind::Stop);
 }
 
 /// <summary>
@@ -62,16 +62,16 @@ void Player::Load()
 void Player::Unload()
 {
 	// モデルの削除
-	if (ShadowHandle >= 0)
+	if (shadowHandle >= 0)
 	{
-		MV1DeleteModel(ModelHandle);
-		ModelHandle = -1;
+		MV1DeleteModel(modelHandle);
+		modelHandle = -1;
 	}
 	// 影用画像の削除
-	if (ShadowHandle >= 0)
+	if (shadowHandle >= 0)
 	{
-		DeleteGraph(ShadowHandle);
-		ShadowHandle = -1;
+		DeleteGraph(shadowHandle);
+		shadowHandle = -1;
 	}
 }
 
@@ -84,11 +84,11 @@ void Player::Update(const Input& input, const Camera& camera, Stage& stage)
 	DisableRootFrameZMove();
 
 	// パッド入力によって移動パラメータを設定する
-	VECTOR	UpMoveVec;		// 方向ボタン「↑」を入力をしたときのプレイヤーの移動方向ベクトル
-	VECTOR	LeftMoveVec;	// 方向ボタン「←」を入力をしたときのプレイヤーの移動方向ベクトル
-	VECTOR	MoveVec;		// このフレームの移動ベクトル
-	State prevState = CurrentState;
-	CurrentState = UpdateMoveParameterWithPad(input, camera, UpMoveVec, LeftMoveVec, MoveVec);
+	VECTOR	upMoveVec;		// 方向ボタン「↑」を入力をしたときのプレイヤーの移動方向ベクトル
+	VECTOR	leftMoveVec;	// 方向ボタン「←」を入力をしたときのプレイヤーの移動方向ベクトル
+	VECTOR	moveVec;		// このフレームの移動ベクトル
+	State prevState = currentState;
+	currentState = UpdateMoveParameterWithPad(input, camera, upMoveVec, leftMoveVec, moveVec);
 
 	// アニメーションステートの更新
 	UpdateAnimationState(prevState);
@@ -97,7 +97,7 @@ void Player::Update(const Input& input, const Camera& camera, Stage& stage)
 	UpdateAngle();
 
 	// 移動ベクトルを元にコリジョンを考慮しつつプレイヤーを移動
-	Move(MoveVec, stage);
+	Move(moveVec, stage);
 
 	// アニメーション処理
 	UpdateAnimation();
@@ -108,7 +108,7 @@ void Player::Update(const Input& input, const Camera& camera, Stage& stage)
 /// </summary>
 void Player::Draw(const Stage& stage)
 {
-	MV1DrawModel(ModelHandle);
+	MV1DrawModel(modelHandle);
 	DrawShadow(stage);
 }
 
@@ -127,45 +127,45 @@ void Player::DisableRootFrameZMove()
 	// 
 	// HACK: 何のために？モデルの一番親フレーム（親階層）のZ軸方向の移動パラメータをゼロにしている
 
-	MATRIX LocalMatrix;
+	MATRIX localMatrix;
 
 	// ユーザー行列を解除する
-	MV1ResetFrameUserLocalMatrix(ModelHandle, 2);
+	MV1ResetFrameUserLocalMatrix(modelHandle, 2);
 
 	// 現在のルートフレームの行列を取得する
-	LocalMatrix = MV1GetFrameLocalMatrix(ModelHandle, 2);
+	localMatrix = MV1GetFrameLocalMatrix(modelHandle, 2);
 
 	// Ｚ軸方向の平行移動成分を無効にする
-	LocalMatrix.m[3][2] = 0.0f;
+	localMatrix.m[3][2] = 0.0f;
 
 	// ユーザー行列として平行移動成分を無効にした行列をルートフレームにセットする
-	MV1SetFrameUserLocalMatrix(ModelHandle, 2, LocalMatrix);
+	MV1SetFrameUserLocalMatrix(modelHandle, 2, localMatrix);
 }
 
 /// <summary>
 /// パッド入力によって移動パラメータを設定する
 /// </summary>
-Player::State Player::UpdateMoveParameterWithPad(const Input& input, const Camera& camera, VECTOR& UpMoveVec, VECTOR& LeftMoveVec, VECTOR& MoveVec)
+Player::State Player::UpdateMoveParameterWithPad(const Input& input, const Camera& camera, VECTOR& upMoveVec, VECTOR& leftMoveVec, VECTOR& moveVec)
 {
-	State nextState = CurrentState;
+	State nextState = currentState;
 
 	// プレイヤーの移動方向のベクトルを算出
 	// 方向ボタン「↑」を押したときのプレイヤーの移動ベクトルはカメラの視線方向からＹ成分を抜いたもの
-	UpMoveVec = VSub(camera.GetTarget(), camera.GetEye());
-	UpMoveVec.y = 0.0f;
+	upMoveVec = VSub(camera.GetTarget(), camera.GetPosition());
+	upMoveVec.y = 0.0f;
 
 	// 方向ボタン「←」を押したときのプレイヤーの移動ベクトルは上を押したときの方向ベクトルとＹ軸のプラス方向のベクトルに垂直な方向
-	LeftMoveVec = VCross(UpMoveVec, VGet(0.0f, 1.0f, 0.0f));
+	leftMoveVec = VCross(upMoveVec, VGet(0.0f, 1.0f, 0.0f));
 
 	// 二つのベクトルを正規化( ベクトルの長さを１．０にすること )
-	UpMoveVec = VNorm(UpMoveVec);
-	LeftMoveVec = VNorm(LeftMoveVec);
+	upMoveVec = VNorm(upMoveVec);
+	leftMoveVec = VNorm(leftMoveVec);
 
 	// このフレームでの移動ベクトルを初期化
-	MoveVec = VGet(0.0f, 0.0f, 0.0f);
+	moveVec = VGet(0.0f, 0.0f, 0.0f);
 
 	// 移動したかどうかのフラグを初期状態では「移動していない」を表すFALSEにする
-	bool IsPressMoveButton = false;
+	bool isPressMoveButton = false;
 
 	// パッドの３ボタンと左シフトがどちらも押されていなかったらプレイヤーの移動処理
 	if (CheckHitKey(KEY_INPUT_LSHIFT) == 0 && (input.GetNowFrameInput() & PAD_INPUT_C) == 0)
@@ -174,88 +174,88 @@ Player::State Player::UpdateMoveParameterWithPad(const Input& input, const Camer
 		if (input.GetNowFrameInput() & PAD_INPUT_LEFT)
 		{
 			// 移動ベクトルに「←」が入力された時の移動ベクトルを加算する
-			MoveVec = VAdd(MoveVec, LeftMoveVec);
+			moveVec = VAdd(moveVec, leftMoveVec);
 
 			// 移動したかどうかのフラグを「移動した」にする
-			IsPressMoveButton = true;
+			isPressMoveButton = true;
 		}
 		else
 			// 方向ボタン「→」が入力されたらカメラの見ている方向から見て右方向に移動する
 			if (input.GetNowFrameInput() & PAD_INPUT_RIGHT)
 			{
 				// 移動ベクトルに「←」が入力された時の移動ベクトルを反転したものを加算する
-				MoveVec = VAdd(MoveVec, VScale(LeftMoveVec, -1.0f));
+				moveVec = VAdd(moveVec, VScale(leftMoveVec, -1.0f));
 
 				// 移動したかどうかのフラグを「移動した」にする
-				IsPressMoveButton = true;
+				isPressMoveButton = true;
 			}
 
 		// 方向ボタン「↑」が入力されたらカメラの見ている方向に移動する
 		if (input.GetNowFrameInput() & PAD_INPUT_UP)
 		{
 			// 移動ベクトルに「↑」が入力された時の移動ベクトルを加算する
-			MoveVec = VAdd(MoveVec, UpMoveVec);
+			moveVec = VAdd(moveVec, upMoveVec);
 
 			// 移動したかどうかのフラグを「移動した」にする
-			IsPressMoveButton = true;
+			isPressMoveButton = true;
 		}
 		else
 			// 方向ボタン「↓」が入力されたらカメラの方向に移動する
 			if (input.GetNowFrameInput() & PAD_INPUT_DOWN)
 			{
 				// 移動ベクトルに「↑」が入力された時の移動ベクトルを反転したものを加算する
-				MoveVec = VAdd(MoveVec, VScale(UpMoveVec, -1.0f));
+				moveVec = VAdd(moveVec, VScale(upMoveVec, -1.0f));
 
 				// 移動したかどうかのフラグを「移動した」にする
-				IsPressMoveButton = true;
+				isPressMoveButton = true;
 			}
 
 		// プレイヤーの状態が「ジャンプ」ではなく、且つボタン１が押されていたらジャンプする
-		if (CurrentState != State::JUMP && (input.GetNowFrameNewInput() & PAD_INPUT_A))
+		if (currentState != State::Jump && (input.GetNowFrameNewInput() & PAD_INPUT_A))
 		{
 			// Ｙ軸方向の速度をセット
-			CurrentJumpPower = JumpPower;
+			currentJumpPower = JumpPower;
 
 			// 状態を「ジャンプ」にする
-			nextState = State::JUMP;
+			nextState = State::Jump;
 		}
 	}
 
 	// ジャンプ状態なら重力適用
-	if (CurrentState == State::JUMP)
+	if (currentState == State::Jump)
 	{
 		// Ｙ軸方向の速度を重力分減算する
-		CurrentJumpPower -= Gravity;
+		currentJumpPower -= Gravity;
 	}
 
 	// 移動ボタンが押されたかどうかで処理を分岐
-	if (IsPressMoveButton)
+	if (isPressMoveButton)
 	{
 		// もし今まで「立ち止まり」状態だったら
-		if (CurrentState == State::STAND)
+		if (currentState == State::Stand)
 		{
 			// 状態を「走り」にする
-			nextState = State::RUN;
+			nextState = State::Run;
 		}
 
 		// 移動ベクトルを正規化したものをプレイヤーが向くべき方向として保存
-		TargetMoveDirection = VNorm(MoveVec);
+		targetMoveDirection = VNorm(moveVec);
 
 		// プレイヤーが向くべき方向ベクトルをプレイヤーのスピード倍したものを移動ベクトルとする
-		MoveVec = VScale(TargetMoveDirection, MoveSpeed);
+		moveVec = VScale(targetMoveDirection, MoveSpeed);
 	}
 	else
 	{
 		// このフレームで移動していなくて、且つ状態が「走り」だったら
-		if (CurrentState == State::RUN)
+		if (currentState == State::Run)
 		{
 			// 状態を「立ち止り」にする
-			nextState = State::STAND;
+			nextState = State::Stand;
 		}
 	}
 
 	// 移動ベクトルのＹ成分をＹ軸方向の速度にする
-	MoveVec.y = CurrentJumpPower;
+	moveVec.y = currentJumpPower;
 
 	return nextState;
 }
@@ -269,18 +269,18 @@ void Player::Move(const VECTOR& MoveVector, Stage& stage)
 	// x軸かy軸方向に 0.01f 以上移動した場合は「移動した」フラグを１にする
 	if (fabs(MoveVector.x) > 0.01f || fabs(MoveVector.z) > 0.01f)
 	{
-		IsMove = true;
+		isMove = true;
 	}
 	else
 	{
-		IsMove = false;
+		isMove = false;
 	}
 
 	// 当たり判定をして、新しい座標を保存する
-	Position = stage.CheckCollision(*this, MoveVector);
+	position = stage.CheckCollision(*this, MoveVector);
 
 	// プレイヤーのモデルの座標を更新する
-	MV1SetPosition(ModelHandle, Position);
+	MV1SetPosition(modelHandle, position);
 }
 
 /// <summary>
@@ -289,32 +289,32 @@ void Player::Move(const VECTOR& MoveVector, Stage& stage)
 void Player::UpdateAnimationState(State prevState)
 {
 	// 立ち止まりから走りに変わったら
-	if (prevState == State::STAND && CurrentState == State::RUN)
+	if (prevState == State::Stand && currentState == State::Run)
 	{
 		// 走りアニメーションを再生する
-		PlayAnim(AnimKind::RUN);
+		PlayAnim(AnimKind::Run);
 	}
 	// 走りから立ち止まりに変わったら
-	else if (prevState == State::RUN && CurrentState == State::STAND)
+	else if (prevState == State::Run && currentState == State::Stand)
 	{
 		// 立ち止りアニメーションを再生する
-		PlayAnim(AnimKind::STOP);
+		PlayAnim(AnimKind::Stop);
 	}
 	// 状態が「ジャンプ」の場合は
-	else if (CurrentState == State::JUMP)
+	else if (currentState == State::Jump)
 	{
 		// もし落下していて且つ再生されているアニメーションが上昇中用のものだった場合は
-		if (CurrentJumpPower < 0.0f)
+		if (currentJumpPower < 0.0f)
 		{
 			// 落下中ようのアニメーションを再生する
-			if (MV1GetAttachAnim(ModelHandle, CurrentPlayAnim) == static_cast<int>(AnimKind::JUMP))
+			if (MV1GetAttachAnim(modelHandle, currentPlayAnim) == static_cast<int>(AnimKind::Jump))
 			{
-				PlayAnim(AnimKind::FALL);
+				PlayAnim(AnimKind::Fall);
 			}
 		}
 		else
 		{
-			PlayAnim(AnimKind::JUMP);
+			PlayAnim(AnimKind::Jump);
 		}
 	}
 }
@@ -325,15 +325,15 @@ void Player::UpdateAnimationState(State prevState)
 void Player::UpdateAngle()
 {
 	// プレイヤーの移動方向にモデルの方向を近づける
-	float TargetAngle;			// 目標角度
+	float targetAngle;			// 目標角度
 	float difference;			// 目標角度と現在の角度との差
 
 	// 目標の方向ベクトルから角度値を算出する
-	TargetAngle = static_cast<float>(atan2(TargetMoveDirection.x, TargetMoveDirection.z));
+	targetAngle = static_cast<float>(atan2(targetMoveDirection.x, targetMoveDirection.z));
 
 	// 目標の角度と現在の角度との差を割り出す
 	// 最初は単純に引き算
-	difference = TargetAngle - Angle;
+	difference = targetAngle - angle;
 
 	// ある方向からある方向の差が１８０度以上になることは無いので
 	// 差の値が１８０度以上になっていたら修正する
@@ -367,33 +367,33 @@ void Player::UpdateAngle()
 	}
 
 	// モデルの角度を更新
-	Angle = TargetAngle - difference;
-	MV1SetRotationXYZ(ModelHandle, VGet(0.0f, Angle + DX_PI_F, 0.0f));
+	angle = targetAngle - difference;
+	MV1SetRotationXYZ(modelHandle, VGet(0.0f, angle + DX_PI_F, 0.0f));
 }
 
 /// <summary>
 /// プレイヤーのアニメーションを再生する
 /// </summary>
-void Player::PlayAnim(AnimKind PlayAnim)
+void Player::PlayAnim(AnimKind nextPlayAnim)
 {
 	// HACK: 指定した番号のアニメーションをアタッチし、直前に再生していたアニメーションの情報をprevに移行している
 	// 入れ替えを行うので、１つ前のモーションがが有効だったらデタッチする
-	if (PrevPlayAnim != -1)
+	if (prevPlayAnim != -1)
 	{
-		MV1DetachAnim(ModelHandle, PrevPlayAnim);
-		PrevPlayAnim = -1;
+		MV1DetachAnim(modelHandle, prevPlayAnim);
+		prevPlayAnim = -1;
 	}
 
 	// 今まで再生中のモーションだったものの情報をPrevに移動する
-	PrevPlayAnim = CurrentPlayAnim;
-	PrevAnimCount = CurrentAnimCount;
+	prevPlayAnim = currentPlayAnim;
+	prevAnimCount = currentAnimCount;
 
 	// 新たに指定のモーションをモデルにアタッチして、アタッチ番号を保存する
-	CurrentPlayAnim = MV1AttachAnim(ModelHandle, static_cast<int>(PlayAnim));
-	CurrentAnimCount = 0.0f;
+	currentPlayAnim = MV1AttachAnim(modelHandle, static_cast<int>(nextPlayAnim));
+	currentAnimCount = 0.0f;
 
 	// ブレンド率はPrevが有効ではない場合は１．０ｆ( 現在モーションが１００％の状態 )にする
-	AnimBlendRate = PrevPlayAnim == -1 ? 1.0f : 0.0f;
+	animBlendRate = prevPlayAnim == -1 ? 1.0f : 0.0f;
 }
 
 /// <summary>
@@ -401,60 +401,60 @@ void Player::PlayAnim(AnimKind PlayAnim)
 /// </summary>
 void Player::UpdateAnimation()
 {
-	float AnimTotalTime;		// 再生しているアニメーションの総時間
+	float animTotalTime;		// 再生しているアニメーションの総時間
 
 	// ブレンド率が１以下の場合は１に近づける
-	if (AnimBlendRate < 1.0f)
+	if (animBlendRate < 1.0f)
 	{
-		AnimBlendRate += AnimBlendSpeed;
-		if (AnimBlendRate > 1.0f)
+		animBlendRate += AnimBlendSpeed;
+		if (animBlendRate > 1.0f)
 		{
-			AnimBlendRate = 1.0f;
+			animBlendRate = 1.0f;
 		}
 	}
 
 	// 再生しているアニメーション１の処理
-	if (CurrentPlayAnim != -1)
+	if (currentPlayAnim != -1)
 	{
 		// アニメーションの総時間を取得
-		AnimTotalTime = MV1GetAttachAnimTotalTime(ModelHandle, CurrentPlayAnim);
+		animTotalTime = MV1GetAttachAnimTotalTime(modelHandle, currentPlayAnim);
 
 		// 再生時間を進める
-		CurrentAnimCount += PlayAnimSpeed;
+		currentAnimCount += PlayAnimSpeed;
 
 		// 再生時間が総時間に到達していたら再生時間をループさせる
-		if (CurrentAnimCount >= AnimTotalTime)
+		if (currentAnimCount >= animTotalTime)
 		{
-			CurrentAnimCount = static_cast<float>(fmod(CurrentAnimCount, AnimTotalTime));
+			currentAnimCount = static_cast<float>(fmod(currentAnimCount, animTotalTime));
 		}
 
 		// 変更した再生時間をモデルに反映させる
-		MV1SetAttachAnimTime(ModelHandle, CurrentPlayAnim, CurrentAnimCount);
+		MV1SetAttachAnimTime(modelHandle, currentPlayAnim, currentAnimCount);
 
 		// アニメーション１のモデルに対する反映率をセット
-		MV1SetAttachAnimBlendRate(ModelHandle, CurrentPlayAnim, AnimBlendRate);
+		MV1SetAttachAnimBlendRate(modelHandle, currentPlayAnim, animBlendRate);
 	}
 
 	// 再生しているアニメーション２の処理
-	if (PrevPlayAnim != -1)
+	if (prevPlayAnim != -1)
 	{
 		// アニメーションの総時間を取得
-		AnimTotalTime = MV1GetAttachAnimTotalTime(ModelHandle, PrevPlayAnim);
+		animTotalTime = MV1GetAttachAnimTotalTime(modelHandle, prevPlayAnim);
 
 		// 再生時間を進める
-		PrevAnimCount += PlayAnimSpeed;
+		prevAnimCount += PlayAnimSpeed;
 
 		// 再生時間が総時間に到達していたら再生時間をループさせる
-		if (PrevAnimCount > AnimTotalTime)
+		if (prevAnimCount > animTotalTime)
 		{
-			PrevAnimCount = static_cast<float>(fmod(PrevAnimCount, AnimTotalTime));
+			prevAnimCount = static_cast<float>(fmod(prevAnimCount, animTotalTime));
 		}
 
 		// 変更した再生時間をモデルに反映させる
-		MV1SetAttachAnimTime(ModelHandle, PrevPlayAnim, PrevAnimCount);
+		MV1SetAttachAnimTime(modelHandle, prevPlayAnim, prevAnimCount);
 
 		// アニメーション２のモデルに対する反映率をセット
-		MV1SetAttachAnimBlendRate(ModelHandle, PrevPlayAnim, 1.0f - AnimBlendRate);
+		MV1SetAttachAnimBlendRate(modelHandle, prevPlayAnim, 1.0f - animBlendRate);
 	}
 }
 
@@ -463,11 +463,6 @@ void Player::UpdateAnimation()
 /// </summary>
 void Player::DrawShadow(const Stage& stage)
 {
-	MV1_COLL_RESULT_POLY_DIM HitResultDim;
-	MV1_COLL_RESULT_POLY* HitResult;
-	VERTEX3D Vertex[3];
-	VECTOR SlideVec;
-
 	// ライティングを無効にする
 	SetUseLighting(FALSE);
 
@@ -478,58 +473,59 @@ void Player::DrawShadow(const Stage& stage)
 	SetTextureAddressMode(DX_TEXADDRESS_CLAMP);
 
 	// プレイヤーの直下に存在する地面のポリゴンを取得
-	HitResultDim = MV1CollCheck_Capsule(stage.GetModelHandle(), -1, Position, VAdd(Position, VGet(0.0f, -ShadowHeight, 0.0f)), ShadowSize);
+	auto hitResultDim = MV1CollCheck_Capsule(stage.GetModelHandle(), -1, position, VAdd(position, VGet(0.0f, -ShadowHeight, 0.0f)), ShadowSize);
 
 	// 頂点データで変化が無い部分をセット
-	Vertex[0].dif = GetColorU8(255, 255, 255, 255);
-	Vertex[0].spc = GetColorU8(0, 0, 0, 0);
-	Vertex[0].su = 0.0f;
-	Vertex[0].sv = 0.0f;
-	Vertex[1] = Vertex[0];
-	Vertex[2] = Vertex[0];
+	VERTEX3D vertex[3];
+	vertex[0].dif = GetColorU8(255, 255, 255, 255);
+	vertex[0].spc = GetColorU8(0, 0, 0, 0);
+	vertex[0].su = 0.0f;
+	vertex[0].sv = 0.0f;
+	vertex[1] = vertex[0];
+	vertex[2] = vertex[0];
 
 	// 球の直下に存在するポリゴンの数だけ繰り返し
-	HitResult = HitResultDim.Dim;
-	for (int i = 0; i < HitResultDim.HitNum; i++, HitResult++)
+	auto hitResult = hitResultDim.Dim;
+	for (int i = 0; i < hitResultDim.HitNum; i++, hitResult++)
 	{
 		// ポリゴンの座標は地面ポリゴンの座標
-		Vertex[0].pos = HitResult->Position[0];
-		Vertex[1].pos = HitResult->Position[1];
-		Vertex[2].pos = HitResult->Position[2];
+		vertex[0].pos = hitResult->Position[0];
+		vertex[1].pos = hitResult->Position[1];
+		vertex[2].pos = hitResult->Position[2];
 
 		// ちょっと持ち上げて重ならないようにする
-		SlideVec = VScale(HitResult->Normal, 0.5f);
-		Vertex[0].pos = VAdd(Vertex[0].pos, SlideVec);
-		Vertex[1].pos = VAdd(Vertex[1].pos, SlideVec);
-		Vertex[2].pos = VAdd(Vertex[2].pos, SlideVec);
+		auto slideVec = VScale(hitResult->Normal, 0.5f);
+		vertex[0].pos = VAdd(vertex[0].pos, slideVec);
+		vertex[1].pos = VAdd(vertex[1].pos, slideVec);
+		vertex[2].pos = VAdd(vertex[2].pos, slideVec);
 
 		// ポリゴンの不透明度を設定する
-		Vertex[0].dif.a = 0;
-		Vertex[1].dif.a = 0;
-		Vertex[2].dif.a = 0;
-		if (HitResult->Position[0].y > Position.y - ShadowHeight)
-			Vertex[0].dif.a = static_cast<BYTE>(128 * (1.0f - static_cast<float>(fabs(HitResult->Position[0].y - Position.y) / ShadowHeight)));
+		vertex[0].dif.a = 0;
+		vertex[1].dif.a = 0;
+		vertex[2].dif.a = 0;
+		if (hitResult->Position[0].y > position.y - ShadowHeight)
+			vertex[0].dif.a = static_cast<BYTE>(128 * (1.0f - static_cast<float>(fabs(hitResult->Position[0].y - position.y) / ShadowHeight)));
 
-		if (HitResult->Position[1].y > Position.y - ShadowHeight)
-			Vertex[1].dif.a = static_cast<BYTE>(128 * (1.0f - static_cast<float>(fabs(HitResult->Position[1].y - Position.y) / ShadowHeight)));
+		if (hitResult->Position[1].y > position.y - ShadowHeight)
+			vertex[1].dif.a = static_cast<BYTE>(128 * (1.0f - static_cast<float>(fabs(hitResult->Position[1].y - position.y) / ShadowHeight)));
 
-		if (HitResult->Position[2].y > Position.y - ShadowHeight)
-			Vertex[2].dif.a = static_cast<BYTE>(128 * (1.0f - static_cast<float>(fabs(HitResult->Position[2].y - Position.y) / ShadowHeight)));
+		if (hitResult->Position[2].y > position.y - ShadowHeight)
+			vertex[2].dif.a = static_cast<BYTE>(128 * (1.0f - static_cast<float>(fabs(hitResult->Position[2].y - position.y) / ShadowHeight)));
 
 		// ＵＶ値は地面ポリゴンとプレイヤーの相対座標から割り出す
-		Vertex[0].u = (HitResult->Position[0].x - Position.x) / (ShadowSize * 2.0f) + 0.5f;
-		Vertex[0].v = (HitResult->Position[0].z - Position.z) / (ShadowSize * 2.0f) + 0.5f;
-		Vertex[1].u = (HitResult->Position[1].x - Position.x) / (ShadowSize * 2.0f) + 0.5f;
-		Vertex[1].v = (HitResult->Position[1].z - Position.z) / (ShadowSize * 2.0f) + 0.5f;
-		Vertex[2].u = (HitResult->Position[2].x - Position.x) / (ShadowSize * 2.0f) + 0.5f;
-		Vertex[2].v = (HitResult->Position[2].z - Position.z) / (ShadowSize * 2.0f) + 0.5f;
+		vertex[0].u = (hitResult->Position[0].x - position.x) / (ShadowSize * 2.0f) + 0.5f;
+		vertex[0].v = (hitResult->Position[0].z - position.z) / (ShadowSize * 2.0f) + 0.5f;
+		vertex[1].u = (hitResult->Position[1].x - position.x) / (ShadowSize * 2.0f) + 0.5f;
+		vertex[1].v = (hitResult->Position[1].z - position.z) / (ShadowSize * 2.0f) + 0.5f;
+		vertex[2].u = (hitResult->Position[2].x - position.x) / (ShadowSize * 2.0f) + 0.5f;
+		vertex[2].v = (hitResult->Position[2].z - position.z) / (ShadowSize * 2.0f) + 0.5f;
 
 		// 影ポリゴンを描画
-		DrawPolygon3D(Vertex, 1, ShadowHandle, TRUE);
+		DrawPolygon3D(vertex, 1, shadowHandle, TRUE);
 	}
 
 	// 検出した地面ポリゴン情報の後始末
-	MV1CollResultPolyDimTerminate(HitResultDim);
+	MV1CollResultPolyDimTerminate(hitResultDim);
 
 	// ライティングを有効にする
 	SetUseLighting(TRUE);
@@ -544,7 +540,7 @@ void Player::DrawShadow(const Stage& stage)
 void Player::OnHitRoof()
 {
 	// Ｙ軸方向の速度は反転
-	CurrentJumpPower = -CurrentJumpPower;
+	currentJumpPower = -currentJumpPower;
 }
 
 /// <summary>
@@ -553,27 +549,27 @@ void Player::OnHitRoof()
 void Player::OnHitFloor()
 {
 	// Ｙ軸方向の移動速度は０に
-	CurrentJumpPower = 0.0f;
+	currentJumpPower = 0.0f;
 
 	// もしジャンプ中だった場合は着地状態にする
-	if (CurrentState == State::JUMP)
+	if (currentState == State::Jump)
 	{
 		// 移動していたかどうかで着地後の状態と再生するアニメーションを分岐する
-		if (IsMove)
+		if (isMove)
 		{
 			// 移動している場合は走り状態に
-			PlayAnim(AnimKind::RUN);
-			CurrentState = State::RUN;
+			PlayAnim(AnimKind::Run);
+			currentState = State::Run;
 		}
 		else
 		{
 			// 移動していない場合は立ち止り状態に
-			PlayAnim(AnimKind::STOP);
-			CurrentState = State::STAND;
+			PlayAnim(AnimKind::Stop);
+			currentState = State::Stand;
 		}
 
 		// 着地時はアニメーションのブレンドは行わない
-		AnimBlendRate = 1.0f;
+		animBlendRate = 1.0f;
 	}
 }
 
@@ -582,15 +578,15 @@ void Player::OnHitFloor()
 /// </summary>
 void Player::OnFall()
 {
-	if (CurrentState != State::JUMP)
+	if (currentState != State::Jump)
 	{
 		// ジャンプ中(落下中）にする
-		CurrentState = State::JUMP;
+		currentState = State::Jump;
 
 		// ちょっとだけジャンプする
-		CurrentJumpPower = FallUpPower;
+		currentJumpPower = FallUpPower;
 
 		// アニメーションは落下中のものにする
-		PlayAnim(AnimKind::JUMP);
+		PlayAnim(AnimKind::Jump);
 	}
 }

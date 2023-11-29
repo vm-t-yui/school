@@ -13,20 +13,20 @@ public:
 	// 状態
 	enum class State : int
 	{
-		STAND = 0,		// 立ち止まり
-		RUN = 1,		// 走り
-		JUMP = 2,		// ジャンプ
+		Stand = 0,		// 立ち止まり
+		Run = 1,		// 走り
+		Jump = 2,		// ジャンプ
 	};
 
 	// プレイヤーのアニメーション種別
 	enum class AnimKind : int
 	{
-		NONE = -1,		// なし
-		UNKNOWN = 0,	// 不明
-		RUN = 1,		// 走り
-		JUMP = 2,		// ジャンプ
-		FALL = 3,		// 落下中
-		STOP = 4,		// 立ち止まり
+		None = -1,		// なし
+		Unknown = 0,	// 不明
+		Run = 1,		// 走り
+		Jump = 2,		// ジャンプ
+		Fall = 3,		// 落下中
+		Stop = 4,		// 立ち止まり
 	};
 
 	Player();
@@ -41,10 +41,10 @@ public:
 	void OnHitFloor();	// 床に当たった時
 	void OnFall();		// 落下が確定したとき
 
-	const VECTOR& GetPosition() const { return Position; }
-	bool GetIsMove() const { return IsMove; }
-	State GetState() const { return CurrentState; }
-	float GetJumpPower() const { return CurrentJumpPower; }
+	const VECTOR& GetPosition() const { return position; }
+	bool GetIsMove() const { return isMove; }
+	State GetState() const { return currentState; }
+	float GetJumpPower() const { return currentJumpPower; }
 
 	// プレイヤー関係の定義
 	static constexpr float	FallUpPower = 20.0f;	// 足を踏み外した時のジャンプ力
@@ -60,33 +60,33 @@ private:
 	static constexpr float	ShadowSize		= 200.0f;	// 影の大きさ
 	static constexpr float	ShadowHeight	= 700.0f;	// 影が落ちる高さ
 
-	VECTOR		Position;				// 座標
-	VECTOR		TargetMoveDirection;	// モデルが向くべき方向のベクトル
-	float		Angle;					// モデルが向いている方向の角度
-	float		CurrentJumpPower;		// Ｙ軸方向の速度
-	int			ModelHandle;			// モデルハンドル
-	int			ShadowHandle;			// 影画像ハンドル
-	State		CurrentState;			// 状態
+	VECTOR		position;				// 座標
+	VECTOR		targetMoveDirection;	// モデルが向くべき方向のベクトル
+	float		angle;					// モデルが向いている方向の角度
+	float		currentJumpPower;		// Ｙ軸方向の速度
+	int			modelHandle;			// モデルハンドル
+	int			shadowHandle;			// 影画像ハンドル
+	State		currentState;			// 状態
 
-	int			CurrentPlayAnim;		// 再生しているアニメーションのアタッチ番号( -1:何もアニメーションがアタッチされていない )
-	float		CurrentAnimCount;		// 再生しているアニメーションの再生時間
-	int			PrevPlayAnim;			// 前の再生アニメーションのアタッチ番号( -1:何もアニメーションがアタッチされていない )
-	float		PrevAnimCount;			// 前の再生アニメーションの再生時間
-	float		AnimBlendRate;			// 現在と過去のアニメーションのブレンド率
-	bool		IsMove;					// そのフレームで動いたかどうか
+	int			currentPlayAnim;		// 再生しているアニメーションのアタッチ番号( -1:何もアニメーションがアタッチされていない )
+	float		currentAnimCount;		// 再生しているアニメーションの再生時間
+	int			prevPlayAnim;			// 前の再生アニメーションのアタッチ番号( -1:何もアニメーションがアタッチされていない )
+	float		prevAnimCount;			// 前の再生アニメーションの再生時間
+	float		animBlendRate;			// 現在と過去のアニメーションのブレンド率
+	bool		isMove;					// そのフレームで動いたかどうか
 
 	// ルートフレームのＺ軸方向の移動パラメータを無効にする
 	void DisableRootFrameZMove();
 
 	// パッド入力によって移動パラメータを設定する
-	State UpdateMoveParameterWithPad(const Input& input, const Camera& camera, VECTOR& UpMoveVec, VECTOR& LeftMoveVec, VECTOR& MoveVec);
+	State UpdateMoveParameterWithPad(const Input& input, const Camera& camera, VECTOR& upMoveVec, VECTOR& leftMoveVec, VECTOR& moveVec);
 	
 	// 移動処理
 	void Move(const VECTOR& MoveVector, Stage& stage);
 
 	void UpdateAnimationState(State prevState);	// アニメーションステートの更新
 	void UpdateAngle();							// 回転制御
-	void PlayAnim(AnimKind PlayAnim);			// 新たなアニメーションを再生する
+	void PlayAnim(AnimKind playAnim);			// 新たなアニメーションを再生する
 	void UpdateAnimation();						// アニメーション処理
 	void DrawShadow(const Stage& stage);		// 影を描画
 };

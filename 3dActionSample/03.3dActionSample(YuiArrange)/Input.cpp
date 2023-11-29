@@ -5,8 +5,8 @@
 /// コンストラクタ
 /// </summary>
 Input::Input()
-	: NowFrameInput		(0)
-	, NowFrameNewInput	(0)
+	: nowFrameInput		(0)
+	, nowFrameNewInput	(0)
 {
 	// 処理なし
 }
@@ -24,14 +24,12 @@ Input::~Input()
 /// </summary>
 void Input::Update()
 {
-	int Old;
-
 	// ひとつ前のフレームの入力を変数にとっておく
-	Old = NowFrameInput;
+	int Old = nowFrameInput;
 
 	// 現在の入力状態を取得
-	NowFrameInput = GetJoypadInputState(DX_INPUT_KEY_PAD1);
+	nowFrameInput = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 
-	// 今のフレームで新たに押されたボタンのビットだけ立っている値を NowFrameNewInput に代入する
-	NowFrameNewInput = NowFrameInput & ~Old;
+	// 今のフレームで新たに押されたボタンのビットだけ立っている値を nowFrameNewInput に代入する
+	nowFrameNewInput = nowFrameInput & ~Old;
 }

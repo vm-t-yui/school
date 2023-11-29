@@ -20,14 +20,14 @@ public:
 
 	void Update(const Input& input, const Player& player, const Stage& stage);		// カメラの処理
 
-	const VECTOR& GetEye() const { return Eye; }
-	const VECTOR& GetTarget() const { return Target; }
+	const VECTOR& GetPosition() const { return position; }
+	const VECTOR& GetTarget()	const { return target; }
 
 private:
-	float		AngleH;					// 水平角度
-	float		AngleV;					// 垂直角度
-	VECTOR		Eye;					// カメラ座標
-	VECTOR		Target;					// 注視点座標
+	float		angleH;					// 水平角度
+	float		angleV;					// 垂直角度
+	VECTOR		position;				// カメラ座標
+	VECTOR		target;					// 注視点座標
 
 	void FixCameraPosition(const Stage& stage);
 };

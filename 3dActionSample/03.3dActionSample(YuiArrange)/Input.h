@@ -11,12 +11,12 @@ public:
 
 	void	Update();
 
-	int GetNowFrameInput() const { return NowFrameInput; }
-	int GetNowFrameNewInput() const { return NowFrameNewInput; }
+	int GetNowFrameInput() const { return nowFrameInput; }
+	int GetNowFrameNewInput() const { return nowFrameNewInput; }
 
 private:
-	int		NowFrameInput;				// 現在のフレームで押されているボタン
-	int		NowFrameNewInput;			// 現在のフレームで新たに押されたボタン
+	int		nowFrameInput;				// 現在のフレームで押されているボタン
+	int		nowFrameNewInput;			// 現在のフレームで新たに押されたボタン
 };
 
 
