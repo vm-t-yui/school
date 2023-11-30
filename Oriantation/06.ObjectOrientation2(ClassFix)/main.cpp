@@ -56,7 +56,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		ClearDrawScreen();
 
 		// 各アップデート関数を呼ぶ.
-		player.Update(shot);
+		player.Update(shot, SHOT);
 		enemy.Update();
 		for (int i = 0; i < SHOT; i++)
 		{

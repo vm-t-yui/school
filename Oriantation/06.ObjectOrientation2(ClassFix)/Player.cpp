@@ -1,7 +1,10 @@
 ﻿//-----------------------------------------------------------------------------
 // @brief  プレイヤー処理.
 //-----------------------------------------------------------------------------
+#include "Common.h"
+#include "DxLib.h"
 #include "Player.h"
+#include "Shot.h"
 
 //----------------------------//
 // プレイヤー関数群.
@@ -21,7 +24,7 @@ void Player::Init()
 }
 
 // アップデート.
-void Player::Update(Shot* shot)
+void Player::Update(Shot shotArray[], int shotArrayNum)
 {
 	// 矢印キーを押していたらプレイヤーを移動させる
 	if (CheckHitKey(KEY_INPUT_UP) == 1)
@@ -48,17 +51,17 @@ void Player::Update(Shot* shot)
 		if (shotIntervalCount == 0)
 		{
 			// 画面上にでていない弾があるか、弾の数だけ繰り返して調べる
-			for (int i = 0; i < SHOT; i++)
+			for (int i = 0; i < shotArrayNum; i++)
 			{
 				// 弾iが画面上にでていない場合はその弾を画面に出す
-				if (shot[i].VisibleFlag == false)
+				if (shotArray[i].VisibleFlag == false)
 				{
 					// 弾iの位置をセット、位置はプレイヤーの中心にする
-					shot[i].X = (W - shot[i].W) / 2 + X;
-					shot[i].Y = (H - shot[i].H) / 2 + Y;
+					shotArray[i].X = (W - shotArray[i].W) / 2 + X;
+					shotArray[i].Y = (H - shotArray[i].H) / 2 + Y;
 
 					// 弾iは現時点を持って存在するので、存在状態を保持する変数にtrueを代入する
-					shot[i].VisibleFlag = true;
+					shotArray[i].VisibleFlag = true;
 
 					// 一つ弾を出したので弾を出すループから抜けます
 					break;

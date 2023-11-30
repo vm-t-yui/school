@@ -4,9 +4,7 @@
 
 #pragma once
 
-#include "DxLib.h"
-#include "Common.h"
-#include "Shot.h"
+struct Shot;
 
 // プレイヤー.
 struct Player
@@ -26,6 +24,6 @@ struct Player
 // 初期化.
 void InitPlayer(Player& player);
 // アップデート.
-void UpdatePlayer(Player& player, Shot* shot);
+void UpdatePlayer(Player& player, Shot shot[], int shotNum);
 // 描画.
 void DrawPlayer(Player& player);

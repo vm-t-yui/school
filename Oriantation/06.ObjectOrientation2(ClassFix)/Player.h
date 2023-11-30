@@ -4,9 +4,7 @@
 
 #pragma once
 
-#include "DxLib.h"
-#include "Common.h"
-#include "Shot.h"
+class Shot;
 
 // プレイヤー.
 class Player
@@ -22,6 +20,6 @@ public:
 	int shotIntervalCount;
 
 	void Init();				// 初期化.
-	void Update(Shot* shot);	// アップデート.
+	void Update(Shot shotArray[], int shotArrayNum);	// アップデート.
 	void Draw();				// 描画.
 };

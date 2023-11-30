@@ -4,9 +4,6 @@
 
 #pragma once
 
-#include "DxLib.h"
-#include "Common.h"
-
 // エネミー構造体.
 struct Enemy
 {

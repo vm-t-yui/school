@@ -4,8 +4,7 @@
 
 #pragma once
 
-#include "DxLib.h"
-#include "Common.h"
+class Enemy;
 
 // エネミークラス.
 class Enemy
