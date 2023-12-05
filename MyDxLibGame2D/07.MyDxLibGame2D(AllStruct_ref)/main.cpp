@@ -48,6 +48,89 @@ struct Shot
 	int		H;
 };
 
+// グローバル変数
+Player player;
+Enemy enemy;
+Shot shot[SHOT];
+
+// プレイヤールーチン
+void UpdatePlayer()
+{
+	// 矢印キーを押していたらプレイヤーを移動させる
+	if (CheckHitKey(KEY_INPUT_UP) == 1)
+	{
+		player.Y -= 3;
+	}
+	if (CheckHitKey(KEY_INPUT_DOWN) == 1)
+	{
+		player.Y += 3;
+	}
+	if (CheckHitKey(KEY_INPUT_LEFT) == 1)
+	{
+		player.X -= 3;
+	}
+	if (CheckHitKey(KEY_INPUT_RIGHT) == 1)
+	{
+		player.X += 3;
+	}
+
+	// 弾の発射処理
+	if (CheckHitKey(KEY_INPUT_SPACE))
+	{
+		// 前フレームでショットボタンを押したかが保存されている変数がfalseだったら弾を発射
+		if (player.PrevShotFlag == false)
+		{
+			// 画面上にでていない弾があるか、弾の数だけ繰り返して調べる
+			for (int i = 0; i < SHOT; i++)
+			{
+				// 弾iが画面上にでていない場合はその弾を画面に出す
+				if (shot[i].visibleFlag == false)
+				{
+					// 弾iの位置をセット、位置はプレイヤーの中心にする
+					shot[i].X = (player.W - shot[i].W) / 2 + player.X;
+					shot[i].Y = (player.H - shot[i].H) / 2 + player.Y;
+
+					// 弾iは現時点を持って存在するので、存在状態を保持する変数にtrueを代入する
+					shot[i].visibleFlag = true;
+
+					// 一つ弾を出したので弾を出すループから抜けます
+					break;
+				}
+			}
+		}
+
+		// 前フレームでショットボタンを押されていたかを保存する変数にtrue(おされていた)を代入
+		player.PrevShotFlag = true;
+	}
+	else
+	{
+		// ショットボタンが押されていなかった場合は
+		// 前フレームでショットボタンが押されていたかを保存する変数にfalse(おされていない)を代入
+		player.PrevShotFlag = false;
+	}
+
+	// プレイヤーが画面左端からはみ出そうになっていたら画面内の座標に戻してあげる
+	if (player.X < 0)
+	{
+		player.X = 0;
+	}
+	if (player.X > 640 - player.W)
+	{
+		player.X = 640 - player.W;
+	}
+	if (player.Y < 0)
+	{
+		player.Y = 0;
+	}
+	if (player.Y > 480 - player.H)
+	{
+		player.Y = 480 - player.H;
+	}
+
+	// プレイヤーを描画
+	DrawGraph(player.X, player.Y, player.Graph, FALSE);
+}
+
 // WinMain関数
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	LPSTR lpCmdLine, int nCmdShow)
@@ -66,7 +149,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	SetDrawScreen(DX_SCREEN_BACK);
 
 	// プレイヤーのグラフィックをメモリにロード＆表示座標を初期化
-	Player player;
 	player.Graph = LoadGraph("data/texture/player.png");
 	player.X = 288; 
 	player.Y = 400;
@@ -78,7 +160,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	GetGraphSize(player.Graph, &player.W, &player.H);
 
 	// エネミーのグラフィックをメモリにロード＆表示座標を初期化
-	Enemy enemy;
 	enemy.Graph = LoadGraph("data/texture/enemy.png");
 	enemy.X = 0; 
 	enemy.Y = 50;
@@ -90,7 +171,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	enemy.DamageFlag = false;
 
 	// ショットのグラフィックをメモリにロード.
-	Shot shot[SHOT];
 	int shotGraph;
 	shotGraph = LoadGraph("data/texture/shot.png");
 	for (int i = 0; i < SHOT; i++)
@@ -125,81 +205,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		//------------------------------//
 		// プレイヤールーチン
 		//------------------------------//
-		{
-			// 矢印キーを押していたらプレイヤーを移動させる
-			if (CheckHitKey(KEY_INPUT_UP) == 1)
-			{
-				player.Y -= 3;
-			}
-			if (CheckHitKey(KEY_INPUT_DOWN) == 1)
-			{
-				player.Y += 3;
-			}
-			if (CheckHitKey(KEY_INPUT_LEFT) == 1)
-			{
-				player.X -= 3;
-			}
-			if (CheckHitKey(KEY_INPUT_RIGHT) == 1)
-			{
-				player.X += 3;
-			}
-
-			// 弾の発射処理
-			if (CheckHitKey(KEY_INPUT_SPACE))
-			{
-				// 前フレームでショットボタンを押したかが保存されている変数がfalseだったら弾を発射
-				if (player.PrevShotFlag == false)
-				{
-					// 画面上にでていない弾があるか、弾の数だけ繰り返して調べる
-					for (int i = 0; i < SHOT; i++)
-					{
-						// 弾iが画面上にでていない場合はその弾を画面に出す
-						if (shot[i].visibleFlag == false)
-						{
-							// 弾iの位置をセット、位置はプレイヤーの中心にする
-							shot[i].X = (player.W - shot[i].W) / 2 + player.X;
-							shot[i].Y = (player.H - shot[i].H) / 2 + player.Y;
-
-							// 弾iは現時点を持って存在するので、存在状態を保持する変数にtrueを代入する
-							shot[i].visibleFlag = true;
-
-							// 一つ弾を出したので弾を出すループから抜けます
-							break;
-						}
-					}
-				}
-
-				// 前フレームでショットボタンを押されていたかを保存する変数にtrue(おされていた)を代入
-				player.PrevShotFlag = true;
-			}
-			else
-			{
-				// ショットボタンが押されていなかった場合は
-				// 前フレームでショットボタンが押されていたかを保存する変数にfalse(おされていない)を代入
-				player.PrevShotFlag = false;
-			}
-
-			// プレイヤーが画面左端からはみ出そうになっていたら画面内の座標に戻してあげる
-			if (player.X < 0)
-			{
-				player.X = 0;
-			}
-			if (player.X > 640 - player.W)
-			{
-				player.X = 640 - player.W;
-			}
-			if (player.Y < 0)
-			{
-				player.Y = 0;
-			}
-			if (player.Y > 480 - player.H)
-			{
-				player.Y = 480 - player.H;
-			}
-
-			// プレイヤーを描画
-			DrawGraph(player.X, player.Y, player.Graph, FALSE);
-		}
+		UpdatePlayer();
 
 		//------------------------------//
 		// エネミールーチン

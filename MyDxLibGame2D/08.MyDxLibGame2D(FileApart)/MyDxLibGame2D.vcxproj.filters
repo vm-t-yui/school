@@ -18,21 +18,15 @@
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enemy.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="common.h">
+    <ClInclude Include="Player.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
+    <ClInclude Include="Shot.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
   </ItemGroup>
