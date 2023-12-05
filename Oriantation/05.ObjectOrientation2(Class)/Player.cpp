@@ -1,7 +1,10 @@
 ﻿//-----------------------------------------------------------------------------
 // @brief  プレイヤー処理.
 //-----------------------------------------------------------------------------
+#include "DxLib.h"
+#include "Common.h"
 #include "Player.h"
+#include "Shot.h"
 
 //----------------------------//
 // プレイヤー関数群.
@@ -21,7 +24,7 @@ void InitPlayer(Player& player)
 }
 
 // アップデート.
-void UpdatePlayer(Player& player, Shot* shot)
+void UpdatePlayer(Player& player, Shot shot[], int shotNum)
 {
 	// 矢印キーを押していたらプレイヤーを移動させる
 	if (CheckHitKey(KEY_INPUT_UP) == 1)
@@ -48,7 +51,7 @@ void UpdatePlayer(Player& player, Shot* shot)
 		if (player.shotIntervalCount == 0)
 		{
 			// 画面上にでていない弾があるか、弾の数だけ繰り返して調べる
-			for (int i = 0; i < SHOT; i++)
+			for (int i = 0; i < shotNum; i++)
 			{
 				// 弾iが画面上にでていない場合はその弾を画面に出す
 				if (shot[i].VisibleFlag == false)

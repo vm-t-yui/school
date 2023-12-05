@@ -4,11 +4,19 @@
 
 #pragma once
 
-struct Shot;
+class Shot;
 
 // プレイヤー.
-struct Player
+class Player
 {
+public:
+	void Init();				// 初期化.
+	void Update(Shot shotArray[], int shotArrayNum);	// アップデート.
+	void Draw();				// 描画.
+
+
+
+private:
 	int Graph;
 	int X;
 	int Y;
@@ -18,12 +26,3 @@ struct Player
 	// ショットのインターバルを設定するカウンター
 	int shotIntervalCount;
 };
-//----------------------------//
-// プレイヤー関数群.
-//----------------------------//
-// 初期化.
-void InitPlayer(Player& player);
-// アップデート.
-void UpdatePlayer(Player& player, Shot shot[], int shotNum);
-// 描画.
-void DrawPlayer(Player& player);

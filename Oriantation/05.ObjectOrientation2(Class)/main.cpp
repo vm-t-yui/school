@@ -13,18 +13,15 @@
 //-----------------------------------------------------------------------------
 
 //----------------------------//
-// グローバル変数.
-//----------------------------//
-Player player;
-Enemy enemy;
-Shot shot[SHOT];
-
-//----------------------------//
 // WinMain関数.
 //----------------------------//
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	LPSTR lpCmdLine, int nCmdShow)
 {
+	Player player;
+	Enemy enemy;
+	Shot shot[SHOT];
+
 	// 画面モードの設定
 	SetGraphMode(SCREEN_W, SCREEN_H, 16);		// 解像度をSCREEN_W*SCREEN_H、colorを16bitに設定.
 	ChangeWindowMode(TRUE);			// ウインドウモードに.
@@ -56,7 +53,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		ClearDrawScreen();
 
 		// 各アップデート関数を呼ぶ.
-		UpdatePlayer(player, shot);
+		UpdatePlayer(player, shot, SHOT);
 		UpdateEnemy(enemy);
 		for (int i = 0; i < SHOT; i++)
 		{

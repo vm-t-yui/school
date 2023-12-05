@@ -1,70 +1,70 @@
 ﻿//-----------------------------------------------------------------------------
 // @brief  エネミー処理.
 //-----------------------------------------------------------------------------
-#include"DxLib.h"
-#include"Common.h"
-#include"Enemy.h"
+#include "Common.h"
+#include "DxLib.h"
+#include "Enemy.h"
 
 //----------------------------//
 // 初期化.
 //----------------------------//
-void InitEnemy(Enemy& enemy)
+void Enemy::Init()
 {
 	// エネミーのグラフィックをメモリにロード＆表示座標を初期化
 	char* enemyGlaphStr = "data/texture/EpicEnemy.png";
-	enemy.Graph = LoadGraph(enemyGlaphStr);
-	enemy.DamageGraph = LoadGraph(enemyGlaphStr);
-	GraphFilter(enemy.DamageGraph, DX_GRAPH_FILTER_HSB, 0, 0, 0, 256);
-	enemy.X = 0;
-	enemy.Y = 50;
-	enemy.Life = ENEMY_LIFE;
+	Graph = LoadGraph(enemyGlaphStr);
+	DamageGraph = LoadGraph(enemyGlaphStr);
+	GraphFilter(DamageGraph, DX_GRAPH_FILTER_HSB, 0, 0, 0, 256);
+	X = 0;
+	Y = 50;
+	Life = ENEMY_LIFE;
 
 	// エネミーが顔を歪めているかどうかの変数に『歪めていない』を表すFALSEを代入
-	enemy.DamageFlag = false;
+	DamageFlag = false;
 
 	// エネミーのグラフィックのサイズを得る
-	GetGraphSize(enemy.Graph, &enemy.W, &enemy.H);
+	GetGraphSize(Graph, &W, &H);
 
-	enemy.RightMove = true;
+	RightMove = true;
 }
 
 //----------------------------//
 // アップデート.
 //----------------------------//
-void UpdateEnemy(Enemy& enemy)
+void Enemy::Update()
 {
 	// エネミーの座標を移動している方向に移動する
-	if (enemy.RightMove == true)
+	if (RightMove == true)
 	{
-		enemy.X += 3;
+		X += 3;
 	}
 	else
 	{
-		enemy.X -= 3;
+		X -= 3;
 	}
 
 	// エネミーが画面端からでそうになっていたら画面内の座標に戻してあげ、移動する方向も反転する
-	if (enemy.X > SCREEN_W - enemy.W)
+	if (X > SCREEN_W - W)
 	{
-		enemy.X = SCREEN_W - enemy.W;
-		enemy.RightMove = false;
+		X = SCREEN_W - W;
+		RightMove = false;
 	}
-	else if (enemy.X < 0)
+	else if (X < 0)
 	{
-		enemy.X = 0;
-		enemy.RightMove = true;
+		X = 0;
+		RightMove = true;
 	}
 
 	// エネミーを描画
 	// ダメージを受けているかどうかで処理を分岐
-	if (enemy.DamageFlag == true)
+	if (DamageFlag == true)
 	{
-		enemy.DamageCounter++;
+		DamageCounter++;
 
-		if (enemy.DamageCounter == 5)
+		if (DamageCounter == 5)
 		{
 			// 『ダメージをうけていない』を表すFALSEを代入
-			enemy.DamageFlag = false;
+			DamageFlag = false;
 		}
 	}
 }
@@ -72,18 +72,32 @@ void UpdateEnemy(Enemy& enemy)
 //----------------------------//
 // 描画.
 //----------------------------//
-void DrawEnemy(Enemy& enemy)
+void Enemy::Draw()
 {
-	if (enemy.Life > 0)
+	if (Life > 0)
 	{
 		// ダメージを受けている場合はダメージ時のグラフィックを描画する
-		if (enemy.DamageFlag == true)
+		if (DamageFlag == true)
 		{
-			DrawGraph(enemy.X, enemy.Y, enemy.DamageGraph, TRUE);
+			DrawGraph(X, Y, DamageGraph, TRUE);
 		}
 		else
 		{
-			DrawGraph(enemy.X, enemy.Y, enemy.Graph, TRUE);
+			DrawGraph(X, Y, Graph, TRUE);
 		}
 	}
+}
+
+/// <summary>
+/// ダメージを受けた時
+/// </summary>
+void Enemy::OnDamage()
+{
+	// エネミーの顔を歪めているかどうかを保持する変数に『歪めている』を表すTRUEを代入
+	DamageFlag = true;
+
+	// エネミーの顔を歪めている時間を測るカウンタ変数に０を代入
+	DamageCounter = 0;
+
+	Life -= 1;
 }

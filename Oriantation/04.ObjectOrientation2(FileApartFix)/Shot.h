@@ -4,9 +4,7 @@
 
 #pragma once
 
-#include "DxLib.h"
-#include "Common.h"
-#include "Enemy.h"
+struct Enemy;
 
 // ショット.
 struct Shot
