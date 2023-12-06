@@ -63,7 +63,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		while (afterTime - prevTime < 16667)
 		{
 			afterTime = GetNowHiPerformanceCount();
-			Sleep(1);
 		}
 	}
 

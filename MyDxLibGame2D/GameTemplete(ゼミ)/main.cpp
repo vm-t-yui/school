@@ -67,7 +67,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		while (afterTime - prevTime < 16667)
 		{
 			afterTime = GetNowHiPerformanceCount();
-			Sleep(1);
 		}
 
 		// Windows 特有の面倒な処理をＤＸライブラリにやらせる
