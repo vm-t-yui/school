@@ -1,4 +1,8 @@
-﻿#include "DxLib.h"
+﻿//-----------------------------------------------------------------------------
+// 2024 Takeru Yui All Rights Reserved.
+//-----------------------------------------------------------------------------
+#include <math.h>
+#include "DxLib.h"
 #include "Screen.h"
 #include "Player.h"
 #include "Map.h"
@@ -8,10 +12,12 @@
 /// </summary>
 void InitPlayer(Player& player)
 {
-	player.pos = VGet(320.0f, 240.0f, 0);
-	player.dir = VGet(0, 0, 0);
-	player.w = 20;
+	// MEMO: float誤差をfloorで切り捨ててる関係上、偶数じゃないとズレるので注意
+	player.w = 30;
 	player.h = 60;
+
+	player.pos = VGet(32.0f + player.h * 0.5f, 100, 0);
+	player.dir = VGet(0, 0, 0);
 	player.fallSpeed = 0.0f;
 	player.isGround = false;
 }
@@ -19,7 +25,7 @@ void InitPlayer(Player& player)
 /// <summary>
 /// プレイヤーの更新
 /// </summary>
-void UpdatePlayer(Player& player, Map& map)
+void UpdatePlayer(Player& player, const Map& map)
 {
 	// 入力状態を更新
 	// パッド１とキーボードから入力を得る
@@ -46,88 +52,125 @@ void UpdatePlayer(Player& player, Map& map)
 	// 移動量を出す
 	auto velocity = VScale(player.dir, Speed);
 
+	// 落下速度を更新
+	player.fallSpeed += Gravity;
+
+	// HACK: 先に設定判定をすることでfallSpeed修正＋設置フラグ更新
+	CheckIsGround(player, map);		
+	CheckIsTopHit(player, map);
+
 	// 地に足が着いている場合のみジャンプボタン(ボタン１ or Ｚキー)を見る
-	if (player.isGround && (input & PAD_INPUT_A))
+	if (player.isGround && !player.isHitTop && (input & PAD_INPUT_A))
 	{
 		player.fallSpeed = -JumpPower;	// ジャンプボタンを押したら即座に上方向の力に代わる
 		player.isGround = false;
 	}
-
-	// 落下速度を更新
-	player.fallSpeed += Gravity;
 
 	// 落下速度を移動量に加える
 	auto fallVelocity = VGet(0, player.fallSpeed, 0);	// 落下をベクトルに。y座標しか変化しないので最後にベクトルにする
 	velocity = VAdd(velocity, fallVelocity);
 
 	// 当たり判定をして、壁にめり込まないようにvelocityを操作する
-	velocity = CheckPlayerHitWithMap(player, velocity);
+	velocity = CheckPlayerHitWithMap(player, map, velocity);
 
 	// 移動
 	player.pos = VAdd(player.pos, velocity);
-
-	// 最後に接地、天井判定を行う
-	CheckIsTopHit(player, map);
-	CheckIsGround(player, map);
 }
 
 /// <summary>
 /// 未来のプレイヤー位置とマップの当たり判定を行い、調整したvelocity（移動ベクトル)を返す
 /// </summary>
-VECTOR CheckPlayerHitWithMap(Player& player, VECTOR velocity)
+VECTOR CheckPlayerHitWithMap(Player& player, const Map& map, const VECTOR velocity)
 {
+	// サイズが最初から0なら動かさず早期return
+	if (VSize(velocity) == 0)
+	{
+		return velocity;
+	}
+
 	VECTOR ret = velocity;
 
 	// 当たらなくなるまで繰り返す
 	bool loop = true;
-	bool isHit = true;
+	bool isFirstHit = true;	// 初回で当たったか
 	while (loop)
 	{
 		loop = false;
 
 		// 未来のプレイヤーのポジションをまず出す
-		VECTOR futurePos = VAdd(player.pos, velocity);
-		float futurePosLeft = futurePos.x - player.w * 0.5f;
-		float futurePosRight = futurePos.x + player.w * 0.5f;
-		float futurePosTop = futurePos.y - player.h * 0.5f;
-		float futurePosBottom = futurePos.y + player.h * 0.5f;
+		VECTOR futurePos = VAdd(player.pos, ret);
 
 		// 全マップチップ分繰り返す
-		for (int i = 0; i < MapHeight; i++)
+		for (int wIndex = 0; wIndex < MapWidth; wIndex++)
 		{
-			for (int j = 0; j < MapWidth; i++)
+			bool isHit = false;
+			for (int hIndex = 0; hIndex < MapHeight; hIndex++)
 			{
-				// 当たっているかどうか調べる
-				VECTOR mapPos = VGet(static_cast<float>(j * MapChipSize), static_cast<float>(i * MapChipSize), 0);
-				float targetLeft = mapPos.x - MapChipSize * 0.5f;
-				float targetRight = mapPos.x + MapChipSize * 0.5f;
-				float targetTop = mapPos.y - MapChipSize * 0.5f;
-				float targetBottom = mapPos.y + MapChipSize * 0.5f;
-				// 矩形同士の当たり判定
-				if (((futurePosLeft > targetLeft && futurePosLeft < targetRight) ||
-					(targetLeft > futurePosLeft && targetLeft < futurePosRight)) &&
-					((futurePosTop > targetTop && futurePosTop < targetBottom) ||
-						(targetTop > futurePosTop && targetTop < futurePosBottom)))
+				isHit = IsHitPlayerWithMapChip(player, futurePos, map.mapChips[wIndex][hIndex]);
+
+				// 初回に当たったとき
+				if (isHit && isFirstHit)
 				{
-					isHit = true;
+					// 今後当たり判定でポジションやvelocityの補正をするとき、小数点以下の誤差が産まれる
+					// 雑に1ドットずつ減らす、数学計算をしないマッシブ当たり判定には邪魔なので初回に丸めてしまい、
+					// 以降改めて当たり判定
+					// posもVelocityも丸める
+					player.pos.x = floorf(player.pos.x);
+					player.pos.y = floorf(player.pos.y);
+					ret.x = floorf(ret.x);
+					ret.y = floorf(ret.y);
+					isFirstHit = false;
+					loop = true;	// ループ継続
 				}
+
 				// 当たった時点でマップチップのループからぬけるが、当たらなくなるまで繰り返すループは継続
-				if (isHit)
+				if (isHit && !isFirstHit)
 				{
-					// 当たっていたらvelocityを1ドット分縮める
-					auto velocitySize = VSize(ret);
-					// 仮に今のサイズが1.0fより小さくて当たっているなら、それ以上縮めてもめり込むのループは継続しない
-					if (velocitySize <= 1.0f)
+					// HACK: 当たっていた場合にvelocityを1ドットずつ縮めていき、当たらなくなるまで繰り返す
+					// そのまま縮めてしまうと、斜めのベクトルのとき（例えば壁に向かってジャンプしたとき）にジャンプの勢いも縮めてしまう
+					// これを防ぐために、
+					// 横成分から縮めていくことで、問題を回避する
+					float absX = fabsf(ret.x);	// x成分の絶対値
+					float absY = fabsf(ret.y);	// y成分の絶対値
+
+					// x成分を縮め切っていなければx成分を縮める
+					bool shrinkX = (absX != 0.0f);	// x成分を縮めるかどうか
+
+					if (shrinkX)
 					{
-						ret = VGet(0, 0, 0);	// 動かなくする
-						printfDx("めり込んでますよ\n");	// 想定外なのでエラー出す（許可するならエラー消してよし
+						if (ret.x > 0.0f)
+						{
+							ret.x -= 1.0f;
+						}
+						else
+						{
+							ret.x += 1.0f;
+						}
+
+						// 縮め切ったら消す
+						if (fabs(ret.x) < 1.0f)
+						{
+							ret.x = 0.0f;
+						}
+						loop = true;
 					}
 					else
 					{
+						if (ret.y > 0.0f)
+						{
+							ret.y -= 1.0f;
+						}
+						else
+						{
+							ret.y += 1.0f;
+						}
+
+						// 縮め切ったら消す
+						if (fabs(ret.y) < 1.0f)
+						{
+							ret.y = 0.0f;
+						}
 						loop = true;
-						// いったん長さ1にした後、もともとのサイズ-1の状態に再度伸ばす
-						auto normalizedVelocity = VNorm(ret);
-						ret = VScale(normalizedVelocity, velocitySize - 1);
 					}
 					break;
 				}
@@ -140,25 +183,76 @@ VECTOR CheckPlayerHitWithMap(Player& player, VECTOR velocity)
 	}
 
 	// MEMO: 超高速で移動してマップ突き抜けた場合は考慮していない
-	// MEMO: 「1ドット」と言っているが、1～√2の間の誤差＋float誤差があるが気にしない。ミニマム1なので長さ1減らす。問題出たら対応
 	// MEMO: 処理負荷を少しでも減らすために、マップチップとプレイヤーの距離でいったん計算除外するとか、色々するのはアリ
 
 	return ret;
 }
 
 /// <summary>
+/// マップチップと未来のプレイヤーポジションの当たり判定
+/// </summary>
+bool IsHitPlayerWithMapChip(const Player& player, const VECTOR& futurePos, const MapChip& mapChip)
+{
+	// マップチップが当たらない種類なら早期return
+	if(mapChip.chipKind == 0)
+	{
+		return false;
+	}
+	
+	// 当たっているかどうか調べる
+	float futurePosLeft = futurePos.x - player.w * 0.5f;
+	float futurePosRight = futurePos.x + player.w * 0.5f;
+	float futurePosTop = futurePos.y - player.h * 0.5f;
+	float futurePosBottom = futurePos.y + player.h * 0.5f;
+	float targetLeft = mapChip.pos.x - mapChip.w * 0.5f;
+	float targetRight = mapChip.pos.x + mapChip.w * 0.5f;
+	float targetTop = mapChip.pos.y - mapChip.h * 0.5f;
+	float targetBottom = mapChip.pos.y + mapChip.h * 0.5f;
+	// 矩形同士の当たり判定
+	if (((targetLeft <= futurePosLeft && futurePosLeft < targetRight) ||
+		(targetLeft > futurePosLeft && targetLeft < futurePosRight)) &&
+		((targetTop <= futurePosTop && futurePosTop < targetBottom) ||
+			(targetTop > futurePosTop && targetTop < futurePosBottom)))
+	{
+		return true;
+	}
+	return false;
+}
+
+/// <summary>
 /// 頭上がぶつかっているか見る
 /// </summary>
-void CheckIsTopHit(Player& player, Map& map)
+void CheckIsTopHit(Player& player, const Map& map)
 {
-	// 1ドット上の位置がマップチップの中にあるなら頭上にぶつかっている
-	if (IsInMapChip(map, VGet(player.pos.x, player.pos.y + 1.0f, player.pos.z)))
+	// 1ドット上にずらして当たれば頭上がぶつかっている （小数点無視）
+	auto checkPos = VGet(player.pos.x, floorf(player.pos.y) - 1.0f, player.pos.z);
+	// 全マップチップ分繰り返す
+	bool isHit = false;
+	for (int wIndex = 0; wIndex < MapWidth; wIndex++)
+	{
+		for (int hIndex = 0; hIndex < MapHeight; hIndex++)
+		{
+			isHit = IsHitPlayerWithMapChip(player, checkPos, map.mapChips[wIndex][hIndex]);
+			if(isHit)
+			{
+				break;
+			}
+		}
+		if (isHit)
+		{
+			break;
+		}
+	}
+	if (isHit)
 	{
 		// 以前ぶつかっていないのにぶつかるならfallSpeedをゼロにし、即落下するように
-		if (player.isHitTop == false)
+		if (!player.isHitTop)
 		{
 			player.isHitTop = true;
 			player.fallSpeed = 0.0f;
+
+			// 後々の雑計算に響くので、y座標の小数点を消し飛ばす
+			player.pos.y = floorf(player.pos.y);
 		}
 	}
 	else
@@ -170,24 +264,49 @@ void CheckIsTopHit(Player& player, Map& map)
 /// <summary>
 /// 地面に接地しているか見る
 /// </summary>
-void CheckIsGround(Player& player, Map& map)
+void CheckIsGround(Player& player, const Map& map)
 {
-	// 1ドット下の位置がマップチップの中にあるなら接地
-	if (IsInMapChip(map, VGet(player.pos.x, player.pos.y - 1.0f, player.pos.z)))
+	// 1ドット下にずらして当たれば頭上がぶつかっている （小数点無視）
+	auto checkPos = VGet(player.pos.x, floorf(player.pos.y) + 1.0f, player.pos.z);
+	// 全マップチップ分繰り返す
+	bool isHit = false;
+	for (int wIndex = 0; wIndex < MapWidth; wIndex++)
+	{
+		for (int hIndex = 0; hIndex < MapHeight; hIndex++)
+		{
+			isHit = IsHitPlayerWithMapChip(player, checkPos, map.mapChips[wIndex][hIndex]);
+			if (isHit)
+			{
+				break;
+			}
+		}
+		if (isHit)
+		{
+			break;
+		}
+	}
+	if (isHit)
 	{
 		player.isGround = true;
 		// fallSpeedをゼロにし、急激な落下を防ぐ
 		player.fallSpeed = 0.0f;
+
+		// 後々の雑計算に響くので、y座標の小数点を消し飛ばす
+		player.pos.y = floorf(player.pos.y);	// ちょうど地面に付く位置に
+	}
+	else
+	{
+		player.isGround = false;
 	}
 }
 
 /// <summary>
 /// プレイヤー描画
 /// </summary>
-void DrawPlayer(Player& player)
+void DrawPlayer(const Player& player)
 {
 	// キャラクタの描画
-	DrawBox((int)(player.pos.x - player.w * 0.5f), (int)(player.pos.y - player.h * 0.5f),
-		(int)(player.pos.x + player.w * 0.5f) + 1, (int)(player.pos.y + player.h * 0.5f) + 1,
+	DrawBox(static_cast<int>(player.pos.x - player.w * 0.5f), static_cast<int>(player.pos.y - player.h * 0.5f),
+		static_cast<int>(player.pos.x + player.w * 0.5f), static_cast<int>(player.pos.y + player.h * 0.5f),
 		GetColor(255, 0, 0), TRUE);
 }

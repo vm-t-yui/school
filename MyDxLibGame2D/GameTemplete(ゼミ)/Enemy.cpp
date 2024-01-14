@@ -1,4 +1,7 @@
-﻿// エネミー
+﻿//-----------------------------------------------------------------------------
+// 2016 Takeru Yui All Rights Reserved.
+//-----------------------------------------------------------------------------
+// エネミー
 #include "GameObject.h"
 #include "Shot.h"
 #include "Enemy.h"
@@ -23,7 +26,7 @@ void InitEnemy(Enemy& enemy)
 		enemy.damageGraph = LoadGraph(enemyGlaphStr);
 	}
 	GraphFilter(enemy.damageGraph, DX_GRAPH_FILTER_HSB, 0, 0, 0, 256);
-	enemy.obj.pos.x = 0;
+	enemy.obj.pos.x = SCREEN_W * 0.5f;
 	enemy.obj.pos.y = 50;
 	enemy.obj.pos.z = 0;
 	enemy.obj.speed = 0;
@@ -43,7 +46,7 @@ void InitEnemy(Enemy& enemy)
 	if (shotGraph < 0)
 	{
 		shotGraph = LoadGraph("data/texture/SuperEnemyShot.png");
-		GetGraphSize(shotGraph, &enemy.obj.w, &enemy.obj.h);
+		GetGraphSize(shotGraph, &shotW, &shotH);
 	}
 	for (int i = 0; i < ENEMY_SHOT; i++)
 	{

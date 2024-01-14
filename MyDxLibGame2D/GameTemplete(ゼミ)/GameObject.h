@@ -1,4 +1,7 @@
-﻿// ゲームオブジェクト
+﻿//-----------------------------------------------------------------------------
+// 2016 Takeru Yui All Rights Reserved.
+//-----------------------------------------------------------------------------
+// ゲームオブジェクト
 #pragma once
 #include "DxLib.h"
 
@@ -19,3 +22,6 @@ void MoveGameObject(GameObject& obj);
 
 // ゲームオブジェクト描画。違う画像も描画できるようにgraphだけ分けている
 void DrawGameObject(GameObject& obj, int graph);
+
+// 当たり判定
+bool IsHit(GameObject& target1, GameObject& target2);

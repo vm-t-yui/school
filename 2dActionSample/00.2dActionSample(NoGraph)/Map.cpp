@@ -1,4 +1,8 @@
-﻿#include "DxLib.h"
+﻿//-----------------------------------------------------------------------------
+// 2024 Takeru Yui All Rights Reserved.
+//-----------------------------------------------------------------------------
+
+#include "DxLib.h"
 #include "Screen.h"
 #include "Map.h"
 
@@ -32,42 +36,38 @@ const int MapData[MapHeight][MapWidth] =
 void InitMap(Map& map)
 {
 	// マップデータ読み込み
-	for (int i = 0; i < MapHeight; i++)
+	for (int wIndex = 0; wIndex < MapWidth; wIndex++)
 	{
-		for (int j = 0; j < MapWidth; j++)
+		for (int hIndex = 0; hIndex < MapHeight; hIndex++)
 		{
-			map.mapChips[j][i].w = MapChipSize;
-			map.mapChips[j][i].h = MapChipSize;
-			map.mapChips[j][i].chipKind = MapData[j][i];
-			map.mapChips[j][i].pos = VGet(j * map.mapChips[j][i].w, i * map.mapChips[j][i].h, 0);
+			MapChip& mapChip = map.mapChips[wIndex][hIndex];
+			mapChip.w = MapChipSize;
+			mapChip.h = MapChipSize;
+			mapChip.chipKind = MapData[hIndex][wIndex];
+
+			// ポジションの基準を真ん中に
+			mapChip.pos = VGet(wIndex * mapChip.w + mapChip.w * 0.5f, hIndex * mapChip.h + mapChip.w * 0.5f, 0);
 		}
 	}
 }
 
 /// <summary>
-/// 指定ドットがマップチップの中にあるかどうか調べる
-/// </summary>
-bool IsInMapChip(Map& map, VECTOR dot)
-{
-	return false;
-}
-
-/// <summary>
 /// マップ描画
 /// </summary>
-void DrawMap(Map& map)
+void DrawMap(const Map& map)
 {
-	for (int i = 0; i < MapHeight; i++)
+	for (int wIndex = 0; wIndex < MapWidth; wIndex++)
 	{
-		for (int j = 0; j < MapWidth; j++)
+		for (int hIndex = 0; hIndex < MapHeight; hIndex++)
 		{
 			// １は当たり判定チップを表しているので１のところだけ描画
-			if (map.mapChips[i][j].chipKind == 1)
+			const MapChip& mapChip = map.mapChips[wIndex][hIndex];
+			if (mapChip.chipKind == 1)
 			{
-				DrawBox(static_cast<int>(map.mapChips[i][j].pos.x - map.mapChips[i][j].w * 0.5f),
-					static_cast<int>(map.mapChips[i][j].pos.y - map.mapChips[i][j].h * 0.5f),
-					static_cast<int>(map.mapChips[i][j].pos.x + map.mapChips[i][j].w * 0.5f),
-					static_cast<int>(map.mapChips[i][j].pos.y + map.mapChips[i][j].h * 0.5f),
+				DrawBox(static_cast<int>(mapChip.pos.x - mapChip.w * 0.5f),
+					static_cast<int>(mapChip.pos.y - mapChip.h * 0.5f),
+					static_cast<int>(mapChip.pos.x + mapChip.w * 0.5f),
+					static_cast<int>(mapChip.pos.y + mapChip.h * 0.5f),
 					GetColor(255, 255, 255), TRUE);
 			}
 		}

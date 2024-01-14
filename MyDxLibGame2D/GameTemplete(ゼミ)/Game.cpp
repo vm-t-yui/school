@@ -1,4 +1,7 @@
-﻿#include "DxLib.h"
+﻿//-----------------------------------------------------------------------------
+// 2016 Takeru Yui All Rights Reserved.
+//-----------------------------------------------------------------------------
+#include "DxLib.h"
 #include "Utility.h"
 #include "GameObject.h"
 #include "Shot.h"

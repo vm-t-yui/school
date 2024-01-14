@@ -1,4 +1,7 @@
-﻿// ショット
+﻿//-----------------------------------------------------------------------------
+// 2016 Takeru Yui All Rights Reserved.
+//-----------------------------------------------------------------------------
+// ショット
 #include "GameObject.h"
 #include "Shot.h"
 #include "Utility.h"
@@ -47,19 +50,7 @@ bool IsHitShot(Shot& shot, GameObject& target)
 	// 弾のあたり判定.
 	if (shot.visibleFlag == 1)
 	{
-		float shotLeft = shot.obj.pos.x - shot.obj.w * 0.5f;
-		float shotRight = shot.obj.pos.x + shot.obj.w * 0.5f;
-		float shotTop = shot.obj.pos.y - shot.obj.h * 0.5f;
-		float shotBottom = shot.obj.pos.y + shot.obj.h * 0.5f;
-		float targetLeft = target.pos.x - target.w * 0.5f;
-		float targetRight = target.pos.x + target.w * 0.5f;
-		float targetTop = target.pos.y - target.h * 0.5f;
-		float targetBottom = target.pos.y + target.h;
-
-		if (((shotLeft > targetLeft && shotLeft < targetRight) ||
-			(targetLeft > shotLeft && targetLeft < shotRight)) &&
-			((shotTop > targetTop && shotTop < targetBottom) ||
-			(targetTop > shotTop && targetTop < shotBottom)))
+		if (IsHit(shot.obj, target))
 		{
 			// 接触している場合は当たった弾の存在を消す
 			shot.visibleFlag = 0;

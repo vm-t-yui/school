@@ -13,6 +13,8 @@
 /// </summary>
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
+	SetGraphMode(ScreenWidth, ScreenHeight, 32);		// 解像度をSCREEN_W*SCREEN_H、colorを32bitに設定.
+
 	ChangeWindowMode(TRUE);
 
 	// ＤＸライブラリの初期化
@@ -37,8 +39,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		ClearDrawScreen();// 画面のクリア
 
 		// 更新
-		//UpdatePlayer(player, map);
-		//DrawPlayer(player);
+		DrawPlayer(player);
+		UpdatePlayer(player, map);
 
 		// 描画
 		DrawMap(map);

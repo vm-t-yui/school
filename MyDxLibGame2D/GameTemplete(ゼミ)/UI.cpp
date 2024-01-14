@@ -1,4 +1,7 @@
-﻿#include "Utility.h"
+﻿//-----------------------------------------------------------------------------
+// 2016 Takeru Yui All Rights Reserved.
+//-----------------------------------------------------------------------------
+#include "Utility.h"
 #include "UI.h"
 #include "DxLib.h"
 #include "GameObject.h"

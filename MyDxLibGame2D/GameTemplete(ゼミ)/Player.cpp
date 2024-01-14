@@ -1,4 +1,7 @@
-﻿// プレイヤー
+﻿//-----------------------------------------------------------------------------
+// 2016 Takeru Yui All Rights Reserved.
+//-----------------------------------------------------------------------------
+// プレイヤー
 #include "GameObject.h"
 #include "Shot.h"
 #include "Enemy.h"
@@ -36,7 +39,7 @@ void InitPlayer(Player& player)
 	if (shotGraph < 0)
 	{
 		shotGraph = LoadGraph("data/texture/SuperShot.png");
-		GetGraphSize(shotGraph, &player.obj.w, &player.obj.h);
+		GetGraphSize(shotGraph, &shotW, &shotH);
 	}
 	for (int i = 0; i < PLAYER_SHOT; i++)
 	{
@@ -58,10 +61,21 @@ void UpdatePlayer(Player& player, Enemy& enemy)
 		player.obj.dir = VGet(1, 0, 0);
 		player.obj.speed = PLAYER_SPEED;
 	}
+	//else if (CheckHitKey(KEY_INPUT_UP) == 1)
+	//{
+	//	player.obj.dir = VGet(0, -1, 0);
+	//	player.obj.speed = PLAYER_SPEED;
+	//}
+	//else if (CheckHitKey(KEY_INPUT_DOWN) == 1)
+	//{
+	//	player.obj.dir = VGet(0, 1, 0);
+	//	player.obj.speed = PLAYER_SPEED;
+	//}
 	else
 	{
 		player.obj.speed = 0.0f;
 	}
+
 	MoveGameObject(player.obj);
 
 	// 弾の発射処理
@@ -77,8 +91,8 @@ void UpdatePlayer(Player& player, Enemy& enemy)
 				if (player.shot[i].visibleFlag == false)
 				{
 					// 弾iの位置をセット、位置はプレイヤーの中心にする
-					player.shot[i].obj.pos.x = (player.obj.w - player.shot[i].obj.w) / 2 + player.obj.pos.x;
-					player.shot[i].obj.pos.y = (player.obj.h - player.shot[i].obj.h) / 2 + player.obj.pos.y;
+					player.shot[i].obj.pos.x = player.shot[i].obj.w * 0.5f + player.obj.pos.x;
+					player.shot[i].obj.pos.y = player.shot[i].obj.h * 0.5f + player.obj.pos.y;
 
 					// 弾iは現時点を持って存在するので、存在状態を保持する変数にtrueを代入する
 					player.shot[i].visibleFlag = true;

@@ -1,4 +1,8 @@
-﻿#pragma once
+﻿//-----------------------------------------------------------------------------
+// 2024 Takeru Yui All Rights Reserved.
+//-----------------------------------------------------------------------------
+
+#pragma once
 
 //-----------------------------------------//
 // 定数
@@ -22,12 +26,11 @@ struct MapChip
 /// </summary>
 struct Map
 {
-	MapChip mapChips[MapHeight][MapWidth];
+	MapChip mapChips[MapWidth][MapWidth];
 };
 
 //-----------------------------------------//
 // プロトタイプ宣言
 //-----------------------------------------//
 void InitMap(Map& map);
-bool IsInMapChip(Map& map, VECTOR dot);
-void DrawMap(Map& map);
+void DrawMap(const Map& map);
