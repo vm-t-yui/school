@@ -20,6 +20,7 @@ void InitPlayer(Player& player)
 	player.dir = VGet(0, 0, 0);
 	player.fallSpeed = 0.0f;
 	player.isGround = false;
+	player.isHitTop = false;
 }
 
 /// <summary>
@@ -55,7 +56,7 @@ void UpdatePlayer(Player& player, const Map& map)
 	// 落下速度を更新
 	player.fallSpeed += Gravity;
 
-	// HACK: 先に設定判定をすることでfallSpeed修正＋設置フラグ更新
+	// HACK: 先に設定判定をすることでfallSpeed修正＋接地フラグ更新
 	CheckIsGround(player, map);		
 	CheckIsTopHit(player, map);
 
@@ -130,8 +131,8 @@ VECTOR CheckPlayerHitWithMap(Player& player, const Map& map, const VECTOR& veloc
 					// そのまま縮めてしまうと、斜めのベクトルのとき（例えば壁に向かってジャンプしたとき）にジャンプの勢いも縮めてしまう
 					// これを防ぐために、
 					// 横成分から縮めていくことで、問題を回避する
-					float absX = fabsf(ret.x);	// x成分の絶対値
-					float absY = fabsf(ret.y);	// y成分の絶対値
+					float absX = fabsf(ret.x);	// velocityのx成分の絶対値
+					float absY = fabsf(ret.y);	// velocityのy成分の絶対値
 
 					// x成分を縮め切っていなければx成分を縮める
 					bool shrinkX = (absX != 0.0f);	// x成分を縮めるかどうか
@@ -266,7 +267,7 @@ void CheckIsTopHit(Player& player, const Map& map)
 /// </summary>
 void CheckIsGround(Player& player, const Map& map)
 {
-	// 1ドット下にずらして当たれば頭上がぶつかっている （小数点無視）
+	// 1ドット下にずらして当たれば地面に足がぶつかっている （小数点無視）
 	auto checkPos = VGet(player.pos.x, floorf(player.pos.y) + 1.0f, player.pos.z);
 	// 全マップチップ分繰り返す
 	bool isHit = false;
