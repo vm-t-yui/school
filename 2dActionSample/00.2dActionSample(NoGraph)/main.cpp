@@ -39,10 +39,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		ClearDrawScreen();// 画面のクリア
 
 		// 更新
-		DrawPlayer(player);
 		UpdatePlayer(player, map);
 
 		// 描画
+		DrawPlayer(player);
 		DrawMap(map);
 		
 		ScreenFlip();	// 画面の更新

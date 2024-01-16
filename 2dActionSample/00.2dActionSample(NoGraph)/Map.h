@@ -26,7 +26,7 @@ struct MapChip
 /// </summary>
 struct Map
 {
-	MapChip mapChips[MapWidth][MapWidth];
+	MapChip mapChips[MapWidth][MapHeight];
 };
 
 //-----------------------------------------//

@@ -80,7 +80,7 @@ void UpdatePlayer(Player& player, const Map& map)
 /// <summary>
 /// 未来のプレイヤー位置とマップの当たり判定を行い、調整したvelocity（移動ベクトル)を返す
 /// </summary>
-VECTOR CheckPlayerHitWithMap(Player& player, const Map& map, const VECTOR velocity)
+VECTOR CheckPlayerHitWithMap(Player& player, const Map& map, const VECTOR& velocity)
 {
 	// サイズが最初から0なら動かさず早期return
 	if (VSize(velocity) == 0)

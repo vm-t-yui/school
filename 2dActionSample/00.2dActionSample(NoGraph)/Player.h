@@ -30,7 +30,7 @@ struct Map;
 struct MapChip;
 void InitPlayer(Player& player);
 void UpdatePlayer(Player& player, const Map& map);
-VECTOR CheckPlayerHitWithMap(Player& player, const Map& map, const VECTOR velocity);
+VECTOR CheckPlayerHitWithMap(Player& player, const Map& map, const VECTOR& velocity);
 bool IsHitPlayerWithMapChip(const Player& player, const VECTOR& futurePos, const MapChip& mapChip);
 void CheckIsTopHit(Player& player, const Map& map);
 void CheckIsGround(Player& player, const Map& map);
