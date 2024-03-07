@@ -1,36 +1,34 @@
 ﻿//-----------------------------------------------------------------------------
-// @brief  障害物マネージャー.
 // 2016 Takeru Yui All Rights Reserved.
 //-----------------------------------------------------------------------------
+#include "DxLib.h"
 #include "ObstructManager.h"
 #include "ObstructBase.h"
 #include "ObstructStatic.h"
 #include "ObstructFloat.h"
 
-//-----------------------------------------------------------------------------
-// @brief  コンストラクタ.
-//-----------------------------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 ObstructManager::ObstructManager()
-	: floatModelSourceHandle(-1)
-	, staticModelSourceHandle(-1)
+	: obstructs					{ NULL }
+	, floatModelSourceHandle	(-1)
+	, staticModelSourceHandle	(-1)
 {
-	for (int i = 0; i < OBSTRUCT_NUM; ++i)
-	{
-		obstructs[i] = NULL;
-	}
+	// 処理なし
 }
 
-//-----------------------------------------------------------------------------
-// @brief  デストラクタ.
-//-----------------------------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 ObstructManager::~ObstructManager()
 {
-	// 処理なし.
+	// 処理なし
 }
 
-//-----------------------------------------------------------------------------
-// @brief  障害物生成.
-//-----------------------------------------------------------------------------
+/// <summary>
+/// 障害物生成
+/// </summary>
 void ObstructManager::CreateObstructs()
 {
 	floatModelSourceHandle = MV1LoadModel("data/model/obstructFloat/obstructFloat.pmx");
@@ -38,25 +36,25 @@ void ObstructManager::CreateObstructs()
 	obstructs[0] = new ObstructStatic(staticModelSourceHandle);
 	obstructs[1] = new ObstructFloat(floatModelSourceHandle);
 	obstructs[2] = new ObstructStatic(staticModelSourceHandle);
-	for (int i = 3; i < OBSTRUCT_NUM; ++i)
+	for (int i = 3; i < ObstructNum; ++i)
 	{
 		obstructs[i] = new ObstructStatic(staticModelSourceHandle);
 	}
 
-	// 障害物の位置を初期化.
+	// 障害物の位置を初期化
 	float band = 10.0f;
-	for (int i = 0; i < OBSTRUCT_NUM; ++i)
+	for (int i = 0; i < ObstructNum; ++i)
 	{
-		obstructs[i]->SetPos(VGet(band * (i - OBSTRUCT_NUM * 0.5f), 0, -1.0f));
+		obstructs[i]->SetPos(VGet(band * (i - ObstructNum * 0.5f), 0, -1.0f));
 	}
 }
 
-//-----------------------------------------------------------------------------
-// @brief  障害物削除.
-//-----------------------------------------------------------------------------
+/// <summary>
+/// 障害物削除
+/// </summary>
 void ObstructManager::DestroyObstructs()
 {
-	for (int i = 0; i < OBSTRUCT_NUM; ++i)
+	for (int i = 0; i < ObstructNum; ++i)
 	{
 		delete(obstructs[i]);
 		obstructs[i] = NULL;
@@ -65,12 +63,12 @@ void ObstructManager::DestroyObstructs()
 	MV1DeleteModel(floatModelSourceHandle);
 }
 
-//-----------------------------------------------------------------------------
-// @brief  更新.
-//-----------------------------------------------------------------------------
+/// <summary>
+/// 更新
+/// </summary>
 void ObstructManager::Update()
 {
-	for (int i = 0; i < OBSTRUCT_NUM; ++i)
+	for (int i = 0; i < ObstructNum; ++i)
 	{
 		if (obstructs[i] != NULL)
 		{
@@ -79,12 +77,12 @@ void ObstructManager::Update()
 	}
 }
 
-//-----------------------------------------------------------------------------
-// @brief  描画.
-//-----------------------------------------------------------------------------
+/// <summary>
+/// 描画
+/// </summary>
 void ObstructManager::Draw()
 {
-	for (int i = 0; i < OBSTRUCT_NUM; ++i)
+	for (int i = 0; i < ObstructNum; ++i)
 	{
 		if (obstructs[i] != NULL)
 		{

@@ -1,28 +1,22 @@
 ﻿//-----------------------------------------------------------------------------
-// @brief  カメラクラス.
 // 2016 Takeru Yui All Rights Reserved.
 //-----------------------------------------------------------------------------
-#ifndef _CAMERA_H_
-#define _CAMERA_H_
+#pragma once
 
-#include "DxLib.h"
+class Player;	// プロトタイプ宣言
 
-class Player;
-
+/// <summary>
+/// カメラ制御を行う
+/// </summary>
 class Camera
 {
 public:
-	Camera();							// コンストラクタ.
-	~Camera();							// デストラクタ.
+	Camera();							// コンストラクタ
+	~Camera();							// デストラクタ
 
-	void Update(const Player& player);	// 更新.
-
-	// ポジションのgetter/setter.
-	const VECTOR& GetPos() const { return pos; }
+	void Update(const Player& player);	// 更新
 
 private:
-	VECTOR	pos;			// ポジション.
+	VECTOR	pos;			// ポジション
 
 };
-
-#endif // _CAMERA_H_

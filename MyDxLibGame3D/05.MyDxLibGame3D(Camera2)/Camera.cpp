@@ -2,6 +2,8 @@
 // @brief  カメラクラス.
 // 2016 Takeru Yui All Rights Reserved.
 //-----------------------------------------------------------------------------
+#define _USE_MATH_DEFINES
+#include <math.h>
 #include "Player.h"
 #include "Camera.h"
 
@@ -12,6 +14,9 @@ Camera::Camera()
 {
     //奥行0.1～1000までをカメラの描画範囲とする
     SetCameraNearFar(0.1f, 1000.0f);
+
+	// FOV(視野角)を60度に
+	SetupCamera_Perspective(60.0f * (static_cast<float>(M_PI) / 180.0f));
 
     //(0,10,-20)の視点から(0,10,0)のターゲットを見る角度にカメラを設置
     SetCameraPositionAndTarget_UpVecY(VGet(0, 10, -20), VGet(0.0f, 10.0f, 0.0f));

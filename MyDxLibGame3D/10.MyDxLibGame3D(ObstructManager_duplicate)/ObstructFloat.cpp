@@ -2,32 +2,33 @@
 // @brief  障害物：浮遊する.
 // 2016 Takeru Yui All Rights Reserved.
 //-----------------------------------------------------------------------------
+#include "DxLib.h"
 #include "ObstructFloat.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-//-----------------------------------------------------------------------------
-// @brief  コンストラクタ.
-//-----------------------------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 ObstructFloat::ObstructFloat(int sourceModelHandle)
-	: ObstructBase(sourceModelHandle)
+	:	ObstructBase	(sourceModelHandle)
+	 ,	rad				(0)
 {
-	pos = VGet(0, 0, 0);
-	rad = 0;
+	// 処理なし
 }
 
-//-----------------------------------------------------------------------------
-// @brief  デストラクタ.
-//-----------------------------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 ObstructFloat::~ObstructFloat()
 {
-	// 処理なし.
+	// 処理なし
 }
 
-//-----------------------------------------------------------------------------
-// @brief  更新.
-//-----------------------------------------------------------------------------
+/// <summary>
+/// 更新
+/// </summary>
 void ObstructFloat::Update()
 {
 	rad += static_cast<float>((M_PI / 180) * 5);

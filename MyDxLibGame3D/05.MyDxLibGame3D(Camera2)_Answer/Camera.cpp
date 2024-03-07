@@ -5,6 +5,9 @@
 #include "Player.h"
 #include "Camera.h"
 
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 #define USE_LERP_CAMERA 1
 
 //-----------------------------------------------------------------------------
@@ -14,6 +17,9 @@ Camera::Camera()
 {
 	//奥行0.1～1000までをカメラの描画範囲とする
 	SetCameraNearFar(0.1f, 1000.0f);
+
+	// FOV(視野角)を60度に
+	SetupCamera_Perspective(60.0f * (static_cast<float>(M_PI) / 180.0f));
 
 	pos = VGet(0, 0, 0);
 }

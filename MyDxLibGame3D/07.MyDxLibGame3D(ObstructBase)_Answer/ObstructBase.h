@@ -7,14 +7,15 @@
 
 #include "DxLib.h"
 
-class ObstructBase
+class ObstructBase abstract
 {
 public:
 	ObstructBase(){}				// コンストラクタ.
 	virtual ~ObstructBase(){}		// デストラクタ.
 
-	virtual void Update() = 0;		// 更新.
-	virtual void Draw();			// 描画.
+	//virtual void Update() = 0;		// 更新.
+	virtual void Update() abstract;		// 更新.
+	virtual void Draw();				// 描画.
 
 	// モデルハンドルの取得.
 	int GetModelHandle(){ return modelHandle; }

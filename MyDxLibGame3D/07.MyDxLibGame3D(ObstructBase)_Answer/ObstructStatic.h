@@ -13,7 +13,7 @@ public:
 	ObstructStatic();				// コンストラクタ.
 	virtual ~ObstructStatic();		// デストラクタ.
 
-	void Update();					// 更新.
+	void Update() override;			// 更新.
 };
 
 #endif // _OBSTACLE_BASE_H_

@@ -2,6 +2,7 @@
 // @brief  障害物基底クラス.
 // 2016 Takeru Yui All Rights Reserved.
 //-----------------------------------------------------------------------------
+#include "DxLib.h"
 #include "ObstructBase.h"
 
 #define USE_MODEL_DUPLICATE 1
@@ -10,6 +11,8 @@
 // @brief  コンストラクタ.
 //-----------------------------------------------------------------------------
 ObstructBase::ObstructBase(int sourceModelHandle)
+	:	modelHandle		(-1)
+	 ,	pos				(VGet(0, 0, 0))
 {
 	// ３Ｄモデルの読み込み
 #if USE_MODEL_DUPLICATE

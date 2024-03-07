@@ -17,6 +17,9 @@
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
     <ClCompile Include="ObstructBase.cpp">
       <Filter>ソース ファイル\Obstruct</Filter>
     </ClCompile>
@@ -32,11 +35,11 @@
     <ClCompile Include="Camera.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Player.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
     <ClInclude Include="ObstructBase.h">
       <Filter>ソース ファイル\Obstruct</Filter>
     </ClInclude>
@@ -50,9 +53,6 @@
       <Filter>ソース ファイル\Obstruct</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
   </ItemGroup>
