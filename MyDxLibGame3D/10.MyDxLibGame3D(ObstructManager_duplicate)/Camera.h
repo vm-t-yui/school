@@ -18,5 +18,4 @@ public:
 
 private:
 	VECTOR	pos;			// ポジション
-
 };

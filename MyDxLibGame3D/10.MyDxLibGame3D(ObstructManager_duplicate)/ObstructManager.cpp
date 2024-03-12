@@ -68,11 +68,11 @@ void ObstructManager::DestroyObstructs()
 /// </summary>
 void ObstructManager::Update()
 {
-	for (int i = 0; i < ObstructNum; ++i)
+	for (auto& obstruct : obstructs)
 	{
-		if (obstructs[i] != NULL)
+		if (obstruct != NULL)
 		{
-			obstructs[i]->Update();
+			obstruct->Update();
 		}
 	}
 }
@@ -82,11 +82,11 @@ void ObstructManager::Update()
 /// </summary>
 void ObstructManager::Draw()
 {
-	for (int i = 0; i < ObstructNum; ++i)
+	for (auto& obstruct : obstructs)
 	{
-		if (obstructs[i] != NULL)
+		if (obstruct != NULL)
 		{
-			obstructs[i]->Draw();
+			obstruct->Draw();
 		}
 	}
 }
