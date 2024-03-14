@@ -24,9 +24,16 @@ public:
 	static const int	StageDataRowNum = 20;		// マップ列
 
 private:
+	// 元にする固定長二次元配列のマップ種類配置データ
 	static const int Stage1Data[StageDataColNum][StageDataRowNum];
 	
-	std::vector<WorldSprite*> sprites;
+	// マップを実際に表示するためのWorldSpriteクラスたち
+	//WorldSprite* sprites;			マップチップ１個
+	//WorldSprite* sprites[10];		10個の配列
+	//WorldSprite* sprites[StageDataColNum][StageDataRowNum];　StageDataColNum＊StageDataRowNum個の二次元配列
+	std::vector<WorldSprite*> sprites;	// StageDataColNum＊StageDataRowNum個のvectorコンテナ（≒一次元配列）
+	
+	// マップチップの元画像ハンドル
 	int chipGraph;
 };
 

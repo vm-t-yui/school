@@ -22,6 +22,7 @@ public:
 	static const int	ChipPixelSize;
 
 private:
+	// マップチップの画像表示をするためのクラス
 	WorldSprite* sprite;
 };
 

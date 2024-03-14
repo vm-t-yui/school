@@ -59,7 +59,9 @@ void Map::Load()
 	// とりあえずマップロード
 	chipGraph = LoadGraph("data/map.png");
 
-	// WorldSprite実体設定と位置初期化
+	// 「データ(Stage1Data)」を元に「実際に描画する人(WorldSprite)」に情報を渡していく
+	// データと実際に描画する人を分離することで
+	// データを外部ファイル化したり、描画時にちょっといじったりできる
 	VECTOR chipLeftTopPos = VGet(0, StageDataColNum * ChipSize, 0);			// マップの描画開始位置（左上）
 	for (int i = 0; i < StageDataColNum; i++)
 	{

@@ -35,9 +35,12 @@ void Map::Load()
 	// とりあえずマップロード
 	int chipGraph = LoadGraph("data/map.png");
 
-	// WorldSprite実体設定と位置初期化
+	// マップチップを表示するためのクラスWorldSpriteに
+	// 元画像のハンドル、１チップあたりのサイズ、表示するマップチップ番号を渡す
 	sprite = new WorldSprite();
 	sprite->Initialize(chipGraph, ChipPixelSize, 65);
+
+	// マップチップの位置と大きさを設定
 	VECTOR chipHalfOffset = VGet(-Map::ChipSize * 0.5f, -Map::ChipSize * 0.5f, 0);					// マップチップの半分サイズ左下にずらすオフセット
 	VECTOR chipPos = VAdd(VGet(0,0,0), chipHalfOffset);	// 真ん中ピボットなのでマップチップ半分サイズずらす+地面なので一つ下に
 	sprite->SetTransform(chipPos, Map::ChipSize);
