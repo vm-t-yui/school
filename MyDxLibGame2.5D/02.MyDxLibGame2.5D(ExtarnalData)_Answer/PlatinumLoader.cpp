@@ -1,20 +1,22 @@
+ï»¿#include "DxLib.h"
+#include <vector>
 #include "PlatinumLoader.h"
 #include <string>
 #include <cassert>
 
 void PlatinumLoader::Load(const TCHAR* filePath)
 {
-	//FMFƒwƒbƒ_[(Platinum‚ÌƒhƒLƒ…ƒƒ“ƒg‚É‘‚¢‚Ä‚ ‚é)
+	//FMFãƒ˜ãƒƒãƒ€ãƒ¼(Platinumã®ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã«æ›¸ã„ã¦ã‚ã‚‹)
 	struct Header {
-		int8_t id[4];			//¯•Êq(FMF_)			1*4ƒoƒCƒg
-		uint32_t size;			//ƒf[ƒ^ƒTƒCƒY@		4ƒoƒCƒg
-		uint32_t mapWidth;		//ƒ}ƒbƒv‚Ì•			4ƒoƒCƒg
-		uint32_t mapHeight;		//ƒ}ƒbƒv‚Ì‚‚³@		4ƒoƒCƒg
-		uint8_t chiphWidth;		//ƒ`ƒbƒv(ƒZƒ‹ˆêŒÂ)‚Ì•					1ƒoƒCƒg
-		uint8_t chpHeight;		//ƒ`ƒbƒv(ƒZƒ‹ˆêŒÂ)‚Ì‚‚³				1ƒoƒCƒg
-		uint8_t layerCount;		//ƒŒƒCƒ„[‚Ì”							1ƒoƒCƒg
-		uint8_t bitCount;		//‚PƒZƒ‹“–‚½‚è‚Ìƒrƒbƒg”(€8‚ÅƒoƒCƒg”)	1ƒoƒCƒg
-	};//20ƒoƒCƒg
+		int8_t id[4];			//è­˜åˆ¥å­(FMF_)			1*4ãƒã‚¤ãƒˆ
+		uint32_t size;			//ãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚ºã€€		4ãƒã‚¤ãƒˆ
+		uint32_t mapWidth;		//ãƒãƒƒãƒ—ã®å¹…			4ãƒã‚¤ãƒˆ
+		uint32_t mapHeight;		//ãƒãƒƒãƒ—ã®é«˜ã•ã€€		4ãƒã‚¤ãƒˆ
+		uint8_t chiphWidth;		//ãƒãƒƒãƒ—(ã‚»ãƒ«ä¸€å€‹)ã®å¹…					1ãƒã‚¤ãƒˆ
+		uint8_t chpHeight;		//ãƒãƒƒãƒ—(ã‚»ãƒ«ä¸€å€‹)ã®é«˜ã•				1ãƒã‚¤ãƒˆ
+		uint8_t layerCount;		//ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ•°							1ãƒã‚¤ãƒˆ
+		uint8_t bitCount;		//ï¼‘ã‚»ãƒ«å½“ãŸã‚Šã®ãƒ“ãƒƒãƒˆæ•°(Ã·8ã§ãƒã‚¤ãƒˆæ•°)	1ãƒã‚¤ãƒˆ
+	};//20ãƒã‚¤ãƒˆ
 
 	Header header;
 	int handle =  FileRead_open(filePath);
@@ -31,8 +33,8 @@ void PlatinumLoader::Load(const TCHAR* filePath)
 	mapWidth_ = header.mapWidth;
 	mapHeight_ = header.mapHeight;
 	int layerCount = header.layerCount;
-	//ƒŒƒCƒ„[1ŒÂ“–‚½‚è‚ÌƒTƒCƒY‚ğŒvZ‚·‚é
-	//ƒ}ƒbƒv‚Ì•–ƒ}ƒbƒv‚Ì‚‚³*(ƒ`ƒbƒv1ŒÂ“–‚½‚è‚ÌƒoƒCƒg”)
+	//ãƒ¬ã‚¤ãƒ¤ãƒ¼1å€‹å½“ãŸã‚Šã®ã‚µã‚¤ã‚ºã‚’è¨ˆç®—ã™ã‚‹
+	//ãƒãƒƒãƒ—ã®å¹…ï¼Šãƒãƒƒãƒ—ã®é«˜ã•*(ãƒãƒƒãƒ—1å€‹å½“ãŸã‚Šã®ãƒã‚¤ãƒˆæ•°)
 	int layerDataSize = header.mapWidth * header.mapHeight * (header.bitCount / 8);
 
 	mapData_.resize(layerCount);
@@ -43,7 +45,7 @@ void PlatinumLoader::Load(const TCHAR* filePath)
 
 	FileRead_close(handle);
 
-	//Àsƒƒ‚ƒŠ¬”„t‰»‚Ì‚½‚ß‚ÉAƒf[ƒ^‚ğ‰ÁH
+	//å®Ÿè¡Œæ™‚ãƒ¡ãƒ¢ãƒªå°å£²tåŒ–ã®ãŸã‚ã«ã€ãƒ‡ãƒ¼ã‚¿ã‚’åŠ å·¥
 	for (int layerIdx = 0; layerIdx < layerCount; ++layerIdx) {
 		TransposeMapData(layerIdx);
 	}
@@ -72,15 +74,15 @@ void PlatinumLoader::GetMapSize(int& width, int& height)
 void PlatinumLoader::TransposeMapData(int layerId)
 {
 
-	auto temp = mapData_[layerId];//‚¢‚Á‚½‚ñƒRƒs[‚µ‚Ä‚¨‚­
-	//——R‚Æ‚µ‚Ä‚ÍƒRƒs[‚¹‚¸‚É“]’u‚µ‚æ‚¤‚Æ‚·‚é‚ÆŒ³‚Ìƒf[ƒ^‚ªÁ‚¦‚é
+	auto temp = mapData_[layerId];//ã„ã£ãŸã‚“ã‚³ãƒ”ãƒ¼ã—ã¦ãŠã
+	//ç†ç”±ã¨ã—ã¦ã¯ã‚³ãƒ”ãƒ¼ã›ãšã«è»¢ç½®ã—ã‚ˆã†ã¨ã™ã‚‹ã¨å…ƒã®ãƒ‡ãƒ¼ã‚¿ãŒæ¶ˆãˆã‚‹
 	for (int Y = 0; Y < mapHeight_; ++Y) {
 		for (int X = 0; X < mapWidth_; ++X) {
-			//’Êí‚ÌXYw’è‚Ìê‡
-			//Y*mapwidht_+x‚Æ‚¢‚¤•—‚É‚È‚é
-			//‚³‚ç‚ÉA‰¡200c15‚ÍˆÛ‚·‚é•K—v‚ª‚ ‚éB
-			//c‚É•À‚×‚Ä‚¢‚«‚½‚¢
-			//0‚Ì—×‚Í1’i‰º‚É‚µ‚½‚¢
+			//é€šå¸¸ã®XYæŒ‡å®šã®å ´åˆ
+			//Y*mapwidht_+xã¨ã„ã†é¢¨ã«ãªã‚‹
+			//ã•ã‚‰ã«ã€æ¨ª200ç¸¦15ã¯ç¶­æŒã™ã‚‹å¿…è¦ãŒã‚ã‚‹ã€‚
+			//ç¸¦ã«ä¸¦ã¹ã¦ã„ããŸã„
+			//0ã®éš£ã¯1æ®µä¸‹ã«ã—ãŸã„
 			int idxSrc = Y * mapWidth_ + X;	//Source Index
 			int idxDst = Y + mapHeight_ * X;	//Destination Index
 			mapData_[layerId][idxDst] = temp[idxSrc];

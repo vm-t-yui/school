@@ -1,7 +1,9 @@
 ﻿// 2016 Takeru Yui All Rights Reserved.
+#include "DxLib.h"
+#include <vector>
+#include "Map.h"
 #include "Player.h"
 #include "Camera.h"
-#include "Map.h"
 
 /// <summary>
 /// コンストラクタ

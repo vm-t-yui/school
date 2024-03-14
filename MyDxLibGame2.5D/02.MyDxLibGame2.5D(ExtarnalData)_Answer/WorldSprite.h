@@ -1,9 +1,8 @@
-// 2023 Takeru Yui All Rights Reserved.
+ï»¿// 2023 Takeru Yui All Rights Reserved.
 #pragma once
-#include "DxLib.h"
 
 /// <summary>
-/// 3DÀ•W‹óŠÔ‚ÉƒXƒvƒ‰ƒCƒg‚ğ•\¦‚·‚éd‘g‚İiƒsƒ{ƒbƒg‚Í’†SŒÅ’èA‰æ‘œ‚Ìgraph‚ÍŠO‚ÅŠÇ—j
+/// 3Dåº§æ¨™ç©ºé–“ã«ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚’è¡¨ç¤ºã™ã‚‹ä»•çµ„ã¿ï¼ˆãƒ”ãƒœãƒƒãƒˆã¯ä¸­å¿ƒå›ºå®šã€ç”»åƒã®graphã¯å¤–ã§ç®¡ç†ï¼‰
 /// </summary>
 class WorldSprite
 {
@@ -15,9 +14,9 @@ public:
 	const VECTOR& GetPos()const { return pos; }
 	
 private:
-	int			textureGraph;	// ƒXƒvƒ‰ƒCƒg‚ğì¬‚·‚éŒ³ƒeƒNƒXƒ`ƒƒ‚ÌƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹
-	VECTOR		pos;			// •`‰æƒ|ƒWƒVƒ‡ƒ“
-	VERTEX3D	Vertex[4];		// ’¸“_ƒoƒbƒtƒ@
-	WORD		Index[6];		// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@
+	int			textureGraph;	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚’ä½œæˆã™ã‚‹å…ƒãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒãƒ³ãƒ‰ãƒ«
+	VECTOR		pos;			// æç”»ãƒã‚¸ã‚·ãƒ§ãƒ³
+	VERTEX3D	Vertex[4];		// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡
+	WORD		Index[6];		// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡
 };
 

@@ -1,13 +1,11 @@
-// 2023 Takeru Yui All Rights Reserved.
+﻿// 2023 Takeru Yui All Rights Reserved.
 #pragma once
-#include "DxLib.h"
-#include <vector>
 
 class WorldSprite;
 class PlatinumLoader;
 
 /// <summary>
-/// 2D�̔w�i�}�b�v
+/// 2Dの背景マップ
 /// </summary>
 class Map
 {
@@ -15,11 +13,29 @@ public:
 	Map();
 	~Map();
 
+	/// <summary>
+	/// マップチップ構造体
+	/// </summary>
+	struct Chip
+	{
+		VECTOR			pos;		// 座標
+		float			w, h;		// 幅、高さ
+		int				col, row;	// 配置されている列、行
+
+		int				chipKind;	// マップチップ種別
+		WorldSprite*	sprite;
+	};
+
 	void Load(const TCHAR* fmfFilePath);
 	void Update();
 	void Draw();
 
-	// �}�b�v�`�b�v�̃T�C�Y
+	const Chip& GetChip(int col, int row) const;
+
+	int GetMapColNum() const { return dataColNum; }
+	int GetMapRowNum() const { return dataRowNum; }
+
+	// マップチップのサイズ
 	static const float	ChipSize;
 	static const int	ChipPixelSize;
 
@@ -27,7 +43,7 @@ private:
 	std::vector<std::vector<int>> currentData;
 	int dataColNum = 0;
 	int dataRowNum = 0;
-	std::vector<WorldSprite*> sprites;
+	std::vector<Chip> chips;
 	int chipGraph;
 	PlatinumLoader* loader;
 };

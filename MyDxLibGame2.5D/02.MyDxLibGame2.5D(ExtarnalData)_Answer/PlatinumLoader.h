@@ -1,41 +1,39 @@
-#pragma once
-#include "DxLib.h"
-#include <vector>
+ï»¿#pragma once
 
 enum class LayerType {
-	BackGround,//”wŒi
-	Enemies,//“G
-	Event,//ƒCƒxƒ“ƒg
+	BackGround,//èƒŒæ™¯
+	Enemies,//æ•µ
+	Event,//ã‚¤ãƒ™ãƒ³ãƒˆ
 };
 
-//ƒ}ƒbƒv‚ÌL‚³ * ƒŒƒCƒ„[”‚È‚Ì‚ÅA2‚Â‚ÌƒxƒNƒ^[‚ğ“ü‚êq‚É‚µ‚Ä‚é
+//ãƒãƒƒãƒ—ã®åºƒã• * ãƒ¬ã‚¤ãƒ¤ãƒ¼æ•°ãªã®ã§ã€2ã¤ã®ãƒ™ã‚¯ã‚¿ãƒ¼ã‚’å…¥ã‚Œå­ã«ã—ã¦ã‚‹
 using MapData_t = std::vector < std::vector<unsigned char>>;
 
 
 /// <summary>
-/// Platinum‚Ìƒf[ƒ^‚ğƒ[ƒh‚·‚é
+/// Platinumã®ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ­ãƒ¼ãƒ‰ã™ã‚‹
 /// </summary>
 class PlatinumLoader
 {
 public:
 	/// <summary>
-	/// fmfƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚ñ‚ÅmapData_‚É’†g‚ğ“ü‚ê‚é
+	/// fmfãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚“ã§mapData_ã«ä¸­èº«ã‚’å…¥ã‚Œã‚‹
 	/// </summary>
-	/// <param name="filePath">fmfƒtƒ@ƒCƒ‹‚Ìƒtƒ@ƒCƒ‹ƒpƒX</param>
+	/// <param name="filePath">fmfãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹</param>
 	void Load(const TCHAR* filePath);
 	
 	/// <summary>
-	/// mapData_‚Ì’†g‚ğ’¼Úæ“¾‚·‚é
+	/// mapData_ã®ä¸­èº«ã‚’ç›´æ¥å–å¾—ã™ã‚‹
 	/// </summary>
 	const MapData_t& GetMapData()const;
 	
 	/// <summary>
-	/// Load‚Å“Ç‚İ‚ñ‚¾MapData_t‚Ì’†giƒ}ƒbƒvƒ`ƒbƒv‚Ìƒf[ƒ^j‚ğŒÂ•Ê‚Éæ“¾‚·‚é
+	/// Loadã§èª­ã¿è¾¼ã‚“ã MapData_tã®ä¸­èº«ï¼ˆãƒãƒƒãƒ—ãƒãƒƒãƒ—ã®ãƒ‡ãƒ¼ã‚¿ï¼‰ã‚’å€‹åˆ¥ã«å–å¾—ã™ã‚‹
 	/// </summary>
-	/// <param name="layerType">æ“¾‚·‚éƒ}ƒbƒvƒ`ƒbƒv‚ÌƒŒƒCƒ„[ID</param>
-	/// <param name="chipX">æ“¾‚·‚éƒ}ƒbƒvƒ`ƒbƒv‚ÌXÀ•W</param>
-	/// <param name="chipY">æ“¾‚·‚éƒ}ƒbƒvƒ`ƒbƒv‚ÌYÀ•W</param>
-	/// <returns>ˆø”‚Åw’è‚µ‚½êŠ‚Ìƒ}ƒbƒvƒ`ƒbƒv‚ÌƒXƒvƒ‰ƒCƒg”Ô†</returns>
+	/// <param name="layerType">å–å¾—ã™ã‚‹ãƒãƒƒãƒ—ãƒãƒƒãƒ—ã®ãƒ¬ã‚¤ãƒ¤ãƒ¼ID</param>
+	/// <param name="chipX">å–å¾—ã™ã‚‹ãƒãƒƒãƒ—ãƒãƒƒãƒ—ã®Xåº§æ¨™</param>
+	/// <param name="chipY">å–å¾—ã™ã‚‹ãƒãƒƒãƒ—ãƒãƒƒãƒ—ã®Yåº§æ¨™</param>
+	/// <returns>å¼•æ•°ã§æŒ‡å®šã—ãŸå ´æ‰€ã®ãƒãƒƒãƒ—ãƒãƒƒãƒ—ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆç•ªå·</returns>
 	const int GetChipSpriteNo(LayerType layerType,int chipX,int chipY)const;
 	
 	/// <summary>
@@ -46,9 +44,9 @@ public:
 	void GetMapSize(int& width,int& height);
 private:
 	/// <summary>
-	/// ƒf[ƒ^‚Ì“à—e‚ğXY“]’u‚·‚é
+	/// ãƒ‡ãƒ¼ã‚¿ã®å†…å®¹ã‚’XYè»¢ç½®ã™ã‚‹
 	/// </summary>
-	/// <param name="layerId">ƒŒƒCƒ„[ID</param>
+	/// <param name="layerId">ãƒ¬ã‚¤ãƒ¤ãƒ¼ID</param>
 	void TransposeMapData(int layerId);
 private:
 

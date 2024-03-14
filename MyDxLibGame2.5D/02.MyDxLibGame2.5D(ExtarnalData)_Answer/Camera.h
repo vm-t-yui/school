@@ -1,6 +1,5 @@
 ﻿// 2016 Takeru Yui All Rights Reserved.
 #pragma once
-#include "DxLib.h"
 
 class Player;
 
