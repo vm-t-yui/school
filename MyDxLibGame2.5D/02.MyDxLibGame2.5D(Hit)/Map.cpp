@@ -84,6 +84,7 @@ void Map::Load(const TCHAR* fmfFilePath)
 			chip.col = i;
 			chip.row = j;
 			chip.sprite = sprite;
+			chip.chipKind = currentData[i][j];
 			chips.push_back(chip);
 		}
 	}
@@ -105,7 +106,10 @@ void Map::Draw()
 	// ゆくゆくはカメラを持ってきて、カメラ範囲以外表示しないように
 	for (const auto& chip : chips)
 	{
-		chip.sprite->Draw();
+		if (chip.chipKind > 0)
+		{
+			chip.sprite->Draw();
+		}
 	}
 }
 

@@ -42,14 +42,6 @@ void Player::Update(const Map& map)
 
 	// 単純に方向転換
 	dir = VGet(0, 0, 0);
-	if (input & PAD_INPUT_UP)
-	{
-		dir = VAdd(dir, VGet(0, 1, 0));
-	}
-	else if (input & PAD_INPUT_DOWN)
-	{
-		dir = VAdd(dir, VGet(0, -1, 0));
-	}
 	if (input & PAD_INPUT_RIGHT)
 	{
 		dir = VAdd(dir, VGet(1, 0, 0));
