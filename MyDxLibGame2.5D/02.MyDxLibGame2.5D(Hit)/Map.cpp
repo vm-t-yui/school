@@ -6,9 +6,6 @@
 #include "WorldSprite.h"
 #include "PlatinumLoader.h"
 
-const float Map::ChipSize = 0.725f;
-const int Map::ChipPixelSize = 32;
-
 /// <summary>
 /// コンストラクタ
 /// </summary>

@@ -36,8 +36,8 @@ public:
 	int GetMapRowNum() const { return dataRowNum; }
 
 	// マップチップのサイズ
-	static const float	ChipSize;
-	static const int	ChipPixelSize;
+	static constexpr float	ChipSize		= 0.725f;
+	static constexpr int	ChipPixelSize	= 32;
 
 private:
 	std::vector<std::vector<int>> currentData;
