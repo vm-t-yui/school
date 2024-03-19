@@ -77,7 +77,7 @@ void Map::Load(const TCHAR* fmfFilePath)
 			// チップのサイズは真四角
 			Chip chip;
 			chip.pos = chipPos;
-			chip.w = chip.w = Map::ChipSize;
+			chip.w = chip.h = Map::ChipSize;
 			chip.col = i;
 			chip.row = j;
 			chip.sprite = sprite;
