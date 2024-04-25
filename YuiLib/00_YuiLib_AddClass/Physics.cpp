@@ -1,32 +1,32 @@
-// 2024 Takeru Yui All Rights Reserved.
+ï»¿// 2024 Takeru Yui All Rights Reserved.
 #include "DxLib.h"
 #include "Physics.h"
 
 using namespace YuiLib;
 
 /// <summary>
-/// Õ“Ë•¨‚Ì“o˜^
+/// è¡çªç‰©ã®ç™»éŒ²
 /// </summary>
 void Physics::Entry(const Collidable* collidable)
 {
-	// TODO:“o˜^
-	printfDx("“o˜^I");
+	// TODO:ç™»éŒ²
+	printfDx("ç™»éŒ²ï¼");
 }
 
 /// <summary>
-/// Õ“Ë•¨‚Ì“o˜^‰ğœ
+/// è¡çªç‰©ã®ç™»éŒ²è§£é™¤
 /// </summary>
 void Physics::Exit(const Collidable* collidable)
 {
-	// TODO:“o˜^
-	printfDx("“o˜^‰ğœI");
+	// TODO:ç™»éŒ²
+	printfDx("ç™»éŒ²è§£é™¤ï¼");
 }
 
 /// <summary>
-/// XV
+/// æ›´æ–°
 /// </summary>
 void Physics::Update()
 {
-	// TODO:Õ“Ëî•ñ‚ÌXV‚Æ’Ê’m
-	printfDx("XVI");
+	// TODO:è¡çªæƒ…å ±ã®æ›´æ–°ã¨é€šçŸ¥
+	printfDx("æ›´æ–°ï¼");
 }

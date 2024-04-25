@@ -69,7 +69,7 @@
     <ClInclude Include="Rigidbody.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Yuilib.h">
+    <ClInclude Include="YuiLib.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
   </ItemGroup>

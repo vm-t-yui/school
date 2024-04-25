@@ -1,4 +1,4 @@
-// 2024 Takeru Yui All Rights Reserved.
+﻿// 2024 Takeru Yui All Rights Reserved.
 #pragma once
 
 namespace YuiLib {
@@ -6,12 +6,12 @@ namespace YuiLib {
 class Rigidbody;
 
 /// <summary>
-/// �Փ˂ł������
+/// インターフェース：衝突できるもの
 /// </summary>
-class Collidable
+class Collidable abstract
 {
 public:
-	void OnCollide();	// �Փ˂����Ƃ�
+	virtual void OnCollide() abstract;	// 衝突したとき
 
 private:
 	Rigidbody rigidbody;

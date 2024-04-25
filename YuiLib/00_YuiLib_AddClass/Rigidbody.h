@@ -1,10 +1,10 @@
-// 2024 Takeru Yui All Rights Reserved.
+ï»¿// 2024 Takeru Yui All Rights Reserved.
 #pragma once
 
 namespace YuiLib {
 
 /// <summary>
-/// •¨—AÕ“Ë”»’è‚É•K—v‚Èƒf[ƒ^‚Ì‰ò
+/// ç‰©ç†ã€è¡çªåˆ¤å®šã«å¿…è¦ãªãƒ‡ãƒ¼ã‚¿ã®å¡Š
 /// </summary>
 class Rigidbody
 {

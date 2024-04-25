@@ -1,4 +1,4 @@
-// 2024 Takeru Yui All Rights Reserved.
+ï»¿// 2024 Takeru Yui All Rights Reserved.
 #pragma once
 
 namespace YuiLib{
@@ -6,16 +6,16 @@ namespace YuiLib{
 class Collidable;
 
 /// <summary>
-/// •¨—‚ğ‚Â‚©‚³‚Ç‚é
+/// ç‰©ç†ã‚’ã¤ã‹ã•ã©ã‚‹
 /// </summary>
 class Physics final
 {
 public:
-	// Õ“Ë•¨‚Ì“o˜^E“o˜^‰ğœ
+	// è¡çªç‰©ã®ç™»éŒ²ãƒ»ç™»éŒ²è§£é™¤
 	void Entry(const Collidable* collidable);
 	void Exit(const Collidable* collidable);
 
-	void Update();	// XV
+	void Update();	// æ›´æ–°
 };
 
 }

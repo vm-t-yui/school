@@ -94,6 +94,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>../../Dxlib_h</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -111,6 +112,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>../../Dxlib_h</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -183,7 +185,7 @@
     <ClInclude Include="FrontGround2D.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="WorldSprite.h" />
-    <ClInclude Include="Yuilib.h" />
+    <ClInclude Include="YuiLib.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

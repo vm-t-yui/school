@@ -5,7 +5,7 @@
 #include "DxLib.h"
 #include "Screen.h"
 //#include "GameObject.h"
-#include "Yuilib.h"
+#include "YuiLib.h"
 #include "Player.h"
 #include "Camera.h"
 #include "BackGround3D.h"

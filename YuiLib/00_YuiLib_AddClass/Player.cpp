@@ -2,7 +2,7 @@
 #include "DxLib.h"
 #include "Screen.h"
 #include "Rigidbody.h"
-#include "Yuilib.h"
+#include "YuiLib.h"
 //#include "GameObject.h"
 #include "Player.h"
 
@@ -101,5 +101,13 @@ void Player::Update()
 void Player::Draw()
 {
 	//DrawGraph((int)obj.pos.x, (int)obj.pos.y, obj.graph, TRUE);
+}
+
+/// <summary>
+/// 衝突したとき
+/// </summary>
+void Player::OnCollide()
+{
+	printfDx("プレイヤー当たった！");
 }
 

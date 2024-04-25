@@ -15,6 +15,9 @@ public:
 	void Update();
 	void Draw();
 
+	// 衝突したとき
+	void OnCollide() override;
+
 private:
 	//GameObject	obj;
 	//float		speed;

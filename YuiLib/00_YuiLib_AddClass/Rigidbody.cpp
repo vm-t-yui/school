@@ -1,3 +1,3 @@
-// 2024 Takeru Yui All Rights Reserved.
+﻿// 2024 Takeru Yui All Rights Reserved.
 #include "DxLib.h"
 #include "Rigidbody.h"
