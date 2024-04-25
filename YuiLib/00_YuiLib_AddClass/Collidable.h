@@ -6,7 +6,7 @@ namespace YuiLib {
 class Rigidbody;
 
 /// <summary>
-/// インターフェース：衝突できるもの
+/// 衝突できるもの
 /// </summary>
 class Collidable abstract
 {
