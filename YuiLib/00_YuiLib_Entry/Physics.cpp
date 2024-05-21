@@ -14,7 +14,7 @@ void Physics::Entry(Collidable* collidable)
 {
 	// 登録
 	bool found = (std::find(collidables.begin(), collidables.end(), collidable) != collidables.end());
-	if(found)
+	if(!found)
 	{
 		collidables.emplace_back(collidable);
 		//collidables.push_back(collidable);
