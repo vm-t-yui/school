@@ -120,6 +120,7 @@ void Player::Draw()
 /// </summary>
 void Player::OnCollide()
 {
-	printfDx("プレイヤー当たった！");
+	// TODO:何と当たったかログに出す
+	printfDx("プレイヤーが●●と当たった！");
 }
 

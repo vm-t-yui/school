@@ -64,6 +64,7 @@ void Enemy::Draw()
 /// </summary>
 void Enemy::OnCollide()
 {
-	printfDx("エネミー当たった！");
+	// TODO:何と当たったかログに出す
+	printfDx("敵が●●と当たった！");
 }
 
