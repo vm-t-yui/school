@@ -128,7 +128,43 @@ void Physics::CheckColide(std::vector<OnCollideInfo>& onCollideInfo)
 					if (IsCollide(objA, objB))
 					{
 						// 次目標位置修正
-						FixNextPosition(onCollideInfo, objA, objB);
+						auto priorityA = objA->GetPriority();
+						auto priorityB = objB->GetPriority();
+
+						// プライオリティの高いほうを移動
+						Collidable* higher = objA;
+						Collidable* lower = objB;
+						if (priorityA < priorityB)
+						{
+							higher = objB;
+							lower = objA;
+						}
+						FixNextPosition(higher, lower);
+
+						// 衝突通知情報の更新
+						// HACK: higherもlowerも何回も呼ばれる可能性はあるので、排他遅延処理
+						bool hasHigherInfo = false;
+						bool hasLowerInfo = false;
+						for (const auto& item : onCollideInfo)
+						{
+							// 既に通知リストに含まれていたら呼ばない
+							if (item.owner == higher)
+							{
+								hasHigherInfo = true;
+							}
+							if (item.owner == lower)
+							{
+								hasLowerInfo = true;
+							}
+						}
+						if (!hasHigherInfo)
+						{
+							onCollideInfo.push_back({ higher, lower });
+						}
+						if (!hasLowerInfo)
+						{
+							onCollideInfo.push_back({ lower, higher });
+						}
 
 						// 一度でもヒット+補正したら衝突判定と補正やりなおし
 						doCheck = true;
@@ -172,22 +208,10 @@ bool Physics::IsCollide(Collidable* objA, Collidable* objB)
 /// <summary>
 /// 次位置補正
 /// </summary>
-void Physics::FixNextPosition(std::vector<OnCollideInfo>& onCollideInfo, Collidable* objA, Collidable* objB)
+void Physics::FixNextPosition(Collidable* higher, Collidable* lower)
 {
 	// TODO: tagとは別に、当たり判定の種別を準備し、それによって補正位置を返る
 
-	// 衝突によるポジション補正
-	auto priorityA = objA->GetPriority();
-	auto priorityB = objB->GetPriority();
-
-	// プライオリティの高いほうを移動
-	Collidable* higher = objA;
-	Collidable* lower = objB;
-	if (priorityA < priorityB)
-	{
-		higher = objB;
-		lower = objA;
-	}
 	VECTOR higherToLower = VSub(lower->nextPos, higher->nextPos);
 	VECTOR higherToLowerN = VNorm(higherToLower);
 
@@ -195,29 +219,4 @@ void Physics::FixNextPosition(std::vector<OnCollideInfo>& onCollideInfo, Collida
 	VECTOR higherToNewLowerPos = VScale(higherToLowerN, awayDist);
 	VECTOR fixedPos = VAdd(higher->nextPos, higherToNewLowerPos);
 	lower->nextPos = fixedPos;
-
-	// 衝突通知
-	// HACK: higherもlowerも何回も呼ばれる可能性はあるので、排他遅延処理
-	bool hasHigherInfo = false;
-	bool hasLowerInfo = false;
-	for (const auto& item : onCollideInfo)
-	{
-		// 既に通知リストに含まれていたら呼ばない
-		if (item.owner == higher)
-		{
-			hasHigherInfo = true;
-		}
-		if (item.owner == lower)
-		{
-			hasLowerInfo = true;
-		}
-	}
-	if (!hasHigherInfo)
-	{
-		onCollideInfo.push_back({ higher, lower });
-	}
-	if (!hasLowerInfo)
-	{
-		onCollideInfo.push_back({ lower, higher });
-	}
 }

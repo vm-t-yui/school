@@ -132,6 +132,7 @@ void Physics::CheckColide(std::vector<OnCollideInfo>& onCollideInfo)
 					if (atobLength < objA->radius + objB->radius)
 					{
 						// 次目標位置修正
+						// HACK: onCollideInfoを渡すの気持ちわるい…あくまでFixNextPositionなのに
 						FixNextPosition(onCollideInfo, objA, objB);
 
 						// 一度でもヒット+補正したら衝突判定と補正やりなおし
