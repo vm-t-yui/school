@@ -76,7 +76,7 @@ void Physics::Update()
 		item->nextPos = nextPos;
 	}
 
-	// 衝突通知、ポジション補正
+	// 衝突チェック、通知、ポジション補正
 	bool	doCheck = true;
 	int		checkCount = 0;	// チェック回数
 	while (doCheck)
