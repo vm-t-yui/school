@@ -131,10 +131,10 @@ void Physics::Update()
 							VECTOR fixedPos = VAdd(player->rigidbody.GetPos(), playerToNewEnemyPos);
 							enemy->rigidbody.SetPos(fixedPos);
 
-							// HACK: AもBも何回も呼ばれる可能性はある
+							// HACK: playerもenemyも何回も呼ばれる可能性はある
 							// 衝突通知
-							objA->OnCollide(*objB);
-							objB->OnCollide(*objA);
+							player->OnCollide(*enemy);
+							enemy->OnCollide(*player);
 
 							// 補正後の位置をデバッグ表示
 #if _DEBUG

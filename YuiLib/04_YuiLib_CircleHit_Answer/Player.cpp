@@ -121,7 +121,7 @@ void Player::Draw()
 /// </summary>
 void Player::OnCollide(const Collidable& colider)
 {
-	std::string message = "敵が";
+	std::string message = "プレイヤーが";
 	if (colider.GetTag() == Collidable::Tag::Player)
 	{
 		message += "プレイヤー";
