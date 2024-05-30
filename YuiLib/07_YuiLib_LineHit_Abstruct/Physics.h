@@ -21,6 +21,10 @@ public:
 	void Update();	// 更新（登録オブジェクトの物理移動、衝突通知）
 
 private:
+	static const int BeforeFixInfoColor	= 0x0000ff;	// 補正前情報色
+	static const int AimInfoColor		= 0x0000aa;	// 補正前予定情報色
+	static const int AfterFixInfoColor	= 0xff00ff;	// 補正後情報色
+
 	std::list<Collidable*> collidables;	// 登録されたCollidableのリスト
 
 	// OnCollideの遅延通知のためのデータ

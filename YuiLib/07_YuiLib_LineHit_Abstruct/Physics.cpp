@@ -65,11 +65,11 @@ void Physics::Update()
 		auto pos = item->rigidbody.GetPos();
 		auto nextPos = VAdd(pos, item->rigidbody.GetVelocity());
 
-		// もともとの情報をデバッグ表示
+		// もともとの情報、予定情報をデバッグ表示
 #if _DEBUG
-		DebugDraw::DrawLine(pos, nextPos, 0x0000ff);
-		DebugDraw::DrawCircle(pos, item->radius, 0x0000aa);
-		DebugDraw::DrawCircle(nextPos, item->radius, 0x0000ff);
+		DebugDraw::DrawCircle(pos, item->radius, BeforeFixInfoColor);
+		DebugDraw::DrawLine(pos, nextPos, AimInfoColor);
+		DebugDraw::DrawCircle(nextPos, item->radius, AimInfoColor);
 #endif
 
 		// 予定ポジション設定
@@ -85,8 +85,8 @@ void Physics::Update()
 	{
 #if _DEBUG
 		// 補正後の位置をデバッグ表示
-		DebugDraw::DrawLine(item->rigidbody.GetPos(), item->nextPos, 0xff00ff);
-		DebugDraw::DrawCircle(item->nextPos, item->radius, 0xff00ff);
+		DebugDraw::DrawLine(item->rigidbody.GetPos(), item->nextPos, AfterFixInfoColor);
+		DebugDraw::DrawCircle(item->nextPos, item->radius, AfterFixInfoColor);
 #endif
 		// nextPosを更新したので、velocityもそこに移動するvelocityに修正
 		VECTOR toFixedPos = VSub(item->nextPos, item->rigidbody.GetPos());
