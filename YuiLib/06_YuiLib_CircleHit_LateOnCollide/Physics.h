@@ -36,6 +36,7 @@ private:
 
 	// 次位置補正
 	void FixNextPosition(std::vector<OnCollideInfo>& onCollideInfo, Collidable* objA, Collidable* objB);
+	void FixPosition();	// 位置の確定
 };
 
 }

@@ -36,11 +36,12 @@ private:
 	};
 
 	// 当たり判定チェック
-	void CheckColide(std::vector<OnCollideInfo>& onCollideInfo);
-	bool IsCollide(Collidable* objA, Collidable* objB);
+	std::vector<OnCollideInfo> CheckColide() const;
+	bool IsCollide(const Collidable* objA, const Collidable* objB) const;
 
-	// 次位置補正
-	void FixNextPosition(Collidable* higher, Collidable* lower);
+	// 位置補正、決定
+	void FixNextPosition(Collidable* primary, Collidable* secondary) const;
+	void FixPosition();
 };
 
 }

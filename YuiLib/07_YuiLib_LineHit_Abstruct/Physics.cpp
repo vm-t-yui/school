@@ -59,7 +59,7 @@ void Physics::Exit(Collidable* collidable)
 void Physics::Update()
 {
 	// 移動
-	for (auto item : collidables)
+	for (auto& item : collidables)
 	{
 		// ポジションに移動力を足す
 		auto pos = item->rigidbody.GetPos();
@@ -77,27 +77,13 @@ void Physics::Update()
 	}
 
 	// 当たり判定チェック（nextPos指定）
-	std::vector<OnCollideInfo> onCollideInfo;
-	CheckColide(onCollideInfo);
+	std::vector<OnCollideInfo> onCollideInfo = CheckColide();
 
-	// velocity、位置補正
-	for (auto item : collidables)
-	{
-#if _DEBUG
-		// 補正後の位置をデバッグ表示
-		DebugDraw::DrawLine(item->rigidbody.GetPos(), item->nextPos, AfterFixInfoColor);
-		DebugDraw::DrawCircle(item->nextPos, item->radius, AfterFixInfoColor);
-#endif
-		// nextPosを更新したので、velocityもそこに移動するvelocityに修正
-		VECTOR toFixedPos = VSub(item->nextPos, item->rigidbody.GetPos());
-		item->rigidbody.SetVelocity(toFixedPos);
-
-		// 位置確定
-		item->rigidbody.SetPos(item->nextPos);
-	}
+	// 位置確定
+	FixPosition();
 
 	// 当たり通知
-	for (auto item : onCollideInfo)
+	for (auto& item : onCollideInfo)
 	{
 		item.owner->OnCollide(*item.colider);
 	}
@@ -106,8 +92,9 @@ void Physics::Update()
 /// <summary>
 /// 当たり判定チェック
 /// </summary>
-void Physics::CheckColide(std::vector<OnCollideInfo>& onCollideInfo)
+std::vector<Physics::OnCollideInfo> Physics::CheckColide() const
 {
+	std::vector<OnCollideInfo> onCollideInfo;
 	// 衝突通知、ポジション補正
 	bool	doCheck = true;
 	int		checkCount = 0;	// チェック回数
@@ -118,9 +105,9 @@ void Physics::CheckColide(std::vector<OnCollideInfo>& onCollideInfo)
 
 		// 2重ループで全オブジェクト当たり判定
 		// FIXME: 重いので近いオブジェクト同士のみ当たり判定するなど工夫がいる
-		for (auto objA : collidables)
+		for (auto& objA : collidables)
 		{
-			for (auto objB : collidables)
+			for (auto& objB : collidables)
 			{
 				if (objA != objB)
 				{
@@ -132,38 +119,38 @@ void Physics::CheckColide(std::vector<OnCollideInfo>& onCollideInfo)
 						auto priorityB = objB->GetPriority();
 
 						// プライオリティの高いほうを移動
-						Collidable* higher = objA;
-						Collidable* lower = objB;
+						Collidable* primary = objA;
+						Collidable* secondary = objB;
 						if (priorityA < priorityB)
 						{
-							higher = objB;
-							lower = objA;
+							primary = objB;
+							secondary = objA;
 						}
-						FixNextPosition(higher, lower);
+						FixNextPosition(primary, secondary);
 
 						// 衝突通知情報の更新
-						// HACK: higherもlowerも何回も呼ばれる可能性はあるので、排他遅延処理
+						// HACK: primaryもsecondaryも何回も呼ばれる可能性はあるので、排他遅延処理
 						bool hasHigherInfo = false;
-						bool hasLowerInfo = false;
+						bool hasSecondaryInfo = false;
 						for (const auto& item : onCollideInfo)
 						{
 							// 既に通知リストに含まれていたら呼ばない
-							if (item.owner == higher)
+							if (item.owner == primary)
 							{
 								hasHigherInfo = true;
 							}
-							if (item.owner == lower)
+							if (item.owner == secondary)
 							{
-								hasLowerInfo = true;
+								hasSecondaryInfo = true;
 							}
 						}
 						if (!hasHigherInfo)
 						{
-							onCollideInfo.push_back({ higher, lower });
+							onCollideInfo.push_back({ primary, secondary });
 						}
-						if (!hasLowerInfo)
+						if (!hasSecondaryInfo)
 						{
-							onCollideInfo.push_back({ lower, higher });
+							onCollideInfo.push_back({ secondary, primary });
 						}
 
 						// 一度でもヒット+補正したら衝突判定と補正やりなおし
@@ -188,12 +175,13 @@ void Physics::CheckColide(std::vector<OnCollideInfo>& onCollideInfo)
 			break;
 		}
 	}
+	return onCollideInfo;
 }
 
 /// <summary>
 /// 当たっているかどうかだけ判定
 /// </summary>
-bool Physics::IsCollide(Collidable* objA, Collidable* objB)
+bool Physics::IsCollide(const Collidable* objA, const Collidable* objB) const
 {
 	// TODO: ラインと円、円と円で当たり判定を分ける。壁はライン
 	// TODO: collidableの種類によって、当たり判定を分ける
@@ -208,15 +196,36 @@ bool Physics::IsCollide(Collidable* objA, Collidable* objB)
 /// <summary>
 /// 次位置補正
 /// </summary>
-void Physics::FixNextPosition(Collidable* higher, Collidable* lower)
+void Physics::FixNextPosition(Collidable* primary, Collidable* secondary) const
 {
 	// TODO: tagとは別に、当たり判定の種別を準備し、それによって補正位置を返る
 
-	VECTOR higherToLower = VSub(lower->nextPos, higher->nextPos);
-	VECTOR higherToLowerN = VNorm(higherToLower);
+	VECTOR primaryToSecondary = VSub(secondary->nextPos, primary->nextPos);
+	VECTOR primaryToSecondaryN = VNorm(primaryToSecondary);
 
-	float  awayDist = higher->radius + lower->radius + 0.0001f;	// そのままだとちょうど当たる位置になるので少し余分に離す
-	VECTOR higherToNewLowerPos = VScale(higherToLowerN, awayDist);
-	VECTOR fixedPos = VAdd(higher->nextPos, higherToNewLowerPos);
-	lower->nextPos = fixedPos;
+	float  awayDist = primary->radius + secondary->radius + 0.0001f;	// そのままだとちょうど当たる位置になるので少し余分に離す
+	VECTOR primaryToNewSecondaryPos = VScale(primaryToSecondaryN, awayDist);
+	VECTOR fixedPos = VAdd(primary->nextPos, primaryToNewSecondaryPos);
+	secondary->nextPos = fixedPos;
+}
+
+/// <summary>
+/// 位置確定
+/// </summary>
+void Physics::FixPosition()
+{
+	for (auto& item : collidables)
+	{
+#if _DEBUG
+		// 補正後の位置をデバッグ表示
+		DebugDraw::DrawLine(item->rigidbody.GetPos(), item->nextPos, AfterFixInfoColor);
+		DebugDraw::DrawCircle(item->nextPos, item->radius, AfterFixInfoColor);
+#endif
+		// Posを更新するので、velocityもそこに移動するvelocityに修正
+		VECTOR toFixedPos = VSub(item->nextPos, item->rigidbody.GetPos());
+		item->rigidbody.SetVelocity(toFixedPos);
+
+		// 位置確定
+		item->rigidbody.SetPos(item->nextPos);
+	}
 }

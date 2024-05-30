@@ -59,7 +59,7 @@ void Physics::Exit(Collidable* collidable)
 void Physics::Update()
 {
 	// 移動
-	for (auto item : collidables)
+	for (auto& item : collidables)
 	{
 		// ポジションに移動力を足す
 		auto pos = item->rigidbody.GetPos();
@@ -80,24 +80,11 @@ void Physics::Update()
 	std::vector<OnCollideInfo> onCollideInfo;
 	CheckColide(onCollideInfo);
 
-	// velocity、位置補正
-	for (auto item : collidables)
-	{
-#if _DEBUG
-		// 補正後の位置をデバッグ表示
-		DebugDraw::DrawLine(item->rigidbody.GetPos(), item->nextPos, 0xff00ff);
-		DebugDraw::DrawCircle(item->nextPos, item->radius, 0xff00ff);
-#endif
-		// nextPosを更新したので、velocityもそこに移動するvelocityに修正
-		VECTOR toFixedPos = VSub(item->nextPos, item->rigidbody.GetPos());
-		item->rigidbody.SetVelocity(toFixedPos);
-
-		// 位置確定
-		item->rigidbody.SetPos(item->nextPos);
-	}
+	// 位置確定
+	FixPosition();
 
 	// 当たり通知
-	for (auto item : onCollideInfo)
+	for (auto& item : onCollideInfo)
 	{
 		item.owner->OnCollide(*item.colider);
 	}
@@ -118,9 +105,9 @@ void Physics::CheckColide(std::vector<OnCollideInfo>& onCollideInfo)
 
 		// 2重ループで全オブジェクト当たり判定
 		// FIXME: 重いので近いオブジェクト同士のみ当たり判定するなど工夫がいる
-		for (auto objA : collidables)
+		for (auto& objA : collidables)
 		{
-			for (auto objB : collidables)
+			for (auto& objB : collidables)
 			{
 				if (objA != objB)
 				{
@@ -219,5 +206,27 @@ void Physics::FixNextPosition(std::vector<OnCollideInfo>& onCollideInfo, Collida
 		{
 			onCollideInfo.push_back({ enemy, player });
 		}
+	}
+}
+
+/// <summary>
+/// 位置確定
+/// </summary>
+void Physics::FixPosition()
+{
+	// velocity、位置補正
+	for (auto& item : collidables)
+	{
+#if _DEBUG
+		// 補正後の位置をデバッグ表示
+		DebugDraw::DrawLine(item->rigidbody.GetPos(), item->nextPos, 0xff00ff);
+		DebugDraw::DrawCircle(item->nextPos, item->radius, 0xff00ff);
+#endif
+		// nextPosを更新したので、velocityもそこに移動するvelocityに修正
+		VECTOR toFixedPos = VSub(item->nextPos, item->rigidbody.GetPos());
+		item->rigidbody.SetVelocity(toFixedPos);
+
+		// 位置確定
+		item->rigidbody.SetPos(item->nextPos);
 	}
 }
