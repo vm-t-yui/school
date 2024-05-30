@@ -59,7 +59,7 @@ void Physics::Exit(Collidable* collidable)
 void Physics::Update()
 {
 	// 衝突情報の更新と通知
-	for (auto item : collidables)
+	for (auto& item : collidables)
 	{
 		// 移動
 		// ポジションに移動力を足す

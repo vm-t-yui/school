@@ -59,7 +59,7 @@ void Physics::Exit(Collidable* collidable)
 void Physics::Update()
 {
 	// 移動
-	for (auto item : collidables)
+	for (auto& item : collidables)
 	{
 		// ポジションに移動力を足す
 		auto pos = item->rigidbody.GetPos();
@@ -86,9 +86,9 @@ void Physics::Update()
 
 		// 2重ループで全オブジェクト当たり判定
 		// FIXME: 重いので近いオブジェクト同士のみ当たり判定するなど工夫がいる
-		for (auto objA : collidables)
+		for (auto& objA : collidables)
 		{
-			for (auto objB : collidables)
+			for (auto& objB : collidables)
 			{
 				if (objA != objB)
 				{

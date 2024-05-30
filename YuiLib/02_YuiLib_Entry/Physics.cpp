@@ -61,7 +61,7 @@ void Physics::Exit(Collidable* collidable)
 void Physics::Update()
 {
 	// TODO:衝突情報の更新と通知
-	for (auto item : collidables)
+	for (auto& item : collidables)
 	{
 		//if(衝突したら)
 		item->OnCollide();
