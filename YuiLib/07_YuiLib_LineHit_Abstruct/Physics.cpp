@@ -130,21 +130,21 @@ std::vector<Physics::OnCollideInfo> Physics::CheckColide() const
 
 						// 衝突通知情報の更新
 						// HACK: primaryもsecondaryも何回も呼ばれる可能性はあるので、排他遅延処理
-						bool hasHigherInfo = false;
+						bool hasPrimaryInfo = false;
 						bool hasSecondaryInfo = false;
 						for (const auto& item : onCollideInfo)
 						{
 							// 既に通知リストに含まれていたら呼ばない
 							if (item.owner == primary)
 							{
-								hasHigherInfo = true;
+								hasPrimaryInfo = true;
 							}
 							if (item.owner == secondary)
 							{
 								hasSecondaryInfo = true;
 							}
 						}
-						if (!hasHigherInfo)
+						if (!hasPrimaryInfo)
 						{
 							onCollideInfo.push_back({ primary, secondary });
 						}
@@ -185,7 +185,7 @@ bool Physics::IsCollide(const Collidable* objA, const Collidable* objB) const
 {
 	// TODO: ラインと円、円と円で当たり判定を分ける。壁はライン
 	// TODO: collidableの種類によって、当たり判定を分ける
-	// TODO: tagとは別に、当たり判定の種別を準備し、それによって計算を分ける
+	// TODO: 当たり判定の種別を準備し、それによって計算を分ける
 	auto atob = VSub(objB->nextPos, objA->nextPos);
 	auto atobLength = VSize(atob);
 
@@ -198,7 +198,7 @@ bool Physics::IsCollide(const Collidable* objA, const Collidable* objB) const
 /// </summary>
 void Physics::FixNextPosition(Collidable* primary, Collidable* secondary) const
 {
-	// TODO: tagとは別に、当たり判定の種別を準備し、それによって補正位置を返る
+	// TODO: 当たり判定の種別を準備し、それによって補正位置を変える
 
 	VECTOR primaryToSecondary = VSub(secondary->nextPos, primary->nextPos);
 	VECTOR primaryToSecondaryN = VNorm(primaryToSecondary);
