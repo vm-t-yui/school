@@ -7,8 +7,9 @@ using namespace YuiLib;
 /// <summary>
 /// コンストラクタ
 /// </summary>
-Collidable::Collidable(GameObjectTag tag)
-	: tag	(tag)
+Collidable::Collidable(Priority priority, GameObjectTag tag)
+	: priority	(priority)
+	, tag		(tag)
 {
 	// 処理なし
 }

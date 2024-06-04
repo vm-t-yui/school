@@ -24,7 +24,7 @@ public:
 		Static,		// 動かない（最高）
 	};
 
-	Collidable(GameObjectTag tag);				// コンストラクタ
+	Collidable(Priority priority, GameObjectTag tag);				// コンストラクタ
 	virtual void OnCollide(const Collidable& colider) abstract;	// 衝突したとき
 
 	GameObjectTag	GetTag()		const { return tag; }		// タグ情報

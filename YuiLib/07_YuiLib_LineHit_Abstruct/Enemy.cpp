@@ -9,7 +9,7 @@
 /// コンストラクタ
 /// </summary>
 Enemy::Enemy()
-	: Collidable		(GameObjectTag::Enemy)
+	: Collidable		(Collidable::Priority::Low, GameObjectTag::Enemy)
 	, graphicHandle		(-1)
 {
 	radius = 20.0f;

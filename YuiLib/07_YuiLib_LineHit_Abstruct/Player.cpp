@@ -9,7 +9,7 @@
 /// コンストラクタ
 /// </summary>
 Player::Player()
-	: Collidable		(GameObjectTag::Player)
+	: Collidable(Collidable::Priority::High, GameObjectTag::Player)
 	, graphicHandle		(-1)
 	, speed				(0)
 {
