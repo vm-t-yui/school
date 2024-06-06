@@ -190,7 +190,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="WorldSprite.h" />
     <ClInclude Include="YuiLib.h" />
-    <ClInclude Include="Tag.h" />
+    <ClInclude Include="GameObjectTag.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

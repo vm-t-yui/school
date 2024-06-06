@@ -87,7 +87,7 @@
     <ClInclude Include="Enemy.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Tag.h">
+    <ClInclude Include="GameObjectTag.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,7 +1,7 @@
 ﻿// 2024 Takeru Yui All Rights Reserved.
 #pragma once
 
-#include "Tag.h"
+#include "GameObjectTag.h"
 
 namespace YuiLib {
 
