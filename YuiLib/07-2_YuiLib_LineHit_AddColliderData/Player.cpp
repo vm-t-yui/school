@@ -13,7 +13,7 @@ Player::Player()
 	, graphicHandle		(-1)
 	, speed				(0)
 {
-	// TODO: コンストラクタの前に当たり判定が確定してデータが入るようにしたい
+	// TODO: Playerのコンストラクタの前に当たり判定が確定してデータが入るようにしたい
 	// TODO: こうしたい
 	//ColliderDataCircle2D* circleData;
 	//circleData = ???;

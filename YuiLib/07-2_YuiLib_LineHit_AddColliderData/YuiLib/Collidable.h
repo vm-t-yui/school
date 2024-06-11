@@ -34,7 +34,7 @@ public:
 protected:
 	Rigidbody		rigidbody;		// 物理データ
 	
-	// TODO: コンストラクタの前に当たり判定が確定してデータが入るようにしたい
+	// TODO: Playerのコンストラクタの前に当たり判定が確定してデータが入るようにしたい
 	// TODO: どこかでもらったkindに応じて、当たり判定データをColliderDataの派生として確保したい
 	ColliderData* colliderData;	// 当たり判定データ
 	// TODO: radiusをcolliderData2Dに移動したい
