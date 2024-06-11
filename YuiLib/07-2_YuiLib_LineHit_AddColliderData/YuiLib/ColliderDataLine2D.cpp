@@ -8,9 +8,9 @@ using namespace YuiLib;
 /// コンストラクタ
 /// </summary>
 ColliderDataLine2D::ColliderDataLine2D()
-	: ColliderData(ColliderData::Kind::Circle2D)
-	, start(VGet(0, 0, 0))
-	, end(VGet(0, 0, 0))
+	: ColliderData(ColliderData::Kind::Line2D)
+	, startPoint(VGet(0, 0, 0))
+	, endPoint(VGet(0, 0, 0))
 {
 	// 処理なし
 }
