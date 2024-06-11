@@ -9,14 +9,11 @@
 /// コンストラクタ
 /// </summary>
 Player::Player()
-	: Collidable(Collidable::Priority::High, GameObjectTag::Player)
+	: Collidable(Collidable::Priority::High, GameObjectTag::Player, YuiLib::ColliderData::Kind::Circle2D)
 	, graphicHandle		(-1)
 	, speed				(0)
 {
-	// ColliderDataCircle2D型で当たり判定を準備
-	circleColliderData = static_cast<YuiLib::ColliderDataCircle2D*>(
-			CreateColliderData(YuiLib::ColliderData::Kind::Circle2D)
-		);
+	auto circleColliderData = static_cast<YuiLib::ColliderDataCircle2D*>(colliderData);
 	circleColliderData->radius = 22.0f;
 }
 

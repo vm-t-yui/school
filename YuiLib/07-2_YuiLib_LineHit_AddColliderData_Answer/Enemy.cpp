@@ -9,13 +9,10 @@
 /// コンストラクタ
 /// </summary>
 Enemy::Enemy()
-	: Collidable		(Collidable::Priority::Low, GameObjectTag::Enemy)
+	: Collidable		(Collidable::Priority::Low, GameObjectTag::Enemy, YuiLib::ColliderData::Kind::Circle2D)
 	, graphicHandle		(-1)
 {
-	// ColliderDataCircle2D型で当たり判定を準備
-	circleColliderData = static_cast<YuiLib::ColliderDataCircle2D*>(
-		CreateColliderData(YuiLib::ColliderData::Kind::Circle2D)
-		);
+	auto circleColliderData = static_cast<YuiLib::ColliderDataCircle2D*>(colliderData);
 	circleColliderData->radius = 20.0f;
 }
 

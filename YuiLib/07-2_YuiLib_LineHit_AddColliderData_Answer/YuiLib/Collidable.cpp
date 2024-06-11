@@ -8,13 +8,13 @@ using namespace YuiLib;
 /// <summary>
 /// コンストラクタ
 /// </summary>
-Collidable::Collidable(Priority priority, GameObjectTag tag)
+Collidable::Collidable(Priority priority, GameObjectTag tag, ColliderData::Kind colliderKind)
 	: priority		(priority)
 	, tag			(tag)
 	, colliderData	(nullptr)
 	, nextPos		(VGet(0,0,0))
 {
-	// 処理なし
+	CreateColliderData(colliderKind);
 }
 
 /// <summary>

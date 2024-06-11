@@ -12,7 +12,8 @@ class ColliderDataCircle2D : public ColliderData
 public:
 	ColliderDataCircle2D();
 
-	VECTOR		center;	// 円の中心点
+	// Collidableの位置が中心点になるので不要
+	//VECTOR		center;	// 円の中心点
 	float		radius;	// 円の半径
 };
 

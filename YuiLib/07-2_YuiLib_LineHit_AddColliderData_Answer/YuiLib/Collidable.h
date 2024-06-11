@@ -25,23 +25,20 @@ public:
 		Static,		// 動かない（最高）
 	};
 
-	Collidable(Priority priority, GameObjectTag tag);			// コンストラクタ
-	virtual ~Collidable();										// デストラクタ
-	virtual void OnCollide(const Collidable& colider) abstract;	// 衝突したとき
+	Collidable(Priority priority, GameObjectTag tag, ColliderData::Kind colliderKind);	// コンストラクタ
+	virtual ~Collidable();													// デストラクタ
+	virtual void OnCollide(const Collidable& colider) abstract;				// 衝突したとき
 
-	GameObjectTag	GetTag()		const { return tag; }		// タグ情報
-	Priority		GetPriority()	const { return priority; }	// 優先度
+	GameObjectTag	GetTag()		const { return tag; }					// タグ情報
+	Priority		GetPriority()	const { return priority; }				// 優先度
 
 protected:
-	ColliderData*	CreateColliderData(ColliderData::Kind kind);
-
 	Rigidbody		rigidbody;		// 物理データ
 	ColliderData*	colliderData;	// 当たり判定データ
-	
-	// ↑のcolliderDataに移動したい
-	//float radius;
 
 private:
+	ColliderData* CreateColliderData(ColliderData::Kind kind);
+
 	GameObjectTag	tag;
 	Priority		priority;
 

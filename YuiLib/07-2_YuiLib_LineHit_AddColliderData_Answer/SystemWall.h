@@ -2,7 +2,6 @@
 
 class Physics;
 class Collidable;
-class YuiLib::ColliderDataCircle2D;
 
 /// <summary>
 /// 敵クラス。物理・衝突判定をするため、Collidableを継承
@@ -19,6 +18,4 @@ public:
 	void OnCollide(const Collidable& colider) override;
 
 private:
-	// 線の当たり判定型
-	YuiLib::ColliderDataLine2D* lineColliderData;
 };

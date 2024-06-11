@@ -20,7 +20,4 @@ public:
 
 private:
 	int		graphicHandle;	// 画像グラフィックハンドル
-	
-	// 円の当たり判定型
-	YuiLib::ColliderDataCircle2D* circleColliderData;
 };

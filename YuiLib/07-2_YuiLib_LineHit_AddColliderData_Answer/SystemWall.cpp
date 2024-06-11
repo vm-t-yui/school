@@ -9,12 +9,9 @@
 /// コンストラクタ
 /// </summary>
 SystemWall::SystemWall()
-	: Collidable		(Collidable::Priority::Static, GameObjectTag::SystemWall)
+	: Collidable		(Collidable::Priority::Static, GameObjectTag::SystemWall, YuiLib::ColliderData::Kind::Line2D)
 {
-	// ColliderDataLine2D型で当たり判定を準備
-	lineColliderData = static_cast<YuiLib::ColliderDataLine2D*>(
-			CreateColliderData(YuiLib::ColliderData::Kind::Line2D)
-		);
+	auto lineColliderData = static_cast<YuiLib::ColliderDataLine2D*>(colliderData);
 
 	// 壁の位置を作る
 	lineColliderData->startPoint	= VGet(600, 100, 0);
