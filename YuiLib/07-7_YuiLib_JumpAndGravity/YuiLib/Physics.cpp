@@ -64,7 +64,23 @@ void Physics::Update()
 	{
 		// ポジションに移動力を足す
 		auto pos = item->rigidbody.GetPos();
-		auto nextPos = VAdd(pos, item->rigidbody.GetVelocity());
+		auto velocity = item->rigidbody.GetVelocity();
+
+		// 重力を利用する設定なら、重力を追加する
+		if (item->rigidbody.UseGravity())
+		{
+			velocity = VAdd(velocity, VGet(0, Gravity, 0));
+
+			// 最大重力加速度より大きかったらクランプ
+			if (velocity.y < MaxGravityAccel)
+			{
+				velocity = VGet(velocity.x, MaxGravityAccel, velocity.z);
+			}
+		}
+
+		auto nextPos = VAdd(pos, velocity);
+
+		item->rigidbody.SetVelocity(velocity);
 
 		// もともとの情報、予定情報をデバッグ表示
 #if _DEBUG
@@ -258,7 +274,7 @@ bool Physics::IsCollide(const Collidable* objA, const Collidable* objB) const
 
 		// 一方通行ラインの場合は、円の移動前のポジション→次のポジションのベクトルが
 		// 一方通行ラインの通行可能方向かどうかの判定が必要
-		// 通行可能なら通常のライン当たり判定を行う
+		// 通行不可能な方向なら通常のライン当たり判定を行う
 		VECTOR prevToNext = VSub(circleCenter, circlePrevCenter);
 		VECTOR startToEnd = VSub(lineColliderData->endPoint, lineColliderData->startPoint);
 
@@ -278,12 +294,12 @@ bool Physics::IsCollide(const Collidable* objA, const Collidable* objB) const
 				// 通っていい方向は始点→終点ラインとZ=-1.0fなライン始点との外積
 				throughWay = VCross(startToEnd, VGet(startToEnd.x, startToEnd.y, -1.0f));
 			}
-
 		}
 		// 「円の移動前のポジション→次のポジション」ベクトルと、「通っていい方向」の内積がプラスなら当たる
 		if (VDot(prevToNext, throughWay) > 0)
 		{
-			isHit = (Segment_Point_MinLength(lineColliderData->startPoint, lineColliderData->endPoint, circleCenter) < circleColliderData->radius);
+			auto minLength = Segment_Point_MinLength(lineColliderData->startPoint, lineColliderData->endPoint, circleCenter);
+			isHit = (minLength < circleColliderData->radius);
 
 			// 例外処理：移動前に既に当たっている場合
 			//（移動前のポジションと線分の距離が円の半径より小さい場合）は無視

@@ -284,6 +284,14 @@ bool Physics::IsCollide(const Collidable* objA, const Collidable* objB) const
 		if (VDot(prevToNext, throughWay) > 0)
 		{
 			isHit = (Segment_Point_MinLength(lineColliderData->startPoint, lineColliderData->endPoint, circleCenter) < circleColliderData->radius);
+
+			// 例外処理：移動前に既に当たっている場合
+			//（移動前のポジションと線分の距離が円の半径より小さい場合）は無視
+			auto prevMinLength = Segment_Point_MinLength(lineColliderData->startPoint, lineColliderData->endPoint, circlePrevCenter);
+			if (isHit && (prevMinLength < circleColliderData->radius))
+			{
+				isHit = false;
+			}
 		}
 	}
 
