@@ -46,8 +46,13 @@ struct Shot
 	int		H;
 };
 
+// グローバル変数
+Enemy enemy;
+Player player;
+Shot shot[SHOT];
+
 // プレイヤー初期化
-void InitializePlayer(Player& player)
+void InitializePlayer()
 {
 	// プレイヤーのグラフィックをメモリにロード＆表示座標を初期化
 	player.Graph = LoadGraph("data/texture/player.png");
@@ -62,7 +67,7 @@ void InitializePlayer(Player& player)
 }
 
 // プレイヤーの更新処理
-void UpdatePlayer(Player& player, Shot shot[], int shotNum)
+void UpdatePlayer()
 {
 	// 矢印キーを押していたらプレイヤーを移動させる
 	if (CheckHitKey(KEY_INPUT_UP) == 1)
@@ -89,7 +94,7 @@ void UpdatePlayer(Player& player, Shot shot[], int shotNum)
 		if (player.PrevShotFlag == false)
 		{
 			// 画面上にでていない弾があるか、弾の数だけ繰り返して調べる
-			for (int i = 0; i < shotNum; i++)
+			for (int i = 0; i < SHOT; i++)
 			{
 				// 弾iが画面上にでていない場合はその弾を画面に出す
 				if (shot[i].visibleFlag == false)
@@ -137,14 +142,14 @@ void UpdatePlayer(Player& player, Shot shot[], int shotNum)
 }
 
 // プレイヤーの描画処理
-void DrawPlayer(Player& player)
+void DrawPlayer()
 {
 	// プレイヤーを描画
 	DrawGraph(player.X, player.Y, player.Graph, FALSE);
 }
 
 // エネミー初期化
-void InitializeEnemy(Enemy& enemy)
+void InitializeEnemy()
 {
 	enemy.Graph = LoadGraph("data/texture/enemy.png");
 	enemy.X = 0;
@@ -164,7 +169,7 @@ void InitializeEnemy(Enemy& enemy)
 }
 
 // エネミー更新
-void UpdateEnemy(Enemy& enemy)
+void UpdateEnemy()
 {
 	// エネミーの座標を移動している方向に移動する
 	if (enemy.RightMove == true)
@@ -190,7 +195,7 @@ void UpdateEnemy(Enemy& enemy)
 }
 
 // エネミー描画
-void DrawEnemy(Enemy& enemy)
+void DrawEnemy()
 {
 	// エネミーを描画
 	// 顔を歪めているかどうかで処理を分岐
@@ -217,60 +222,95 @@ void DrawEnemy(Enemy& enemy)
 }
 
 // ショット初期化
-void InitializeShot(Shot& shot)
+void InitializeShot()
 {
 	// ショットのグラフィックをメモリにロード.
-	shot.Graph = LoadGraph("data/texture/shot.png");
+	int shotGraph = LoadGraph("data/texture/shot.png");
+	for (int i = 0; i < SHOT; i++)
+	{
+		shot[i].Graph = shotGraph;
+	}
 
 	// 弾が画面上に存在しているか保持する変数に『存在していない』を意味するfalseを代入しておく
-	shot.visibleFlag = false;
+	for (int i = 0; i < SHOT; i++)
+	{
+		shot[i].visibleFlag = false;
+	}
 
 	// 弾のグラフィックのサイズをえる
-	GetGraphSize(shot.Graph, &shot.W, &shot.H);
+	int shotW, shotH;
+	GetGraphSize(shot[0].Graph, &shotW, &shotH);
+	for (int i = 0; i < SHOT; i++)
+	{
+		shot[i].W = shotW;
+		shot[i].H = shotH;
+	}
 }
 
 // ショット更新
-void UpdateShot(Shot& shot, Enemy& enemy)
+void UpdateShot()
 {
-	// 弾のあたり判定.
-	// 弾iが存在している場合のみ次の処理に映る
-	if (shot.visibleFlag == 1)
+	for (int i = 0; i < SHOT; i++)
 	{
-		// エネミーとの当たり判定
-		if (((shot.X > enemy.X && shot.X < enemy.X + enemy.W) ||
-			(enemy.X > shot.X && enemy.X < shot.X + shot.W)) &&
-			((shot.Y > enemy.Y && shot.Y < enemy.Y + enemy.H) ||
-				(enemy.Y > shot.Y && enemy.Y < shot.Y + shot.H)))
+		// 自機の弾iの移動ルーチン( 存在状態を保持している変数の内容がtrue(存在する)の場合のみ行う )
+		if (shot[i].visibleFlag == true)
 		{
-			// 接触している場合は当たった弾の存在を消す
-			shot.visibleFlag = 0;
+			// 弾iを１６ドット上に移動させる
+			shot[i].Y -= 16;
 
-			// エネミーの顔を歪めているかどうかを保持する変数に『歪めている』を表すTRUEを代入
-			enemy.DamageFlag = true;
+			// 画面外に出てしまった場合は存在状態を保持している変数にfalse(存在しない)を代入する
+			if (shot[i].Y < -80)
+			{
+				shot[i].visibleFlag = false;
+			}
 
-			// エネミーの顔を歪めている時間を測るカウンタ変数に０を代入
-			enemy.DamageCounter = 0;
+			// 画面に弾iを描画する
+			DrawGraph(shot[i].X, shot[i].Y, shot[i].Graph, FALSE);
+		}
+
+		// 弾のあたり判定.
+		// 弾iが存在している場合のみ次の処理に映る
+		if (shot[i].visibleFlag == 1)
+		{
+			// エネミーとの当たり判定
+			if (((shot[i].X > enemy.X && shot[i].X < enemy.X + enemy.W) ||
+				(enemy.X > shot[i].X && enemy.X < shot[i].X + shot[i].W)) &&
+				((shot[i].Y > enemy.Y && shot[i].Y < enemy.Y + enemy.H) ||
+					(enemy.Y > shot[i].Y && enemy.Y < shot[i].Y + shot[i].H)))
+			{
+				// 接触している場合は当たった弾の存在を消す
+				shot[i].visibleFlag = 0;
+
+				// エネミーの顔を歪めているかどうかを保持する変数に『歪めている』を表す１を代入
+				enemy.DamageFlag = 1;
+
+				// エネミーの顔を歪めている時間を測るカウンタ変数に０を代入
+				enemy.DamageCounter = 0;
+			}
 		}
 	}
 }
 
 // ショット描画
-void DrawShot(Shot& shot)
+void DrawShot()
 {
-	// 自機の弾iの移動ルーチン( 存在状態を保持している変数の内容がtrue(存在する)の場合のみ行う )
-	if (shot.visibleFlag == true)
+	for (int i = 0; i < SHOT; i++)
 	{
-		// 弾iを１６ドット上に移動させる
-		shot.Y -= 16;
-
-		// 画面外に出てしまった場合は存在状態を保持している変数にfalse(存在しない)を代入する
-		if (shot.Y < 0 - shot.H)
+		// 自機の弾iの移動ルーチン( 存在状態を保持している変数の内容がtrue(存在する)の場合のみ行う )
+		if (shot[i].visibleFlag == true)
 		{
-			shot.visibleFlag = false;
-		}
+			// 弾iを１６ドット上に移動させる
+			shot[i].Y -= 16;
 
-		// 画面に弾iを描画する
- 		DrawGraph(shot.X, shot.Y, shot.Graph, FALSE);
+			// 画面外に出てしまった場合は存在状態を保持している変数にfalse(存在しない)を代入する
+			if (shot[i].Y < 0 - shot[i].H)
+			{
+				shot[i].visibleFlag = false;
+			}
+
+			// 画面に弾iを描画する
+			DrawGraph(shot[i].X, shot[i].Y, shot[i].Graph, FALSE);
+		}
 	}
 }
 
@@ -288,22 +328,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		return -1;
 	}
 
-	Enemy enemy;
-	Player player;
-	Shot shot[SHOT];
-
 	// グラフィックの描画先を裏画面にセット
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	InitializePlayer(player);	// プレイヤー初期化
+	InitializePlayer();	// プレイヤー初期化
 
 	// エネミーのグラフィックをメモリにロード＆表示座標を初期化
-	InitializeEnemy(enemy);
+	InitializeEnemy();
 
-	for (int i = 0; i < SHOT; i++)
-	{
-		InitializeShot(shot[i]);	// 弾初期化
-	}
+	InitializeShot();	// 弾初期化
 
 	// ゲームループ.
 	while (1)
@@ -314,23 +347,20 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		//------------------------------//
 		// プレイヤールーチン
 		//------------------------------//
-		UpdatePlayer(player, shot, SHOT);	// プレイヤーを更新する
-		DrawPlayer(player);	// プレイヤーを描画する
+		UpdatePlayer();	// プレイヤーを更新する
+		DrawPlayer();	// プレイヤーを描画する
 
 		//------------------------------//
 		// エネミールーチン
 		//------------------------------//
-		UpdateEnemy(enemy);
-		DrawEnemy(enemy);
+		UpdateEnemy();
+		DrawEnemy();
 
 		//------------------------------//
 		// 弾ルーチン
 		//------------------------------//
-		for (int i = 0;  i  < SHOT;  i ++)
-		{
-			UpdateShot(shot[i], enemy);
-			DrawShot(shot[i]);
-		}
+		UpdateShot();
+		DrawShot();
 
 		// 裏画面の内容を表画面にコピーする（描画の確定）.
 		ScreenFlip();

@@ -19,15 +19,4 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Enemy.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Shot.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
-  </ItemGroup>
 </Project>
