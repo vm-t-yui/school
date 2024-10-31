@@ -16,9 +16,6 @@ struct Player
 	int Graph;
 	int X;
 	int Y;
-
-	// ショットボタンが前のフレームで押されたかどうか
-	bool prevShotFlag;
 };
 
 // エネミー構造体.
@@ -85,10 +82,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	// ショットのグラフィックをメモリにロード.
 	Shot shot[SHOT];
-	int shotGraph = LoadGraph("data/texture/shot.png");
 	for (int i = 0; i < SHOT; i++)
 	{
-		shot[i].Graph = shotGraph;
+		shot[i].Graph = LoadGraph("data/texture/shot.png");
 	}
 
 	// 弾が画面上に存在しているか保持する変数に『存在していない』を意味するfalseを代入しておく
@@ -98,20 +94,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	}
 
 	// 弾のグラフィックのサイズをえる
-	int shotW, shotH;
-	GetGraphSize(shot[0].Graph, &shotW, &shotH);
 	for (int i = 0; i < SHOT; i++)
 	{
-		shot[i].W = shotW;
-		shot[i].H = shotH;
+		GetGraphSize(shot[i].Graph, &shot[i].W, &shot[i].H);
 	}
 
 	// エネミーのグラフィックのサイズを得る
 	GetGraphSize(enemy.Graph, &enemy.W, &enemy.H);
 
 	// ショットボタンが前のフレームで押されたかどうかを保存する変数にfalse(押されいない)を代入
-	player.prevShotFlag = false;
-
+	bool prevShotFlag = false;
 
 	// エネミーが右移動しているかどうかのフラグをリセット
 	enemy.RightMove = true;
@@ -148,7 +140,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			if (CheckHitKey(KEY_INPUT_SPACE))
 			{
 				// 前フレームでショットボタンを押したかが保存されている変数がfalseだったら弾を発射
-				if (player.prevShotFlag == false)
+				if (prevShotFlag == false)
 				{
 					// 画面上にでていない弾があるか、弾の数だけ繰り返して調べる
 					for (int i = 0; i < SHOT; i++)
@@ -176,13 +168,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 				}
 
 				// 前フレームでショットボタンを押されていたかを保存する変数にtrue(おされていた)を代入
-				player.prevShotFlag = true;
+				prevShotFlag = true;
 			}
 			else
 			{
 				// ショットボタンが押されていなかった場合は
 				// 前フレームでショットボタンが押されていたかを保存する変数にfalse(おされていない)を代入
-				player.prevShotFlag = false;
+				prevShotFlag = false;
 			}
 
 			// プレイヤーが画面左端からはみ出そうになっていたら画面内の座標に戻してあげる

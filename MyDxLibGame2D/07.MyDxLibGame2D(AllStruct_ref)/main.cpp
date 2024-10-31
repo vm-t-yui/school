@@ -16,9 +16,9 @@ struct Player
 	int Graph;
 	int X;
 	int Y;
-	int W;
-	int H;
-	bool PrevShotFlag = false;
+
+	// ショットボタンが前のフレームで押されたかどうか
+	bool prevShotFlag;
 };
 
 // エネミー構造体.
@@ -27,13 +27,13 @@ struct Enemy
 	int		X;
 	int		Y; 
 	int		Graph;
-	bool	DamageFlag;
+	int		DamageFlag;
 	int		DamageCounter;
 	int		DamageGraph;
 	int		W;
 	int		H;
 
-	// エネミーが右移動しているかどうかのフラグをリセット
+	// エネミーが右移動しているかどうかのフラグ
 	bool RightMove = true;
 };
 
@@ -43,93 +43,10 @@ struct Shot
 	int		Graph;
 	int		X;
 	int		Y;
-	bool	visibleFlag;
+	bool	Flag;
 	int		W;
 	int		H;
 };
-
-// グローバル変数
-Player player;
-Enemy enemy;
-Shot shot[SHOT];
-
-// プレイヤールーチン
-void UpdatePlayer()
-{
-	// 矢印キーを押していたらプレイヤーを移動させる
-	if (CheckHitKey(KEY_INPUT_UP) == 1)
-	{
-		player.Y -= 3;
-	}
-	if (CheckHitKey(KEY_INPUT_DOWN) == 1)
-	{
-		player.Y += 3;
-	}
-	if (CheckHitKey(KEY_INPUT_LEFT) == 1)
-	{
-		player.X -= 3;
-	}
-	if (CheckHitKey(KEY_INPUT_RIGHT) == 1)
-	{
-		player.X += 3;
-	}
-
-	// 弾の発射処理
-	if (CheckHitKey(KEY_INPUT_SPACE))
-	{
-		// 前フレームでショットボタンを押したかが保存されている変数がfalseだったら弾を発射
-		if (player.PrevShotFlag == false)
-		{
-			// 画面上にでていない弾があるか、弾の数だけ繰り返して調べる
-			for (int i = 0; i < SHOT; i++)
-			{
-				// 弾iが画面上にでていない場合はその弾を画面に出す
-				if (shot[i].visibleFlag == false)
-				{
-					// 弾iの位置をセット、位置はプレイヤーの中心にする
-					shot[i].X = (player.W - shot[i].W) / 2 + player.X;
-					shot[i].Y = (player.H - shot[i].H) / 2 + player.Y;
-
-					// 弾iは現時点を持って存在するので、存在状態を保持する変数にtrueを代入する
-					shot[i].visibleFlag = true;
-
-					// 一つ弾を出したので弾を出すループから抜けます
-					break;
-				}
-			}
-		}
-
-		// 前フレームでショットボタンを押されていたかを保存する変数にtrue(おされていた)を代入
-		player.PrevShotFlag = true;
-	}
-	else
-	{
-		// ショットボタンが押されていなかった場合は
-		// 前フレームでショットボタンが押されていたかを保存する変数にfalse(おされていない)を代入
-		player.PrevShotFlag = false;
-	}
-
-	// プレイヤーが画面左端からはみ出そうになっていたら画面内の座標に戻してあげる
-	if (player.X < 0)
-	{
-		player.X = 0;
-	}
-	if (player.X > 640 - player.W)
-	{
-		player.X = 640 - player.W;
-	}
-	if (player.Y < 0)
-	{
-		player.Y = 0;
-	}
-	if (player.Y > 480 - player.H)
-	{
-		player.Y = 480 - player.H;
-	}
-
-	// プレイヤーを描画
-	DrawGraph(player.X, player.Y, player.Graph, FALSE);
-}
 
 // WinMain関数
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
@@ -149,17 +66,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	SetDrawScreen(DX_SCREEN_BACK);
 
 	// プレイヤーのグラフィックをメモリにロード＆表示座標を初期化
+	Player player;
 	player.Graph = LoadGraph("data/texture/player.png");
 	player.X = 288; 
 	player.Y = 400;
 
-	// ショットボタンが前のフレームで押されたかどうかを保存する変数にfalse(押されいない)を代入
-	player.PrevShotFlag = false;
-
-	// プレイヤーと弾の画像のサイズを得る
-	GetGraphSize(player.Graph, &player.W, &player.H);
-
 	// エネミーのグラフィックをメモリにロード＆表示座標を初期化
+	Enemy enemy;
 	enemy.Graph = LoadGraph("data/texture/enemy.png");
 	enemy.X = 0; 
 	enemy.Y = 50;
@@ -167,12 +80,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	// エネミーのグラフィックをメモリにロード＆ダメージ時の状態管理用の変数を初期化
 	enemy.DamageGraph = LoadGraph("data/texture/enemyDamage.png");
 
-	// エネミーが顔を歪めているかどうかの変数に『歪めていない』を表すFALSEを代入
-	enemy.DamageFlag = false;
+	// エネミーが顔を歪めているかどうかの変数に『歪めていない』を表す０を代入
+	enemy.DamageFlag = 0;
 
 	// ショットのグラフィックをメモリにロード.
-	int shotGraph;
-	shotGraph = LoadGraph("data/texture/shot.png");
+	Shot shot[SHOT];
+	int shotGraph = LoadGraph("data/texture/shot.png");
 	for (int i = 0; i < SHOT; i++)
 	{
 		shot[i].Graph = shotGraph;
@@ -181,12 +94,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	// 弾が画面上に存在しているか保持する変数に『存在していない』を意味するfalseを代入しておく
 	for (int i = 0; i < SHOT; i++)
 	{
-		shot[i].visibleFlag = false;
+		shot[i].Flag = false;
 	}
 
 	// 弾のグラフィックのサイズをえる
 	int shotW, shotH;
-	GetGraphSize(shotGraph, &shotW, &shotH);
+	GetGraphSize(shot[0].Graph, &shotW, &shotH);
 	for (int i = 0; i < SHOT; i++)
 	{
 		shot[i].W = shotW;
@@ -195,6 +108,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	// エネミーのグラフィックのサイズを得る
 	GetGraphSize(enemy.Graph, &enemy.W, &enemy.H);
+
+	// ショットボタンが前のフレームで押されたかどうかを保存する変数にfalse(押されいない)を代入
+	player.prevShotFlag = false;
+
+
+	// エネミーが右移動しているかどうかのフラグをリセット
+	enemy.RightMove = true;
 
 	// ゲームループ.
 	while (1)
@@ -205,7 +125,87 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		//------------------------------//
 		// プレイヤールーチン
 		//------------------------------//
-		UpdatePlayer();
+		{
+			// 矢印キーを押していたらプレイヤーを移動させる
+			if (CheckHitKey(KEY_INPUT_UP) == 1)
+			{
+				player.Y -= 3;
+			}
+			if (CheckHitKey(KEY_INPUT_DOWN) == 1)
+			{
+				player.Y += 3;
+			}
+			if (CheckHitKey(KEY_INPUT_LEFT) == 1)
+			{
+				player.X -= 3;
+			}
+			if (CheckHitKey(KEY_INPUT_RIGHT) == 1)
+			{
+				player.X += 3;
+			}
+
+			// 弾の発射処理
+			if (CheckHitKey(KEY_INPUT_SPACE))
+			{
+				// 前フレームでショットボタンを押したかが保存されている変数がfalseだったら弾を発射
+				if (player.prevShotFlag == false)
+				{
+					// 画面上にでていない弾があるか、弾の数だけ繰り返して調べる
+					for (int i = 0; i < SHOT; i++)
+					{
+						// 弾iが画面上にでていない場合はその弾を画面に出す
+						if (shot[i].Flag == false)
+						{
+							int Bw, Bh, Sw, Sh;
+
+							// プレイヤーと弾の画像のサイズを得る
+							GetGraphSize(player.Graph, &Bw, &Bh);
+							GetGraphSize(shot[i].Graph, &Sw, &Sh);
+
+							// 弾iの位置をセット、位置はプレイヤーの中心にする
+							shot[i].X = (Bw - Sw) / 2 + player.X;
+							shot[i].Y = (Bh - Sh) / 2 + player.Y;
+
+							// 弾iは現時点を持って存在するので、存在状態を保持する変数にtrueを代入する
+							shot[i].Flag = true;
+
+							// 一つ弾を出したので弾を出すループから抜けます
+							break;
+						}
+					}
+				}
+
+				// 前フレームでショットボタンを押されていたかを保存する変数にtrue(おされていた)を代入
+				player.prevShotFlag = true;
+			}
+			else
+			{
+				// ショットボタンが押されていなかった場合は
+				// 前フレームでショットボタンが押されていたかを保存する変数にfalse(おされていない)を代入
+				player.prevShotFlag = false;
+			}
+
+			// プレイヤーが画面左端からはみ出そうになっていたら画面内の座標に戻してあげる
+			if (player.X < 0)
+			{
+				player.X = 0;
+			}
+			if (player.X > 640 - 64)
+			{
+				player.X = 640 - 64;
+			}
+			if (player.Y < 0)
+			{
+				player.Y = 0;
+			}
+			if (player.Y > 480 - 64)
+			{
+				player.Y = 480 - 64;
+			}
+
+			// プレイヤーを描画
+			DrawGraph(player.X, player.Y, player.Graph, FALSE);
+		}
 
 		//------------------------------//
 		// エネミールーチン
@@ -222,9 +222,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			}
 
 			// エネミーが画面端からでそうになっていたら画面内の座標に戻してあげ、移動する方向も反転する
-			if (enemy.X > 640 - enemy.W)
+			if (enemy.X > 576)
 			{
-				enemy.X = 640 - enemy.W;
+				enemy.X = 576;
 				enemy.RightMove = false;
 			}
 			else if (enemy.X < 0)
@@ -235,7 +235,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 			// エネミーを描画
 			// 顔を歪めているかどうかで処理を分岐
-			if (enemy.DamageFlag == true)
+			if (enemy.DamageFlag == 1)
 			{
 				// 顔を歪めている場合はダメージ時のグラフィックを描画する
 				DrawGraph(enemy.X, enemy.Y, enemy.DamageGraph, FALSE);
@@ -247,8 +247,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 				// 元に戻してあげる
 				if (enemy.DamageCounter == 30)
 				{
-					// 『歪んでいない』を表すFALSEを代入
-					enemy.DamageFlag = false;
+					// 『歪んでいない』を表す０を代入
+					enemy.DamageFlag = 0;
 				}
 			}
 			else
@@ -263,15 +263,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		for (int i = 0; i < SHOT; i++)
 		{
 			// 自機の弾iの移動ルーチン( 存在状態を保持している変数の内容がtrue(存在する)の場合のみ行う )
-			if (shot[i].visibleFlag == true)
+			if (shot[i].Flag == true)
 			{
 				// 弾iを１６ドット上に移動させる
 				shot[i].Y -= 16;
 
 				// 画面外に出てしまった場合は存在状態を保持している変数にfalse(存在しない)を代入する
-				if (shot[i].Y < 0 - shot[i].H)
+				if (shot[i].Y < -80)
 				{
-					shot[i].visibleFlag = false;
+					shot[i].Flag = false;
 				}
 
 				// 画面に弾iを描画する
@@ -280,7 +280,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 			// 弾のあたり判定.
 			// 弾iが存在している場合のみ次の処理に映る
-			if (shot[i].visibleFlag == 1)
+			if (shot[i].Flag == 1)
 			{
 				// エネミーとの当たり判定
 				if (((shot[i].X > enemy.X && shot[i].X < enemy.X + enemy.W) ||
@@ -289,10 +289,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 						(enemy.Y > shot[i].Y && enemy.Y < shot[i].Y + shot[i].H)))
 				{
 					// 接触している場合は当たった弾の存在を消す
-					shot[i].visibleFlag = 0;
+					shot[i].Flag = 0;
 
-					// エネミーの顔を歪めているかどうかを保持する変数に『歪めている』を表すTRUEを代入
-					enemy.DamageFlag = true;
+					// エネミーの顔を歪めているかどうかを保持する変数に『歪めている』を表す１を代入
+					enemy.DamageFlag = 1;
 
 					// エネミーの顔を歪めている時間を測るカウンタ変数に０を代入
 					enemy.DamageCounter = 0;
