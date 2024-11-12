@@ -1,4 +1,4 @@
-#include "DxLib.h"
+﻿#include "DxLib.h"
 #include "Camera.h"
 
 void InitCamera(Camera& camera)
@@ -8,5 +8,6 @@ void InitCamera(Camera& camera)
 
 void UpdateCamera(Camera& camera)
 {
-	// �ǂ�������悢�H
+	// xを足すと全部の描画物が左に動くよー
+	camera.pos.x += 0.3f;
 }
