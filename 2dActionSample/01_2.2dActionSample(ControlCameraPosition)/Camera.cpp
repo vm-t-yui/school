@@ -10,6 +10,9 @@ void InitCamera(Camera& camera)
 
 void UpdateCamera(Camera& camera, const Player& player)
 {
+	// とりあえずカメラのポジションとプレイヤーの位置を同じに
+	camera.pos = player.pos;
+
 	// プレイヤーの位置が、カメラの中央から一定以上離れたら
 	// カメラのポジションをその範囲内に留める
 	//if (camera.pos.x > ? ? ? )
@@ -29,6 +32,10 @@ void UpdateCamera(Camera& camera, const Player& player)
 	//	? ? ?
 	//}
 
+	/////////////////////////////////////////////////////////////////////////////
+	// ↓drawOffset補正
+	// （カメラを動かしている感覚で他の描画物のポジションをいじれるようにする計算
+	/////////////////////////////////////////////////////////////////////////////
 	// ↑ベクトルや計算を使って、「カメラのポジションを動かす」
 	// という感覚を保ちたいので、Draw側に足しているcamera.posをいじる
 	// Draw側に足しているcamera.pos.x/yは反転させる
