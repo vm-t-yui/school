@@ -2,7 +2,7 @@
 
 struct Camera
 {
-	VECTOR pos;
+	VECTOR drawOffset;
 };
 
 void InitCamera(Camera& camera);
