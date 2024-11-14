@@ -15,7 +15,7 @@ void UpdateCamera(Camera& camera, const Player& player)
 	camera.pos = player.pos;
 	///// ※消す※ ////////
 
-	// プレイヤーの位置が、カメラの中央から一定以上離れたら
+	// プレイヤーの位置が、カメラの位置（カメラ中央）から一定以上離れたら
 	// カメラのポジションをその範囲内に留める
 	//if (player.pos.x > ? ? ? )
 	//{
