@@ -10,27 +10,35 @@ void InitCamera(Camera& camera)
 
 void UpdateCamera(Camera& camera, const Player& player)
 {
+	///// ※消す※ ////////
 	// とりあえずカメラのポジションとプレイヤーの位置を同じに
 	camera.pos = player.pos;
+	///// ※消す※ ////////
 
 	// プレイヤーの位置が、カメラの中央から一定以上離れたら
 	// カメラのポジションをその範囲内に留める
-	//if (camera.pos.x > ? ? ? )
+	//if (player.pos.x > ? ? ? )
 	//{
-	//	? ? ?
+	//	camera.pos.x = ? ? ? ;
 	//}
-	//else if (camera.pos.x < ? ? ? )
+	//else if (player.pos.x < ? ? ? )
 	//{
-	//	???
+	//	camera.pos.x = ? ? ? ;
 	//}
-	//if (camera.pos.y > ? ? ? )
+	//if (player.pos.y > ? ? ? )
 	//{
-	//	? ? ?
+	//	camera.pos.y = ? ? ? );
 	//}
-	//else if (camera.pos.y < ? ? ? )
+	//else if (player.pos.y < ? ? ? )
 	//{
-	//	? ? ?
+	//	camera.pos.y = ? ? ? ;
 	//}
+
+	printfDx("camera.pos:(%d,%d) player.pos:(%d,%d)\n",
+		(int)camera.pos.x,
+		(int)camera.pos.y,
+		(int)player.pos.x,
+		(int)player.pos.y);
 
 	/////////////////////////////////////////////////////////////////////////////
 	// ↓drawOffset補正
