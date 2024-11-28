@@ -6,7 +6,6 @@
 #include "DxLib.h"
 #include "Screen.h"
 #include "Map.h"
-#include "Player.h"
 
 /// <summary>
 /// Main
@@ -23,10 +22,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	// 描画先を裏画面にセット
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	// プレイヤー初期化
-	Player player;
-	InitPlayer(player);
-
 	// マップ初期化
 	Map map;
 	InitMap(map);
@@ -38,11 +33,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		
 		ClearDrawScreen();// 画面のクリア
 
-		// 更新
-		UpdatePlayer(player, map);
-
 		// 描画
-		DrawPlayer(player);
 		DrawMap(map);
 		
 		ScreenFlip();	// 画面の更新
