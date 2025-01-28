@@ -5,9 +5,9 @@
 #pragma once
 
 // リストを使うかどうか。使うなら1、使わないなら0
-#define USE_LIST 1
+#define USE_LIST 0
 
-#ifdef USE_LIST
+#if USE_LIST
 	#include <list>
 #else
 	#include <vector>
@@ -15,7 +15,7 @@
 
 // ショットのコンテナ型を作る
 class Shot;
-#ifdef USE_LIST
+#if USE_LIST
 	typedef std::list<Shot*> ShotContainer;
 #else
 	typedef std::vector<Shot*> ShotContainer;

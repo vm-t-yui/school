@@ -105,7 +105,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		{
 			// 個別に削除するなら、「削除するものリスト」みたいなものを準備して選んで削除する必要がある
 			// 例：先頭を削除
-#ifdef USE_LIST
+#if USE_LIST
 			// list
 			Shot* deleteItem = nullptr;
 			for (auto& item : shot)
