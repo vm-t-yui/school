@@ -110,13 +110,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			Shot* deleteItem = nullptr;
 			for (auto& item : shot)
 			{
-				delete(item);
+				// 削除予定のものを覚えておく
 				deleteItem = item;
 				break;
 			}
 			if (deleteItem != nullptr)
 			{
+				// 先にコンテナから排除し、その後メモリから解放する
+				// こうしないと、解放済のメモリにアクセスできてしまう
 				shot.remove(deleteItem);
+				delete(deleteItem);
 			}
 #else
 			// vector

@@ -6,10 +6,6 @@
 
 #define PLAYER_SPEED	6		// プレイヤーのスピード.
 
-#define SHOT			3		// ショットの最大数.
-#define SHOT_SPEED		2		// 通常ショットのスピード.
-#define SHOT_INTERVAL	3		// 通常ショットの発射インターバル.
-
 #define ENEMY_LIFE		30		// 敵のライフ.
 
 // スクリーンサイズ.

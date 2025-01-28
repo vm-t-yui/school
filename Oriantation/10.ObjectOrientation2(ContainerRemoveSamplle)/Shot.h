@@ -5,7 +5,7 @@
 #pragma once
 
 // リストを使うかどうか。使うなら1、使わないなら0
-#define USE_LIST 0
+#define USE_LIST 1
 
 #ifdef USE_LIST
 	#include <list>
