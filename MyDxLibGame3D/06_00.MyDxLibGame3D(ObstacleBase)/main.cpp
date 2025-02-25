@@ -1,4 +1,5 @@
 ﻿// 2025 Takeru Yui All Rights Reserved.
+#include <memory>
 #include "DxLib.h"
 #include "Player.h"
 #include "Camera.h"
@@ -13,28 +14,34 @@ const int ObstacleNum = 3;
 /// </summary>
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) 
 {
+	// 画面モードの設定
+	SetGraphMode(640, 480, 16);		// 解像度を640*480、colorを16bitに設定.
+	ChangeWindowMode(TRUE);			// ウインドウモードに.
+
 	// ＤＸライブラリ初期化処理
 	if (DxLib_Init() == -1)		
 	{
 		return -1;	// エラーが起きたら直ちに終了
 	}
 
-	// 画面モードのセット
-	SetGraphMode(640, 480, 16);
-	ChangeWindowMode(TRUE);
+	// グラフィックの描画先を裏画面にセット
+	SetDrawScreen(DX_SCREEN_BACK);
 
-	// カメラを生成.
-	Camera* camera = new Camera();
+	SetUseZBufferFlag(TRUE);		// Ｚバッファを使用する
+	SetUseBackCulling(TRUE);		// バックカリングを行う
 
-	// プレイヤーを生成.
-	Player* player = new Player();
+	// カメラを生成
+	std::shared_ptr<Camera> camera = std::make_shared<Camera>();
 
-	// 障害物を生成.
-    ObstacleKinematic* obstacleKinematic1 = new ObstacleKinematic();
-    ObstacleMovable* obstacleMovable = new ObstacleMovable();
-    ObstacleKinematic* obstacleKinematic2 = new ObstacleKinematic();
+	// プレイヤーを生成
+	std::shared_ptr<Player> player = std::make_shared<Player>();
 
-	// 障害物の位置を初期化.
+	// 障害物を生成
+	std::shared_ptr<ObstacleKinematic>	obstacleKinematic1	= std::make_shared<ObstacleKinematic>();
+	std::shared_ptr<ObstacleMovable>	obstacleMovable		= std::make_shared<ObstacleMovable>();
+	std::shared_ptr<ObstacleKinematic>	obstacleKinematic2	= std::make_shared<ObstacleKinematic>();
+
+	// 障害物の位置を初期化
 	float band = 10.0f;
     obstacleKinematic1->SetPos(VGet(-band + (band * 0), 0, -1.0f));
     obstacleMovable->SetPos(VGet(-band + (band * 1), 0, -1.0f));
@@ -43,13 +50,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// エスケープキーが押されるかウインドウが閉じられるまでループ
 	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
 	{
-		// プレイヤー制御.
+		auto prevTime = GetNowHiPerformanceCount();	// 処理が始まる前の時間
+
+		// プレイヤー制御
 		player->Update();
 
-		// カメラ制御.
+		// カメラ制御
 		camera->Update(*player);
 
-		// 障害物制御.
+		// 障害物制御
         obstacleKinematic1->Update();
         obstacleMovable->Update();
         obstacleKinematic2->Update();
@@ -57,7 +66,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// 画面を初期化する
 		ClearDrawScreen();
 
-		// プレイヤー描画.
+		// プレイヤー描画
 		player->Draw();
 
 		// 障害物描画.
@@ -67,18 +76,22 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		// 裏画面の内容を表画面に反映させる
 		ScreenFlip();
+
+		// 雑なfps固定処理
+		// 差を求めて、1回の画面更新が1/60秒になるようにwhileループ回して待つ
+		auto afterTime = GetNowHiPerformanceCount(); // 処理が終わった後の時間
+		while (afterTime - prevTime < 16667)
+		{
+			afterTime = GetNowHiPerformanceCount();
+		}
 	}
 
-	// プレイヤーを削除.
-	delete(player);
-
-	// カメラを削除.
-	delete(camera);
-
-	// 障害物を削除.
-    delete(obstacleKinematic1);
-    delete(obstacleMovable);
-    delete(obstacleKinematic2);
+	// メモリ解放
+	player				= nullptr;
+	camera				= nullptr;
+	obstacleKinematic1	= nullptr;
+	obstacleMovable		= nullptr;
+	obstacleKinematic2	= nullptr;
 
 	// ＤＸライブラリの後始末
 	DxLib_End();
