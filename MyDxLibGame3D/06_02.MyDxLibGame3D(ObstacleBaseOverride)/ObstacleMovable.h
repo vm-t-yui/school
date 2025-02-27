@@ -10,7 +10,7 @@ public:
 	ObstacleMovable();				// コンストラクタ
 	virtual ~ObstacleMovable();		// デストラクタ
 
-    void Update();					// 更新
+    void Update() override;			// 更新
 
 private:
 	float rad;						// sin移動用のラジアン関数
