@@ -1,110 +1,128 @@
-
+ï»¿
 #include "DxLib.h"
 
-// EffekseerForDXLib.h‚ğƒCƒ“ƒNƒ‹[ƒh‚µ‚Ü‚·B
+// EffekseerForDXLib.hã‚’ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ã—ã¾ã™ã€‚
 #include "EffekseerForDXLib.h"
 
 int sample2D()
 {
-	// DXƒ‰ƒCƒuƒ‰ƒŠ‚Ì•\¦•û–@‚ğƒEƒBƒ“ƒhƒEƒ‚[ƒh‚É•ÏX‚·‚éB
+	// DXãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®è¡¨ç¤ºæ–¹æ³•ã‚’ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ¢ãƒ¼ãƒ‰ã«å¤‰æ›´ã™ã‚‹ã€‚
 	ChangeWindowMode(true);
 
-	//•`‰ææ‚ğ— ‰æ–Ê‚É•ÏX‚·‚éB
+	//æç”»å…ˆã‚’è£ç”»é¢ã«å¤‰æ›´ã™ã‚‹ã€‚
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	// DirectX11‚ğg—p‚·‚é‚æ‚¤‚É‚·‚éB(DirectX9‚à‰ÂAˆê•”‹@”\•s‰Â)
-	// Effekseer‚ğg—p‚·‚é‚É‚Í•K‚¸İ’è‚·‚éB
+	// DirectX11ã‚’ä½¿ç”¨ã™ã‚‹ã‚ˆã†ã«ã™ã‚‹ã€‚(DirectX9ã‚‚å¯ã€ä¸€éƒ¨æ©Ÿèƒ½ä¸å¯)
+	// Effekseerã‚’ä½¿ç”¨ã™ã‚‹ã«ã¯å¿…ãšè¨­å®šã™ã‚‹ã€‚
 	SetUseDirect3DVersion(DX_DIRECT3D_11);
 
-	// DXƒ‰ƒCƒuƒ‰ƒŠ‚ğ‰Šú‰»‚·‚éB
+	// DXãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’åˆæœŸåŒ–ã™ã‚‹ã€‚
 	if (DxLib_Init() == -1)
 		return -1;
 
-	// Effekseer‚ğ‰Šú‰»‚·‚éB
-	// ˆø”‚É‚Í‰æ–Ê‚É•\¦‚·‚éÅ‘åƒp[ƒeƒBƒNƒ‹”‚ğİ’è‚·‚éB
+	// Effekseerã‚’åˆæœŸåŒ–ã™ã‚‹ã€‚
+	// å¼•æ•°ã«ã¯ç”»é¢ã«è¡¨ç¤ºã™ã‚‹æœ€å¤§ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æ•°ã‚’è¨­å®šã™ã‚‹ã€‚
 	if (Effekseer_Init(8000) == -1)
 	{
 		DxLib_End();
 		return -1;
 	}
 
-	// ƒtƒ‹ƒXƒNƒŠ[ƒ“ƒEƒCƒ“ƒhƒE‚ÌØ‚è‘Ö‚¦‚ÅƒŠƒ\[ƒX‚ªÁ‚¦‚é‚Ì‚ğ–h‚®B
-	// Effekseer‚ğg—p‚·‚éê‡‚Í•K‚¸İ’è‚·‚éB
+	// ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®åˆ‡ã‚Šæ›¿ãˆã§ãƒªã‚½ãƒ¼ã‚¹ãŒæ¶ˆãˆã‚‹ã®ã‚’é˜²ãã€‚
+	// Effekseerã‚’ä½¿ç”¨ã™ã‚‹å ´åˆã¯å¿…ãšè¨­å®šã™ã‚‹ã€‚
 	SetChangeScreenModeGraphicsSystemResetFlag(FALSE);
 
-	// DXƒ‰ƒCƒuƒ‰ƒŠ‚ÌƒfƒoƒCƒXƒƒXƒg‚µ‚½‚ÌƒR[ƒ‹ƒoƒbƒN‚ğİ’è‚·‚éB
-	// ƒEƒCƒ“ƒhƒE‚Æƒtƒ‹ƒXƒNƒŠ[ƒ“‚ÌØ‚è‘Ö‚¦‚ª”­¶‚·‚éê‡‚Í•K‚¸Às‚·‚éB
-	// ‚½‚¾‚µADirectX11‚ğg—p‚·‚éê‡‚ÍÀs‚·‚é•K—v‚Í‚È‚¢B
+	// DXãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®ãƒ‡ãƒã‚¤ã‚¹ãƒ­ã‚¹ãƒˆã—ãŸæ™‚ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’è¨­å®šã™ã‚‹ã€‚
+	// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã¨ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã®åˆ‡ã‚Šæ›¿ãˆãŒç™ºç”Ÿã™ã‚‹å ´åˆã¯å¿…ãšå®Ÿè¡Œã™ã‚‹ã€‚
+	// ãŸã ã—ã€DirectX11ã‚’ä½¿ç”¨ã™ã‚‹å ´åˆã¯å®Ÿè¡Œã™ã‚‹å¿…è¦ã¯ãªã„ã€‚
 	Effekseer_SetGraphicsDeviceLostCallbackFunctions();
 
-	// Effekseer‚É2D•`‰æ‚Ìİ’è‚ğ‚·‚éB
+	// Effekseerã«2Dæç”»ã®è¨­å®šã‚’ã™ã‚‹ã€‚
 	Effekseer_Set2DSetting(640, 480);
 
-	// ƒGƒtƒFƒNƒgƒŠƒ\[ƒX‚ğ“Ç‚İ‚ŞB
-	// “Ç‚İ‚Ş‚É‘å‚«‚³‚ğw’è‚·‚éB
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒªã‚½ãƒ¼ã‚¹ã‚’èª­ã¿è¾¼ã‚€ã€‚
+	// èª­ã¿è¾¼ã‚€æ™‚ã«å¤§ãã•ã‚’æŒ‡å®šã™ã‚‹ã€‚
 	int effectResourceHandle = LoadEffekseerEffect("Laser01.efkefc", 25.0f);
 
-	// ‰½‚Å‚à‚¢‚¢‚Ì‚Å‰æ‘œ‚ğ“Ç‚İ‚ŞB
+	// ä½•ã§ã‚‚ã„ã„ã®ã§ç”»åƒã‚’èª­ã¿è¾¼ã‚€ã€‚
 	int grBackgroundHandle = LoadGraph(_T("Texture/Background.png"));
 	int grFrontHandle = LoadGraph(_T("Texture/Front.png"));
 
-	// ŠÔ‚ğ‰Šú‰»‚·‚é(’èŠú“I‚ÉƒGƒtƒFƒNƒg‚ğÄ¶‚·‚é‚½‚ß)
+	// æ™‚é–“ã‚’åˆæœŸåŒ–ã™ã‚‹(å®šæœŸçš„ã«ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’å†ç”Ÿã™ã‚‹ãŸã‚)
 	int time = 0;
 
-	// ƒtƒ‹ƒXƒNƒŠ[ƒ“Ø‚è‘Ö‚¦—pƒtƒ‰ƒO‚ğİ’è‚·‚éB(F1AF2‚ÅƒEƒCƒ“ƒhƒEAƒtƒ‹ƒXƒNƒŠ[ƒ“‚ğØ‚è‘Ö‚¦‚ê‚é‚æ‚¤‚É‚·‚éB)
+	// ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åˆ‡ã‚Šæ›¿ãˆç”¨ãƒ•ãƒ©ã‚°ã‚’è¨­å®šã™ã‚‹ã€‚(F1ã€F2ã§ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã€ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚’åˆ‡ã‚Šæ›¿ãˆã‚Œã‚‹ã‚ˆã†ã«ã™ã‚‹ã€‚)
 	bool isFullScreen = false;
 
-	// ƒGƒtƒFƒNƒg‚Ì•\¦‚·‚éˆÊ’u‚ğİ’è‚·‚éB
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®è¡¨ç¤ºã™ã‚‹ä½ç½®ã‚’è¨­å®šã™ã‚‹ã€‚
 	float position_x = 100.0f;
 	float position_y = 250.0f;
 
-	// Ä¶’†‚ÌƒGƒtƒFƒNƒg‚Ìƒnƒ“ƒhƒ‹‚ğ‰Šú‰»‚·‚éB
+	// å†ç”Ÿä¸­ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®ãƒãƒ³ãƒ‰ãƒ«ã‚’åˆæœŸåŒ–ã™ã‚‹ã€‚
 	int playingEffectHandle = -1;
 
-	// Zƒoƒbƒtƒ@‚ğ—LŒø‚É‚·‚éB
-	// Effekseer‚ğg—p‚·‚éê‡A2DƒQ[ƒ€‚Å‚àZƒoƒbƒtƒ@‚ğg—p‚·‚éB
+	// Zãƒãƒƒãƒ•ã‚¡ã‚’æœ‰åŠ¹ã«ã™ã‚‹ã€‚
+	// Effekseerã‚’ä½¿ç”¨ã™ã‚‹å ´åˆã€2Dã‚²ãƒ¼ãƒ ã§ã‚‚Zãƒãƒƒãƒ•ã‚¡ã‚’ä½¿ç”¨ã™ã‚‹ã€‚
 	SetUseZBuffer3D(TRUE);
 
-	// Zƒoƒbƒtƒ@‚Ö‚Ì‘‚«‚İ‚ğ—LŒø‚É‚·‚éB
-	// Effekseer‚ğg—p‚·‚éê‡A2DƒQ[ƒ€‚Å‚àZƒoƒbƒtƒ@‚ğg—p‚·‚éB
+	// Zãƒãƒƒãƒ•ã‚¡ã¸ã®æ›¸ãè¾¼ã¿ã‚’æœ‰åŠ¹ã«ã™ã‚‹ã€‚
+	// Effekseerã‚’ä½¿ç”¨ã™ã‚‹å ´åˆã€2Dã‚²ãƒ¼ãƒ ã§ã‚‚Zãƒãƒƒãƒ•ã‚¡ã‚’ä½¿ç”¨ã™ã‚‹ã€‚
 	SetWriteZBuffer3D(TRUE);
+
+	bool stopFlag = false;
+	bool prevPress = false;
 
 	while (!ProcessMessage() && !ClearDrawScreen() && !CheckHitKey(KEY_INPUT_ESCAPE))
 	{
-		// ’èŠú“I‚ÉƒGƒtƒFƒNƒg‚ğÄ¶‚·‚é
+		// å®šæœŸçš„ã«ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’å†ç”Ÿã™ã‚‹
 		if (time % 60 == 0)
 		{
-			// ƒGƒtƒFƒNƒg‚ğÄ¶‚·‚éB
+			// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’å†ç”Ÿã™ã‚‹ã€‚
 			playingEffectHandle = PlayEffekseer2DEffect(effectResourceHandle);
 
-			// ƒGƒtƒFƒNƒg‚ÌˆÊ’u‚ğƒŠƒZƒbƒg‚·‚éB
+			// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®ä½ç½®ã‚’ãƒªã‚»ãƒƒãƒˆã™ã‚‹ã€‚
 			position_x = 100.0f;
 		}
 
-		// ‰½‚Å‚à‚¢‚¢‚Ì‚Å‰æ‘œ‚ğ•`‰æ‚·‚éB
-		// ‚±‚¤‚µ‚Ä•`‰æ‚µ‚½Œã‚Å‚È‚¢‚ÆAEffekseer‚Í•`‰æ‚Å‚«‚È‚¢B
+		// ä½•ã§ã‚‚ã„ã„ã®ã§ç”»åƒã‚’æç”»ã™ã‚‹ã€‚
+		// ã“ã†ã—ã¦æç”»ã—ãŸå¾Œã§ãªã„ã¨ã€Effekseerã¯æç”»ã§ããªã„ã€‚
 		DrawGraph(0, 0, grBackgroundHandle, TRUE);
 
-		// Ä¶’†‚ÌƒGƒtƒFƒNƒg‚ğˆÚ“®‚·‚éB
+		// å†ç”Ÿä¸­ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’ç§»å‹•ã™ã‚‹ã€‚
 		SetPosPlayingEffekseer2DEffect(playingEffectHandle, position_x, position_y, 0);
 		position_x += 2.0f;
 
-		// Effekseer‚É‚æ‚èÄ¶’†‚ÌƒGƒtƒFƒNƒg‚ğXV‚·‚éB
+		// Effekseerã«ã‚ˆã‚Šå†ç”Ÿä¸­ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’æ›´æ–°ã™ã‚‹ã€‚
 		UpdateEffekseer2D();
 
-		// Effekseer‚É‚æ‚èÄ¶’†‚ÌƒGƒtƒFƒNƒg‚ğ•`‰æ‚·‚éB
+		// Effekseerã«ã‚ˆã‚Šå†ç”Ÿä¸­ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’æç”»ã™ã‚‹ã€‚
 		DrawEffekseer2D();
 
-		// ƒGƒtƒFƒNƒg‚Ìã‚É‚à‰æ‘œ‚ğ•`‰æ‚Å‚«‚éB
+		// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®ä¸Šã«ã‚‚ç”»åƒã‚’æç”»ã§ãã‚‹ã€‚
 		DrawGraph(0, 0, grFrontHandle, TRUE);
 
-		// ƒXƒNƒŠ[ƒ“‚ğ“ü‚ê‘Ö‚¦‚éB
+		// ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚’å…¥ã‚Œæ›¿ãˆã‚‹ã€‚
 		ScreenFlip();
 
-		// ŠÔ‚ğŒo‰ß‚³‚¹‚éB
-		time++;
+		// æ™‚é–“ã‚’çµŒéã•ã›ã‚‹ã€‚
+		// Aã‚­ãƒ¼ã§æ™‚é–“ã¨ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’åœæ­¢ã•ã›ã‚‹
+		// ãƒ¡ãƒ¢ãƒªã«ã¯æ®‹ã‚‹
+		if (!stopFlag)
+		{
+			time++;
+		}
+		if (!prevPress && CheckHitKey(KEY_INPUT_A))
+		{
+			stopFlag = !stopFlag;
+			if (stopFlag)
+			{
+				//StopEffekseer2DEffect(playingEffectHandle);	// Stopã ã¨ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã¯æ¶ˆãˆã¦ã—ã¾ã†
+				GetEffekseer2DManager()->SetPaused(playingEffectHandle, true);	// Pause
+			}
+		}
+		prevPress = CheckHitKey(KEY_INPUT_A);
 
-		// ƒtƒ‹ƒXƒNƒŠ[ƒ“‚ÌØ‚è‘Ö‚¦‚ğs‚¤B
+		// ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã®åˆ‡ã‚Šæ›¿ãˆã‚’è¡Œã†ã€‚
 		if (CheckHitKey(KEY_INPUT_F1) && !isFullScreen)
 		{
 			ChangeWindowMode(FALSE);
@@ -119,13 +137,13 @@ int sample2D()
 		}
 	}
 
-	// ƒGƒtƒFƒNƒgƒŠƒ\[ƒX‚ğíœ‚·‚éB(EffekseerI—¹‚É”jŠü‚³‚ê‚é‚Ì‚Åíœ‚µ‚È‚­‚Ä‚à‚¢‚¢)
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒªã‚½ãƒ¼ã‚¹ã‚’å‰Šé™¤ã™ã‚‹ã€‚(Effekseerçµ‚äº†æ™‚ã«ç ´æ£„ã•ã‚Œã‚‹ã®ã§å‰Šé™¤ã—ãªãã¦ã‚‚ã„ã„)
 	DeleteEffekseerEffect(effectResourceHandle);
 
-	// Effekseer‚ğI—¹‚·‚éB
+	// Effekseerã‚’çµ‚äº†ã™ã‚‹ã€‚
 	Effkseer_End();
 
-	// DXƒ‰ƒCƒuƒ‰ƒŠ‚ğI—¹‚·‚éB
+	// DXãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’çµ‚äº†ã™ã‚‹ã€‚
 	DxLib_End();
 
 	return 0;
