@@ -1,116 +1,119 @@
-﻿
+
 #include "DxLib.h"
 
-// EffekseerForDXLib.hをインクルードします。
+// EffekseerForDXLib.h���C���N���[�h���܂��B
 #include "EffekseerForDXLib.h"
 
 int sample3D()
 {
-	// DXライブラリの表示方法をウィンドウモードに変更する。
+	// DX���C�u�����̕\�����@���E�B���h�E���[�h�ɕύX����B
 	ChangeWindowMode(true);
 
-	//描画先を裏画面に変更する。
+	//�`���𗠉�ʂɕύX����B
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	// DirectX9を使用するようにする。(DirectX11も可)
-	// Effekseerを使用するには必ず設定する。
-	SetUseDirect3DVersion(DX_DIRECT3D_9);
+	// DirectX11���g�p����悤�ɂ���B(DirectX9���A�ꕔ�@�\�s��)
+	// Effekseer���g�p����ɂ͕K���ݒ肷��B
+	SetUseDirect3DVersion(DX_DIRECT3D_11);
 
-	// DXライブラリを初期化する。
-	if (DxLib_Init() == -1) return -1;
+	// DX���C�u����������������B
+	if (DxLib_Init() == -1)
+		return -1;
 
-	// Effekseerを初期化する。
-	// 引数には画面に表示する最大パーティクル数を設定する。
-	if (Effkseer_Init(8000) == -1)
+	// Effekseer������������B
+	// �����ɂ͉�ʂɕ\������ő�p�[�e�B�N������ݒ肷��B
+	if (Effekseer_Init(8000) == -1)
 	{
 		DxLib_End();
 		return -1;
 	}
 
-	// フルスクリーンウインドウの切り替えでリソースが消えるのを防ぐ。
-	// Effekseerを使用する場合は必ず設定する。
+	// �t���X�N���[���E�C���h�E�̐؂�ւ��Ń��\�[�X��������̂�h���B
+	// Effekseer���g�p����ꍇ�͕K���ݒ肷��B
 	SetChangeScreenModeGraphicsSystemResetFlag(FALSE);
 
-	// DXライブラリのデバイスロストした時のコールバックを設定する。
-	// ウインドウとフルスクリーンの切り替えが発生する場合は必ず実行する。
-	// ただし、DirectX11を使用する場合は実行する必要はない。
+	// DX���C�u�����̃f�o�C�X���X�g�������̃R�[���o�b�N��ݒ肷��B
+	// �E�C���h�E�ƃt���X�N���[���̐؂�ւ�����������ꍇ�͕K�����s����B
+	// �������ADirectX11���g�p����ꍇ�͎��s����K�v�͂Ȃ��B
 	Effekseer_SetGraphicsDeviceLostCallbackFunctions();
 
-	// エフェクトリソースを読み込む。
-	int effectResourceHandle = LoadEffekseerEffect("laser.efk");
+	// �G�t�F�N�g���\�[�X��ǂݍ��ށB
+	// �ǂݍ��ގ��ɑ傫�����w�肷��B
+	int effectResourceHandle = LoadEffekseerEffect("Laser01.efkefc", 1.0f);
 
-	// 何でもいいので画像を読み込む。
+	// ���ł������̂ŉ摜��ǂݍ��ށB
 	int grBackgroundHandle = LoadGraph(_T("Texture/Background.png"));
 	int grFrontHandle = LoadGraph(_T("Texture/Front.png"));
 
-	// 時間を初期化する(定期的にエフェクトを再生するため)
+	// ���Ԃ�����������(����I�ɃG�t�F�N�g���Đ����邽��)
 	int time = 0;
 
-	// フルスクリーン切り替え用フラグを設定する。(F1、F2でウインドウ、フルスクリーンを切り替えれるようにする。)
+	// �t���X�N���[���؂�ւ��p�t���O��ݒ肷��B(F1�AF2�ŃE�C���h�E�A�t���X�N���[����؂�ւ����悤�ɂ���B)
 	bool isFullScreen = false;
 
-	// エフェクトの表示する位置を設定する。
+	// �G�t�F�N�g�̕\������ʒu��ݒ肷��B
 	float position_x = 0.0f;
 	float position_y = 0.0f;
 
-	// 再生中のエフェクトのハンドルを初期化する。
+	// �Đ����̃G�t�F�N�g�̃n���h��������������B
 	int playingEffectHandle = -1;
 
-	// Zバッファを有効にする。
-	// Effekseerを使用する場合、2DゲームでもZバッファを使用する。
+	// Z�o�b�t�@��L���ɂ���B
+	// Effekseer���g�p����ꍇ�A2D�Q�[���ł�Z�o�b�t�@���g�p����B
 	SetUseZBuffer3D(TRUE);
 
-	// Zバッファへの書き込みを有効にする。
-	// Effekseerを使用する場合、2DゲームでもZバッファを使用する。
+	// Z�o�b�t�@�ւ̏������݂�L���ɂ���B
+	// Effekseer���g�p����ꍇ�A2D�Q�[���ł�Z�o�b�t�@���g�p����B
 	SetWriteZBuffer3D(TRUE);
 
 	while (!ProcessMessage() && !ClearDrawScreen() && !CheckHitKey(KEY_INPUT_ESCAPE))
 	{
-		// DXライブラリのカメラを設定する。
-		SetCameraPositionAndTarget_UpVecY(VGet(10,10,-20),VGet(0,0,0));
-		SetupCamera_Perspective( 60.0f * DX_PI_F / 180.0f ) ;
+		// DX���C�u�����̃J������ݒ肷��B
+		SetCameraPositionAndTarget_UpVecY(VGet(10, 10, -20), VGet(0, 0, 0));
+		SetupCamera_Perspective(60.0f * DX_PI_F / 180.0f);
 		SetCameraNearFar(1.0f, 150.0f);
 
-		// DXライブラリのカメラとEffekseerのカメラを同期する。
+		// DX���C�u�����̃J������Effekseer�̃J�����𓯊�����B
 		Effekseer_Sync3DSetting();
 
-		// 定期的にエフェクトを再生する
+		// ����I�ɃG�t�F�N�g���Đ�����
 		if (time % 60 == 0)
 		{
-			// エフェクトを再生する。
+			// �G�t�F�N�g���Đ�����B
 			playingEffectHandle = PlayEffekseer3DEffect(effectResourceHandle);
 
-			// エフェクトの位置をリセットする。
+			// �G�t�F�N�g�̈ʒu�����Z�b�g����B
 			position_x = 0.0f;
 		}
 
-		// 何でもいいので画像を描画する。
-		// こうして描画した後でないと、Effekseerは描画できない。
+		// ���ł������̂ŉ摜��`�悷��B
+		// �������ĕ`�悵����łȂ��ƁAEffekseer�͕`��ł��Ȃ��B
 		DrawGraph(0, 0, grBackgroundHandle, TRUE);
 
-		// 再生中のエフェクトを移動する。
+		// �Đ����̃G�t�F�N�g���ړ�����B
 		SetPosPlayingEffekseer3DEffect(playingEffectHandle, position_x, position_y, 0);
 		position_x += 0.2f;
 
-		// Effekseerにより再生中のエフェクトを更新する。
+		// Effekseer�ɂ��Đ����̃G�t�F�N�g���X�V����B
 		UpdateEffekseer3D();
 
-		// 3Dを表示する。
-		DrawCapsule3D(VGet(0.0f, 100.0f, 0.0f), VGet(0.0f, -100.0f, 0.0f), 6.0f, 16, GetColor(100, 100, 100), GetColor(255, 255, 255), TRUE);
+		// 3D��\������B
+		DrawCapsule3D(
+			VGet(0.0f, 100.0f, 0.0f), VGet(0.0f, -100.0f, 0.0f), 6.0f, 16, GetColor(100, 100, 100), GetColor(255, 255, 255), TRUE);
 
-		// Effekseerにより再生中のエフェクトを描画する。
+		// Effekseer�ɂ��Đ����̃G�t�F�N�g��`�悷��B
 		DrawEffekseer3D();
 
-		// エフェクトの上にも画像を描画できる。
+		// �G�t�F�N�g�̏�ɂ��摜��`��ł���B
 		DrawGraph(0, 0, grFrontHandle, TRUE);
 
-		// スクリーンを入れ替える。
+		// �X�N���[�������ւ���B
 		ScreenFlip();
 
-		// 時間を経過させる。
+		// ���Ԃ��o�߂�����B
 		time++;
 
-		// フルスクリーンの切り替えを行う。
+		// �t���X�N���[���̐؂�ւ����s���B
 		if (CheckHitKey(KEY_INPUT_F1) && !isFullScreen)
 		{
 			ChangeWindowMode(FALSE);
@@ -125,13 +128,13 @@ int sample3D()
 		}
 	}
 
-	// エフェクトリソースを削除する。(Effekseer終了時に破棄されるので削除しなくてもいい)
+	// �G�t�F�N�g���\�[�X���폜����B(Effekseer�I�����ɔj�������̂ō폜���Ȃ��Ă�����)
 	DeleteEffekseerEffect(effectResourceHandle);
-	
-	// Effekseerを終了する。
+
+	// Effekseer���I������B
 	Effkseer_End();
 
-	// DXライブラリを終了する。
+	// DX���C�u�������I������B
 	DxLib_End();
 
 	return 0;

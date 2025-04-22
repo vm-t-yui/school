@@ -1,16 +1,23 @@
-ï»¿
+
 #include <Windows.h>
 #include <stdio.h>
 
-// 2Dã®ã‚µãƒ³ãƒ—ãƒ«ã€‚æœ¬ä½“ã¯sample2D.cppã«è¨˜è¿°ã•ã‚Œã¦ã„ã‚‹ã€‚
+// 2D‚ÌƒTƒ“ƒvƒ‹B–{‘Ì‚Ísample2D.cpp‚É‹Lq‚³‚ê‚Ä‚¢‚éB
 int sample2D();
 
-// 3Dã®ã‚µãƒ³ãƒ—ãƒ«ã€‚æœ¬ä½“ã¯sample3D.cppã«è¨˜è¿°ã•ã‚Œã¦ã„ã‚‹ã€‚
+// 3D‚ÌƒTƒ“ƒvƒ‹B–{‘Ì‚Ísample3D.cpp‚É‹Lq‚³‚ê‚Ä‚¢‚éB
 int sample3D();
+
+// ƒlƒbƒgƒ[ƒN‚ÌƒTƒ“ƒvƒ‹B–{‘Ì‚Ínetwork.cpp‚É‹Lq‚³‚ê‚Ä‚¢‚éB
+int network();
 
 int main()
 {
-	printf("2Dã®ã‚µãƒ³ãƒ—ãƒ«å®Ÿè¡Œã™ã‚‹ã«ã¯1ã‚’ã€3Dã®ã‚µãƒ³ãƒ—ãƒ«ã‚’å®Ÿè¡Œã™ã‚‹ã«ã¯2ã‚’å…¥åŠ›ã—ã¦Enterã‚’æŠ¼ã—ã¦ãã ã•ã„ã€‚\n");
+	printf("ƒTƒ“ƒvƒ‹‚ğÀs‚µ‚Ü‚·Bƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚Ä‚­‚¾‚³‚¢B\n");
+	printf("1 - 2DƒTƒ“ƒvƒ‹\n");
+	printf("2 - 3DƒTƒ“ƒvƒ‹\n");
+	printf("3 - ƒlƒbƒgƒ[ƒN\n");
+
 	int num = 0;
 	scanf_s("%d", &num);
 
@@ -21,6 +28,10 @@ int main()
 	else if(num == 2)
 	{
 		sample3D();
+	}
+	else if (num == 3)
+	{
+		network();
 	}
 
 	return 0;
