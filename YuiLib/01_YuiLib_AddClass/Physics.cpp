@@ -7,7 +7,7 @@ using namespace YuiLib;
 /// <summary>
 /// 衝突物の登録
 /// </summary>
-void Physics::Entry(const Collidable* collidable)
+void Physics::Entry(Collidable* collidable)
 {
 	// TODO:登録
 	printfDx("登録！");
@@ -16,7 +16,7 @@ void Physics::Entry(const Collidable* collidable)
 /// <summary>
 /// 衝突物の登録解除
 /// </summary>
-void Physics::Exit(const Collidable* collidable)
+void Physics::Exit(Collidable* collidable)
 {
 	// TODO:登録
 	printfDx("登録解除！");

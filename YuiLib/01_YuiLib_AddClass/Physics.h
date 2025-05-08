@@ -12,8 +12,8 @@ class Physics final
 {
 public:
 	// 衝突物の登録・登録解除
-	void Entry(const Collidable* collidable);
-	void Exit(const Collidable* collidable);
+	void Entry(Collidable* collidable);
+	void Exit(Collidable* collidable);
 
 	void Update();	// 更新
 };
