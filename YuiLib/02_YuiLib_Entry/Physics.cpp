@@ -42,14 +42,21 @@ void Physics::Exit(Collidable* collidable)
 	//		break;
 	//	}
 	//}
-	// 登録解除(remove)
-	bool found = (std::find(collidables.begin(), collidables.end(), collidable) != collidables.end());
-	if (found)
-	{
-		collidables.remove(collidable);
-	}
+	//// 登録解除(remove + erace)
+	//bool found = (std::find(collidables.begin(), collidables.end(), collidable) != collidables.end());
+	//if (found)
+	//{
+	//	collidables.erase(std::remove(collidables.begin(), collidables.end(), collidable), collidables.end());
+	//}
+	//// 登録されてなかったらエラー
+	//else
+	//{
+	//	assert(0 && "指定のcollidableが登録されていません。");
+	//}
+	// 登録解除(eraseif 要C++20)
+	auto count = std::erase_if(collidables, [collidable](Collidable* target) { return target == collidable; });
 	// 登録されてなかったらエラー
-	else
+	if(count <= 0)
 	{
 		assert(0 && "指定のcollidableが登録されていません。");
 	}

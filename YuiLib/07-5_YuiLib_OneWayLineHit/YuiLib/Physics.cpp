@@ -30,25 +30,10 @@ void Physics::Entry(Collidable* collidable)
 /// </summary>
 void Physics::Exit(Collidable* collidable)
 {
-	//// 登録解除(erace)
-	//for (std::list<Collidable*>::const_iterator iterator = collidables.begin();
-	//	iterator != collidables.end();
-	//	++iterator)
-	//{
-	//	if ((*iterator) == collidable)
-	//	{
-	//		collidables.erase(iterator);
-	//		break;
-	//	}
-	//}
-	// 登録解除(remove)
-	bool found = (std::find(collidables.begin(), collidables.end(), collidable) != collidables.end());
-	if (found)
-	{
-		collidables.remove(collidable);
-	}
+	// 登録解除(eraseif 要C++20)
+	auto count = std::erase_if(collidables, [collidable](Collidable* target) { return target == collidable; });
 	// 登録されてなかったらエラー
-	else
+	if (count <= 0)
 	{
 		assert(0 && "指定のcollidableが登録されていません。");
 	}

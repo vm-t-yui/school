@@ -10,17 +10,12 @@ using namespace YuiLib;
 /// </summary>
 void Physics::Entry(Collidable* collidable)
 {
-	// 登録
-	bool found = (std::find(collidables.begin(), collidables.end(), collidable) != collidables.end());
-	if(!found)
+	// 登録解除(eraseif 要C++20)
+	auto count = std::erase_if(collidables, [collidable](Collidable* target) { return target == collidable; });
+	// 登録されてなかったらエラー
+	if (count <= 0)
 	{
-		collidables.emplace_back(collidable);
-		//collidables.push_back(collidable);
-	}
-	// 既に登録されてたらエラー
-	else
-	{
-		assert(0 && "指定のcollidableは登録済です。");
+		assert(0 && "指定のcollidableが登録されていません。");
 	}
 }
 
