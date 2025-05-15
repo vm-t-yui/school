@@ -68,17 +68,15 @@ void Physics::Update()
 	// 衝突情報の更新と通知
 	for (auto& item : collidables)
 	{
-		// 移動
+		// TODO:実装
 		// ポジションに移動力を足す
-		auto pos = item->rigidbody.GetPos();
-		auto nextPos = VAdd(pos, item->rigidbody.GetVelocity());
 
 		// デバッグ表示
 #if _DEBUG
-		DebugDraw::DrawLine(pos, nextPos, 0xff00ff);
+		//DebugDraw::DrawLine(pos, nextPos, 0xff00ff);
 #endif
 
-		item->rigidbody.SetPos(nextPos);
+		// 移動
 
 		//if(衝突したら)
 		{

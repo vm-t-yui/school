@@ -24,9 +24,8 @@ void Player::Initialize(YuiLib::Physics* physics)
 	// プレイヤーのグラフィックをメモリにロード＆表示座標を初期化
 	graphicHandle = LoadGraph("data/texture/player.png");
 
-	// 物理挙動の初期化
-	rigidbody.Initialize();
-	rigidbody.SetPos(VGet(288, 400, 0));
+	// 初期化
+	pos = VGet(288, 400, 0);
 	speed = 10;
 }
 
@@ -72,32 +71,29 @@ void Player::Update()
 	}
 
 	// 向きにスピードをかけて、移動力に変更する
-	rigidbody.SetVelocity(VScale(dir, speed));
+	auto velocity = VScale(dir, speed);
 	
-	////////////////////////////////////
-	// ここはPhysicsの範囲！
-	////////////////////////////////////
-	//// ポジションに移動力を足す.
-	//rigidbody.GetPos() = VAdd(rigidbody.GetPos(), rigidbody.velocity);
+	// ポジションに移動力を足す.
+	pos = VAdd(pos, velocity);
 
-	//// プレイヤーが画面端からはみ出そうになっていたら画面内の座標に戻してあげる
-	//if (rigidbody.GetPos().x < 0)
-	//{
-	//	rigidbody.GetPos().x = 0;
-	//}
-	//if (rigidbody.GetPos().x > SCREEN_WIDTH - w)
-	//{
-	//	rigidbody.GetPos().x = static_cast<float>(SCREEN_WIDTH - w);
-	//}
-	//if (rigidbody.GetPos().y < 0)
-	//{
-	//	rigidbody.GetPos().y = 0;
-	//}
-	//if (rigidbody.GetPos().y > static_cast<float>(SCREEN_HEIGHT - h))
-	//{
-	//	rigidbody.GetPos().y = static_cast<float>(SCREEN_HEIGHT - h);
-	//}
-	////////////////////////////////////
+	// プレイヤーが画面端からはみ出そうになっていたら画面内の座標に戻してあげる
+	int w = 64, h = 64;
+	if (pos.x < 0 + (w * 0.5f))
+	{
+		pos.x = 0 + (w * 0.5f);
+	}
+	if (pos.x > SCREEN_WIDTH - (w * 0.5f))
+	{
+		pos.x = static_cast<float>(SCREEN_WIDTH - (w * 0.5f));
+	}
+	if (pos.y < 0 + (h * 0.5f))
+	{
+		pos.y = 0 + (h * 0.5f);
+	}
+	if (pos.y > static_cast<float>(SCREEN_HEIGHT - (h * 0.5f)))
+	{
+		pos.y = static_cast<float>(SCREEN_HEIGHT - (h * 0.5f));
+	}
 }
 
 /// <summary>
@@ -106,8 +102,8 @@ void Player::Update()
 void Player::Draw()
 {
 	DrawRotaGraph(
-		static_cast<int>(rigidbody.GetPos().x),
-		static_cast<int>(rigidbody.GetPos().y),
+		static_cast<int>(pos.x),
+		static_cast<int>(pos.y),
 		1.0f,
 		0,
 		graphicHandle,

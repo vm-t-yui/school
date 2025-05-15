@@ -21,4 +21,6 @@ public:
 private:
 	int		graphicHandle;	// 画像グラフィックハンドル
 	float	speed;			// 移動スピード
+
+	VECTOR pos;
 };
