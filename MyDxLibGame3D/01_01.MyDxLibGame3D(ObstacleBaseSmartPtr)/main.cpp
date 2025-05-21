@@ -3,6 +3,7 @@
 #include "DxLib.h"
 #include "Player.h"
 #include "Camera.h"
+#include "ObstacleBase.h"
 #include "ObstacleKinematic.h"
 #include "ObstacleMovable.h"
 
@@ -40,6 +41,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	std::shared_ptr<ObstacleKinematic>	obstacleKinematic1	= std::make_shared<ObstacleKinematic>();
 	std::shared_ptr<ObstacleMovable>	obstacleMovable		= std::make_shared<ObstacleMovable>();
 	std::shared_ptr<ObstacleKinematic>	obstacleKinematic2	= std::make_shared<ObstacleKinematic>();
+
+	obstacleKinematic1->modelHandle = -1;
 
 	// 障害物の位置を初期化
 	float band = 10.0f;

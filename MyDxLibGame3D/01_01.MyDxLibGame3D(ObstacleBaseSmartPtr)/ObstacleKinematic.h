@@ -4,7 +4,7 @@
 /// <summary>
 /// 障害物:動かない
 /// </summary>
-class ObstacleKinematic
+class ObstacleKinematic : public ObstacleBase
 {
 public:
 	ObstacleKinematic();				// コンストラクタ
@@ -21,7 +21,6 @@ public:
     void SetPos(const VECTOR set) { pos = set; }
 
 private:
-    int		modelHandle;	// モデルハンドル
     VECTOR	pos;			// ポジション
 };
 

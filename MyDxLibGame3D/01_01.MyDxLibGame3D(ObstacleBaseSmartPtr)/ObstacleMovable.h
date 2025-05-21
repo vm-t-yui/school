@@ -4,7 +4,7 @@
 /// <summary>
 /// 障害物：移動する
 /// </summary>
-class ObstacleMovable
+class ObstacleMovable : public ObstacleBase
 {
 public:
 	ObstacleMovable();				// コンストラクタ
@@ -21,7 +21,6 @@ public:
     void SetPos(const VECTOR set) { pos = set; }
 
 private:
-    int		modelHandle;	// モデルハンドル
     VECTOR	pos;			// ポジション
 	float   rad;			// sin移動用のラジアン関数
 };
