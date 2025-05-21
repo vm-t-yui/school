@@ -4,7 +4,7 @@
 /// <summary>
 /// 障害物:動かない
 /// </summary>
-class ObstacleKinematic : public ObstacleBase
+class ObstacleKinematic
 {
 public:
 	ObstacleKinematic();				// コンストラクタ
@@ -22,5 +22,6 @@ public:
 
 private:
     VECTOR	pos;			// ポジション
+    int     modelHandle;
 };
 

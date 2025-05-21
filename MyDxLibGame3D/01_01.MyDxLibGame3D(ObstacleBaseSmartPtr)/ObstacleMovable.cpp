@@ -1,6 +1,5 @@
 ﻿// 2025 Takeru Yui All Rights Reserved.
 #include "DxLib.h"
-#include "ObstacleBase.h"
 #include "ObstacleMovable.h"
 
 #define _USE_MATH_DEFINES
