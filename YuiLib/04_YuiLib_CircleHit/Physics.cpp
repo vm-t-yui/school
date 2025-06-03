@@ -57,16 +57,50 @@ void Physics::Update()
 #endif
 
 		item->rigidbody.SetPos(nextPos);
+	}
 
-		// TODO:コライダー同士、円と円の当たり判定を行う
-		//if(衝突したら)
+	// TODO:コライダー同士、円と円の当たり判定を行う
+	bool	doCheck = true;
+	int		checkCount = 0;	// チェック回数
+	while (doCheck)
+	{
+		doCheck = false;
+		++checkCount;
+
+		// 2重ループで全オブジェクト当たり判定
+		// FIXME: 重いので近いオブジェクト同士のみ当たり判定するなど工夫がいる
+		for (auto& objA : collidables)
 		{
-			// 衝突によるポジション補正
-			// TODO:プレイヤーを優先して、敵を退ける
-			// TODO:補正後の位置をデバッグ表示
+			for (auto& objB : collidables)
+			{
+				//if(衝突したら)
+				{
+					// TODO:タグでプレイヤーか敵か判定
+					// ??? player = ????;
+					// ??? enemy = ????;
+					// 衝突によるポジション補正
+					// TODO:プレイヤーを優先して、敵を退ける
+					// TODO:補正後の位置をデバッグ表示
 
-			// 衝突通知
-			//item->OnCollide();
+					// 衝突通知
+					// player->OnCollide();
+					// enemy->OnCollide();
+					//break;
+				}
+			}
+
+			if (doCheck)
+			{
+				break;
+			}
+		}
+
+		// 無限ループ避け
+		// FIXME: 定数化
+		if (checkCount > 1000 && doCheck)
+		{
+			printfDx("当たり判定の繰り返しチェックが規定数を超えた\n");
+			break;
 		}
 	}
 }
