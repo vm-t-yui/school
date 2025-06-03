@@ -1,10 +1,12 @@
-// 2024 Takeru Yui All Rights Reserved.
+ï»¿// 2024 Takeru Yui All Rights Reserved.
 #pragma once
+
+#include <vector>
 
 namespace YuiLib {
 
 /// <summary>
-/// ƒfƒoƒbƒO—p‚Ì•`‰æî•ñ‚ğ‚Ü‚Æ‚ßAŒã‚Å•\¦‚·‚é‚½‚ß‚ÌƒNƒ‰ƒX
+/// ãƒ‡ãƒãƒƒã‚°ç”¨ã®æç”»æƒ…å ±ã‚’ã¾ã¨ã‚ã€å¾Œã§è¡¨ç¤ºã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹
 /// </summary>
 class DebugDraw
 {
@@ -12,18 +14,29 @@ public:
 	static void Clear();
 	static void Draw();
 
-	// ƒ‰ƒCƒ“•`‰æ
+	// ãƒ©ã‚¤ãƒ³æç”»
 	static void DrawLine(const VECTOR& start, const VECTOR& end, int color);
 
+	// ã‚µãƒ¼ã‚¯ãƒ«æç”»
+	static void DrawCircle(const VECTOR& center, float radius, int color);
+
 private:
-	// ƒ‰ƒCƒ“î•ñ
+	// ãƒ©ã‚¤ãƒ³æƒ…å ±
 	struct LineInfo
 	{
-		VECTOR start;
-		VECTOR end;
-		int color;
+		VECTOR	start;
+		VECTOR	end;
+		int		color;
 	};
-	static std::list<LineInfo> lineInfo;
+	// ã‚µãƒ¼ã‚¯ãƒ«æƒ…å ±
+	struct CircleInfo
+	{
+		VECTOR	center;
+		float	radius;
+		int		color;
+	};
+	static std::vector<LineInfo>	lineInfo;
+	static std::vector<CircleInfo>	circleInfo;
 };
 
 }

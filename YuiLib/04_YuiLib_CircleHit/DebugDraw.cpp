@@ -1,37 +1,47 @@
-// 2024 Takeru Yui All Rights Reserved.
+ï»¿// 2024 Takeru Yui All Rights Reserved.
 #include "DxLib.h"
-#include <list>
 #include "DebugDraw.h"
 using namespace YuiLib;
 
-// À‘Ì’è‹`
-std::list<DebugDraw::LineInfo> DebugDraw::lineInfo;
+// å®Ÿä½“å®šç¾©
+std::vector<DebugDraw::LineInfo> DebugDraw::lineInfo;
+std::vector<DebugDraw::CircleInfo> DebugDraw::circleInfo;
 
 /// <summary>
-/// ƒNƒŠƒA
+/// ã‚¯ãƒªã‚¢
 /// </summary>
 void DebugDraw::Clear()
 {
 	lineInfo.clear();
+	circleInfo.clear();
 }
 
 /// <summary>
-/// •`‰æ
+/// æç”»
 /// </summary>
 void DebugDraw::Draw()
 {
 	for (const auto& item : lineInfo)
 	{
-		DxLib::DrawLine(static_cast<int>(item.start.x),
-			static_cast<int>(item.start.y),
-			static_cast<int>(item.end.x),
-			static_cast<int>(item.end.y),
+		DxLib::DrawLineAA(item.start.x,
+			item.start.y,
+			item.end.x,
+			item.end.y,
 			item.color);
+	}
+	for (const auto& item : circleInfo)
+	{
+		DxLib::DrawCircleAA(item.center.x,
+			item.center.y,
+			item.radius,
+			128,
+			item.color,
+			FALSE);
 	}
 }
 
 /// <summary>
-/// ƒ‰ƒCƒ“•`‰æ
+/// ãƒ©ã‚¤ãƒ³æç”»
 /// </summary>
 void DebugDraw::DrawLine(const VECTOR& start, const VECTOR& end, int color)
 {
@@ -39,5 +49,17 @@ void DebugDraw::DrawLine(const VECTOR& start, const VECTOR& end, int color)
 	newInfo.start = start;
 	newInfo.end = end;
 	newInfo.color = color;
-	lineInfo.push_back(newInfo);
+	lineInfo.emplace_back(newInfo);
+}
+
+/// <summary>
+/// å††æç”»
+/// </summary>
+void DebugDraw::DrawCircle(const VECTOR& center, float radius, int color)
+{
+	CircleInfo newInfo;
+	newInfo.center = center;
+	newInfo.radius = radius;
+	newInfo.color = color;
+	circleInfo.emplace_back(newInfo);
 }
