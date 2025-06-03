@@ -62,15 +62,17 @@ void Physics::Update()
 	}
 
 	// 当たり判定チェック（nextPos指定）
-	std::vector<OnCollideInfo> onCollideInfo;	// OnCollideの遅延通知のためのデータ
+	std::vector<OnCollideInfo> onCollideInfo;
 	CheckColide(onCollideInfo);
 
 	// 位置確定
 	FixPosition();
 
-	/////////////////////////////////////////
-	// TODO:当たり通知
-	/////////////////////////////////////////
+	// 当たり通知
+	for (auto& item : onCollideInfo)
+	{
+		item.owner->OnCollide(*item.colider);
+	}
 }
 
 /// <summary>
@@ -167,11 +169,28 @@ void Physics::FixNextPosition(std::vector<OnCollideInfo>& onCollideInfo, Collida
 
 		// 衝突通知
 		// HACK: playerもenemyも何回も呼ばれる可能性はあるので、排他遅延処理
-		/////////////////////////////////////////
-		// TODO:通知リストに含まれていたら呼ばない
-		player->OnCollide(*enemy);
-		enemy->OnCollide(*player);
-		/////////////////////////////////////////
+		bool hasPlayerInfo = false;
+		bool hasEnemyInfo = false;
+		for (const auto& item : onCollideInfo)
+		{
+			// 既に通知リストに含まれていたら呼ばない
+			if (item.owner == player)
+			{
+				hasPlayerInfo = true;
+			}
+			if (item.owner == enemy)
+			{
+				hasEnemyInfo = true;
+			}
+		}
+		if (!hasPlayerInfo)
+		{
+			onCollideInfo.push_back({ player, enemy });
+		}
+		if (!hasEnemyInfo)
+		{
+			onCollideInfo.push_back({ enemy, player });
+		}
 	}
 }
 
