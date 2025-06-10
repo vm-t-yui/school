@@ -36,7 +36,7 @@ private:
 	bool IsCollide(Collidable* objA, Collidable* objB);
 
 	// 次位置補正
-	void FixNextPosition(std::vector<OnCollideInfo>& onCollideInfo, Collidable* objA, Collidable* objB);
+	void FixNextPosition(Collidable* player, Collidable* enemy);
 };
 
 }

@@ -112,8 +112,58 @@ void Physics::CheckColide(std::vector<OnCollideInfo>& onCollideInfo)
 					// お互いの距離が、それぞれの半径を足したものより小さければ当たる
 					if (IsCollide(objA, objB))
 					{
-						// 次目標位置修正
-						FixNextPosition(onCollideInfo, objA, objB);
+						// TODO: tagとは別に、当たり判定の種別を準備し、それによって補正位置を返る
+						// TODO: tagを使わず、補正移動の優先度Collidable::Priorityで判別する
+
+						// 衝突によるポジション補正
+						auto tagA = objA->GetTag();
+						auto tagB = objB->GetTag();
+
+						// 片方がプレイヤーならエネミーのほうを移動
+						Collidable* player = nullptr;
+						Collidable* enemy = nullptr;
+						if (tagA == Collidable::Tag::Player
+							&& tagB == Collidable::Tag::Enemy)
+						{
+							player = objA;
+							enemy = objB;
+						}
+						else if (tagB == Collidable::Tag::Player
+							&& tagA == Collidable::Tag::Enemy)
+						{
+							player = objB;
+							enemy = objA;
+						}
+						if (player && enemy)
+						{
+							// 次目標位置修正
+							FixNextPosition(objA, objB);
+						}
+
+						// 衝突通知
+						// HACK: playerもenemyも何回も呼ばれる可能性はあるので、排他遅延処理
+						bool hasPlayerInfo = false;
+						bool hasEnemyInfo = false;
+						for (const auto& item : onCollideInfo)
+						{
+							// 既に通知リストに含まれていたら呼ばない
+							if (item.owner == player)
+							{
+								hasPlayerInfo = true;
+							}
+							if (item.owner == enemy)
+							{
+								hasEnemyInfo = true;
+							}
+						}
+						if (!hasPlayerInfo)
+						{
+							onCollideInfo.push_back({ player, enemy });
+						}
+						if (!hasEnemyInfo)
+						{
+							onCollideInfo.push_back({ enemy, player });
+						}
 
 						// 一度でもヒット+補正したら衝突判定と補正やりなおし
 						doCheck = true;
@@ -157,65 +207,15 @@ bool Physics::IsCollide(Collidable* objA, Collidable* objB)
 /// <summary>
 /// 次位置補正
 /// </summary>
-void Physics::FixNextPosition(std::vector<OnCollideInfo>& onCollideInfo, Collidable* objA, Collidable* objB)
+void Physics::FixNextPosition(Collidable* player, Collidable* enemy)
 {
-	// TODO: tagとは別に、当たり判定の種別を準備し、それによって補正位置を返る
-	// TODO: tagを使わず、補正移動の優先度Collidable::Priorityで判別する
+	VECTOR playerToEnemy = VSub(enemy->nextPos, player->nextPos);
+	VECTOR playerToEnemyN = VNorm(playerToEnemy);
 
-	// 衝突によるポジション補正
-	auto tagA = objA->GetTag();
-	auto tagB = objB->GetTag();
-
-	// 片方がプレイヤーならエネミーのほうを移動
-	Collidable* player = nullptr;
-	Collidable* enemy = nullptr;
-	if (tagA == Collidable::Tag::Player
-		&& tagB == Collidable::Tag::Enemy)
-	{
-		player = objA;
-		enemy = objB;
-	}
-	else if (tagB == Collidable::Tag::Player
-		&& tagA == Collidable::Tag::Enemy)
-	{
-		player = objB;
-		enemy = objA;
-	}
-	if (player && enemy)
-	{
-		VECTOR playerToEnemy = VSub(enemy->nextPos, player->nextPos);
-		VECTOR playerToEnemyN = VNorm(playerToEnemy);
-
-		// HACK: 先に位置を補正してしまうと、過去が参照できない
-		VECTOR oldEnemyPos = enemy->nextPos;
-		float  awayDist = player->radius + enemy->radius + 0.0001f;	// そのままだとちょうど当たる位置になるので少し余分に離す
-		VECTOR playerToNewEnemyPos = VScale(playerToEnemyN, awayDist);
-		VECTOR fixedPos = VAdd(player->nextPos, playerToNewEnemyPos);
-		enemy->nextPos = fixedPos;
-
-		// 衝突通知
-		// HACK: playerもenemyも何回も呼ばれる可能性はあるので、排他遅延処理
-		bool hasPlayerInfo = false;
-		bool hasEnemyInfo = false;
-		for (const auto& item : onCollideInfo)
-		{
-			// 既に通知リストに含まれていたら呼ばない
-			if (item.owner == player)
-			{
-				hasPlayerInfo = true;
-			}
-			if (item.owner == enemy)
-			{
-				hasEnemyInfo = true;
-			}
-		}
-		if (!hasPlayerInfo)
-		{
-			onCollideInfo.push_back({ player, enemy });
-		}
-		if (!hasEnemyInfo)
-		{
-			onCollideInfo.push_back({ enemy, player });
-		}
-	}
+	// HACK: 先に位置を補正してしまうと、過去が参照できない
+	VECTOR oldEnemyPos = enemy->nextPos;
+	float  awayDist = player->radius + enemy->radius + 0.0001f;	// そのままだとちょうど当たる位置になるので少し余分に離す
+	VECTOR playerToNewEnemyPos = VScale(playerToEnemyN, awayDist);
+	VECTOR fixedPos = VAdd(player->nextPos, playerToNewEnemyPos);
+	enemy->nextPos = fixedPos;
 }
