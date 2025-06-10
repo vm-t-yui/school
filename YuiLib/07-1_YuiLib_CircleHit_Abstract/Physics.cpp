@@ -137,7 +137,7 @@ void Physics::CheckColide(std::vector<OnCollideInfo>& onCollideInfo)
 						if (player && enemy)
 						{
 							// 次目標位置修正
-							FixNextPosition(objA, objB);
+							FixNextPosition(player, enemy);
 						}
 
 						// 衝突通知
