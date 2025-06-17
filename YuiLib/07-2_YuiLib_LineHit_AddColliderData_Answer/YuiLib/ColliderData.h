@@ -5,7 +5,7 @@ namespace YuiLib {
 /// <summary>
 /// 当たり判定のデータ基底
 /// </summary>
-class ColliderData
+class ColliderData abstract
 {
 public:
 	// 当たり判定種別
@@ -15,8 +15,8 @@ public:
 		Line2D
 	};
 
-	// コンストラクタ
 	ColliderData(Kind kind) { this->kind = kind; }
+	virtual ~ColliderData() {/*処理なし*/}
 
 	// 当たり判定種別取得
 	Kind GetKind() const { return kind; }

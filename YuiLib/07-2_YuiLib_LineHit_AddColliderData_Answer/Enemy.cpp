@@ -12,7 +12,7 @@ Enemy::Enemy()
 	: Collidable		(Collidable::Priority::Low, GameObjectTag::Enemy, YuiLib::ColliderData::Kind::Circle2D)
 	, graphicHandle		(-1)
 {
-	auto circleColliderData = static_cast<YuiLib::ColliderDataCircle2D*>(colliderData);
+	auto circleColliderData = dynamic_cast<YuiLib::ColliderDataCircle2D*>(colliderData);
 	circleColliderData->radius = 20.0f;
 }
 

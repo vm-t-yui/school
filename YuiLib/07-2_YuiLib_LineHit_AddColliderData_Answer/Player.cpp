@@ -13,7 +13,7 @@ Player::Player()
 	, graphicHandle		(-1)
 	, speed				(0)
 {
-	auto circleColliderData = static_cast<YuiLib::ColliderDataCircle2D*>(colliderData);
+	auto circleColliderData = dynamic_cast<YuiLib::ColliderDataCircle2D*>(colliderData);
 	circleColliderData->radius = 22.0f;
 }
 

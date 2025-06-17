@@ -15,9 +15,8 @@ public:
 		Line2D
 	};
 
-	// コンストラクタ
 	ColliderData(Kind kind) { this->kind = kind; }
-	virtual ~ColliderData() {}
+	virtual ~ColliderData() {/*処理なし*/}
 
 	// 当たり判定種別取得
 	Kind GetKind() const { return kind; }
