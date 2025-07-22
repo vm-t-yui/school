@@ -188,6 +188,9 @@ void Physics::FixPosition()
 		DebugDraw::DrawLine(item->rigidbody.GetPos(), item->nextPos, 0xff00ff);
 		DebugDraw::DrawCircle(item->nextPos, item->radius, 0xff00ff);
 #endif
+		// nextPosを更新したので、velocityもそこに移動するvelocityに修正
+		VECTOR toFixedPos = VSub(item->nextPos, item->rigidbody.GetPos());
+		item->rigidbody.SetVelocity(toFixedPos);
 
 		// 位置確定
 		item->rigidbody.SetPos(item->nextPos);

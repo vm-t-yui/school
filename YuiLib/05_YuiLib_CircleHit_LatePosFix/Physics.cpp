@@ -116,6 +116,10 @@ void Physics::Update()
 							VECTOR fixedPos = VAdd(player->nextPos, playerToNewEnemyPos);
 							enemy->nextPos = fixedPos;
 
+							// nextPosを更新したので、velocityもそこに移動するvelocityに修正
+							VECTOR toFixedPos = VSub(enemy->nextPos, enemy->rigidbody.GetPos());
+							enemy->rigidbody.SetVelocity(toFixedPos);
+
 							// HACK: playerもenemyも何回も呼ばれる可能性はある
 							// 衝突通知
 							player->OnCollide(*enemy);
