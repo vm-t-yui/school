@@ -220,9 +220,6 @@ void Physics::FixPosition()
 			DebugDraw::DrawCircle(item->nextPos, itemCircleData->radius, AfterFixInfoColor);
 		}
 #endif
-		// Posを更新するので、velocityもそこに移動するvelocityに修正
-		VECTOR toFixedPos = VSub(item->nextPos, item->rigidbody.GetPos());
-		item->rigidbody.SetVelocity(toFixedPos);
 
 		// 位置確定
 		item->rigidbody.SetPos(item->nextPos);
