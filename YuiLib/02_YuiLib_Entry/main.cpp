@@ -47,6 +47,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	// ゲームループ.
 	while (1)
 	{
+		auto prevTime = GetNowHiPerformanceCount();	// 処理が始まる前の時間
+
 		// 画面を初期化(真っ黒にする)
 		ClearDrawScreen();
 
@@ -82,6 +84,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		else if (CheckHitKey(KEY_INPUT_ESCAPE))
 		{
 			break;
+		}
+
+		// 雑なfps固定処理
+		// 差を求めて、1回の画面更新が1/60秒になるようにwhileループ回して待つ
+		auto afterTime = GetNowHiPerformanceCount(); // 処理が終わった後の時間
+		while (afterTime - prevTime < 16667)
+		{
+			afterTime = GetNowHiPerformanceCount();
 		}
 	}
 

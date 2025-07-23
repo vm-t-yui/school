@@ -29,7 +29,7 @@ public:
 	static constexpr float MaxGravityAccel = -0.15f;
 
 	float GetTimeScale() const { return timeScale; }
-	void SetTImeScale(float scale) { timeScale = scale; }
+	void SetTimeScale(float scale) { timeScale = scale; }
 
 private:
 	static const int BeforeFixInfoColor	= 0x0000ff;	// 補正前情報色

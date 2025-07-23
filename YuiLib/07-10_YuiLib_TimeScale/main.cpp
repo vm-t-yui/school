@@ -144,25 +144,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			backGround2D->Update();
 			backGround3D->Update();
 			//frontGround2D->Update();
-			
-#ifdef _DEBUG
-			// デバッグタイムスケール調整
-			if (keyBuf[KEY_INPUT_1])
-			{
-				timeScale += 0.01f;
-				printfDx("timeScale:%f\n", timeScale);
-			}
-			if (keyBuf[KEY_INPUT_2])
-			{
-				timeScale -= 0.01f;
-				if (timeScale < 0)
-				{
-					timeScale = 0;
-				}
-				printfDx("timeScale:%f\n", timeScale);
-			}
-			physics->SetTImeScale(timeScale);
-#endif
 
 			physics->Update();	// 物理更新
 
@@ -185,6 +166,23 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			SetUseLighting(FALSE);			// ライティング使わない
 			SetWriteZBufferFlag(FALSE);		// Ｚバッファへの書き込みをしない
 			YuiLib::DebugDraw::Draw3D();
+
+			// デバッグタイムスケール調整
+			if (keyBuf[KEY_INPUT_1])
+			{
+				timeScale += 0.01f;
+				//printfDx("timeScale:%f\n", timeScale);
+			}
+			if (keyBuf[KEY_INPUT_2])
+			{
+				timeScale -= 0.01f;
+				if (timeScale < 0)
+				{
+					timeScale = 0;
+				}
+			}
+			physics->SetTimeScale(timeScale);
+			DrawFormatString(10, 10, GetColor(255, 255, 255), "TimeScale:%f", timeScale);
 #endif
 
 			//frontGround2D->Draw();
