@@ -57,9 +57,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	// エネミーが右移動しているかどうかのフラグをリセット
 	bool isEnemyRightMove = true;
 
-	// ショットのグラフィックをメモリにロード.
+	// ショットのグラフィックをメモリにロード+サイズ取得
 	int shotGraph;
 	shotGraph = LoadGraph("data/texture/shot.png");
+
+	int shotW, shotH;
+	GetGraphSize(shotGraph, &shotW, &shotH);
+
+	const float shotHalfW = shotW * 0.5f;
+	const float shotHalfH = shotH * 0.5f;
 
 	// 弾の位置、ディレクションを作成
 	VECTOR shotPos = VGet(0, 0, 0);
@@ -67,12 +73,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	// 弾が画面上に存在しているか保持する変数に『存在していない』を意味するfalseを代入しておく
 	bool isShotAlive = false;
-
-	int shotW, shotH;
-	GetGraphSize(shotGraph, &shotW, &shotH);
-
-	const float shotHalfW = shotW * 0.5f;
-	const float shotHalfH = shotH * 0.5f;
 
 	// ゲームループ.
 	while (1)
