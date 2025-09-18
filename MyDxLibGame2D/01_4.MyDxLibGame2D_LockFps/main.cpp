@@ -1,0 +1,204 @@
+﻿//-----------------------------------------------------------------------------
+// @brief  メイン処理.
+// 2016 Takeru Yui All Rights Reserved.
+//-----------------------------------------------------------------------------
+#include "DxLib.h"
+
+// 定数群
+constexpr int	ScreenW			= 640;
+constexpr int	ScreenH			= 480;
+constexpr float	PlayerSpeed		= 3.0f;
+constexpr float	EnemySpeed		= 3.0f;
+const VECTOR	PlayerFirstPos	= VGet(ScreenW * 0.5f, ScreenH - 80.0f, 0);
+const VECTOR	EnemyFirstPos	= VGet(0, 50, 0);
+constexpr int	ColorBit		= 16;
+
+/// <summary>
+/// メイン関数
+/// </summary>
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
+	LPSTR lpCmdLine, int nCmdShow)
+{
+	// 画面モードの設定
+	SetGraphMode(ScreenW, ScreenH, ColorBit);		// 解像度を640*480、colorを16bitに設定
+	ChangeWindowMode(TRUE);							// ウインドウモードに
+
+	// ＤＸライブラリ初期化処理
+	if (DxLib_Init() == -1)
+	{
+		return -1;
+	}
+
+	// グラフィックの描画先を裏画面にセット
+	SetDrawScreen(DX_SCREEN_BACK);
+
+	// プレイヤーのグラフィックをメモリにロード＆表示座標を初期化
+	VECTOR	playerPos	= PlayerFirstPos;
+	VECTOR	playerDir	= VGet(0, 0, 0);	// プレイヤーの向き
+	int		playerGraph	= LoadGraph("data/texture/player.png");
+	
+	// キャラの画像の大きさを取得。毎度キャストするのがいやなので半分サイズも準備
+	int playerW, playerH;
+	GetGraphSize(playerGraph,&playerW, &playerH);
+
+	const float playerHalfW = playerW * 0.5f;
+	const float playerHalfH = playerH * 0.5f;
+
+	// エネミーのグラフィックをメモリにロード＆表示座標を初期化
+	VECTOR	enemyPos	= EnemyFirstPos;
+	VECTOR	enemyDir	= VGet(0, 0, 0);	// エネミーの向き
+	int		enemyGraph	= LoadGraph("data/texture/enemy.png");
+
+	int enemyW, enemyH;
+	GetGraphSize(enemyGraph, &enemyW, &enemyH);
+
+	const float enemyHalfW = enemyW * 0.5f;
+	const float enemyHalfH = enemyH * 0.5f;
+
+	// エネミーが右移動しているかどうかのフラグをリセット
+	bool isEnemyRightMove = true;
+
+	// ゲームループ
+	while (true)
+	{
+		auto prevTime = GetNowHiPerformanceCount();	// 処理が始まる前の時間
+
+		// 画面を初期化(真っ黒にする)
+		ClearDrawScreen();
+
+		//------------------------------//
+		// プレイヤーの操作ルーチン
+		//------------------------------//
+		{
+			playerDir = VGet(0, 0, 0);	// 向きをリセット
+
+			// 矢印キーを押していたらプレイヤーを移動させる
+			if (CheckHitKey(KEY_INPUT_UP) == 1)
+			{
+				playerDir = VAdd(playerDir, VGet(0, -1, 0));
+			}
+			if (CheckHitKey(KEY_INPUT_DOWN) == 1)
+			{
+				playerDir = VAdd(playerDir, VGet(0, 1, 0));
+			}
+			if (CheckHitKey(KEY_INPUT_LEFT) == 1)
+			{
+				playerDir = VAdd(playerDir, VGet(-1, 0, 0));
+			}
+			if (CheckHitKey(KEY_INPUT_RIGHT) == 1)
+			{
+				playerDir = VAdd(playerDir, VGet(1, 0, 0));
+			}
+
+			// 長さがゼロじゃない場合、向きを正規化して、長さ1に
+			if (VSize(playerDir) > 0)
+			{
+				playerDir = VNorm(playerDir);
+			}
+
+			// プレイヤーの移動
+			VECTOR playerVelocity = VScale(playerDir, PlayerSpeed);	// 長さ1の向きに、大きさ（速度）をかける
+			playerPos = VAdd(playerPos, playerVelocity);			// 座標ベクトルに、velicityを足すことで移動
+
+			// プレイヤーが画面左端からはみ出そうになっていたら画面内の座標に戻してあげる
+			if (playerPos.x < playerHalfW)
+			{
+				playerPos.x = playerHalfW;
+			}
+			if (playerPos.x > ScreenW - playerHalfW)
+			{
+				playerPos.x = ScreenW - playerHalfW;
+			}
+			if (playerPos.y < playerHalfH)
+			{
+				playerPos.y = playerHalfH;
+			}
+			if (playerPos.y > ScreenH - playerHalfH)
+			{
+				playerPos.y = ScreenH - playerHalfH;
+			}
+
+			// プレイヤーを描画
+			DrawRotaGraph3(static_cast<int>(playerPos.x),
+				static_cast<int>(playerPos.y),
+				static_cast<int>(playerHalfW), static_cast<int>(playerHalfH),
+				1.0f,1.0f,
+				0.0f,playerGraph,
+				FALSE, FALSE);
+		}
+
+		//------------------------------//
+		// エネミーの移動ルーチン
+		//------------------------------//
+		{
+			// エネミーの座標を移動している方向に移動する
+			enemyDir = VGet(0, 0, 0);
+			if (isEnemyRightMove == true)
+			{
+				enemyDir = VAdd(enemyDir, VGet(1, 0, 0));
+			}
+			else
+			{
+				enemyDir = VAdd(enemyDir, VGet(-1, 0, 0));
+			}
+
+			// 長さがゼロじゃない場合、向きを正規化して、長さ1に
+			if (VSize(enemyDir) > 0)
+			{
+				enemyDir = VNorm(enemyDir);
+			}
+
+			// エネミーの移動。すでに長さ１なので正規化はいらない
+			VECTOR enemyVelocity = VScale(enemyDir, EnemySpeed);	// 長さ1の向きに、大きさ（速度）をかける
+			enemyPos = VAdd(enemyPos, enemyVelocity);				// 座標ベクトルに、velicityを足すことで移動
+
+			// エネミーが画面端からでそうになっていたら画面内の座標に戻してあげ、移動する方向も反転する
+			if (enemyPos.x > ScreenW - enemyHalfW)
+			{
+				enemyPos.x = ScreenW - enemyHalfW;
+				isEnemyRightMove = false;
+			}
+			else if (enemyPos.x < enemyHalfW)
+			{
+				enemyPos.x = enemyHalfW;
+				isEnemyRightMove = true;
+			}
+
+			// エネミーを描画
+			DrawRotaGraph3(static_cast<int>(enemyPos.x),
+				static_cast<int>(enemyPos.y),
+				static_cast<int>(enemyHalfW), static_cast<int>(enemyHalfH),
+				1.0f, 1.0f,
+				0.0f, enemyGraph,
+				FALSE, FALSE);
+		}
+
+		// 裏画面の内容を表画面にコピーする（描画の確定）.
+		ScreenFlip();
+
+
+		// Windows 特有の面倒な処理をＤＸライブラリにやらせる
+		// マイナスの値（エラー値）が返ってきたらループを抜ける
+		if (ProcessMessage() < 0)
+		{
+			break;
+		}
+		// もしＥＳＣキーが押されていたらループから抜ける
+		else if (CheckHitKey(KEY_INPUT_ESCAPE))
+		{
+			break;
+		}
+
+		// 雑なfps固定処理
+		// 差を求めて、1回の画面更新が1/60秒になるようにwhileループ回して待つ
+		auto afterTime = GetNowHiPerformanceCount(); // 処理が終わった後の時間
+		while (afterTime - prevTime < 16667)
+		{
+			afterTime = GetNowHiPerformanceCount();
+		}
+	}
+
+	DxLib_End();				// ＤＸライブラリ使用の終了処理
+
+	return 0;					// ソフトの終了
+}
