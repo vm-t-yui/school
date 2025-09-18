@@ -5,12 +5,13 @@
 #include "DxLib.h"
 
 // 定数群
-const int ScreenW = 640;
-const int ScreenH = 480;
-const float PlayerSpeed = 3.0f;
-const float EnemySpeed = 3.0f;
-const VECTOR PlayerFirstPos = VGet(ScreenW * 0.5f, ScreenH - 80.0f, 0);
-const VECTOR EnemyFirstPos = VGet(0, 50, 0);
+constexpr int	ScreenW = 640;
+constexpr int	ScreenH = 480;
+constexpr float	PlayerSpeed = 3.0f;
+constexpr float	EnemySpeed = 3.0f;
+const VECTOR	PlayerFirstPos = VGet(ScreenW * 0.5f, ScreenH - 80.0f, 0);
+const VECTOR	EnemyFirstPos = VGet(0, 50, 0);
+constexpr int	ColorBit = 16;
 
 /// <summary>
 /// メイン関数
@@ -19,8 +20,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	LPSTR lpCmdLine, int nCmdShow)
 {
 	// 画面モードの設定
-	SetGraphMode(ScreenW, ScreenH, 16);		// 解像度を640*480、colorを16bitに設定.
-	ChangeWindowMode(TRUE);			// ウインドウモードに.
+	SetGraphMode(ScreenW, ScreenH, ColorBit);		// 解像度を640*480、colorを16bitに設定
+	ChangeWindowMode(TRUE);							// ウインドウモードに
 
 	// ＤＸライブラリ初期化処理
 	if (DxLib_Init() == -1)
@@ -50,10 +51,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	const float enemyHalfH = enemyH * 0.5f;
 
 	// エネミーが右移動しているかどうかのフラグをリセット
-	bool enemyRightMove = true;
+	bool isEnemyRightMove = true;
 
-	// ゲームループ.
-	while (1)
+	// ゲームループ
+	while (true)
 	{
 		// 画面を初期化(真っ黒にする)
 		ClearDrawScreen();
@@ -107,13 +108,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 				FALSE, FALSE);
 		}
 
-
 		//------------------------------//
 		// エネミーの移動ルーチン
 		//------------------------------//
 		{
 			// エネミーの座標を移動している方向に移動する
-			if (enemyRightMove == true)
+			if (isEnemyRightMove == true)
 			{
 				enemyPos.x += EnemySpeed;
 			}
@@ -126,12 +126,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			if (enemyPos.x > ScreenW - enemyHalfW)
 			{
 				enemyPos.x = ScreenW - enemyHalfW;
-				enemyRightMove = false;
+				isEnemyRightMove = false;
 			}
 			else if (enemyPos.x < enemyHalfW)
 			{
 				enemyPos.x = enemyHalfW;
-				enemyRightMove = true;
+				isEnemyRightMove = true;
 			}
 
 			// エネミーを描画
