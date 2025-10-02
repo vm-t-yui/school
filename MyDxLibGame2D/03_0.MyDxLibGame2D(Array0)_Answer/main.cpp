@@ -28,12 +28,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	// とりあえずロード
 	int graph = LoadGraph("data/texture/player.png");
 
-	// x座標のコレクション（塊）を準備
+	// 座標のコレクション（塊）を準備
 #if !USE_VECTOR		// !をつけることで判定を反転させられる。USE_VECTOR = 0の時コンパイルされる
-	VECTOR posArray[ArrayNum];
+	VECTOR posArray[ArrayNum];	// 構造体の配列なので手動初期化しなければならない
 #else
 	// ArrayNum個のVECTOR型コンテナ（箱）を準備し、全部ゼロのベクトルで初期化する
-	std::vector<VECTOR> posArray(ArrayNum, VGet(0, 0, 0));
+	std::vector<VECTOR> posArray(ArrayNum, VGet(0, 0, 0));	// stdのコンテナは全部同じ値で初期化できる。べんり
 #endif
 
 	// 位置を計算して代入。iを使いたいときは通常のfor文
@@ -62,7 +62,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		// 中身をいじらないときはconstつける
 		for (const auto& pos : posArray)
 		{
-			DrawGraph(static_cast<int>(pos.x), static_cast<int>(pos.y), FALSE);
+			DrawGraph(static_cast<int>(pos.x), static_cast<int>(pos.y), graph, FALSE);
 		}
 #endif
 
