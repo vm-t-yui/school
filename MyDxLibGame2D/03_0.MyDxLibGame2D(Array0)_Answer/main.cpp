@@ -1,5 +1,5 @@
 ﻿// ベクトルを使うかどうかを0と1で使い分け。1にすると#if USE_VECTORがコンパイルされる
-#define USE_VECTOR 1
+#define USE_VECTOR 0
 
 #if USE_VECTOR
 	#include <vector>
@@ -8,9 +8,10 @@
 #include "DxLib.h"
 
 // 配列の個数
-constexpr int ArrayNum = 10;
-constexpr int PlayerY = 100;
-constexpr int PlayerW = 64;
+constexpr int	ArrayNum		= 10;
+const VECTOR	PlayerDefaltPos = VGet(0, 100, 0);
+constexpr int	PlayerW			= 64;
+const VECTOR	PlayerVelocity	= VGet(2.5f, 0, 0);
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	LPSTR lpCmdLine, int nCmdShow)
@@ -24,17 +25,24 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	// 描画先を裏画面にする
 	SetDrawScreen(DX_SCREEN_BACK);
 
+	// とりあえずロード
+	int graph = LoadGraph("data/texture/player.png");
+
 	// x座標のコレクション（塊）を準備
 #if !USE_VECTOR		// !をつけることで判定を反転させられる。USE_VECTOR = 0の時コンパイルされる
-	int x[ArrayNum];
+	VECTOR posArray[ArrayNum];
 #else
-	std::vector<int> x(ArrayNum, 0);	// ArrayNum個のint型コンテナ（箱）を準備し、0で初期化する
+	// ArrayNum個のVECTOR型コンテナ（箱）を準備し、全部ゼロのベクトルで初期化する
+	std::vector<VECTOR> posArray(ArrayNum, VGet(0, 0, 0));
 #endif
 
 	// 位置を計算して代入。iを使いたいときは通常のfor文
 	for (int i = 0; i < ArrayNum; i++)
 	{
-		x[i] = PlayerW * i;	// 毎ループごとに1ずつ増えるiを使って座標を計算。だんだん右に。
+		// 毎ループごとに1ずつ増えるiを使って座標を計算。だんだん右に。
+		posArray[i] = VGet(PlayerDefaltPos.x + PlayerW * i,
+			PlayerDefaltPos.y,
+			PlayerDefaltPos.z);
 	}
 
 	while (true)
@@ -46,15 +54,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 #if !USE_VECTOR
 		for (int i = 0; i < ArrayNum; i++)
 		{
-			LoadGraphScreen(x[i], PlayerY, "data/texture/player.png", FALSE);
+			DrawGraph(static_cast<int>(posArray[i].x), static_cast<int>(posArray[i].y), graph, FALSE);
 		}
 #else
 		// 範囲for文。xの中を一個ずつ見る
-		// intの参照型のitemが、xの中身を順番に参照する
+		// intの参照型のposが、xの中身を順番に参照する
 		// 中身をいじらないときはconstつける
-		for (const auto& item : x)
+		for (const auto& pos : posArray)
 		{
-			LoadGraphScreen(item, PlayerY, "data/texture/player.png", FALSE);
+			DrawGraph(static_cast<int>(pos.x), static_cast<int>(pos.y), FALSE);
 		}
 #endif
 
@@ -64,13 +72,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 #if !USE_VECTOR
 			for (int i = 0; i < ArrayNum; i++)
 			{
-				x[i]++;
+				posArray[i] = VAdd(posArray[i], PlayerVelocity);
 			}
 #else
 			// 参照なのでいじれる。いじるときはconstはずす
-			for (auto& item : x)
+			for (auto& pos : posArray)
 			{
-				item++;
+				pos = VAdd(pos, PlayerVelocity);
 			}
 #endif
 		}
