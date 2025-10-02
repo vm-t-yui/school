@@ -1,5 +1,5 @@
 ﻿// ベクトルを使うかどうかを0と1で使い分け。1にすると#if USE_VECTORがコンパイルされる
-#define USE_VECTOR 0
+#define USE_VECTOR 1
 
 #if USE_VECTOR
 	#include <vector>
@@ -28,7 +28,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 #if !USE_VECTOR		// !をつけることで判定を反転させられる。USE_VECTOR = 0の時コンパイルされる
 	int x[ArrayNum];
 #else
-	std::vector<int> x(ArrayNum);
+	std::vector<int> x(ArrayNum, 0);	// ArrayNum個のint型コンテナ（箱）を準備し、0で初期化する
 #endif
 
 	// 位置を計算して代入。iを使いたいときは通常のfor文
@@ -49,7 +49,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			LoadGraphScreen(x[i], PlayerY, "data/texture/player.png", FALSE);
 		}
 #else
-		// いじらないときはconstつける
+		// 範囲for文。xの中を一個ずつ見る
+		// intの参照型のitemが、xの中身を順番に参照する
+		// 中身をいじらないときはconstつける
 		for (const auto& item : x)
 		{
 			LoadGraphScreen(item, PlayerY, "data/texture/player.png", FALSE);
