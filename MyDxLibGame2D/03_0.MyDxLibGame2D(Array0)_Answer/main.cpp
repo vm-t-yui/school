@@ -1,5 +1,16 @@
-﻿
+﻿// ベクトルを使うかどうかを0と1で使い分け。1にすると#if USE_VECTORがコンパイルされる
+#define USE_VECTOR 0
+
+#if USE_VECTOR
+	#include <vector>
+#endif
+
 #include "DxLib.h"
+
+// 配列の個数
+constexpr int ArrayNum = 10;
+constexpr int PlayerY = 100;
+constexpr int PlayerW = 64;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	LPSTR lpCmdLine, int nCmdShow)
@@ -13,11 +24,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	// 描画先を裏画面にする
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	// x座標.
-	int x[10];
-	for (int i = 0; i < 10; i++)
+	// x座標のコレクション（塊）を準備
+#if !USE_VECTOR		// !をつけることで判定を反転させられる。USE_VECTOR = 0の時コンパイルされる
+	int x[ArrayNum];
+#else
+	std::vector<int> x(ArrayNum);
+#endif
+
+	// 位置を計算して代入。iを使いたいときは通常のfor文
+	for (int i = 0; i < ArrayNum; i++)
 	{
-		x[i] = 64 * i;
+		x[i] = PlayerW * i;	// 毎ループごとに1ずつ増えるiを使って座標を計算。だんだん右に。
 	}
 
 	while (true)
@@ -26,18 +43,34 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		ClearDrawScreen();
 
 		// 画面に絵を表示
-		for (int i = 0; i < 10; i++)
+#if !USE_VECTOR
+		for (int i = 0; i < ArrayNum; i++)
 		{
-			LoadGraphScreen(x[i], 100, "data/texture/player.png", FALSE);
+			LoadGraphScreen(x[i], PlayerY, "data/texture/player.png", FALSE);
 		}
+#else
+		// いじらないときはconstつける
+		for (const auto& item : x)
+		{
+			LoadGraphScreen(item, PlayerY, "data/texture/player.png", FALSE);
+		}
+#endif
 
 		// 矢印キーの→を押したら右に動かす.
 		if (CheckHitKey(KEY_INPUT_RIGHT))
 		{
-			for (int i = 0; i < 10; i++)
+#if !USE_VECTOR
+			for (int i = 0; i < ArrayNum; i++)
 			{
 				x[i]++;
 			}
+#else
+			// 参照なのでいじれる。いじるときはconstはずす
+			for (auto& item : x)
+			{
+				item++;
+			}
+#endif
 		}
 
 		// エスケープキーを押したら抜ける.
