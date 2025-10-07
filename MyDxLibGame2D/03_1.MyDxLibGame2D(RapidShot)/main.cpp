@@ -71,7 +71,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	const float shotHalfH = shotH * 0.5f;
 
 	// 前フレームでショットボタンのインプットがあったかどうか
-	bool isPrevShotButtonInput = false;
+	bool isPrevInputShotButton = false;
 
 	// --- 弾の数だけ存在するデータ
 	// 弾の位置、ディレクションを作成
@@ -127,7 +127,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			if (CheckHitKey(KEY_INPUT_SPACE))
 			{
 				// 連射防止の為、前フレームにインプットがあった場合は通さない
-				if (isPrevShotButtonInput == false)
+				if (isPrevInputShotButton == false)
 				{
 					// 弾i個分繰り返す
 					for (int i = 0; i < ShotNum; i++)
@@ -147,11 +147,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 				}
 
 				// 連射防止の為、前フレームにインプットがあったかどうかを記憶する
-				isPrevShotButtonInput = true;
+				isPrevInputShotButton = true;
 			}
 			else
 			{
-				isPrevShotButtonInput = false;
+				isPrevInputShotButton = false;
 			}
 
 			// プレイヤーが画面左端からはみ出そうになっていたら画面内の座標に戻してあげる

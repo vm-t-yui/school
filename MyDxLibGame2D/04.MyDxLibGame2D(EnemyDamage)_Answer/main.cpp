@@ -11,7 +11,7 @@ constexpr int	ScreenH			= 480;
 constexpr float	PlayerSpeed		= 3.0f;
 constexpr float	EnemySpeed		= 3.0f;
 constexpr float	EnemyHitSize	= 30;	// エネミーの当たり判定サイズ
-constexpr int	EnemyDamageTime	= 10;	// エネミーのダメージ顔になっている時間
+constexpr int	EnemyDamageTime	= 30;	// エネミーのダメージ顔になっている時間
 const VECTOR	PlayerFirstPos	= VGet(ScreenW * 0.5f, ScreenH - 80.0f, 0);
 const VECTOR	EnemyFirstPos	= VGet(0, 50, 0);
 constexpr int	ColorBit		= 16;
@@ -222,7 +222,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 				enemyGraph = enemyGraphNormal;
 				break;
 			case EnemyState::Damage:	// ダメージならダメージ顔に。ダメージカウントを小さくする
-				enemyGraph = enemyGraphNormal;
+				enemyGraph = enemyGraphDamage;
 				--enemyDamageCount;		// カウントを減らし、ゼロ以下になったら通常状態に戻す
 				if (enemyDamageCount <= 0)
 				{
@@ -289,6 +289,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 				// 弾が敵にぶつかっていたら、敵の状態をダメージ状態に
 				VECTOR	shotToEnemy			= VSub(enemyPos, shotPos[i]);	// ショットから敵へのベクトル
 				float	shotToEnemyLength	= VSize(shotToEnemy);			// ショットから敵への距離
+#if _DEBUG
+				//printfDx("shotToEnemyLength:%f\n", shotToEnemyLength); // デバッグで長さ出してみる
+#endif
 				if (shotToEnemyLength < EnemyHitSize + ShotHitSize)
 				{
 					// 円（または球）同士の当たり判定
@@ -296,7 +299,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 					enemyState			= EnemyState::Damage;
 					enemyDamageCount	= EnemyDamageTime;
 				}
-
+				
 				// 弾を描画する
 				DrawRotaGraph3(static_cast<int>(shotPos[i].x),
 					static_cast<int>(shotPos[i].y),
