@@ -1,5 +1,5 @@
-﻿// ベクトルを使うかどうかを0と1で使い分け。1にすると#if USE_VECTORがコンパイルされる
-#define USE_VECTOR 0
+﻿// std::vectorを使うかどうかを0と1で使い分け。1にすると#if USE_VECTORがコンパイルされる
+#define USE_VECTOR 1
 
 #if USE_VECTOR
 	#include <vector>
