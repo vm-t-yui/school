@@ -35,10 +35,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		ClearDrawScreen();
 
 		// 画面に絵を表示
-		for (size_t i = 0; i < ArrayNum; i++)
-		{
-			DrawGraph(static_cast<int>(pos.x), static_cast<int>(pos.y), graph, FALSE);
-		}
+		DrawGraph(static_cast<int>(pos.x), static_cast<int>(pos.y), graph, FALSE);
 
 		// 矢印キーの→を押したら右に動かす.
 		if (CheckHitKey(KEY_INPUT_RIGHT))
