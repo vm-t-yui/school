@@ -233,7 +233,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 				enemyGraph = enemyGraphNormal;
 				break;
 			case EnemyState::Damage:	// ダメージならダメージ顔に。ダメージカウントを小さくする
-				enemyGraph = enemyGraphNormal;
+				enemyGraph = enemyGraphDamage;
 				--enemyDamageCount;		// カウントを減らし、ゼロ以下になったら通常状態に戻す
 				if (enemyDamageCount <= 0)
 				{
@@ -306,6 +306,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 					// ショットから敵への距離がお互いの当たり判定サイズより小さい＝当たっている
 					enemyState			= EnemyState::Damage;
 					enemyDamageCount	= EnemyDamageTime;
+
+					// 弾も消す
+					isShotAlive[i] = false;
 				}
 
 				// 弾を描画する
