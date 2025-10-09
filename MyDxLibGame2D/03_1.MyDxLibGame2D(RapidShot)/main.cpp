@@ -13,9 +13,9 @@ constexpr float	EnemySpeed		= 3.0f;
 const VECTOR	PlayerFirstPos	= VGet(ScreenW * 0.5f, ScreenH - 80.0f, 0);
 const VECTOR	EnemyFirstPos	= VGet(0, 50, 0);
 constexpr int	ColorBit		= 16;
-constexpr int	ShotNum			= 3;
 constexpr float	ShotSpeed		= 3.0f;
 constexpr float	ShotAliveLimitY	= -80.0f;
+constexpr int	ShotNum			= 3;
 
 /// <summary>
 /// メイン関数
@@ -45,6 +45,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	const float playerHalfW = playerW * 0.5f;
 	const float playerHalfH = playerH * 0.5f;
 
+	bool isPressingShotButton	= false;	// そのフレームでボタンが押されているかどうか保存する
+	bool isPressedShotButton	= false;	// ボタンが押された瞬間を保存するフラグ
+	bool isPrevInputShotButton	= false;	// 前のフレームにショットボタンのインプットがあったかどうか
+
 	// エネミーのグラフィックをメモリにロード＆表示座標を初期化
 	VECTOR	enemyPos	= EnemyFirstPos;
 	VECTOR	enemyDir	= VGet(0, 0, 0);	// エネミーの向き
@@ -59,7 +63,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	// エネミーが右移動しているかどうかのフラグをリセット
 	bool isEnemyRightMove = true;
 
-	// --- 全部の弾で共通のデータ
 	// ショットのグラフィックをメモリにロード+サイズ取得
 	int shotGraph;
 	shotGraph = LoadGraph("data/texture/shot.png");
@@ -70,21 +73,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	const float shotHalfW = shotW * 0.5f;
 	const float shotHalfH = shotH * 0.5f;
 
-	// 前フレームでショットボタンのインプットがあったかどうか
-	bool isPrevInputShotButton = false;
-
-	// --- 弾の数だけ存在するデータ
 	// 弾の位置、ディレクションを作成
-	std::vector<VECTOR> shotPos(ShotNum, VGet(0, 0, 0));
-	std::vector<VECTOR> shotDir(ShotNum, VGet(0, -1, 0));	// 弾は常に上にしか移動しない
+	std::vector<VECTOR> shotPosArray(ShotNum, VGet(0, 0, 0));
+	VECTOR shotDir = VGet(0, -1, 0);	// 弾は常に上にしか移動しない
 
 	// 弾が画面上に存在しているか保持する変数に『存在していない』を意味するfalseを代入しておく
-	bool isShotAlive[ShotNum] = { false };
+	std::vector<bool> isShotAliveArray(ShotNum, false);
 
 	// ゲームループ.
 	while (1)
 	{
- 		auto prevTime = GetNowHiPerformanceCount();	// 処理が始まる前の時間
+		auto prevTime = GetNowHiPerformanceCount();	// 処理が始まる前の時間
 
 		// 画面を初期化(真っ黒にする)
 		ClearDrawScreen();
@@ -124,34 +123,44 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			playerPos = VAdd(playerPos, playerVelocity);			// 座標ベクトルに、velicityを足すことで移動
 
 			// 弾の発射処理
+			// ボタンが押されているかどうかを保存する
+			isPrevInputShotButton = isPressingShotButton;
 			if (CheckHitKey(KEY_INPUT_SPACE))
 			{
-				// 連射防止の為、前フレームにインプットがあった場合は通さない
-				if (isPrevInputShotButton == false)
-				{
-					// 弾i個分繰り返す
-					for (int i = 0; i < ShotNum; i++)
-					{
-						// 弾が画面上にでていない場合はその弾を画面に出す
-						if (isShotAlive[i] == false)
-						{
-							// 弾の発射位置をセット、プレイヤーの中心にする
-							shotPos[i] = playerPos;
-
-							// 弾が撃たれたので、存在状態を保持する変数にtrueを代入する
-							isShotAlive[i] = true;
-
-							break;	// 一発撃ったら抜ける
-						}
-					}
-				}
-
-				// 連射防止の為、前フレームにインプットがあったかどうかを記憶する
-				isPrevInputShotButton = true;
+				isPressingShotButton = true;
 			}
 			else
 			{
-				isPrevInputShotButton = false;
+				isPressingShotButton = false;
+			}
+			// ボタンが押された瞬間を取得する
+			if (isPressingShotButton && !isPrevInputShotButton)
+			{
+				isPressedShotButton = true;
+			}
+			else
+			{
+				isPressedShotButton = false;
+			}
+
+			// ボタンが押された瞬間だけ、発射処理を行う
+			if (isPressedShotButton)
+			{
+				// 弾が画面上にでていない場合はその弾を画面に出す
+				for (int i = 0; i < ShotNum; i++)
+				{
+					if (isShotAliveArray[i] == false)
+					{
+						// 弾の発射位置をセット、プレイヤーの中心にする
+						shotPosArray[i] = playerPos;
+
+						// 弾が撃たれたので、存在状態を保持する変数にtrueを代入する
+						isShotAliveArray[i] = true;
+
+						// 弾を一発でも撃ったら繰り返しを中断
+						break;
+					}
+				}
 			}
 
 			// プレイヤーが画面左端からはみ出そうになっていたら画面内の座標に戻してあげる
@@ -223,25 +232,24 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		//------------------------------//
 		// 弾の移動ルーチン
 		//------------------------------//
-		// 弾i個分繰り返す
-		for (int i = 0; i < ShotNum; i++)
+		for (size_t i = 0; i < ShotNum; i++)
 		{
 			// 存在状態を保持している変数の内容がtrue(存在する)の場合のみ行う
-			if (isShotAlive[i] == true)
+			if (isShotAliveArray[i] == true)
 			{
 				// 弾を移動させる。shotDirは常に上方向で長さ１なので、正規化はいらない
-				VECTOR shotVelocity = VScale(shotDir[i], ShotSpeed);
-				shotPos[i] = VAdd(shotPos[i], shotVelocity);
+				VECTOR shotVelocity = VScale(shotDir, ShotSpeed);
+				shotPosArray[i] = VAdd(shotPosArray[i], shotVelocity);
 
 				// 画面外に出てしまった場合は存在状態を保持している変数にfalse(存在しない)を代入する
-				if (shotPos[i].y < ShotAliveLimitY)
+				if (shotPosArray[i].y < ShotAliveLimitY)
 				{
-					isShotAlive[i] = false;
+					isShotAliveArray[i] = false;
 				}
 
 				// 弾を描画する
-				DrawRotaGraph3(static_cast<int>(shotPos[i].x),
-					static_cast<int>(shotPos[i].y),
+				DrawRotaGraph3(static_cast<int>(shotPosArray[i].x),
+					static_cast<int>(shotPosArray[i].y),
 					static_cast<int>(shotHalfW), static_cast<int>(shotHalfH),
 					1.0f, 1.0f,
 					0.0f, shotGraph,

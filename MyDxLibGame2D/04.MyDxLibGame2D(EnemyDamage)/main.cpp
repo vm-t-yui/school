@@ -11,7 +11,7 @@ constexpr int	ScreenH			= 480;
 constexpr float	PlayerSpeed		= 3.0f;
 constexpr float	EnemySpeed		= 3.0f;
 constexpr float	EnemyHitSize	= 30;	// エネミーの当たり判定サイズ
-constexpr int	EnemyDamageTime	= 10;	// エネミーのダメージ顔になっている時間
+constexpr int	EnemyDamageTime	= 30;	// エネミーのダメージ顔になっている時間
 const VECTOR	PlayerFirstPos	= VGet(ScreenW * 0.5f, ScreenH - 80.0f, 0);
 const VECTOR	EnemyFirstPos	= VGet(0, 50, 0);
 constexpr int	ColorBit		= 16;
@@ -90,8 +90,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	const float shotHalfW = shotW * 0.5f;
 	const float shotHalfH = shotH * 0.5f;
 
-	// 前フレームでショットボタンのインプットがあったかどうか
-	bool isPrevInputShotButton = false;
+	bool isPressingShotButton	= false;	// そのフレームでボタンが押されているかどうか保存する
+	bool isPressedShotButton	= false;	// ボタンが押された瞬間を保存するフラグ
+	bool isPrevInputShotButton	= false;	// 前のフレームにショットボタンのインプットがあったかどうか
 
 	// --- 弾の数だけ存在するデータ
 	// 弾の位置、ディレクションを作成
@@ -144,34 +145,44 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			playerPos = VAdd(playerPos, playerVelocity);			// 座標ベクトルに、velicityを足すことで移動
 
 			// 弾の発射処理
+			// ボタンが押されているかどうかを保存する
+			isPrevInputShotButton = isPressingShotButton;
 			if (CheckHitKey(KEY_INPUT_SPACE))
 			{
-				// 連射防止の為、前フレームにインプットがあった場合は通さない
-				if (isPrevInputShotButton == false)
-				{
-					// 弾i個分繰り返す
-					for (int i = 0; i < ShotNum; i++)
-					{
-						// 弾が画面上にでていない場合はその弾を画面に出す
-						if (isShotAlive[i] == false)
-						{
-							// 弾の発射位置をセット、プレイヤーの中心にする
-							shotPos[i] = playerPos;
-
-							// 弾が撃たれたので、存在状態を保持する変数にtrueを代入する
-							isShotAlive[i] = true;
-
-							break;	// 一発撃ったら抜ける
-						}
-					}
-				}
-
-				// 連射防止の為、前フレームにインプットがあったかどうかを記憶する
-				isPrevInputShotButton = true;
+				isPressingShotButton = true;
 			}
 			else
 			{
-				isPrevInputShotButton = false;
+				isPressingShotButton = false;
+			}
+			// ボタンが押された瞬間を取得する
+			if (isPressingShotButton && !isPrevInputShotButton)
+			{
+				isPressedShotButton = true;
+			}
+			else
+			{
+				isPressedShotButton = false;
+			}
+
+			// ボタンが押された瞬間だけ、発射処理を行う
+			if (isPressedShotButton)
+			{
+				// 弾i個分繰り返す
+				for (int i = 0; i < ShotNum; i++)
+				{
+					// 弾が画面上にでていない場合はその弾を画面に出す
+					if (isShotAlive[i] == false)
+					{
+						// 弾の発射位置をセット、プレイヤーの中心にする
+						shotPos[i] = playerPos;
+
+						// 弾が撃たれたので、存在状態を保持する変数にtrueを代入する
+						isShotAlive[i] = true;
+
+						break;	// 一発撃ったら抜ける
+					}
+				}
 			}
 
 			// プレイヤーが画面左端からはみ出そうになっていたら画面内の座標に戻してあげる
