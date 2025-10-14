@@ -8,10 +8,6 @@
 // 定数群
 constexpr int	ScreenW			= 640;
 constexpr int	ScreenH			= 480;
-constexpr float	EnemySpeed		= 3.0f;
-constexpr float	EnemyHitSize	= 30;	// エネミーの当たり判定サイズ
-constexpr int	EnemyDamageTime	= 30;	// エネミーのダメージ顔になっている時間
-const VECTOR	EnemyFirstPos	= VGet(0, 50, 0);
 constexpr int	ColorBit		= 16;
 constexpr int	ShotNum			= 3;
 constexpr float	ShotSpeed		= 3.0f;
@@ -61,6 +57,11 @@ public:
 	bool	isRightMove;
 	State	state;
 	int		damageCount;
+	
+	constexpr static float		Speed		= 3.0f;
+	constexpr static float		HitSize		= 30;	// エネミーの当たり判定サイズ
+	constexpr static int		DamageTime	= 30;	// エネミーのダメージ顔になっている時間
+	inline const static VECTOR	FirstPos	= VGet(0, 50, 0);
 };
 
 /// <summary>
@@ -93,7 +94,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	// エネミーのグラフィックをメモリにロード＆表示座標を初期化
 	Enemy enemy;
-	enemy.pos			= EnemyFirstPos;
+	enemy.pos			= Enemy::FirstPos;
 	enemy.dir			= VGet(0, 0, 0);	// エネミーの向き
 	enemy.graphNormal	= LoadGraph("data/texture/enemy.png");
 	enemy.graphDamage	= LoadGraph("data/texture/enemyDamage.png");
@@ -277,7 +278,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			}
 
 			// エネミーの移動。すでに長さ１なので正規化はいらない
-			VECTOR enemyVelocity = VScale(enemy.dir, EnemySpeed);	// 長さ1の向きに、大きさ（速度）をかける
+			VECTOR enemyVelocity = VScale(enemy.dir, Enemy::Speed);	// 長さ1の向きに、大きさ（速度）をかける
 			enemy.pos = VAdd(enemy.pos, enemyVelocity);				// 座標ベクトルに、velicityを足すことで移動
 
 			// エネミーが画面端からでそうになっていたら画面内の座標に戻してあげ、移動する方向も反転する
@@ -304,7 +305,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			// デバッグ表示:敵の当たり判定の描画
 			DrawCircle(static_cast<int>(enemy.pos.x),
 				static_cast<int>(enemy.pos.y),
-				static_cast<int>(EnemyHitSize),
+				static_cast<int>(Enemy::HitSize),
 				DebugEnemyHitSizeColor, 0);
 #endif
 		}
@@ -331,12 +332,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 				// 弾が敵にぶつかっていたら、敵の状態をダメージ状態に
 				VECTOR	shotToEnemy			= VSub(enemy.pos, shotPos[i]);	// ショットから敵へのベクトル
 				float	shotToEnemyLength	= VSize(shotToEnemy);			// ショットから敵への距離
-				if (shotToEnemyLength < EnemyHitSize + ShotHitSize)
+				if (shotToEnemyLength < Enemy::HitSize + ShotHitSize)
 				{
 					// 円（または球）同士の当たり判定
 					// ショットから敵への距離がお互いの当たり判定サイズより小さい＝当たっている
 					enemy.state			= Enemy::State::Damage;
-					enemy.damageCount	= EnemyDamageTime;
+					enemy.damageCount	= Enemy::DamageTime;
 
 					// 弾も消す
 					isShotAlive[i] = false;
