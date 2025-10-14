@@ -50,6 +50,17 @@ public:
 		Normal,		// 通常
 		Damage		// ダメージ
 	};
+
+	VECTOR	pos;
+	VECTOR	dir;	// エネミーの向き
+	int		graphNormal;
+	int		graphDamage;
+	int		graph;
+	int		w;
+	int		h;
+	bool	isRightMove;
+	State	state;
+	int		damageCount;
 };
 
 /// <summary>
@@ -70,8 +81,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	// プレイヤーのグラフィックをメモリにロード＆表示座標を初期化
 	Player player;
-	player.pos = Player::FirstPos;
-	player.dir	= VGet(0, 0, 0);	// プレイヤーの向き
+	player.pos		= Player::FirstPos;
+	player.dir		= VGet(0, 0, 0);	// プレイヤーの向き
 	player.graph	= LoadGraph("data/texture/player.png");
 
 	// キャラの画像の大きさを取得。毎度キャストするのがいやなので半分サイズも準備
@@ -81,22 +92,22 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	const float playerHalfH = player.h * 0.5f;
 
 	// エネミーのグラフィックをメモリにロード＆表示座標を初期化
-	VECTOR	enemyPos	= EnemyFirstPos;
-	VECTOR	enemyDir	= VGet(0, 0, 0);	// エネミーの向き
-	int		enemyGraphNormal	= LoadGraph("data/texture/enemy.png");
-	int		enemyGraphDamage	= LoadGraph("data/texture/enemyDamage.png");
-	int		enemyGraph			= enemyGraphNormal;
+	Enemy enemy;
+	enemy.pos			= EnemyFirstPos;
+	enemy.dir			= VGet(0, 0, 0);	// エネミーの向き
+	enemy.graphNormal	= LoadGraph("data/texture/enemy.png");
+	enemy.graphDamage	= LoadGraph("data/texture/enemyDamage.png");
+	enemy.graph			= enemy.graphNormal;
 
-	int enemyW, enemyH;
-	GetGraphSize(enemyGraph, &enemyW, &enemyH);
+	GetGraphSize(enemy.graph, &enemy.w, &enemy.h);
 
-	const float enemyHalfW = enemyW * 0.5f;
-	const float enemyHalfH = enemyH * 0.5f;
+	const float enemyHalfW = enemy.w * 0.5f;
+	const float enemyHalfH = enemy.h * 0.5f;
 
 	// エネミーが右移動しているかどうかのフラグをリセット
-	bool isEnemyRightMove = true;
-	Enemy::State enemyState		 = Enemy::State::Normal;		// 通常状態で初期化
-	int			enemyDamageCount = 0;						// ダメージカウントを初期化
+	enemy.isRightMove	= true;
+	enemy.state			= Enemy::State::Normal;		// 通常状態で初期化
+	enemy.damageCount	= 0;						// ダメージカウントを初期化
 
 	// --- 全部の弾で共通のデータ
 	// ショットのグラフィックをメモリにロード+サイズ取得
@@ -237,28 +248,28 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		//------------------------------//
 		{
 			// エネミーの移動方向の確定。固定で必ず左右どちらかになる
-			if (isEnemyRightMove == true)
+			if (enemy.isRightMove == true)
 			{
-				enemyDir = VGet(1, 0, 0);
+				enemy.dir = VGet(1, 0, 0);
 			}
 			else
 			{
-				enemyDir = VGet(-1, 0, 0);
+				enemy.dir = VGet(-1, 0, 0);
 			}
 
 			// エネミーの状態別処理
-			switch (enemyState)
+			switch (enemy.state)
 			{
 			case Enemy::State::Normal:	// 通常なら通常顔に
-				enemyGraph = enemyGraphNormal;
+				enemy.graph = enemy.graphNormal;
 				break;
 			case Enemy::State::Damage:	// ダメージならダメージ顔に。ダメージカウントを小さくする
-				enemyGraph = enemyGraphDamage;
-				--enemyDamageCount;		// カウントを減らし、ゼロ以下になったら通常状態に戻す
-				if (enemyDamageCount <= 0)
+				enemy.graph = enemy.graphDamage;
+				--enemy.damageCount;		// カウントを減らし、ゼロ以下になったら通常状態に戻す
+				if (enemy.damageCount <= 0)
 				{
-					enemyDamageCount = 0;
-					enemyState		 = Enemy::State::Normal;
+					enemy.damageCount = 0;
+					enemy.state = Enemy::State::Normal;
 				}
 				break;
 			default:	// それ以外なら何もしない
@@ -266,33 +277,33 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			}
 
 			// エネミーの移動。すでに長さ１なので正規化はいらない
-			VECTOR enemyVelocity = VScale(enemyDir, EnemySpeed);	// 長さ1の向きに、大きさ（速度）をかける
-			enemyPos = VAdd(enemyPos, enemyVelocity);				// 座標ベクトルに、velicityを足すことで移動
+			VECTOR enemyVelocity = VScale(enemy.dir, EnemySpeed);	// 長さ1の向きに、大きさ（速度）をかける
+			enemy.pos = VAdd(enemy.pos, enemyVelocity);				// 座標ベクトルに、velicityを足すことで移動
 
 			// エネミーが画面端からでそうになっていたら画面内の座標に戻してあげ、移動する方向も反転する
-			if (enemyPos.x > ScreenW - enemyHalfW)
+			if (enemy.pos.x > ScreenW - enemyHalfW)
 			{
-				enemyPos.x = ScreenW - enemyHalfW;
-				isEnemyRightMove = false;
+				enemy.pos.x = ScreenW - enemyHalfW;
+				enemy.isRightMove = false;
 			}
-			else if (enemyPos.x < enemyHalfW)
+			else if (enemy.pos.x < enemyHalfW)
 			{
-				enemyPos.x = enemyHalfW;
-				isEnemyRightMove = true;
+				enemy.pos.x = enemyHalfW;
+				enemy.isRightMove = true;
 			}
 
 			// エネミーを描画
-			DrawRotaGraph3(static_cast<int>(enemyPos.x),
-				static_cast<int>(enemyPos.y),
+			DrawRotaGraph3(static_cast<int>(enemy.pos.x),
+				static_cast<int>(enemy.pos.y),
 				static_cast<int>(enemyHalfW), static_cast<int>(enemyHalfH),
 				1.0f, 1.0f,
-				0.0f, enemyGraph,
+				0.0f, enemy.graph,
 				FALSE, FALSE);
 
 #if _DEBUG
 			// デバッグ表示:敵の当たり判定の描画
-			DrawCircle(static_cast<int>(enemyPos.x),
-				static_cast<int>(enemyPos.y),
+			DrawCircle(static_cast<int>(enemy.pos.x),
+				static_cast<int>(enemy.pos.y),
 				static_cast<int>(EnemyHitSize),
 				DebugEnemyHitSizeColor, 0);
 #endif
@@ -318,14 +329,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 				}
 
 				// 弾が敵にぶつかっていたら、敵の状態をダメージ状態に
-				VECTOR	shotToEnemy			= VSub(enemyPos, shotPos[i]);	// ショットから敵へのベクトル
+				VECTOR	shotToEnemy			= VSub(enemy.pos, shotPos[i]);	// ショットから敵へのベクトル
 				float	shotToEnemyLength	= VSize(shotToEnemy);			// ショットから敵への距離
 				if (shotToEnemyLength < EnemyHitSize + ShotHitSize)
 				{
 					// 円（または球）同士の当たり判定
 					// ショットから敵への距離がお互いの当たり判定サイズより小さい＝当たっている
-					enemyState			= Enemy::State::Damage;
-					enemyDamageCount	= EnemyDamageTime;
+					enemy.state			= Enemy::State::Damage;
+					enemy.damageCount	= EnemyDamageTime;
 
 					// 弾も消す
 					isShotAlive[i] = false;
