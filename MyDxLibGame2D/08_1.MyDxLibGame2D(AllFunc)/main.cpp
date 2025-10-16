@@ -13,7 +13,7 @@ namespace Graphics
 	constexpr int	ScreenW			= 640;
 	constexpr int	ScreenH			= 480;
 	constexpr int	ColorBit		= 16;
-	constexpr int	OneFrameNanoSec = 16667;
+	constexpr int	OneFrameNanoSec	= 16667;
 }
 
 // デバッグ表示のカラー
@@ -28,7 +28,7 @@ namespace Debug
 /// <summary>
 /// プレイヤークラス
 /// </summary>
-	class Player
+class Player
 {
 public:
 	VECTOR	pos;
@@ -106,25 +106,22 @@ public:
 };
 
 // グローバル変数群
-Input				input;
-Player				player;
-Enemy				enemy;
 std::vector<Shot>	shot(Shot::Num);
 
 /// <summary>
 /// インプットクラス初期化
 /// </summary>
-void InitializeInput()
+void InitializeInput(Input& input)
 {
-	input.isPressingShotButton = false;	// そのフレームでボタンが押されているかどうか
-	input.isPressedShotButton = false;	// ボタンが押された瞬間を保存するフラグ
-	input.isPrevInputShotButton = false;	// 前のフレームにショットボタンのインプットがあったかどうか
+	input.isPressingShotButton	= false;	// そのフレームでボタンが押されているかどうか
+	input.isPressedShotButton	= false;	// ボタンが押された瞬間を保存するフラグ
+	input.isPrevInputShotButton	= false;	// 前のフレームにショットボタンのインプットがあったかどうか
 }
 
 /// <summary>
 /// インプットクラス更新
 /// </summary>
-void UpdateInput()
+void UpdateInput(Input& input)
 {
 	// ボタンが押されているかどうかを保存する
 	input.isPrevInputShotButton = input.isPressingShotButton;
@@ -150,7 +147,7 @@ void UpdateInput()
 /// <summary>
 /// プレイヤーの初期化
 /// </summary>
-void InitializePlayer()
+void InitializePlayer(Player& player)
 {
 	// プレイヤーのグラフィックをメモリにロード＆表示座標を初期化
 	player.pos = Player::FirstPos;
@@ -164,7 +161,7 @@ void InitializePlayer()
 /// <summary>
 /// プレイヤーの更新
 /// </summary>
-void UpdatePlayer()
+void UpdatePlayer(Player& player, Input input)
 {
 	player.dir = VGet(0, 0, 0);	// 向きをリセット
 
@@ -242,7 +239,7 @@ void UpdatePlayer()
 /// <summary>
 /// プレイヤーを描画
 /// </summary>
-void DrawPlayer()
+void DrawPlayer(Player& player)
 {
 	const float playerHalfW = player.w * 0.5f;
 	const float playerHalfH = player.h * 0.5f;
@@ -258,7 +255,7 @@ void DrawPlayer()
 /// <summary>
 /// 敵の初期化
 /// </summary>
-void InitializeEnemy()
+void InitializeEnemy(Enemy& enemy)
 {
 	// エネミーのグラフィックをメモリにロード＆表示座標を初期化
 	enemy.pos = Enemy::FirstPos;
@@ -278,7 +275,7 @@ void InitializeEnemy()
 /// <summary>
 /// エネミーの更新
 /// </summary>
-void UpdateEnemy()
+void UpdateEnemy(Enemy& enemy)
 {
 	// エネミーの移動方向の確定。固定で必ず左右どちらかになる
 	if (enemy.isRightMove == true)
@@ -332,7 +329,7 @@ void UpdateEnemy()
 /// <summary>
 /// エネミー描画
 /// </summary>
-void DrawEnemy()
+void DrawEnemy(Enemy& enemy)
 {
 	const float enemyHalfW = enemy.w * 0.5f;
 	const float enemyHalfH = enemy.h * 0.5f;
@@ -386,7 +383,7 @@ void InitializeShot()
 /// <summary>
 /// ショットの更新
 /// </summary>
-void UpdateShot()
+void UpdateShot(Enemy& enemy)
 {
 	// 弾i個分繰り返す
 	for (int i = 0; i < Shot::Num; i++)
@@ -426,9 +423,6 @@ void UpdateShot()
 /// </summary>
 void DrawShot()
 {
-	///////////////////////////////////////////////////////////////////////////////
-	//HACK: 処理を関数化するために移動したとき、for文とif文の再構築を忘れない！！
-	///////////////////////////////////////////////////////////////////////////////
 	for (int i = 0; i < Shot::Num; i++)
 	{
 		if (shot[i].isAlive == true)
@@ -470,10 +464,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		return -1;
 	}
 
+	// 各クラスのインスタンス準備
+	Input	input;
+	Player	player;
+	Enemy	enemy;
+
 	// 各クラスの初期化
-	InitializeInput();
-	InitializePlayer();
-	InitializeEnemy();
+	InitializeInput(input);
+	InitializePlayer(player);
+	InitializeEnemy(enemy);
 	InitializeShot();
 
 	// ゲームループ.
@@ -485,14 +484,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		ClearDrawScreen();
 		
 		// 各クラスのUpdate
-		UpdateInput();		// ボタン情報を更新
-		UpdatePlayer();
-		UpdateEnemy();
-		UpdateShot();
+		UpdateInput(input);		// ボタン情報を更新
+		UpdatePlayer(player, input);
+		UpdateEnemy(enemy);
+		UpdateShot(enemy);
 
 		// 各クラスのDraw
-		DrawPlayer();
-		DrawEnemy();
+		DrawPlayer(player);
+		DrawEnemy(enemy);
 		DrawShot();
 
 		// 雑なfps固定処理

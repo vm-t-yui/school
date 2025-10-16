@@ -8,9 +8,10 @@
 // グラフィック関係の定数群
 namespace Graphics
 {
-	constexpr int	ScreenW		= 640;
-	constexpr int	ScreenH		= 480;
-	constexpr int	ColorBit	= 16;
+	constexpr int	ScreenW			= 640;
+	constexpr int	ScreenH			= 480;
+	constexpr int	ColorBit		= 16;
+	constexpr int	OneFrameNanoSec = 16667;
 }
 
 // デバッグ表示のカラー
@@ -399,7 +400,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		// 雑なfps固定処理
 		// 差を求めて、1回の画面更新が1/60秒になるようにwhileループ回して待つ
 		auto afterTime = GetNowHiPerformanceCount(); // 処理が終わった後の時間
-		while (afterTime - prevTime < 16667)
+		while (afterTime - prevTime < Graphics::OneFrameNanoSec)
 		{
 			afterTime = GetNowHiPerformanceCount();
 		}
