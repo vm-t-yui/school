@@ -26,6 +26,27 @@ namespace Debug
 #endif
 
 /// <summary>
+/// キー入力クラス
+/// </summary>
+class Input
+{
+public:
+	bool isPressingShotButton;	// そのフレームでボタンが押されているかどうか
+	bool isPressedShotButton;	// ボタンが押された瞬間を保存するフラグ
+	bool isPrevInputShotButton;	// 前のフレームにショットボタンのインプットがあったかどうか
+
+	// クラスでひとつ
+	// クラスで共有の関数としてアクセスするので、メンバ変数がない
+	// Input& inputで参照を渡す必要がある
+	static void Initialize(Input& input);	// インプットクラスの初期化
+
+	// クラスのインスタンスごとに生成
+	// クラス内のメンバ変数を呼ぶのでInput& inputで参照型を渡す必要がない
+	void Initialize();		// インプットクラスの初期化
+	void Update();
+};
+
+/// <summary>
 /// プレイヤークラス
 /// </summary>
 class Player
@@ -41,6 +62,10 @@ public:
 
 	// constは頭にinline,後ろにstatic(C++17以降)
 	inline const static	VECTOR	FirstPos	= VGet(Graphics::ScreenW * 0.5f, Graphics::ScreenH - 80.0f, 0);
+
+	void Initialize();
+	void Update(Input input);
+	void Draw();
 };
 
 /// <summary>
@@ -71,6 +96,10 @@ public:
 	constexpr static float		HitSize		= 30;	// エネミーの当たり判定サイズ
 	constexpr static int		DamageTime	= 30;	// エネミーのダメージ顔になっている時間
 	inline const static VECTOR	FirstPos	= VGet(0, 50, 0);
+	
+	void Initialize();
+	void Update();
+	void Draw();
 };
 
 /// <summary>
@@ -93,25 +122,23 @@ public:
 	constexpr static float	HitSize		= 10;		// ショットの当たり判定サイズ
 };
 
-/// <summary>
-/// キー入力クラス
-/// </summary>
-class Input
-{
-public:
-	bool isPressingShotButton;	// そのフレームでボタンが押されているかどうか
-	bool isPressedShotButton;	// ボタンが押された瞬間を保存するフラグ
-	bool isPrevInputShotButton;	// 前のフレームにショットボタンのインプットがあったかどうか
-
-};
-
 // グローバル変数群
 std::vector<Shot>	shot(Shot::Num);
 
 /// <summary>
 /// インプットクラス初期化
 /// </summary>
-void InitializeInput(Input& input)
+void Input::Initialize()
+{
+	isPressingShotButton	= false;	// そのフレームでボタンが押されているかどうか
+	isPressedShotButton		= false;	// ボタンが押された瞬間を保存するフラグ
+	isPrevInputShotButton	= false;	// 前のフレームにショットボタンのインプットがあったかどうか
+}
+
+/// <summary>
+/// インプットクラス初期化
+/// </summary>
+void Input::Initialize(Input& input)
 {
 	input.isPressingShotButton	= false;	// そのフレームでボタンが押されているかどうか
 	input.isPressedShotButton	= false;	// ボタンが押された瞬間を保存するフラグ
@@ -121,77 +148,77 @@ void InitializeInput(Input& input)
 /// <summary>
 /// インプットクラス更新
 /// </summary>
-void UpdateInput(Input& input)
+void Input::Update()
 {
 	// ボタンが押されているかどうかを保存する
-	input.isPrevInputShotButton = input.isPressingShotButton;
+	isPrevInputShotButton = isPressingShotButton;
 	if (CheckHitKey(KEY_INPUT_SPACE))
 	{
-		input.isPressingShotButton = true;
+		isPressingShotButton = true;
 	}
 	else
 	{
-		input.isPressingShotButton = false;
+		isPressingShotButton = false;
 	}
 	// ボタンが押された瞬間を取得する
-	if (input.isPressingShotButton && !input.isPrevInputShotButton)
+	if (isPressingShotButton && !isPrevInputShotButton)
 	{
-		input.isPressedShotButton = true;
+		isPressedShotButton = true;
 	}
 	else
 	{
-		input.isPressedShotButton = false;
+		isPressedShotButton = false;
 	}
 }
 
 /// <summary>
 /// プレイヤーの初期化
 /// </summary>
-void InitializePlayer(Player& player)
+void Player::Initialize()
 {
 	// プレイヤーのグラフィックをメモリにロード＆表示座標を初期化
-	player.pos = Player::FirstPos;
-	player.dir = VGet(0, 0, 0);	// プレイヤーの向き
-	player.graph = LoadGraph("data/texture/player.png");
+	pos = Player::FirstPos;
+	dir = VGet(0, 0, 0);	// プレイヤーの向き
+	graph = LoadGraph("data/texture/player.png");
 
 	// キャラの画像の大きさを取得。毎度キャストするのがいやなので半分サイズも準備
-	GetGraphSize(player.graph, &player.w, &player.h);
+	GetGraphSize(graph, &w, &h);
 }
 
 /// <summary>
 /// プレイヤーの更新
 /// </summary>
-void UpdatePlayer(Player& player, Input input)
+void Player::Update(Input input)
 {
-	player.dir = VGet(0, 0, 0);	// 向きをリセット
+	dir = VGet(0, 0, 0);	// 向きをリセット
 
 	// 矢印キーを押していたらプレイヤーを移動させる
 	if (CheckHitKey(KEY_INPUT_UP) == 1)
 	{
-		player.dir = VAdd(player.dir, VGet(0, -1, 0));
+		dir = VAdd(dir, VGet(0, -1, 0));
 	}
 	if (CheckHitKey(KEY_INPUT_DOWN) == 1)
 	{
-		player.dir = VAdd(player.dir, VGet(0, 1, 0));
+		dir = VAdd(dir, VGet(0, 1, 0));
 	}
 	if (CheckHitKey(KEY_INPUT_LEFT) == 1)
 	{
-		player.dir = VAdd(player.dir, VGet(-1, 0, 0));
+		dir = VAdd(dir, VGet(-1, 0, 0));
 	}
 	if (CheckHitKey(KEY_INPUT_RIGHT) == 1)
 	{
-		player.dir = VAdd(player.dir, VGet(1, 0, 0));
+		dir = VAdd(dir, VGet(1, 0, 0));
 	}
 
 	// 長さがゼロじゃない場合、向きを正規化して、長さ1に
-	if (VSize(player.dir) > 0)
+	if (VSize(dir) > 0)
 	{
-		player.dir = VNorm(player.dir);
+		dir = VNorm(dir);
 	}
 
 	// プレイヤーの移動
-	VECTOR playerVelocity = VScale(player.dir, Player::Speed);	// 長さ1の向きに、大きさ（速度）をかける
-	player.pos = VAdd(player.pos, playerVelocity);				// 座標ベクトルに、velicityを足すことで移動
+	VECTOR playerVelocity = VScale(dir, Player::Speed);	// 長さ1の向きに、大きさ（速度）をかける
+	pos = VAdd(pos, playerVelocity);				// 座標ベクトルに、velicityを足すことで移動
 
 	// 弾の発射処理
 	// ボタンが押された瞬間だけ、発射処理を行う
@@ -204,7 +231,7 @@ void UpdatePlayer(Player& player, Input input)
 			if (shot[i].isAlive == false)
 			{
 				// 弾の発射位置をセット、プレイヤーの中心にする
-				shot[i].pos = player.pos;
+				shot[i].pos = pos;
 
 				// 弾が撃たれたので、存在状態を保持する変数にtrueを代入する
 				shot[i].isAlive = true;
@@ -214,138 +241,138 @@ void UpdatePlayer(Player& player, Input input)
 		}
 	}
 
-	const float playerHalfW = player.w * 0.5f;
-	const float playerHalfH = player.h * 0.5f;
+	const float playerHalfW = w * 0.5f;
+	const float playerHalfH = h * 0.5f;
 
 	// プレイヤーが画面左端からはみ出そうになっていたら画面内の座標に戻してあげる
-	if (player.pos.x < playerHalfW)
+	if (pos.x < playerHalfW)
 	{
-		player.pos.x = playerHalfW;
+		pos.x = playerHalfW;
 	}
-	if (player.pos.x > Graphics::ScreenW - playerHalfW)
+	if (pos.x > Graphics::ScreenW - playerHalfW)
 	{
-		player.pos.x = Graphics::ScreenW - playerHalfW;
+		pos.x = Graphics::ScreenW - playerHalfW;
 	}
-	if (player.pos.y < playerHalfH)
+	if (pos.y < playerHalfH)
 	{
-		player.pos.y = playerHalfH;
+		pos.y = playerHalfH;
 	}
-	if (player.pos.y > Graphics::ScreenH - playerHalfH)
+	if (pos.y > Graphics::ScreenH - playerHalfH)
 	{
-		player.pos.y = Graphics::ScreenH - playerHalfH;
+		pos.y = Graphics::ScreenH - playerHalfH;
 	}
 }
 
 /// <summary>
 /// プレイヤーを描画
 /// </summary>
-void DrawPlayer(Player& player)
+void Player::Draw()
 {
-	const float playerHalfW = player.w * 0.5f;
-	const float playerHalfH = player.h * 0.5f;
+	const float playerHalfW = w * 0.5f;
+	const float playerHalfH = h * 0.5f;
 
-	DrawRotaGraph3(static_cast<int>(player.pos.x),
-		static_cast<int>(player.pos.y),
+	DrawRotaGraph3(static_cast<int>(pos.x),
+		static_cast<int>(pos.y),
 		static_cast<int>(playerHalfW), static_cast<int>(playerHalfH),
 		1.0f, 1.0f,
-		0.0f, player.graph,
+		0.0f, graph,
 		FALSE, FALSE);
 }
 
 /// <summary>
 /// 敵の初期化
 /// </summary>
-void InitializeEnemy(Enemy& enemy)
+void Enemy::Initialize()
 {
 	// エネミーのグラフィックをメモリにロード＆表示座標を初期化
-	enemy.pos = Enemy::FirstPos;
-	enemy.dir = VGet(0, 0, 0);	// エネミーの向き
-	enemy.graphNormal = LoadGraph("data/texture/enemy.png");
-	enemy.graphDamage = LoadGraph("data/texture/enemyDamage.png");
-	enemy.graph = enemy.graphNormal;
+	pos			= Enemy::FirstPos;
+	dir			= VGet(0, 0, 0);	// エネミーの向き
+	graphNormal	= LoadGraph("data/texture/enemy.png");
+	graphDamage	= LoadGraph("data/texture/enemyDamage.png");
+	graph		= graphNormal;
 
-	GetGraphSize(enemy.graph, &enemy.w, &enemy.h);
+	GetGraphSize(graph, &w, &h);
 
 	// エネミーが右移動しているかどうかのフラグをリセット
-	enemy.isRightMove = true;
-	enemy.state = Enemy::State::Normal;		// 通常状態で初期化
-	enemy.damageCount = 0;						// ダメージカウントを初期化
+	isRightMove	= true;
+	state		= Enemy::State::Normal;		// 通常状態で初期化
+	damageCount	= 0;						// ダメージカウントを初期化
 }
 
 /// <summary>
 /// エネミーの更新
 /// </summary>
-void UpdateEnemy(Enemy& enemy)
+void Enemy::Update()
 {
 	// エネミーの移動方向の確定。固定で必ず左右どちらかになる
-	if (enemy.isRightMove == true)
+	if (isRightMove == true)
 	{
-		enemy.dir = VGet(1, 0, 0);
+		dir = VGet(1, 0, 0);
 	}
 	else
 	{
-		enemy.dir = VGet(-1, 0, 0);
+		dir = VGet(-1, 0, 0);
 	}
 
 	// エネミーの状態別処理
-	switch (enemy.state)
+	switch (state)
 	{
 	case Enemy::State::Normal:	// 通常なら通常顔に
-		enemy.graph = enemy.graphNormal;
+		graph = graphNormal;
 		break;
 	case Enemy::State::Damage:	// ダメージならダメージ顔に。ダメージカウントを小さくする
-		enemy.graph = enemy.graphDamage;
-		--enemy.damageCount;		// カウントを減らし、ゼロ以下になったら通常状態に戻す
-		if (enemy.damageCount <= 0)
+		graph = graphDamage;
+		--damageCount;		// カウントを減らし、ゼロ以下になったら通常状態に戻す
+		if (damageCount <= 0)
 		{
-			enemy.damageCount = 0;
-			enemy.state = Enemy::State::Normal;
+			damageCount = 0;
+			state = Enemy::State::Normal;
 		}
 		break;
 	default:	// それ以外なら何もしない
 		break;
 	}
 
-	const float enemyHalfW = enemy.w * 0.5f;
-	const float enemyHalfH = enemy.h * 0.5f;
+	const float enemyHalfW = w * 0.5f;
+	const float enemyHalfH = h * 0.5f;
 
 	// エネミーの移動。すでに長さ１なので正規化はいらない
-	VECTOR enemyVelocity = VScale(enemy.dir, Enemy::Speed);	// 長さ1の向きに、大きさ（速度）をかける
-	enemy.pos = VAdd(enemy.pos, enemyVelocity);				// 座標ベクトルに、velicityを足すことで移動
+	VECTOR enemyVelocity = VScale(dir, Enemy::Speed);	// 長さ1の向きに、大きさ（速度）をかける
+	pos = VAdd(pos, enemyVelocity);				// 座標ベクトルに、velicityを足すことで移動
 
 	// エネミーが画面端からでそうになっていたら画面内の座標に戻してあげ、移動する方向も反転する
-	if (enemy.pos.x > Graphics::ScreenW - enemyHalfW)
+	if (pos.x > Graphics::ScreenW - enemyHalfW)
 	{
-		enemy.pos.x = Graphics::ScreenW - enemyHalfW;
-		enemy.isRightMove = false;
+		pos.x = Graphics::ScreenW - enemyHalfW;
+		isRightMove = false;
 	}
-	else if (enemy.pos.x < enemyHalfW)
+	else if (pos.x < enemyHalfW)
 	{
-		enemy.pos.x = enemyHalfW;
-		enemy.isRightMove = true;
+		pos.x = enemyHalfW;
+		isRightMove = true;
 	}
 }
 
 /// <summary>
 /// エネミー描画
 /// </summary>
-void DrawEnemy(Enemy& enemy)
+void Enemy::Draw()
 {
-	const float enemyHalfW = enemy.w * 0.5f;
-	const float enemyHalfH = enemy.h * 0.5f;
+	const float enemyHalfW = w * 0.5f;
+	const float enemyHalfH = h * 0.5f;
 
 	// エネミーを描画
-	DrawRotaGraph3(static_cast<int>(enemy.pos.x),
-		static_cast<int>(enemy.pos.y),
+	DrawRotaGraph3(static_cast<int>(pos.x),
+		static_cast<int>(pos.y),
 		static_cast<int>(enemyHalfW), static_cast<int>(enemyHalfH),
 		1.0f, 1.0f,
-		0.0f, enemy.graph,
+		0.0f, graph,
 		FALSE, FALSE);
 
 #if _DEBUG
 	// デバッグ表示:敵の当たり判定の描画
-	DrawCircle(static_cast<int>(enemy.pos.x),
-		static_cast<int>(enemy.pos.y),
+	DrawCircle(static_cast<int>(pos.x),
+		static_cast<int>(pos.y),
 		static_cast<int>(Enemy::HitSize),
 		Debug::EnemyHitSizeColor, 0);
 #endif
@@ -470,9 +497,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	Enemy	enemy;
 
 	// 各クラスの初期化
-	InitializeInput(input);
-	InitializePlayer(player);
-	InitializeEnemy(enemy);
+	//Input::Initialize(input);	// static関数ならこれ
+	input.Initialize();	// クラスごとに準備される関数なので、.でアクセス
+	player.Initialize();
+	enemy.Initialize();
 	InitializeShot();
 
 	// ゲームループ.
@@ -484,14 +512,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		ClearDrawScreen();
 		
 		// 各クラスのUpdate
-		UpdateInput(input);		// ボタン情報を更新
-		UpdatePlayer(player, input);
-		UpdateEnemy(enemy);
+		input.Update();		// ボタン情報を更新
+		player.Update(input);
+		enemy.Update();
 		UpdateShot(enemy);
 
 		// 各クラスのDraw
-		DrawPlayer(player);
-		DrawEnemy(enemy);
+		player.Draw();
+		enemy.Draw();
 		DrawShot();
 
 		// 雑なfps固定処理
