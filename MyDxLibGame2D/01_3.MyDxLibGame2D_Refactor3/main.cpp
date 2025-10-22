@@ -99,27 +99,30 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			playerPos = VAdd(playerPos, playerVelocity);			// 座標ベクトルに、velicityを足すことで移動
 
 			// プレイヤーが画面左端からはみ出そうになっていたら画面内の座標に戻してあげる
-			if (playerPos.x < 0)
+			if (playerPos.x < playerHalfW)
 			{
-				playerPos.x = 0;
+				playerPos.x = playerHalfW;
 			}
-			if (playerPos.x > ScreenW - static_cast<float>(playerW))
+			if (playerPos.x > ScreenW - playerHalfW)
 			{
-				playerPos.x = ScreenW - static_cast<float>(playerW);
+				playerPos.x = ScreenW - playerHalfW;
 			}
-			if (playerPos.y < static_cast<float>(playerH))
+			if (playerPos.y < playerHalfH)
 			{
-				playerPos.y = static_cast<float>(playerH);
+				playerPos.y = playerHalfH;
 			}
-			if (playerPos.y > ScreenH - static_cast<float>(playerH))
+			if (playerPos.y > ScreenH - playerHalfH)
 			{
-				playerPos.y = ScreenH - static_cast<float>(playerH);
+				playerPos.y = ScreenH - playerHalfH;
 			}
 
 			// プレイヤーを描画
-			DrawGraph(static_cast<int>(playerPos.x),
+			DrawRotaGraph3(static_cast<int>(playerPos.x),
 				static_cast<int>(playerPos.y),
-				playerGraph, FALSE);
+				static_cast<int>(playerHalfW), static_cast<int>(playerHalfH),
+				1.0f,1.0f,
+				0.0f,playerGraph,
+				FALSE, FALSE);
 		}
 
 		//------------------------------//
@@ -148,22 +151,24 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			enemyPos = VAdd(enemyPos, enemyVelocity);				// 座標ベクトルに、velicityを足すことで移動
 
 			// エネミーが画面端からでそうになっていたら画面内の座標に戻してあげ、移動する方向も反転する
-			if (enemyPos.x > ScreenW - static_cast<float>(enemyW))
+			if (enemyPos.x > ScreenW - enemyHalfW)
 			{
-				enemyPos.x = ScreenW - static_cast<float>(enemyW);
+				enemyPos.x = ScreenW - enemyHalfW;
 				isEnemyRightMove = false;
 			}
-			else if (enemyPos.x < 0)
+			else if (enemyPos.x < enemyHalfW)
 			{
-				enemyPos.x = 0;
+				enemyPos.x = enemyHalfW;
 				isEnemyRightMove = true;
 			}
 
 			// エネミーを描画
-			DrawGraph(static_cast<int>(enemyPos.x),
+			DrawRotaGraph3(static_cast<int>(enemyPos.x),
 				static_cast<int>(enemyPos.y),
-				enemyGraph,
-				FALSE);
+				static_cast<int>(enemyHalfW), static_cast<int>(enemyHalfH),
+				1.0f, 1.0f,
+				0.0f, enemyGraph,
+				FALSE, FALSE);
 		}
 
 		// 裏画面の内容を表画面にコピーする（描画の確定）.
