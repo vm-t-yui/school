@@ -34,7 +34,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	// プレイヤーのグラフィックをメモリにロード＆表示座標を初期化
 	VECTOR	playerPos	= PlayerFirstPos;
-	VECTOR	playerDir	= VGet(0, 0, 0);	// プレイヤーの向き
 	int		playerGraph	= LoadGraph("data/texture/player.png");
 	
 	// キャラの画像の大きさを取得。毎度キャストするのがいやなので半分サイズも準備
@@ -68,34 +67,28 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		// プレイヤーの操作ルーチン
 		//------------------------------//
 		{
-			playerDir = VGet(0, 0, 0);	// 向きをリセット
+			VECTOR playerVelocity = VGet(0, 0, 0);	// Velocity
 
 			// 矢印キーを押していたらプレイヤーを移動させる
 			if (CheckHitKey(KEY_INPUT_UP) == 1)
 			{
-				playerDir = VAdd(playerDir, VGet(0, -1, 0));
+				playerVelocity = VGet(0, -1, 0);
 			}
 			if (CheckHitKey(KEY_INPUT_DOWN) == 1)
 			{
-				playerDir = VAdd(playerDir, VGet(0, 1, 0));
+				playerVelocity = VGet(0, 1, 0);
 			}
 			if (CheckHitKey(KEY_INPUT_LEFT) == 1)
 			{
-				playerDir = VAdd(playerDir, VGet(-1, 0, 0));
+				playerVelocity = VGet(-1, 0, 0);
 			}
 			if (CheckHitKey(KEY_INPUT_RIGHT) == 1)
 			{
-				playerDir = VAdd(playerDir, VGet(1, 0, 0));
-			}
-
-			// 長さがゼロじゃない場合、向きを正規化して、長さ1に
-			if (VSize(playerDir) > 0)
-			{
-				playerDir = VNorm(playerDir);
+				playerVelocity = VGet(1, 0, 0);
 			}
 
 			// プレイヤーの移動
-			VECTOR playerVelocity = VScale(playerDir, PlayerSpeed);	// 長さ1の向きに、大きさ（速度）をかける
+			// nextPos = pos + velocity
 			playerPos = VAdd(playerPos, playerVelocity);			// 座標ベクトルに、velicityを足すことで移動
 
 			// プレイヤーが画面左端からはみ出そうになっていたら画面内の座標に戻してあげる
@@ -127,25 +120,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		//------------------------------//
 		{
 			// エネミーの座標を移動している方向に移動する
-			enemyDir = VGet(0, 0, 0);
+			VECTOR enemyVelocity = VGet(0, 0, 0);
 			if (isEnemyRightMove == true)
 			{
-				enemyDir = VAdd(enemyDir, VGet(1, 0, 0));
+				enemyVelocity = VGet(1, 0, 0);
 			}
 			else
 			{
-				enemyDir = VAdd(enemyDir, VGet(-1, 0, 0));
+				enemyVelocity = VGet(-1, 0, 0);
 			}
 
-			// 長さがゼロじゃない場合、向きを正規化して、長さ1に
-			if (VSize(enemyDir) > 0)
-			{
-				enemyDir = VNorm(enemyDir);
-			}
-
-			// エネミーの移動。すでに長さ１なので正規化はいらない
-			VECTOR enemyVelocity = VScale(enemyDir, EnemySpeed);	// 長さ1の向きに、大きさ（速度）をかける
-			enemyPos = VAdd(enemyPos, enemyVelocity);				// 座標ベクトルに、velicityを足すことで移動
+			// エネミーの移動
+			enemyPos = VAdd(enemyPos, enemyVelocity);	// 座標ベクトルに、velocityを足すことで移動
 
 			// エネミーが画面端からでそうになっていたら画面内の座標に戻してあげ、移動する方向も反転する
 			if (enemyPos.x > ScreenW - static_cast<float>(enemyW))
