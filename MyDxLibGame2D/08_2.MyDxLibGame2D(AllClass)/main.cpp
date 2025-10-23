@@ -512,13 +512,20 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		player.Update(input, shotArray);
 		enemy.Update();
 		for (auto& item : shotArray)
+		{
 			item.Update(enemy);
+		}
 
 		// 各クラスのDraw
 		player.Draw();
 		enemy.Draw();
 		for (auto& item : shotArray)
+		{
 			item.Draw();
+		}
+		
+		// 裏画面の内容を表画面にコピーする（描画の確定）
+		ScreenFlip();
 
 		// 雑なfps固定処理
 		// 差を求めて、1回の画面更新が1/60秒になるようにwhileループ回して待つ
@@ -527,9 +534,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		{
 			afterTime = GetNowHiPerformanceCount();
 		}
-
-		// 裏画面の内容を表画面にコピーする（描画の確定）.
-		ScreenFlip();
 
 		// Windows 特有の面倒な処理をＤＸライブラリにやらせる
 		// マイナスの値（エラー値）が返ってきたらループを抜ける
