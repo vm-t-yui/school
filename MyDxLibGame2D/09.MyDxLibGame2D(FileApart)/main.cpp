@@ -4,51 +4,14 @@
 //-----------------------------------------------------------------------------
 #include "DxLib.h"
 #include <vector>
-
-/// <summary>
-/// グラフィック関係の定数群
-/// </summary>
-namespace Graphics
-{
-	constexpr int	ScreenW			= 640;
-	constexpr int	ScreenH			= 480;
-	constexpr int	ColorBit		= 16;
-	constexpr int	OneFrameNanoSec	= 16667;
-}
-
-// デバッグ表示のカラー
-#if _DEBUG
-namespace Debug
-{
-	constexpr unsigned int	EnemyHitSizeColor = 0xff0000;
-	constexpr unsigned int	ShotHitSizeColor = 0x00ffff;
-}
-#endif
-
-/// <summary>
-/// キー入力クラス
-/// </summary>
-class Input
-{
-public:
-	bool isPressingShotButton;	// そのフレームでボタンが押されているかどうか
-	bool isPressedShotButton;	// ボタンが押された瞬間を保存するフラグ
-	bool isPrevInputShotButton;	// 前のフレームにショットボタンのインプットがあったかどうか
-
-	// クラスでひとつ
-	// クラスで共有の関数としてアクセスするので、メンバ変数がない
-	// Input& inputで参照を渡す必要がある
-	static void Initialize(Input& input);	// インプットクラスの初期化
-
-	// クラスのインスタンスごとに生成
-	// クラス内のメンバ変数を呼ぶのでInput& inputで参照型を渡す必要がない
-	void Initialize();		// インプットクラスの初期化
-	void Update();
-};
+#include "GlobalConstants.h"
+#include "Input.h"
 
 /// <summary>
 /// プレイヤークラス
 /// </summary>
+class Input;	// プロトタイプ宣言
+class Shot;		// プロトタイプ宣言
 class Player
 {
 public:
@@ -64,8 +27,8 @@ public:
 	inline const static	VECTOR	FirstPos	= VGet(Graphics::ScreenW * 0.5f, Graphics::ScreenH - 80.0f, 0);
 
 	void Initialize();
-	void Update(Input input);
-	void Draw();
+	void Update(const Input& input, std::vector<Shot>& shotArray);
+	void Draw() const;
 };
 
 /// <summary>
@@ -99,7 +62,7 @@ public:
 	
 	void Initialize();
 	void Update();
-	void Draw();
+	void Draw() const;
 };
 
 /// <summary>
@@ -116,60 +79,15 @@ public:
 	VECTOR	dir;
 	bool	isAlive;
 
-	constexpr static int	Num			= 3;
-	constexpr static float	Speed		= 3.0f;
-	constexpr static float	AliveLimitY	= -80.0f;
-	constexpr static float	HitSize		= 10;		// ショットの当たり判定サイズ
+	constexpr static int	Num = 3;
+	constexpr static float	Speed = 3.0f;
+	constexpr static float	AliveLimitY = -80.0f;
+	constexpr static float	HitSize = 10;		// ショットの当たり判定サイズ
+
+	void Initialize();
+	void Update(Enemy& enemy);
+	void Draw() const;
 };
-
-// グローバル変数群
-std::vector<Shot>	shot(Shot::Num);
-
-/// <summary>
-/// インプットクラス初期化
-/// </summary>
-void Input::Initialize()
-{
-	isPressingShotButton	= false;	// そのフレームでボタンが押されているかどうか
-	isPressedShotButton		= false;	// ボタンが押された瞬間を保存するフラグ
-	isPrevInputShotButton	= false;	// 前のフレームにショットボタンのインプットがあったかどうか
-}
-
-/// <summary>
-/// インプットクラス初期化
-/// </summary>
-void Input::Initialize(Input& input)
-{
-	input.isPressingShotButton	= false;	// そのフレームでボタンが押されているかどうか
-	input.isPressedShotButton	= false;	// ボタンが押された瞬間を保存するフラグ
-	input.isPrevInputShotButton	= false;	// 前のフレームにショットボタンのインプットがあったかどうか
-}
-
-/// <summary>
-/// インプットクラス更新
-/// </summary>
-void Input::Update()
-{
-	// ボタンが押されているかどうかを保存する
-	isPrevInputShotButton = isPressingShotButton;
-	if (CheckHitKey(KEY_INPUT_SPACE))
-	{
-		isPressingShotButton = true;
-	}
-	else
-	{
-		isPressingShotButton = false;
-	}
-	// ボタンが押された瞬間を取得する
-	if (isPressingShotButton && !isPrevInputShotButton)
-	{
-		isPressedShotButton = true;
-	}
-	else
-	{
-		isPressedShotButton = false;
-	}
-}
 
 /// <summary>
 /// プレイヤーの初期化
@@ -188,7 +106,7 @@ void Player::Initialize()
 /// <summary>
 /// プレイヤーの更新
 /// </summary>
-void Player::Update(Input input)
+void Player::Update(const Input& input, std::vector<Shot>& shotArray)
 {
 	dir = VGet(0, 0, 0);	// 向きをリセット
 
@@ -228,13 +146,13 @@ void Player::Update(Input input)
 		for (int i = 0; i < Shot::Num; i++)
 		{
 			// 弾が画面上にでていない場合はその弾を画面に出す
-			if (shot[i].isAlive == false)
+			if (shotArray[i].isAlive == false)
 			{
 				// 弾の発射位置をセット、プレイヤーの中心にする
-				shot[i].pos = pos;
+				shotArray[i].pos = pos;
 
 				// 弾が撃たれたので、存在状態を保持する変数にtrueを代入する
-				shot[i].isAlive = true;
+				shotArray[i].isAlive = true;
 
 				break;	// 一発撃ったら抜ける
 			}
@@ -266,7 +184,7 @@ void Player::Update(Input input)
 /// <summary>
 /// プレイヤーを描画
 /// </summary>
-void Player::Draw()
+void Player::Draw() const
 {
 	const float playerHalfW = w * 0.5f;
 	const float playerHalfH = h * 0.5f;
@@ -356,7 +274,7 @@ void Enemy::Update()
 /// <summary>
 /// エネミー描画
 /// </summary>
-void Enemy::Draw()
+void Enemy::Draw() const
 {
 	const float enemyHalfW = w * 0.5f;
 	const float enemyHalfH = h * 0.5f;
@@ -381,66 +299,53 @@ void Enemy::Draw()
 /// <summary>
 /// ショット初期化
 /// </summary>
-void InitializeShot()
+void Shot::Initialize()
 {
 	// --- 全部の弾で共通のデータ
 	// ショットのグラフィックをメモリにロード+サイズ取得
-	for (int i = 0; i < Shot::Num; i++)
-	{
-		shot[i].graph = LoadGraph("data/texture/shot.png");
+	graph = LoadGraph("data/texture/shot.png");
 
-		GetGraphSize(shot[i].graph, &shot[i].w, &shot[i].h);
-	}
+	GetGraphSize(graph, &w, &h);
 
 	// --- 弾の数だけ存在するデータ
 	// 弾の位置、ディレクションを作成
-	for (int i = 0; i < Shot::Num; i++)
-	{
-		shot[i].pos = VGet(0, 0, 0);
-		shot[i].dir = VGet(0, -1, 0);	// 弾は常に上にしか移動しない
-	}
+	pos = VGet(0, 0, 0);
+	dir = VGet(0, -1, 0);	// 弾は常に上にしか移動しない
 
 	// 弾が画面上に存在しているか保持する変数に『存在していない』を意味するfalseを代入しておく
-	for (int i = 0; i < Shot::Num; i++)
-	{
-		shot[i].isAlive = false;
-	}
+	isAlive = false;
 }
 
 /// <summary>
 /// ショットの更新
 /// </summary>
-void UpdateShot(Enemy& enemy)
+void Shot::Update(Enemy& enemy)
 {
-	// 弾i個分繰り返す
-	for (int i = 0; i < Shot::Num; i++)
+	// 存在状態を保持している変数の内容がtrue(存在する)の場合のみ行う
+	if (isAlive == true)
 	{
-		// 存在状態を保持している変数の内容がtrue(存在する)の場合のみ行う
-		if (shot[i].isAlive == true)
+		// 弾を移動させる。dirは常に上方向で長さ１なので、正規化はいらない
+		VECTOR shotVelocity = VScale(dir, Shot::Speed);
+		pos = VAdd(pos, shotVelocity);
+
+		// 画面外に出てしまった場合は存在状態を保持している変数にfalse(存在しない)を代入する
+		if (pos.y < Shot::AliveLimitY)
 		{
-			// 弾を移動させる。shot[i].dirは常に上方向で長さ１なので、正規化はいらない
-			VECTOR shotVelocity = VScale(shot[i].dir, Shot::Speed);
-			shot[i].pos = VAdd(shot[i].pos, shotVelocity);
+			isAlive = false;
+		}
 
-			// 画面外に出てしまった場合は存在状態を保持している変数にfalse(存在しない)を代入する
-			if (shot[i].pos.y < Shot::AliveLimitY)
-			{
-				shot[i].isAlive = false;
-			}
+		// 弾が敵にぶつかっていたら、敵の状態をダメージ状態に
+		VECTOR	shotToEnemy = VSub(enemy.pos, pos);	// ショットから敵へのベクトル
+		float	shotToEnemyLength = VSize(shotToEnemy);			// ショットから敵への距離
+		if (shotToEnemyLength < Enemy::HitSize + Shot::HitSize)
+		{
+			// 円（または球）同士の当たり判定
+			// ショットから敵への距離がお互いの当たり判定サイズより小さい＝当たっている
+			enemy.state = Enemy::State::Damage;
+			enemy.damageCount = Enemy::DamageTime;
 
-			// 弾が敵にぶつかっていたら、敵の状態をダメージ状態に
-			VECTOR	shotToEnemy = VSub(enemy.pos, shot[i].pos);	// ショットから敵へのベクトル
-			float	shotToEnemyLength = VSize(shotToEnemy);			// ショットから敵への距離
-			if (shotToEnemyLength < Enemy::HitSize + Shot::HitSize)
-			{
-				// 円（または球）同士の当たり判定
-				// ショットから敵への距離がお互いの当たり判定サイズより小さい＝当たっている
-				enemy.state = Enemy::State::Damage;
-				enemy.damageCount = Enemy::DamageTime;
-
-				// 弾も消す
-				shot[i].isAlive = false;
-			}
+			// 弾も消す
+			isAlive = false;
 		}
 	}
 }
@@ -448,30 +353,27 @@ void UpdateShot(Enemy& enemy)
 /// <summary>
 ///  ショット描画
 /// </summary>
-void DrawShot()
+void Shot::Draw() const
 {
-	for (int i = 0; i < Shot::Num; i++)
+	if (isAlive == true)
 	{
-		if (shot[i].isAlive == true)
-		{
-			// 弾を描画する
-			const float shotHalfW = shot[i].w * 0.5f;
-			const float shotHalfH = shot[i].h * 0.5f;
-			DrawRotaGraph3(static_cast<int>(shot[i].pos.x),
-				static_cast<int>(shot[i].pos.y),
-				static_cast<int>(shotHalfW), static_cast<int>(shotHalfH),
-				1.0f, 1.0f,
-				0.0f, shot[i].graph,
-				FALSE, FALSE);
+		// 弾を描画する
+		const float shotHalfW = w * 0.5f;
+		const float shotHalfH = h * 0.5f;
+		DrawRotaGraph3(static_cast<int>(pos.x),
+			static_cast<int>(pos.y),
+			static_cast<int>(shotHalfW), static_cast<int>(shotHalfH),
+			1.0f, 1.0f,
+			0.0f, graph,
+			FALSE, FALSE);
 
 #if _DEBUG
-			// デバッグ表示:弾の当たり判定の描画
-			DrawCircle(static_cast<int>(shot[i].pos.x),
-				static_cast<int>(shot[i].pos.y),
-				static_cast<int>(Shot::HitSize),
-				Debug::ShotHitSizeColor, 0);
+		// デバッグ表示:弾の当たり判定の描画
+		DrawCircle(static_cast<int>(pos.x),
+			static_cast<int>(pos.y),
+			static_cast<int>(Shot::HitSize),
+			Debug::ShotHitSizeColor, 0);
 #endif
-		}
 	}
 }
 
@@ -495,13 +397,22 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	Input	input;
 	Player	player;
 	Enemy	enemy;
+	std::vector<Shot>	shotArray(Shot::Num);
 
 	// 各クラスの初期化
 	//Input::Initialize(input);	// static関数ならこれ
 	input.Initialize();	// クラスごとに準備される関数なので、.でアクセス
 	player.Initialize();
 	enemy.Initialize();
-	InitializeShot();
+
+	//for (int i = 0; i < Shot::Num; i++)
+	//{
+	//	shot[i].Initialize();
+	//}
+	for (auto& item : shotArray)
+	{
+		item.Initialize();
+	}
 
 	// ゲームループ.
 	while (1)
@@ -513,15 +424,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		
 		// 各クラスのUpdate
 		input.Update();		// ボタン情報を更新
-		player.Update(input);
+		player.Update(input, shotArray);
 		enemy.Update();
-		UpdateShot(enemy);
+		for (auto& item : shotArray)
+		{
+			item.Update(enemy);
+		}
 
 		// 各クラスのDraw
 		player.Draw();
 		enemy.Draw();
-		DrawShot();
-
+		for (auto& item : shotArray)
+		{
+			item.Draw();
+		}
+		
 		// 裏画面の内容を表画面にコピーする（描画の確定）
 		ScreenFlip();
 

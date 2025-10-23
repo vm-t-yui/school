@@ -163,9 +163,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 				FALSE);
 		}
 
-		// 裏画面の内容を表画面にコピーする（描画の確定）.
+		// 裏画面の内容を表画面にコピーする（描画の確定）
 		ScreenFlip();
-
 
 		// Windows 特有の面倒な処理をＤＸライブラリにやらせる
 		// マイナスの値（エラー値）が返ってきたらループを抜ける
