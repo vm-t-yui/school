@@ -34,6 +34,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	// プレイヤーのグラフィックをメモリにロード＆表示座標を初期化
 	VECTOR	playerPos	= PlayerFirstPos;
+	VECTOR	playerDir	= VGet(0, 0, 0);	// プレイヤーの向き
 	int		playerGraph	= LoadGraph("data/texture/player.png");
 	
 	// キャラの画像の大きさを取得。毎度キャストするのがいやなので半分サイズも準備
@@ -67,52 +68,61 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		// プレイヤーの操作ルーチン
 		//------------------------------//
 		{
-			VECTOR playerVelocity = VGet(0, 0, 0);	// Velocity
+			playerDir = VGet(0, 0, 0);	// 向きをリセット
 
 			// 矢印キーを押していたらプレイヤーを移動させる
 			if (CheckHitKey(KEY_INPUT_UP) == 1)
 			{
-				playerVelocity = VGet(0, -1, 0);
+				playerDir = VAdd(playerDir, VGet(0, -1, 0));
 			}
 			if (CheckHitKey(KEY_INPUT_DOWN) == 1)
 			{
-				playerVelocity = VGet(0, 1, 0);
+				playerDir = VAdd(playerDir, VGet(0, 1, 0));
 			}
 			if (CheckHitKey(KEY_INPUT_LEFT) == 1)
 			{
-				playerVelocity = VGet(-1, 0, 0);
+				playerDir = VAdd(playerDir, VGet(-1, 0, 0));
 			}
 			if (CheckHitKey(KEY_INPUT_RIGHT) == 1)
 			{
-				playerVelocity = VGet(1, 0, 0);
+				playerDir = VAdd(playerDir, VGet(1, 0, 0));
+			}
+
+			// 長さがゼロじゃない場合、向きを正規化して、長さ1に
+			if (VSize(playerDir) > 0)
+			{
+				playerDir = VNorm(playerDir);
 			}
 
 			// プレイヤーの移動
-			// nextPos = pos + velocity
+			VECTOR playerVelocity = VScale(playerDir, PlayerSpeed);	// 長さ1の向きに、大きさ（速度）をかける
 			playerPos = VAdd(playerPos, playerVelocity);			// 座標ベクトルに、velicityを足すことで移動
 
 			// プレイヤーが画面左端からはみ出そうになっていたら画面内の座標に戻してあげる
-			if (playerPos.x < 0)
+			if (playerPos.x < playerHalfW)
 			{
-				playerPos.x = 0;
+				playerPos.x = playerHalfW;
 			}
-			if (playerPos.x > ScreenW - static_cast<float>(playerW))
+			if (playerPos.x > ScreenW - playerHalfW)
 			{
-				playerPos.x = ScreenW - static_cast<float>(playerW);
+				playerPos.x = ScreenW - playerHalfW;
 			}
-			if (playerPos.y < static_cast<float>(playerH))
+			if (playerPos.y < playerHalfH)
 			{
-				playerPos.y = static_cast<float>(playerH);
+				playerPos.y = playerHalfH;
 			}
-			if (playerPos.y > ScreenH - static_cast<float>(playerH))
+			if (playerPos.y > ScreenH - playerHalfH)
 			{
-				playerPos.y = ScreenH - static_cast<float>(playerH);
+				playerPos.y = ScreenH - playerHalfH;
 			}
 
 			// プレイヤーを描画
-			DrawGraph(static_cast<int>(playerPos.x),
+			DrawRotaGraph3(static_cast<int>(playerPos.x),
 				static_cast<int>(playerPos.y),
-				playerGraph, FALSE);
+				static_cast<int>(playerHalfW), static_cast<int>(playerHalfH),
+				1.0f,1.0f,
+				0.0f,playerGraph,
+				FALSE, FALSE);
 		}
 
 		//------------------------------//
@@ -120,36 +130,45 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		//------------------------------//
 		{
 			// エネミーの座標を移動している方向に移動する
-			VECTOR enemyVelocity = VGet(0, 0, 0);
+			enemyDir = VGet(0, 0, 0);
 			if (isEnemyRightMove == true)
 			{
-				enemyVelocity = VGet(1, 0, 0);
+				enemyDir = VAdd(enemyDir, VGet(1, 0, 0));
 			}
 			else
 			{
-				enemyVelocity = VGet(-1, 0, 0);
+				enemyDir = VAdd(enemyDir, VGet(-1, 0, 0));
 			}
 
-			// エネミーの移動
-			enemyPos = VAdd(enemyPos, enemyVelocity);	// 座標ベクトルに、velocityを足すことで移動
+			// 長さがゼロじゃない場合、向きを正規化して、長さ1に
+			if (VSize(enemyDir) > 0)
+			{
+				enemyDir = VNorm(enemyDir);
+			}
+
+			// エネミーの移動。すでに長さ１なので正規化はいらない
+			VECTOR enemyVelocity = VScale(enemyDir, EnemySpeed);	// 長さ1の向きに、大きさ（速度）をかける
+			enemyPos = VAdd(enemyPos, enemyVelocity);				// 座標ベクトルに、velicityを足すことで移動
 
 			// エネミーが画面端からでそうになっていたら画面内の座標に戻してあげ、移動する方向も反転する
-			if (enemyPos.x > ScreenW - static_cast<float>(enemyW))
+			if (enemyPos.x > ScreenW - enemyHalfW)
 			{
-				enemyPos.x = ScreenW - static_cast<float>(enemyW);
+				enemyPos.x = ScreenW - enemyHalfW;
 				isEnemyRightMove = false;
 			}
-			else if (enemyPos.x < 0)
+			else if (enemyPos.x < enemyHalfW)
 			{
-				enemyPos.x = 0;
+				enemyPos.x = enemyHalfW;
 				isEnemyRightMove = true;
 			}
 
 			// エネミーを描画
-			DrawGraph(static_cast<int>(enemyPos.x),
+			DrawRotaGraph3(static_cast<int>(enemyPos.x),
 				static_cast<int>(enemyPos.y),
-				enemyGraph,
-				FALSE);
+				static_cast<int>(enemyHalfW), static_cast<int>(enemyHalfH),
+				1.0f, 1.0f,
+				0.0f, enemyGraph,
+				FALSE, FALSE);
 		}
 
 		// 裏画面の内容を表画面にコピーする（描画の確定）.

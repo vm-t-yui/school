@@ -67,25 +67,36 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		// プレイヤーの操作ルーチン
 		//------------------------------//
 		{
-			VECTOR playerVelocity = VGet(0, 0, 0);	// Velocity
+			VECTOR playerDirection = VGet(0, 0, 0);	// Direction
 
 			// 矢印キーを押していたらプレイヤーを移動させる
 			if (CheckHitKey(KEY_INPUT_UP) == 1)
 			{
-				playerVelocity = VGet(0, -1, 0);
+				// playerDirection = VGet(---)ではなく
+				// playerDirection += VGet(---)に
+				playerDirection = VAdd(playerDirection, VGet(0, -1, 0));
 			}
 			if (CheckHitKey(KEY_INPUT_DOWN) == 1)
 			{
-				playerVelocity = VGet(0, 1, 0);
+				playerDirection = VAdd(playerDirection, VGet(0, 1, 0));
 			}
 			if (CheckHitKey(KEY_INPUT_LEFT) == 1)
 			{
-				playerVelocity = VGet(-1, 0, 0);
+				playerDirection = VAdd(playerDirection, VGet(-1, 0, 0));
 			}
 			if (CheckHitKey(KEY_INPUT_RIGHT) == 1)
 			{
-				playerVelocity = VGet(1, 0, 0);
+				playerDirection = VAdd(playerDirection, VGet(1, 0, 0));
 			}
+
+			// velocityを正規化
+			if (VSize(playerDirection) > 0) // 長さ0だと不具合が起きるので、ゼロの時はしない
+			{
+				playerDirection = VNorm(playerDirection);
+			}
+
+			// velocity = direction * speed
+			VECTOR playerVelocity = VScale(playerDirection, PlayerSpeed);
 
 			// プレイヤーの移動
 			// nextPos = pos + velocity
@@ -123,11 +134,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			VECTOR enemyVelocity = VGet(0, 0, 0);
 			if (isEnemyRightMove == true)
 			{
-				enemyVelocity = VGet(1, 0, 0);
+				enemyVelocity = VGet(EnemySpeed, 0, 0);
 			}
 			else
 			{
-				enemyVelocity = VGet(-1, 0, 0);
+				enemyVelocity = VGet(-EnemySpeed, 0, 0);
 			}
 
 			// エネミーの移動
