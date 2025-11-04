@@ -23,10 +23,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	///////////////////////////////////////////////////////////////////
 	// グラフィック設定
-	//SetDrawScreen(DX_SCREEN_BACK);	// 裏画面を描画対象にする
-	//SetUseZBufferFlag(TRUE);		// Ｚバッファを使用する
-	//SetWriteZBufferFlag(TRUE);		// Ｚバッファへの書き込みを行う
-	//SetUseBackCulling(TRUE);		// バックカリングを行う
+	SetDrawScreen(DX_SCREEN_BACK);	// 裏画面を描画対象にする
+	SetUseZBufferFlag(TRUE);		// Ｚバッファを使用する
+	SetWriteZBufferFlag(TRUE);		// Ｚバッファへの書き込みを行う
+	SetUseBackCulling(TRUE);		// バックカリングを行う
 	///////////////////////////////////////////////////////////////////
 
 	// ＤＸライブラリ初期化処理
@@ -81,6 +81,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		{
 			item.Draw();
 		}
+
+#if _DEBUG
+		camera.DrawDebug();	// デバッグ描画
+#endif // _DEBUG
+
 		
 		// 裏画面の内容を表画面にコピーする（描画の確定）
 		ScreenFlip();

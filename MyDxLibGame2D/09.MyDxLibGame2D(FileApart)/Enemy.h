@@ -1,20 +1,20 @@
-#pragma once
+ï»¿#pragma once
 
 /// <summary>
-/// ƒGƒlƒ~[ƒNƒ‰ƒX
+/// ã‚¨ãƒãƒŸãƒ¼ã‚¯ãƒ©ã‚¹
 /// </summary>
 class Enemy
 {
 public:
-	// “G‚Ìó‘Ô‚ğ•\‚·—ñ‹“‘Ì
+	// æ•µã®çŠ¶æ…‹ã‚’è¡¨ã™åˆ—æŒ™ä½“
 	enum class State : int
 	{
-		Normal,		// ’Êí
-		Damage		// ƒ_ƒ[ƒW
+		Normal,		// é€šå¸¸
+		Damage		// ãƒ€ãƒ¡ãƒ¼ã‚¸
 	};
 
 	VECTOR	pos;
-	VECTOR	dir;	// ƒGƒlƒ~[‚ÌŒü‚«
+	VECTOR	dir;	// ã‚¨ãƒãƒŸãƒ¼ã®å‘ã
 	int		graphNormal;
 	int		graphDamage;
 	int		graph;
@@ -25,8 +25,8 @@ public:
 	int		damageCount;
 
 	constexpr static float		Speed = 3.0f;
-	constexpr static float		HitSize = 30;	// ƒGƒlƒ~[‚Ì“–‚½‚è”»’èƒTƒCƒY
-	constexpr static int		DamageTime = 30;	// ƒGƒlƒ~[‚Ìƒ_ƒ[ƒWŠç‚É‚È‚Á‚Ä‚¢‚éŠÔ
+	constexpr static float		HitSize = 30;	// ã‚¨ãƒãƒŸãƒ¼ã®å½“ãŸã‚Šåˆ¤å®šã‚µã‚¤ã‚º
+	constexpr static int		DamageTime = 30;	// ã‚¨ãƒãƒŸãƒ¼ã®ãƒ€ãƒ¡ãƒ¼ã‚¸é¡”ã«ãªã£ã¦ã„ã‚‹æ™‚é–“
 	inline const static VECTOR	FirstPos = VGet(0, 50, 0);
 
 	void Initialize();

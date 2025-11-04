@@ -1,12 +1,16 @@
-// 2016 Takeru Yui All Rights Reserved.
+ï»¿// 2016 Takeru Yui All Rights Reserved.
 #pragma once
 
 /// <summary>
-/// ƒJƒƒ‰
+/// ã‚«ãƒ¡ãƒ©
 /// </summary>
 class Camera
 {
 public:
-	Camera();							// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	~Camera();							// ƒfƒXƒgƒ‰ƒNƒ^
+	Camera();							// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	~Camera();							// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+
+#if _DEBUG
+	void DrawDebug();					// ãƒ‡ãƒãƒƒã‚°æç”»
+#endif // _DEBUG
 };

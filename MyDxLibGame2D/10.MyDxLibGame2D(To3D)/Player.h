@@ -1,10 +1,10 @@
-#pragma once
+ï»¿#pragma once
 
-class Input;	// ƒvƒƒgƒ^ƒCƒvéŒ¾
-class Shot;		// ƒvƒƒgƒ^ƒCƒvéŒ¾
+class Input;	// ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€
+class Shot;		// ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€
 
 /// <summary>
-/// ƒvƒŒƒCƒ„[ƒNƒ‰ƒX
+/// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚¯ãƒ©ã‚¹
 /// </summary>
 class Player
 {
@@ -14,22 +14,16 @@ public:
 	int		graph;
 	int		w, h;
 
-	int		modelHandle;		// 3Dƒ‚ƒfƒ‹‚Ìƒnƒ“ƒhƒ‹igraph‚Ì3D”Åj
+	int		modelHandle;		// 3Dãƒ¢ãƒ‡ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ«ï¼ˆgraphã®3Dç‰ˆï¼‰
 
-	// constexpr’è”‚ÍŒã‚ë‚Éstatic(C++17ˆÈ~)
-	constexpr static float	Speed = 3.0f;
+	// constexprå®šæ•°ã¯å¾Œã‚ã«static(C++17ä»¥é™)
+	constexpr static float	Speed	= 3.0f;
+	constexpr static float	HitSize = 30;	// å½“ãŸã‚Šåˆ¤å®šã‚µã‚¤ã‚º
 
-	// const‚Í“ª‚Éinline,Œã‚ë‚Éstatic(C++17ˆÈ~)
-	//inline const static	VECTOR	FirstPos = VGet(Graphics::ScreenW * 0.5f, Graphics::ScreenH - 80.0f, 0);
+	// constã¯é ­ã«inline,å¾Œã‚ã«static(C++17ä»¥é™)
+	inline const static	VECTOR	FirstPos = VGet(Graphics::ScreenW * 0.5f, Graphics::ScreenH - 80.0f, 0);
 
-	///////////////////////////////////////////////////////
-	// ƒfƒoƒbƒO‚Ìˆ×‚ÉŒ´“_‚É‚Á‚Ä‚¢‚­
-	inline const static	VECTOR	FirstPos = VGet(0, 0, 0);
-
-	// 2D‚ÌÀ•WŒn‚ğA3D‚É•ÏŠ·‚·‚é‚½‚ß‚Ì’è”ŒQ
-	// ƒXƒP[ƒ‹’è”
-	inline const static	float	ScaleFactor3D	= 0.01f;	// ƒXƒP[ƒ‹Š„‡
-	///////////////////////////////////////////////////////
+	inline const static VECTOR	ModelScale = VGet(0.02f, 0.02f, 0.02f);
 
 	void Initialize();
 	void Update(const Input& input, std::vector<Shot>& shotArray);

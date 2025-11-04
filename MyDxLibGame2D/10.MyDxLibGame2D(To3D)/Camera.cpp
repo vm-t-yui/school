@@ -1,31 +1,78 @@
-// 2016 Takeru Yui All Rights Reserved.
+﻿// 2016 Takeru Yui All Rights Reserved.
 #include "DxLib.h"
 #include <vector>
+#include "GlobalConstants.h"
 #include "Camera.h"
 
 /// <summary>
-/// �R���X�g���N�^
+/// コンストラクタ
 /// </summary>
 Camera::Camera()
 {
-	//���s0.1�`1000�܂ł��J�����̕`��͈͂Ƃ���
+	//奥行0.1～1000までをカメラの描画範囲とする
 	SetCameraNearFar(0.1f, 1000.0f);
 
-	// �������e�̃J�������Z�b�g�A�b�v����i����p�̐ݒ�j
+	// 透視投影のカメラをセットアップする（視野角の設定）
 	float fovDegree = 60.0f;
-	float fovRadian = fovDegree * (180.0f / DX_PI_F);
-	SetupCamera_Perspective(fovRadian);	// ���W�A���ɕϊ����Ďg��
+	float fovRadian = fovDegree * (DX_PI_F / 180.0f);
+	SetupCamera_Perspective(fovRadian);	// ラジアンに変換して使う
 
-	// �|�W�V�����ƃ^�[�Q�b�g����J�����̉�]�ƃ|�W�V�����𓯎��ݒ肷��
-	VECTOR pos		= VGet(0, 0, -5);
+	/////////////////////////////////////////////////////////////////
+	// ポジションとターゲットからカメラの回転とポジションを同時設定する
+	// カメラのポジションは３Dスクリーンの中心からZ-方向に少し離れたところ
+	// カメラのターゲットは３Dスクリーンの中心
+	/////////////////////////////////////////////////////////////////
+	// FIXME: ポジションはゼロじゃなく画面の中心に
+	VECTOR pos		= VGet(0, 0, 0);
 	VECTOR target	= VGet(0, 0, 0);
+	pos = Graphics::Get3DPosition(pos);
+	/////////////////////////////////////////////////////////////////
+	// FIXME:ちょっととは？定数化が必要
+	pos = VGet(pos.x, pos.y, pos.z - 4.0f);	// ちょっと後ろに下げる
+	/////////////////////////////////////////////////////////////////
+	target = Graphics::Get3DPosition(target);
 	SetCameraPositionAndTarget_UpVecY(pos, target);
 }
 
 /// <summary>
-/// �f�X�g���N�^
+/// デストラクタ
 /// </summary>
 Camera::~Camera()
 {
-	// �����Ȃ�
+	// 処理なし
 }
+
+#if _DEBUG
+/// <summary>
+/// デバッグ描画
+/// </summary>
+void Camera::DrawDebug()
+{
+	//////////////////////////////////////////////////////////////////
+	// 3Dの原点にXYZ座標系ラインを「本来の1のサイズで」表示
+	//////////////////////////////////////////////////////////////////
+	VECTOR zero = VGet(0, 0, 0);
+	DrawLine3D(zero, VGet(1, 0, 0), 0xff0000);	// X
+	DrawLine3D(zero, VGet(0, 1, 0), 0x00ff00);	// Y
+	DrawLine3D(zero, VGet(0, 0, 1), 0x0000ff);	// Z
+
+	//////////////////////////////////////////////////////////////////
+	// 3DのZ=0平面に2Dスクリーンサイズを3Dに変換したラインを表示
+	//////////////////////////////////////////////////////////////////
+	// スクリーンの四隅座標を準備し、３Dに変換
+	VECTOR LeftTop2D		= VGet(0,0,0);
+	VECTOR RightTop2D		= VGet(Graphics::ScreenW, 0, 0);
+	VECTOR LeftBottom2D		= VGet(0, Graphics::ScreenH, 0);
+	VECTOR RightBottom2D	= VGet(Graphics::ScreenW, Graphics::ScreenH, 0);
+	VECTOR LeftTop3D		= Graphics::Get3DPosition(LeftTop2D);
+	VECTOR RightTop3D		= Graphics::Get3DPosition(RightTop2D);
+	VECTOR LeftBottom3D		= Graphics::Get3DPosition(LeftBottom2D);
+	VECTOR RightBottom3D	= Graphics::Get3DPosition(RightBottom2D);
+
+	// スクリーンの四隅座標を使い、２Dスクリーンの変換後の座標を画面に表示
+	DrawLine3D(LeftTop3D,	RightTop3D,		Debug::Virtual2DScreenColor);	// 上辺
+	DrawLine3D(LeftBottom3D,RightBottom3D,	Debug::Virtual2DScreenColor);	// 下辺
+	DrawLine3D(RightTop3D,	RightBottom3D,	Debug::Virtual2DScreenColor);	// 右辺
+	DrawLine3D(LeftTop3D,	LeftBottom3D,	Debug::Virtual2DScreenColor);	// 左辺
+}
+#endif // _DEBUG

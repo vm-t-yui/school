@@ -1,4 +1,4 @@
-#include "DxLib.h"
+ï»¿#include "DxLib.h"
 #include <vector>
 #include "GlobalConstants.h"
 #include "Player.h"
@@ -6,34 +6,38 @@
 #include "Shot.h"
 
 /// <summary>
-/// ƒvƒŒƒCƒ„[‚Ì‰Šú‰»
+/// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åˆæœŸåŒ–
 /// </summary>
 void Player::Initialize()
 {
-	// ƒvƒŒƒCƒ„[‚ÌƒOƒ‰ƒtƒBƒbƒN‚ğƒƒ‚ƒŠ‚Éƒ[ƒh••\¦À•W‚ğ‰Šú‰»
-	pos			= Player::FirstPos;
-	dir			= VGet(0, 0, 0);	// ƒvƒŒƒCƒ„[‚ÌŒü‚«
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ã‚’ãƒ¡ãƒ¢ãƒªã«ãƒ­ãƒ¼ãƒ‰ï¼†è¡¨ç¤ºåº§æ¨™ã‚’åˆæœŸåŒ–
+	//////////////////////////////////////////////////////
+	// FIXME: ãƒã‚¸ã‚·ãƒ§ãƒ³ã¯ã‚¼ãƒ­ã˜ã‚ƒãªãåˆæœŸä½ç½®ã«
+	pos			= VGet(0, 0, 0);
+	//pos			= Player::FirstPos;
+	//////////////////////////////////////////////////////
+	dir			= VGet(0, 0, 0);	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å‘ã
 	graph		= LoadGraph("data/texture/player.png");
 
 	//////////////////////////////////////////////////////
-	// 3Dƒ‚ƒfƒ‹‚Ìƒ[ƒh
+	// 3Dãƒ¢ãƒ‡ãƒ«ã®ãƒ­ãƒ¼ãƒ‰
 	modelHandle = MV1LoadModel("data/model/player/hackadoll.pmx");
-	// 3Dƒ‚ƒfƒ‹‚ª‘å‚«‚·‚¬‚é‚Ì‚ÅAƒXƒP[ƒ‹‚Å’²®
-	MV1SetScale(modelHandle, VGet(0.02f, 0.02f, 0.02f));
+	// 3Dãƒ¢ãƒ‡ãƒ«ãŒå¤§ãã™ãã‚‹ã®ã§ã€ã‚¹ã‚±ãƒ¼ãƒ«ã§èª¿æ•´
+	MV1SetScale(modelHandle, ModelScale);
 	//////////////////////////////////////////////////////
 
-	// ƒLƒƒƒ‰‚Ì‰æ‘œ‚Ì‘å‚«‚³‚ğæ“¾B–ˆ“xƒLƒƒƒXƒg‚·‚é‚Ì‚ª‚¢‚â‚È‚Ì‚Å”¼•ªƒTƒCƒY‚à€”õ
+	// ã‚­ãƒ£ãƒ©ã®ç”»åƒã®å¤§ãã•ã‚’å–å¾—ã€‚æ¯åº¦ã‚­ãƒ£ã‚¹ãƒˆã™ã‚‹ã®ãŒã„ã‚„ãªã®ã§åŠåˆ†ã‚µã‚¤ã‚ºã‚‚æº–å‚™
 	GetGraphSize(graph, &w, &h);
 }
 
 /// <summary>
-/// ƒvƒŒƒCƒ„[‚ÌXV
+/// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ›´æ–°
 /// </summary>
 void Player::Update(const Input& input, std::vector<Shot>& shotArray)
 {
-	dir = VGet(0, 0, 0);	// Œü‚«‚ğƒŠƒZƒbƒg
+	dir = VGet(0, 0, 0);	// å‘ãã‚’ãƒªã‚»ãƒƒãƒˆ
 
-	// –îˆóƒL[‚ğ‰Ÿ‚µ‚Ä‚¢‚½‚çƒvƒŒƒCƒ„[‚ğˆÚ“®‚³‚¹‚é
+	// çŸ¢å°ã‚­ãƒ¼ã‚’æŠ¼ã—ã¦ã„ãŸã‚‰ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ç§»å‹•ã•ã›ã‚‹
 	if (CheckHitKey(KEY_INPUT_UP) == 1)
 	{
 		dir = VAdd(dir, VGet(0, -1, 0));
@@ -51,33 +55,33 @@ void Player::Update(const Input& input, std::vector<Shot>& shotArray)
 		dir = VAdd(dir, VGet(1, 0, 0));
 	}
 
-	// ’·‚³‚ªƒ[ƒ‚¶‚á‚È‚¢ê‡AŒü‚«‚ğ³‹K‰»‚µ‚ÄA’·‚³1‚É
+	// é•·ã•ãŒã‚¼ãƒ­ã˜ã‚ƒãªã„å ´åˆã€å‘ãã‚’æ­£è¦åŒ–ã—ã¦ã€é•·ã•1ã«
 	if (VSize(dir) > 0)
 	{
 		dir = VNorm(dir);
 	}
 
-	// ƒvƒŒƒCƒ„[‚ÌˆÚ“®
-	VECTOR playerVelocity = VScale(dir, Player::Speed);	// ’·‚³1‚ÌŒü‚«‚ÉA‘å‚«‚³i‘¬“xj‚ğ‚©‚¯‚é
-	pos = VAdd(pos, playerVelocity);				// À•WƒxƒNƒgƒ‹‚ÉAvelicity‚ğ‘«‚·‚±‚Æ‚ÅˆÚ“®
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç§»å‹•
+	VECTOR playerVelocity = VScale(dir, Player::Speed);	// é•·ã•1ã®å‘ãã«ã€å¤§ãã•ï¼ˆé€Ÿåº¦ï¼‰ã‚’ã‹ã‘ã‚‹
+	pos = VAdd(pos, playerVelocity);				// åº§æ¨™ãƒ™ã‚¯ãƒˆãƒ«ã«ã€velicityã‚’è¶³ã™ã“ã¨ã§ç§»å‹•
 
-	// ’e‚Ì”­Ëˆ—
-	// ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½uŠÔ‚¾‚¯A”­Ëˆ—‚ğs‚¤
+	// å¼¾ã®ç™ºå°„å‡¦ç†
+	// ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸç¬é–“ã ã‘ã€ç™ºå°„å‡¦ç†ã‚’è¡Œã†
 	if (input.isPressedShotButton)
 	{
-		// ’eiŒÂ•ªŒJ‚è•Ô‚·
+		// å¼¾iå€‹åˆ†ç¹°ã‚Šè¿”ã™
 		for (int i = 0; i < Shot::Num; i++)
 		{
-			// ’e‚ª‰æ–Êã‚É‚Å‚Ä‚¢‚È‚¢ê‡‚Í‚»‚Ì’e‚ğ‰æ–Ê‚Éo‚·
+			// å¼¾ãŒç”»é¢ä¸Šã«ã§ã¦ã„ãªã„å ´åˆã¯ãã®å¼¾ã‚’ç”»é¢ã«å‡ºã™
 			if (shotArray[i].isAlive == false)
 			{
-				// ’e‚Ì”­ËˆÊ’u‚ğƒZƒbƒgAƒvƒŒƒCƒ„[‚Ì’†S‚É‚·‚é
+				// å¼¾ã®ç™ºå°„ä½ç½®ã‚’ã‚»ãƒƒãƒˆã€ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ä¸­å¿ƒã«ã™ã‚‹
 				shotArray[i].pos = pos;
 
-				// ’e‚ªŒ‚‚½‚ê‚½‚Ì‚ÅA‘¶İó‘Ô‚ğ•Û‚·‚é•Ï”‚Étrue‚ğ‘ã“ü‚·‚é
+				// å¼¾ãŒæ’ƒãŸã‚ŒãŸã®ã§ã€å­˜åœ¨çŠ¶æ…‹ã‚’ä¿æŒã™ã‚‹å¤‰æ•°ã«trueã‚’ä»£å…¥ã™ã‚‹
 				shotArray[i].isAlive = true;
 
-				break;	// ˆê”­Œ‚‚Á‚½‚ç”²‚¯‚é
+				break;	// ä¸€ç™ºæ’ƒã£ãŸã‚‰æŠœã‘ã‚‹
 			}
 		}
 	}
@@ -85,7 +89,7 @@ void Player::Update(const Input& input, std::vector<Shot>& shotArray)
 	const float playerHalfW = w * 0.5f;
 	const float playerHalfH = h * 0.5f;
 
-	// ƒvƒŒƒCƒ„[‚ª‰æ–Ê¶’[‚©‚ç‚Í‚İo‚»‚¤‚É‚È‚Á‚Ä‚¢‚½‚ç‰æ–Ê“à‚ÌÀ•W‚É–ß‚µ‚Ä‚ ‚°‚é
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒç”»é¢å·¦ç«¯ã‹ã‚‰ã¯ã¿å‡ºãã†ã«ãªã£ã¦ã„ãŸã‚‰ç”»é¢å†…ã®åº§æ¨™ã«æˆ»ã—ã¦ã‚ã’ã‚‹
 	if (pos.x < playerHalfW)
 	{
 		pos.x = playerHalfW;
@@ -103,14 +107,14 @@ void Player::Update(const Input& input, std::vector<Shot>& shotArray)
 		pos.y = Graphics::ScreenH - playerHalfH;
 	}
 
-	// ƒ‚ƒfƒ‹‚Ìƒ|ƒWƒVƒ‡ƒ“‚ğİ’è
-	VECTOR inverseYPos		= VGet(pos.x, -pos.y, pos.z);
-	VECTOR scaledPosition	= VScale(inverseYPos, ScaleFactor3D);
-	MV1SetPosition(modelHandle, scaledPosition);
+	//////////////////////////////////////////////////////
+	// ãƒ¢ãƒ‡ãƒ«ã®ãƒã‚¸ã‚·ãƒ§ãƒ³ã‚’è¨­å®š
+	MV1SetPosition(modelHandle, Graphics::Get3DPosition(pos));
+	//////////////////////////////////////////////////////
 }
 
 /// <summary>
-/// ƒvƒŒƒCƒ„[‚ğ•`‰æ
+/// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’æç”»
 /// </summary>
 void Player::Draw() const
 {
@@ -124,5 +128,25 @@ void Player::Draw() const
 		0.0f, graph,
 		FALSE, FALSE);
 
+	//////////////////////////////////////////////////////
 	MV1DrawModel(modelHandle);
+	//////////////////////////////////////////////////////
+
+#if _DEBUG
+	// ãƒ‡ãƒãƒƒã‚°è¡¨ç¤º:æ•µã®å½“ãŸã‚Šåˆ¤å®šã®æç”»
+	// 2D
+	DrawCircle(static_cast<int>(pos.x),
+		static_cast<int>(pos.y),
+		static_cast<int>(Player::HitSize),
+		Debug::EnemyHitSizeColor, 0);
+
+	////////////////////////////////////////////////
+	// 3D
+	auto pos3D = Graphics::Get3DPosition(pos);
+	SetUseLighting(FALSE);
+	DrawSphere3D(pos3D, Player::HitSize * Graphics::ScaleFactor3D, 4,
+		Debug::PlayerHitSizeColor, Debug::EnemyHitSizeColor, FALSE);
+	SetUseLighting(TRUE);
+	////////////////////////////////////////////////
+#endif
 }

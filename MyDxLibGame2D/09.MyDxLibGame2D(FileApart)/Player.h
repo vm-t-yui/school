@@ -1,10 +1,10 @@
-#pragma once
+ï»¿#pragma once
 
-class Input;	// ƒvƒƒgƒ^ƒCƒvéŒ¾
-class Shot;		// ƒvƒƒgƒ^ƒCƒvéŒ¾
+class Input;	// ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€
+class Shot;		// ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€
 
 /// <summary>
-/// ƒvƒŒƒCƒ„[ƒNƒ‰ƒX
+/// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚¯ãƒ©ã‚¹
 /// </summary>
 class Player
 {
@@ -14,10 +14,10 @@ public:
 	int		graph;
 	int		w, h;
 
-	// constexpr’è”‚ÍŒã‚ë‚Éstatic(C++17ˆÈ~)
+	// constexprå®šæ•°ã¯å¾Œã‚ã«static(C++17ä»¥é™)
 	constexpr static float	Speed = 3.0f;
 
-	// const‚Í“ª‚Éinline,Œã‚ë‚Éstatic(C++17ˆÈ~)
+	// constã¯é ­ã«inline,å¾Œã‚ã«static(C++17ä»¥é™)
 	inline const static	VECTOR	FirstPos = VGet(Graphics::ScreenW * 0.5f, Graphics::ScreenH - 80.0f, 0);
 
 	void Initialize();

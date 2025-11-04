@@ -1,33 +1,39 @@
-#include "DxLib.h"
+ï»¿#include "DxLib.h"
 #include "Enemy.h"
 #include "GlobalConstants.h"
 
 /// <summary>
-/// “G‚Ì‰Šú‰»
+/// æ•µã®åˆæœŸåŒ–
 /// </summary>
 void Enemy::Initialize()
 {
-	// ƒGƒlƒ~[‚ÌƒOƒ‰ƒtƒBƒbƒN‚ğƒƒ‚ƒŠ‚Éƒ[ƒh••\¦À•W‚ğ‰Šú‰»
+	// ã‚¨ãƒãƒŸãƒ¼ã®ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ã‚’ãƒ¡ãƒ¢ãƒªã«ãƒ­ãƒ¼ãƒ‰ï¼†è¡¨ç¤ºåº§æ¨™ã‚’åˆæœŸåŒ–
 	pos = Enemy::FirstPos;
-	dir = VGet(0, 0, 0);	// ƒGƒlƒ~[‚ÌŒü‚«
+	dir = VGet(0, 0, 0);	// ã‚¨ãƒãƒŸãƒ¼ã®å‘ã
 	graphNormal = LoadGraph("data/texture/enemy.png");
 	graphDamage = LoadGraph("data/texture/enemyDamage.png");
 	graph = graphNormal;
 
+	//////////////////////////////////////////////////////
+	modelHandle = MV1LoadModel("data/model/obstacleMovable/obstacleMovable.pmx");
+	// 3Dãƒ¢ãƒ‡ãƒ«ãŒå¤§ãã™ãã‚‹ã®ã§ã€ã‚¹ã‚±ãƒ¼ãƒ«ã§èª¿æ•´
+	MV1SetScale(modelHandle, ModelScale);
+	//////////////////////////////////////////////////////
+
 	GetGraphSize(graph, &w, &h);
 
-	// ƒGƒlƒ~[‚ª‰EˆÚ“®‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO‚ğƒŠƒZƒbƒg
+	// ã‚¨ãƒãƒŸãƒ¼ãŒå³ç§»å‹•ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆ
 	isRightMove = true;
-	state = Enemy::State::Normal;		// ’Êíó‘Ô‚Å‰Šú‰»
-	damageCount = 0;						// ƒ_ƒ[ƒWƒJƒEƒ“ƒg‚ğ‰Šú‰»
+	state = Enemy::State::Normal;		// é€šå¸¸çŠ¶æ…‹ã§åˆæœŸåŒ–
+	damageCount = 0;						// ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚«ã‚¦ãƒ³ãƒˆã‚’åˆæœŸåŒ–
 }
 
 /// <summary>
-/// ƒGƒlƒ~[‚ÌXV
+/// ã‚¨ãƒãƒŸãƒ¼ã®æ›´æ–°
 /// </summary>
 void Enemy::Update()
 {
-	// ƒGƒlƒ~[‚ÌˆÚ“®•ûŒü‚ÌŠm’èBŒÅ’è‚Å•K‚¸¶‰E‚Ç‚¿‚ç‚©‚É‚È‚é
+	// ã‚¨ãƒãƒŸãƒ¼ã®ç§»å‹•æ–¹å‘ã®ç¢ºå®šã€‚å›ºå®šã§å¿…ãšå·¦å³ã©ã¡ã‚‰ã‹ã«ãªã‚‹
 	if (isRightMove == true)
 	{
 		dir = VGet(1, 0, 0);
@@ -37,33 +43,33 @@ void Enemy::Update()
 		dir = VGet(-1, 0, 0);
 	}
 
-	// ƒGƒlƒ~[‚Ìó‘Ô•Êˆ—
+	// ã‚¨ãƒãƒŸãƒ¼ã®çŠ¶æ…‹åˆ¥å‡¦ç†
 	switch (state)
 	{
-	case Enemy::State::Normal:	// ’Êí‚È‚ç’ÊíŠç‚É
+	case Enemy::State::Normal:	// é€šå¸¸ãªã‚‰é€šå¸¸é¡”ã«
 		graph = graphNormal;
 		break;
-	case Enemy::State::Damage:	// ƒ_ƒ[ƒW‚È‚çƒ_ƒ[ƒWŠç‚ÉBƒ_ƒ[ƒWƒJƒEƒ“ƒg‚ğ¬‚³‚­‚·‚é
+	case Enemy::State::Damage:	// ãƒ€ãƒ¡ãƒ¼ã‚¸ãªã‚‰ãƒ€ãƒ¡ãƒ¼ã‚¸é¡”ã«ã€‚ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚«ã‚¦ãƒ³ãƒˆã‚’å°ã•ãã™ã‚‹
 		graph = graphDamage;
-		--damageCount;		// ƒJƒEƒ“ƒg‚ğŒ¸‚ç‚µAƒ[ƒˆÈ‰º‚É‚È‚Á‚½‚ç’Êíó‘Ô‚É–ß‚·
+		--damageCount;		// ã‚«ã‚¦ãƒ³ãƒˆã‚’æ¸›ã‚‰ã—ã€ã‚¼ãƒ­ä»¥ä¸‹ã«ãªã£ãŸã‚‰é€šå¸¸çŠ¶æ…‹ã«æˆ»ã™
 		if (damageCount <= 0)
 		{
 			damageCount = 0;
 			state = Enemy::State::Normal;
 		}
 		break;
-	default:	// ‚»‚êˆÈŠO‚È‚ç‰½‚à‚µ‚È‚¢
+	default:	// ãã‚Œä»¥å¤–ãªã‚‰ä½•ã‚‚ã—ãªã„
 		break;
 	}
 
 	const float enemyHalfW = w * 0.5f;
 	const float enemyHalfH = h * 0.5f;
 
-	// ƒGƒlƒ~[‚ÌˆÚ“®B‚·‚Å‚É’·‚³‚P‚È‚Ì‚Å³‹K‰»‚Í‚¢‚ç‚È‚¢
-	VECTOR enemyVelocity = VScale(dir, Enemy::Speed);	// ’·‚³1‚ÌŒü‚«‚ÉA‘å‚«‚³i‘¬“xj‚ğ‚©‚¯‚é
-	pos = VAdd(pos, enemyVelocity);				// À•WƒxƒNƒgƒ‹‚ÉAvelicity‚ğ‘«‚·‚±‚Æ‚ÅˆÚ“®
+	// ã‚¨ãƒãƒŸãƒ¼ã®ç§»å‹•ã€‚ã™ã§ã«é•·ã•ï¼‘ãªã®ã§æ­£è¦åŒ–ã¯ã„ã‚‰ãªã„
+	VECTOR enemyVelocity = VScale(dir, Enemy::Speed);	// é•·ã•1ã®å‘ãã«ã€å¤§ãã•ï¼ˆé€Ÿåº¦ï¼‰ã‚’ã‹ã‘ã‚‹
+	pos = VAdd(pos, enemyVelocity);				// åº§æ¨™ãƒ™ã‚¯ãƒˆãƒ«ã«ã€velicityã‚’è¶³ã™ã“ã¨ã§ç§»å‹•
 
-	// ƒGƒlƒ~[‚ª‰æ–Ê’[‚©‚ç‚Å‚»‚¤‚É‚È‚Á‚Ä‚¢‚½‚ç‰æ–Ê“à‚ÌÀ•W‚É–ß‚µ‚Ä‚ ‚°AˆÚ“®‚·‚é•ûŒü‚à”½“]‚·‚é
+	// ã‚¨ãƒãƒŸãƒ¼ãŒç”»é¢ç«¯ã‹ã‚‰ã§ãã†ã«ãªã£ã¦ã„ãŸã‚‰ç”»é¢å†…ã®åº§æ¨™ã«æˆ»ã—ã¦ã‚ã’ã€ç§»å‹•ã™ã‚‹æ–¹å‘ã‚‚åè»¢ã™ã‚‹
 	if (pos.x > Graphics::ScreenW - enemyHalfW)
 	{
 		pos.x = Graphics::ScreenW - enemyHalfW;
@@ -74,17 +80,20 @@ void Enemy::Update()
 		pos.x = enemyHalfW;
 		isRightMove = true;
 	}
+
+	// ãƒ¢ãƒ‡ãƒ«ã®ãƒã‚¸ã‚·ãƒ§ãƒ³ã‚’è¨­å®š
+	MV1SetPosition(modelHandle, Graphics::Get3DPosition(pos));
 }
 
 /// <summary>
-/// ƒGƒlƒ~[•`‰æ
+/// ã‚¨ãƒãƒŸãƒ¼æç”»
 /// </summary>
 void Enemy::Draw() const
 {
 	const float enemyHalfW = w * 0.5f;
 	const float enemyHalfH = h * 0.5f;
 
-	// ƒGƒlƒ~[‚ğ•`‰æ
+	// ã‚¨ãƒãƒŸãƒ¼ã‚’æç”»
 	DrawRotaGraph3(static_cast<int>(pos.x),
 		static_cast<int>(pos.y),
 		static_cast<int>(enemyHalfW), static_cast<int>(enemyHalfH),
@@ -92,11 +101,24 @@ void Enemy::Draw() const
 		0.0f, graph,
 		FALSE, FALSE);
 
+	// ãƒ¢ãƒ‡ãƒ«æç”»
+	MV1DrawModel(modelHandle);
+
 #if _DEBUG
-	// ƒfƒoƒbƒO•\¦:“G‚Ì“–‚½‚è”»’è‚Ì•`‰æ
+	// ãƒ‡ãƒãƒƒã‚°è¡¨ç¤º:æ•µã®å½“ãŸã‚Šåˆ¤å®šã®æç”»
+	// 2D
 	DrawCircle(static_cast<int>(pos.x),
 		static_cast<int>(pos.y),
 		static_cast<int>(Enemy::HitSize),
 		Debug::EnemyHitSizeColor, 0);
+
+	////////////////////////////////////////////////
+	// 3D
+	auto pos3D = Graphics::Get3DPosition(pos);
+	SetUseLighting(FALSE);
+	DrawSphere3D(pos3D, Enemy::HitSize * Graphics::ScaleFactor3D, 4,
+		Debug::EnemyHitSizeColor, Debug::EnemyHitSizeColor, FALSE);
+	SetUseLighting(TRUE);
+	////////////////////////////////////////////////
 #endif
 }

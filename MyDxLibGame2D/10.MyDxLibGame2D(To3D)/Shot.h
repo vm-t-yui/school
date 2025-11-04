@@ -1,9 +1,9 @@
-#pragma once
+ï»¿#pragma once
 
-class Enemy; // ƒvƒƒgƒ^ƒCƒvéŒ¾
+class Enemy; // ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€
 
 /// <summary>
-/// ƒVƒ‡ƒbƒgƒNƒ‰ƒX
+/// ã‚·ãƒ§ãƒƒãƒˆã‚¯ãƒ©ã‚¹
 /// </summary>
 class Shot
 {
@@ -16,10 +16,14 @@ public:
 	VECTOR	dir;
 	bool	isAlive;
 
-	constexpr static int	Num = 3;
-	constexpr static float	Speed = 3.0f;
-	constexpr static float	AliveLimitY = -80.0f;
-	constexpr static float	HitSize = 10;		// ƒVƒ‡ƒbƒg‚Ì“–‚½‚è”»’èƒTƒCƒY
+	int modelHandle;
+
+	constexpr static int	Num			= 3;
+	constexpr static float	Speed		= 3.0f;
+	constexpr static float	AliveLimitY	= -80.0f;
+	constexpr static float	HitSize		= 10;		// ã‚·ãƒ§ãƒƒãƒˆã®å½“ãŸã‚Šåˆ¤å®šã‚µã‚¤ã‚º
+
+	inline const static VECTOR	ModelScale	= VGet(0.02f, 0.02f, 0.02f);
 
 	void Initialize();
 	void Update(Enemy& enemy);

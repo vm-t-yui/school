@@ -1,70 +1,81 @@
-#include "DxLib.h"
+﻿#include "DxLib.h"
 #include "Shot.h"
 #include "Enemy.h"
 #include "GlobalConstants.h"
 
 /// <summary>
-/// �V���b�g������
+/// ショット初期化
 /// </summary>
 void Shot::Initialize()
 {
-	// --- �S���̒e�ŋ��ʂ̃f�[�^
-	// �V���b�g�̃O���t�B�b�N���������Ƀ��[�h+�T�C�Y�擾
+	// --- 全部の弾で共通のデータ
+	// ショットのグラフィックをメモリにロード+サイズ取得
 	graph = LoadGraph("data/texture/shot.png");
 
 	GetGraphSize(graph, &w, &h);
 
-	// --- �e�̐��������݂���f�[�^
-	// �e�̈ʒu�A�f�B���N�V�������쐬
-	pos = VGet(0, 0, 0);
-	dir = VGet(0, -1, 0);	// �e�͏�ɏ�ɂ����ړ����Ȃ�
+	//////////////////////////////////////////////////////
+	modelHandle = MV1LoadModel("data/model/obstacleKinematic/obstacleKinematic.pmd");
+	// 3Dモデルが大きすぎるので、スケールで調整
+	MV1SetScale(modelHandle, ModelScale);
+	//////////////////////////////////////////////////////
 
-	// �e����ʏ�ɑ��݂��Ă��邩�ێ�����ϐ��Ɂw���݂��Ă��Ȃ��x���Ӗ�����false�������Ă���
+	// --- 弾の数だけ存在するデータ
+	// 弾の位置、ディレクションを作成
+	pos = VGet(0, 0, 0);
+	dir = VGet(0, -1, 0);	// 弾は常に上にしか移動しない
+
+	// 弾が画面上に存在しているか保持する変数に『存在していない』を意味するfalseを代入しておく
 	isAlive = false;
 }
 
 /// <summary>
-/// �V���b�g�̍X�V
+/// ショットの更新
 /// </summary>
 void Shot::Update(Enemy& enemy)
 {
-	// ���ݏ�Ԃ�ێ����Ă���ϐ��̓��e��true(���݂���)�̏ꍇ�̂ݍs��
+	// 存在状態を保持している変数の内容がtrue(存在する)の場合のみ行う
 	if (isAlive == true)
 	{
-		// �e���ړ�������Bdir�͏�ɏ�����Œ����P�Ȃ̂ŁA���K���͂���Ȃ�
+		// 弾を移動させる。dirは常に上方向で長さ１なので、正規化はいらない
 		VECTOR shotVelocity = VScale(dir, Shot::Speed);
 		pos = VAdd(pos, shotVelocity);
 
-		// ��ʊO�ɏo�Ă��܂����ꍇ�͑��ݏ�Ԃ�ێ����Ă���ϐ���false(���݂��Ȃ�)��������
+		// 画面外に出てしまった場合は存在状態を保持している変数にfalse(存在しない)を代入する
 		if (pos.y < Shot::AliveLimitY)
 		{
 			isAlive = false;
 		}
 
-		// �e���G�ɂԂ����Ă�����A�G�̏�Ԃ��_���[�W��Ԃ�
-		VECTOR	shotToEnemy = VSub(enemy.pos, pos);	// �V���b�g����G�ւ̃x�N�g��
-		float	shotToEnemyLength = VSize(shotToEnemy);			// �V���b�g����G�ւ̋���
+		// 弾が敵にぶつかっていたら、敵の状態をダメージ状態に
+		VECTOR	shotToEnemy = VSub(enemy.pos, pos);	// ショットから敵へのベクトル
+		float	shotToEnemyLength = VSize(shotToEnemy);			// ショットから敵への距離
 		if (shotToEnemyLength < Enemy::HitSize + Shot::HitSize)
 		{
-			// �~�i�܂��͋��j���m�̓����蔻��
-			// �V���b�g����G�ւ̋��������݂��̓����蔻��T�C�Y��菬�������������Ă���
+			// 円（または球）同士の当たり判定
+			// ショットから敵への距離がお互いの当たり判定サイズより小さい＝当たっている
 			enemy.state = Enemy::State::Damage;
 			enemy.damageCount = Enemy::DamageTime;
 
-			// �e������
+			// 弾も消す
 			isAlive = false;
 		}
 	}
+
+	//////////////////////////////////////////////////////
+	// モデルのポジションを設定
+	MV1SetPosition(modelHandle, Graphics::Get3DPosition(pos));
+	//////////////////////////////////////////////////////
 }
 
 /// <summary>
-///  �V���b�g�`��
+///  ショット描画
 /// </summary>
 void Shot::Draw() const
 {
 	if (isAlive == true)
 	{
-		// �e��`�悷��
+		// 弾を描画する
 		const float shotHalfW = w * 0.5f;
 		const float shotHalfH = h * 0.5f;
 		DrawRotaGraph3(static_cast<int>(pos.x),
@@ -74,12 +85,25 @@ void Shot::Draw() const
 			0.0f, graph,
 			FALSE, FALSE);
 
+		//////////////////////////////////////////////////////
+		MV1DrawModel(modelHandle);
+		//////////////////////////////////////////////////////
+
 #if _DEBUG
-		// �f�o�b�O�\��:�e�̓����蔻��̕`��
+		// デバッグ表示:弾の当たり判定の描画
 		DrawCircle(static_cast<int>(pos.x),
 			static_cast<int>(pos.y),
 			static_cast<int>(Shot::HitSize),
 			Debug::ShotHitSizeColor, 0);
+
+		//////////////////////////////////////////////////////
+	// 3D
+		auto pos3D = Graphics::Get3DPosition(pos);
+		SetUseLighting(FALSE);
+		DrawSphere3D(pos3D, Shot::HitSize * Graphics::ScaleFactor3D, 4,
+			Debug::ShotHitSizeColor, Debug::ShotHitSizeColor, FALSE);
+		SetUseLighting(TRUE);
+		//////////////////////////////////////////////////////
 #endif
 	}
 }
