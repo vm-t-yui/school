@@ -17,7 +17,7 @@ void Player::Initialize()
 
 	//////////////////////////////////////////////////////
 	// 3Dモデルのロード
-	modelHandle = MV1LoadModel("data/model/player/Character_Gun.mv1");
+	modelHandle = MV1LoadModel("data/model/player/Player_Model.mv1");
 	// 3Dモデルが大きすぎるので、スケールで調整
 	MV1SetScale(modelHandle, ModelScale);
 	//////////////////////////////////////////////////////
