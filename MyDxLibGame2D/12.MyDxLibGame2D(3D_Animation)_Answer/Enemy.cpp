@@ -158,7 +158,7 @@ void Enemy::Draw() const
 /// <summary>
 /// アニメーションの切り替え
 /// </summary>
-/// <param name="animationIndex"></param>
+/// <param name="animationIndex">アタッチするアニメーションインデックス</param>
 /// <param name="speed">スピード</param>
 /// <param name="isLoop">ループするか</param>
 void Enemy::ChangeAnimation(int animationIndex, float speed, bool isLoop)

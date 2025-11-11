@@ -15,15 +15,18 @@ void Player::Initialize()
 	dir			= VGet(0, 0, 0);	// プレイヤーの向き
 
 	// 3Dモデルとアニメーションのロード
+	// 3Dモデルが入っているだけのモデルファイルと、モデルなしでアニメーションだけが入っているモデルファイルをロードする
 	modelHandle					= MV1LoadModel("data/model/player/Player_Model.mv1");
 	idleAnimationModelHandle	= MV1LoadModel("data/model/player/Player_Idle.mv1");
 	attackAnimationModelHandle	= MV1LoadModel("data/model/player/Player_Attack.mv1");
 
 	// 待機アニメーションをアタッチ
+	// モデルだけのファイルに、アニメーションだけのファイルの内容をアタッチする
 	ChangeAnimation(IdleAnimationIndex, idleAnimationModelHandle, IdleAnimationSpeed, true);
 
 	// 3Dモデルが大きすぎるので、スケールで調整
 	MV1SetScale(modelHandle, ModelScale);
+
 	// 横を向かせる
 	float rotateX = 0.0f * (DX_PI_F / 180.0f);
 	float rotateY = -90.0f * (DX_PI_F / 180.0f);
@@ -166,6 +169,9 @@ void Player::ChangeAnimation(int animationIndex, int sourceAnimationModelHandle,
 	}
 	// アタッチ
 	// 	int MV1AttachAnim( int MHandle, int AnimIndex, int AnimSrcMHandle, int NameCheck ) ;
+	// 今までAnimSrcMHandle=-1として、同じモデルファイルの中にアニメーションがある前提だったが
+	// 別モデルファイルからアニメーションをモデルにアタッチしている
+	// この場合、animationIndexはアニメーションファイル側のインデックス
 	currentAnimAttachIndex	= MV1AttachAnim(modelHandle, animationIndex, sourceAnimationModelHandle, FALSE);
 	currentAnimTotalTime	= MV1GetAttachAnimTotalTime(modelHandle, currentAnimAttachIndex);
 	currentAnimTimeCount	= 0.0f;
