@@ -50,7 +50,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		// 描画
 		DrawPlayer(player, camera);
 		DrawMap(map, camera);
-		
+#if _DEBUG
+		DrawCameraDebug(camera);
+#endif
 		ScreenFlip();	// 画面の更新
 
 		// 雑なfps固定処理

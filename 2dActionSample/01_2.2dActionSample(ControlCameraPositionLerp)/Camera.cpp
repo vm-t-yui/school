@@ -11,7 +11,8 @@ const float CameraScopeRangeTop = 200.0f;
 const float CameraScopeRangeBottom = 320.0f;
 const float CameraLerpRate = 0.1f;
 
-VECTOR VLerp(VECTOR start, VECTOR end, float t)
+// Lerp計算をベクトルに行う
+VECTOR VLerp(const VECTOR& start, const VECTOR& end, float t)
 {
 	VECTOR ret;
 	ret.x = std::lerp(start.x, end.x, t);
@@ -82,3 +83,67 @@ void UpdateCamera(Camera& camera, const Player& player)
 	camera.drawOffset.x = camera.drawOffset.x + (ScreenWidth * 0.5f);
 	camera.drawOffset.y = camera.drawOffset.y + (ScreenHeight * 0.5f);
 }
+
+#if _DEBUG
+// ゲーム上のポジションからスクリーンのポジションに変換する
+VECTOR WorldToScreenPos(const Camera& camera, const VECTOR& worldPos)
+{
+	VECTOR ret = VGet( 
+		worldPos.x + camera.drawOffset.x,
+		worldPos.y + camera.drawOffset.y,
+		0);
+	return ret;
+}
+void DrawCameraDebug(const Camera& camera)
+{
+	/////////////////////////////////////////////////////////////////////////////
+	// カメラ範囲をデバッグで表示
+	/////////////////////////////////////////////////////////////////////////////
+	auto screenCameraPos = WorldToScreenPos(camera, camera.pos);
+	// 上辺
+	DrawLine(static_cast<int>(screenCameraPos.x - CameraScopeRangeW * 0.5f),
+		static_cast<int>(screenCameraPos.y - CameraScopeRangeH * 0.5f),
+		static_cast<int>(screenCameraPos.x + CameraScopeRangeW * 0.5f),
+		static_cast<int>(screenCameraPos.y - CameraScopeRangeH * 0.5f),
+		0xff00ff);
+	// 下辺
+	DrawLine(static_cast<int>(screenCameraPos.x - CameraScopeRangeW * 0.5f),
+		static_cast<int>(screenCameraPos.y + CameraScopeRangeH * 0.5f),
+		static_cast<int>(screenCameraPos.x + CameraScopeRangeW * 0.5f),
+		static_cast<int>(screenCameraPos.y + CameraScopeRangeH * 0.5f),
+		0xff00ff);
+	// 左辺
+	DrawLine(static_cast<int>(screenCameraPos.x - CameraScopeRangeW * 0.5f),
+		static_cast<int>(screenCameraPos.y - CameraScopeRangeH * 0.5f),
+		static_cast<int>(screenCameraPos.x - CameraScopeRangeW * 0.5f),
+		static_cast<int>(screenCameraPos.y + CameraScopeRangeH * 0.5f),
+		0xff00ff);
+	// 右辺
+	DrawLine(static_cast<int>(screenCameraPos.x + CameraScopeRangeW * 0.5f),
+		static_cast<int>(screenCameraPos.y - CameraScopeRangeH * 0.5f),
+		static_cast<int>(screenCameraPos.x + CameraScopeRangeW * 0.5f),
+		static_cast<int>(screenCameraPos.y + CameraScopeRangeH * 0.5f),
+		0xff00ff);
+	// カメラ追わないライン
+	// 上
+	auto screenScopeTopPos = WorldToScreenPos(camera, VGet(0, CameraScopeRangeTop, 0));
+	DrawLine(0,
+		static_cast<int>(screenScopeTopPos.y),
+		ScreenWidth,
+		static_cast<int>(screenScopeTopPos.y),
+		0xaa00ff);
+	// 下
+	auto screenScopeBottomPos = WorldToScreenPos(camera, VGet(0, CameraScopeRangeBottom, 0));
+	DrawLine(0,
+		static_cast<int>(screenScopeBottomPos.y),
+		ScreenWidth,
+		static_cast<int>(screenScopeBottomPos.y),
+		0xaa00ff);
+	// カメラ位置
+	DrawBox(static_cast<int>(screenCameraPos.x - 2),
+		static_cast<int>(screenCameraPos.y - 2), 
+		static_cast<int>(screenCameraPos.x + 2), 
+		static_cast<int>(screenCameraPos.y + 2),
+		0xaa00ff, false);
+}
+#endif

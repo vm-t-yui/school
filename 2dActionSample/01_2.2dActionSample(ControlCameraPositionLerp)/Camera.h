@@ -9,3 +9,7 @@ struct Camera
 
 void InitCamera(Camera& camera);
 void UpdateCamera(Camera& camera, const Player& player);
+
+#if _DEBUG
+void DrawCameraDebug(const Camera& camera);
+#endif
