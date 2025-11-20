@@ -9,8 +9,16 @@ class Shot;		// プロトタイプ宣言
 class Player
 {
 public:
+	// 状態を表す列挙体
+	enum class State : int
+	{
+		Normal,		// 通常
+		Attack		// 攻撃
+	};
+
 	VECTOR	pos;
 	VECTOR	dir;
+	State	state;
 
 	int		modelHandle;					// 3Dモデルのハンドル（graphの3D版）
 	int		idleAnimationModelHandle;		// 待機アニメーションモデルハンドル
@@ -21,6 +29,7 @@ public:
 	float	currentAnimTimeCount;			// 再生中のアニメーションの現在時間
 	float	currentAnimSpeed;				// 再生中のアニメーションスピード
 	bool	currentAnimIsLoop;				// ループするかどうか
+	bool	isAnimEnd;						// アニメーションが完了したかどうか
 
 	// constexpr定数は後ろにstatic(C++17以降)
 	constexpr static float	Speed	= 8.0f;
@@ -29,7 +38,7 @@ public:
 	constexpr static int	IdleAnimationIndex		= 1;	// 待機アニメーションインデックス
 	constexpr static float	IdleAnimationSpeed		= 0.3f;	// 待機アニメーションスピード
 	constexpr static int	AttackAnimationIndex	= 1;	// 攻撃アニメーションインデックス
-	constexpr static float	AttackAnimationSpeed	= 0.8f;	// 攻撃アニメーションスピード
+	constexpr static float	AttackAnimationSpeed	= 4.5f;	// 攻撃アニメーションスピード
 
 	// constは頭にinline,後ろにstatic(C++17以降)
 	inline const static	VECTOR	FirstPos = VGet(100.0f, Graphics::ScreenH * 0.5f, 0);

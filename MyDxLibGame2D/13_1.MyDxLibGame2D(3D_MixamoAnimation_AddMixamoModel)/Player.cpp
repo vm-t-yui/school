@@ -55,6 +55,10 @@ void Player::Update(const Input& input, std::vector<Shot>& shotArray)
 		if (currentAnimTimeCount > currentAnimTotalTime)
 		{
 			currentAnimTimeCount = currentAnimTotalTime;
+			isAnimEnd = true;
+
+			// アニメーションが止まってたらとりあえずIdleのモーションに戻す
+			ChangeAnimation(IdleAnimationIndex, idleAnimationModelHandle, IdleAnimationSpeed, true);
 		}
 	}
 	MV1SetAttachAnimTime(modelHandle, currentAnimAttachIndex, currentAnimTimeCount);
@@ -104,6 +108,9 @@ void Player::Update(const Input& input, std::vector<Shot>& shotArray)
 
 				// 弾が撃たれたので、存在状態を保持する変数にtrueを代入する
 				shotArray[i].isAlive = true;
+
+				// 弾の発射に合わせて攻撃アニメーションを流す
+				ChangeAnimation(AttackAnimationIndex, attackAnimationModelHandle, AttackAnimationSpeed, false);
 
 				break;	// 一発撃ったら抜ける
 			}
@@ -177,4 +184,5 @@ void Player::ChangeAnimation(int animationIndex, int sourceAnimationModelHandle,
 	currentAnimTimeCount	= 0.0f;
 	currentAnimSpeed		= speed;
 	currentAnimIsLoop		= isLoop;
+	isAnimEnd				= false;
 }
