@@ -23,6 +23,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	SetGraphMode(Graphics::ScreenW, Graphics::ScreenH, Graphics::ColorBit);	// 解像度、colorbit設定
 	ChangeWindowMode(TRUE);							// ウインドウモードに
 
+	// ＤＸライブラリ初期化処理
+	if (DxLib_Init() == -1)
+	{
+		return -1;
+	}
+
 	///////////////////////////////////////////////////////////////////
 	// グラフィック設定
 	SetDrawScreen(DX_SCREEN_BACK);	// 裏画面を描画対象にする
@@ -30,13 +36,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	SetWriteZBufferFlag(TRUE);		// Ｚバッファへの書き込みを行う
 	SetUseBackCulling(TRUE);		// バックカリングを行う
 	///////////////////////////////////////////////////////////////////
-
-	// ＤＸライブラリ初期化処理
-	if (DxLib_Init() == -1)
-	{
-		return -1;
-	}
-
+	
 	// 各クラスのインスタンス準備
 	Input		input;
 	Player		player;
@@ -79,13 +79,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		}
 
 		// 各クラスのDraw
-		background.Draw();
 		player.Draw();
 		enemy.Draw();
 		for (auto& item : shotArray)
 		{
 			item.Draw();
 		}
+		background.Draw();
 
 #if _DEBUG
 		camera.DrawDebug();	// デバッグ描画

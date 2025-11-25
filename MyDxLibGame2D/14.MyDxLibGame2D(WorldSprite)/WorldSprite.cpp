@@ -1,6 +1,49 @@
 ﻿#include "DxLib.h"
 #include "WorldSprite.h"
 
+
+
+/// <summary>
+/// 初期化
+/// </summary>
+/// <param name="textureGraph">テクスチャの画像ハンドル</param>
+void WorldSprite::Initialize(int textureGraph)
+{
+    this->textureGraph = textureGraph;
+
+    // NOTE:初期化時に固定しているが、変更したければ自分で関数を追加する必要がある
+    // ４頂点分のuvデータを設定
+    Vertex[0].u = 0.0f;
+    Vertex[0].v = 0.0f;
+    Vertex[1].u = 1.0f;
+    Vertex[1].v = 0.0f;
+    Vertex[2].u = 0.0f;
+    Vertex[2].v = 1.0f;
+    Vertex[3].u = 1.0f;
+    Vertex[3].v = 1.0f;
+
+    // ディフューズ、スペキュラは初期化時に固定
+    for (int i = 0; i < 4; i++)
+    {
+        Vertex[i].dif = GetColorU8(255, 255, 255, 255);
+        Vertex[i].spc = GetColorU8(0, 0, 0, 0);
+        Vertex[i].norm = VGet(0.0f, 0.0f, -1.0f);   // 回転をサポートしないのでノーマルも固定
+
+        // 補助テクスチャをサポートしないのでuv固定
+        Vertex[i].su = 0.0f;
+        Vertex[i].sv = 0.0f;
+    }
+
+    // ２ポリゴン分のインデックスデータをセット
+    Index[0] = 0;
+    Index[1] = 1;
+    Index[2] = 2;
+    Index[3] = 3;
+    Index[4] = 2;
+    Index[5] = 1;
+}
+
+
 /// <summary>
 /// 初期化
 /// </summary>
@@ -53,15 +96,27 @@ void WorldSprite::Initialize(int textureGraph, int chipPixelSize, int spriteNo)
 /// サイズとポジションに応じて４頂点分の頂点位置を調整
 /// </summary>
 /// <param name="pos">ポジション</param>
-/// <param name="chipSize">配置するワールドスプライトのサイズ</param>
+/// <param name="chipSize">配置するワールドスプライトのサイズW</param>
+/// <param name="chipSize">配置するワールドスプライトのサイズH</param>
 void WorldSprite::SetTransform(const VECTOR& pos, float spriteSize)
 {
+    SetTransform(pos, spriteSize, spriteSize);
+}
+void WorldSprite::SetTransform(const VECTOR& pos, float spriteSizeW, float spriteSizeH)
+{
     this->pos = pos;
+
     // ピボット中心で設定
-    Vertex[0].pos = VScale(VGet(-1.0f, 1.0f, 0.0f), spriteSize * 0.5f);
-    Vertex[1].pos = VScale(VGet(1.0f, 1.0f, 0.0f), spriteSize * 0.5f);
-    Vertex[2].pos = VScale(VGet(-1.0, -1.0f, 0.0f), spriteSize * 0.5f);
-    Vertex[3].pos = VScale(VGet(1.0f, -1.0f, 0.0f), spriteSize * 0.5f);
+    const float sizeW = spriteSizeW * 0.5f;
+    const float sizeH = spriteSizeH * 0.5f;
+    Vertex[0].pos = VGet(-sizeW, sizeH, 0.0f);
+    Vertex[1].pos = VGet(sizeW, sizeH, 0.0f);
+    Vertex[2].pos = VGet(-sizeW, -sizeH, 0.0f);
+    Vertex[3].pos = VGet(sizeW, -sizeH, 0.0f);
+    //Vertex[0].pos = VScale(VGet(-1.0f, 1.0f, 0.0f), spriteSizeW * 0.5f);
+    //Vertex[1].pos = VScale(VGet(1.0f, 1.0f, 0.0f), spriteSizeW * 0.5f);
+    //Vertex[2].pos = VScale(VGet(-1.0, -1.0f, 0.0f), spriteSizeW * 0.5f);
+    //Vertex[3].pos = VScale(VGet(1.0f, -1.0f, 0.0f), spriteSizeW * 0.5f);
     for (int i = 0; i < 4; i++)
     {
         Vertex[i].pos = VAdd(Vertex[i].pos, pos);
@@ -74,5 +129,5 @@ void WorldSprite::SetTransform(const VECTOR& pos, float spriteSize)
 void WorldSprite::Draw() const
 {
     // ２ポリゴンの描画
-    DrawPolygonIndexed3D(Vertex, 4, Index, 2, textureGraph, FALSE);
+    DrawPolygonIndexed3D(Vertex, 4, Index, 2, textureGraph, TRUE);
 }

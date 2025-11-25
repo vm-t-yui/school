@@ -24,14 +24,14 @@ void Background::Initialize()
 	//worldSprite.Initialize(spriteGraph, mapChipPixel, 3);	// スプライト番号分ずらすことも
 
 	// 3D表示基準のサイズなので、2D用のピクセルを3D用のスケールに変換
-	const float mapChipSize3D = Graphics::ScaleFactor3D * mapChipPixel;
+	const float mapChipSize3D = Graphics::ScaleFactor3D * mapChipPixel * 100;
 
 	// ポジションも2Dから3D用に修正（必要なら後でZ座標ずらすこともできる）
 	VECTOR spritePos2D = VGet(mapChipPixel * 0.5f, mapChipPixel * 0.5f, 0);
 	VECTOR spritePos3D = Graphics::Get3DPosition(spritePos2D);
 
 	// Zがゼロだとプレイヤーとかぶるのでちょっと後ろにずらす
-	const float mapChipOffsetZ = 0.02f;
+	const float mapChipOffsetZ = 0.05f;
 	spritePos3D = VGet(spritePos3D.x, spritePos3D.y, spritePos3D.z + mapChipOffsetZ);
 
 	worldSprite.SetTransform(spritePos3D, mapChipSize3D);
