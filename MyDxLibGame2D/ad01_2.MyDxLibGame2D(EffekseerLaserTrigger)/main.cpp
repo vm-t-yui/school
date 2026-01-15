@@ -39,7 +39,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	// エフェクトの初期化
 	//------------------------------//
 	{
-		// DirectX9を使用するようにする。(DirectX11も可)
+		// DirectX11を使用するようにする。(DirectX9も可だが機能が制限される)
 		// Effekseerを使用するには必ず設定する。
 		SetUseDirect3DVersion(DX_DIRECT3D_11);
 
@@ -100,8 +100,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 				playingEffectHandle = PlayEffekseer2DEffect(effectResourceHandle);
 
 				// エフェクトの拡大率を設定する。
-				// Effekseerで作成したエフェクトは2D表示の場合、小さすぎることが殆どなので必ず拡大する。
-				SetScalePlayingEffekseer2DEffect(playingEffectHandle, 25.0f, 25.0f, 25.0f);
+				// Effekseerで作成したエフェクトは2D表示の場合、小さすぎることが殆どなので必ず「エクスポート時に」拡大する。
+				// そのうえで多少のサイズ調整はこちらで行う（あまり極端にいじると見た目が破綻する
+				//SetScalePlayingEffekseer2DEffect(playingEffectHandle, 1.2f, 1.2f, 1.2f);
 				effectState = EffectState::Play;
 			}
 			break;
