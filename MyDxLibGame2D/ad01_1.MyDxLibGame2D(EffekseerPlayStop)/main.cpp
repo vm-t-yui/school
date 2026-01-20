@@ -17,6 +17,7 @@ enum class EffectState
 int			playingEffectHandle = -1;	// 再生中のエフェクト
 EffectState	effectState			= EffectState::Stoped;
 VECTOR		effectPos			= VGet(WindowW * 0.5f, WindowH * 0.5f, 0);
+VECTOR		effectDir			= VGet(0, 0, 0);
 
 // WinMain関数
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
@@ -86,6 +87,29 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	{
 		// 画面を初期化(真っ黒にする)
 		ClearDrawScreen();
+
+		// ポジション補正
+		effectDir = VGet(0, 0, 0);
+		if(CheckHitKey(KEY_INPUT_LEFT))
+		{
+			effectDir = VAdd(effectDir, VGet(-1, 0, 0));
+		}
+		else if (CheckHitKey(KEY_INPUT_RIGHT))
+		{
+			effectDir = VAdd(effectDir, VGet(1, 0, 0));
+		}
+		if (CheckHitKey(KEY_INPUT_UP))
+		{
+			effectDir = VAdd(effectDir, VGet(0, -1, 0));
+		}
+		else if (CheckHitKey(KEY_INPUT_DOWN))
+		{
+			effectDir = VAdd(effectDir, VGet(0, 1, 0));
+		}
+		if (VSquareSize(effectDir) > 0)
+		{
+			effectPos = VAdd(effectPos, VScale(effectDir, 3.0f));
+		}
 
 		// 再生、生成停止、完全停止
 		switch (effectState)
