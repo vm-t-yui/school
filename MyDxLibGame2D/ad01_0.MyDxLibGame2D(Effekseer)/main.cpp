@@ -28,7 +28,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	// エフェクトの初期化
 	//------------------------------//
 	{
-		// DirectX9を使用するようにする。(DirectX9も可だが、機能が制限される)
+		// DirectX11を使用するようにする。(DirectX9も可)
 		// Effekseerを使用するには必ず設定する。
 		SetUseDirect3DVersion(DX_DIRECT3D_11);
 
@@ -117,15 +117,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 				// 弾iが画面上にでていない場合はその弾を画面に出す
 				if (shotFlag == false)
 				{
-					int Bw, Bh, Sw, Sh;
+					int Pw, Ph;
 
-					// プレイヤーと弾の画像のサイズを得る
-					GetGraphSize(playerGraph, &Bw, &Bh);
-					GetGraphSize(shotGraph, &Sw, &Sh);
+					// プレイヤー画像のサイズを得る
+					GetGraphSize(playerGraph, &Pw, &Ph);
 
 					// 弾iの位置をセット、位置はプレイヤーの中心にする
-					shotX = (Bw - Sw) / 2 + playerX;
-					shotY = (Bh - Sh) / 2 + playerY;
+					shotX = (Pw) / 2 + playerX;
+					shotY = (Ph) / 2 + playerY;
 
 					// 弾iは現時点を持って存在するので、存在状態を保持する変数に１を代入する
 					shotFlag = true;
@@ -134,7 +133,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 					playingEffectHandle = PlayEffekseer2DEffect(effectResourceHandle);
 
 					// エフェクトの拡大率を設定する。
-					// Effekseerで作成したエフェクトは2D表示の場合、小さすぎることが殆どなので必ず拡大する。
+					// Effekseerで作成したエフェクトは2D表示の場合、小さすぎることが殆どなので必ず「エクスポート時に」拡大する。
+					// そのうえで多少のサイズ調整はこちらで行う（あまり極端にいじると見た目が破綻する
+					//SetScalePlayingEffekseer2DEffect(playingEffectHandle, 1.2f, 1.2f, 1.2f);
+					// サンプルファイルが拡大されていないのでやむを得ず拡大
 					SetScalePlayingEffekseer2DEffect(playingEffectHandle, 25.0f, 25.0f, 25.0f);
 				}
 			}
