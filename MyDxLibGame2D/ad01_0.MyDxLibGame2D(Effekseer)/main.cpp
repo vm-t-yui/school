@@ -28,9 +28,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	// エフェクトの初期化
 	//------------------------------//
 	{
-		// DirectX9を使用するようにする。(DirectX11も可)
+		// DirectX9を使用するようにする。(DirectX9も可だが、機能が制限される)
 		// Effekseerを使用するには必ず設定する。
-		SetUseDirect3DVersion(DX_DIRECT3D_9);
+		SetUseDirect3DVersion(DX_DIRECT3D_11);
 
 		// Effekseerを初期化する。
 		// 引数には画面に表示する最大パーティクル数を設定する。
