@@ -6,7 +6,7 @@
 class VirtualCamera
 {
 	// TODO:中身実装
-	// pos, target
+	// pos, target, fov
 	// priority
 	// IsActive
 	// SetActive
