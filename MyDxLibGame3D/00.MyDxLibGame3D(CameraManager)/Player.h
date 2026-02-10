@@ -38,4 +38,6 @@ private:
 	float	currentAnimSpeed;				// 再生中のアニメーションスピード
 	bool	currentAnimIsLoop;				// ループするかどうか
 	bool	isAnimEnd;						// アニメーションが完了したかどうか
+
+	// TODO: HardLockCameraの１と２
 };

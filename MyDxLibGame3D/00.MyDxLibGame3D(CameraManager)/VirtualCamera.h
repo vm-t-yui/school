@@ -1,10 +1,10 @@
-#pragma once
+ï»¿#pragma once
 
 /// <summary>
-/// ‰¼‘zƒJƒƒ‰Šî’ê
+/// ä»®æƒ³ã‚«ãƒ¡ãƒ©åŸºåº•
 /// </summary>
 class VirtualCamera
 {
-	// TODO:
+	// TODO:ä¸­èº«å®Ÿè£…
 };
 

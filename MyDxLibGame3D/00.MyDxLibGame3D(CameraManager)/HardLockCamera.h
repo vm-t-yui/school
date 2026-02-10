@@ -1,7 +1,7 @@
-#pragma once
+﻿#pragma once
 
 /// <summary>
-/// TODO:���� �Œ�ʒu�ɂ��邾���̃J����
+/// TODO:実装 固定位置にいるだけのカメラ
 /// </summary>
 class HardLockCamera
 {

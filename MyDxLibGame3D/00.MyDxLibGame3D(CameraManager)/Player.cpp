@@ -142,6 +142,8 @@ void Player::Update(const Input& input)
 		ChangeAnimation(AttackAnimationIndex, attackAnimationModelHandle, AttackAnimationSpeed, false);
 	}
 
+	// TODO: 1キーでカメラ１、2キーでカメラ２に切り替え
+
 	// 位置合わせ後にヒットポジションを補正
 	hitCenterPos = VAdd(pos, HitFixPos);
 

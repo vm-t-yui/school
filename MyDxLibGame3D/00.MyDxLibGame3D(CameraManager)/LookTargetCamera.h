@@ -1,7 +1,7 @@
-#pragma once
+ï»¿#pragma once
 
 /// <summary>
-/// TODO:À‘• ƒ^[ƒQƒbƒg‚ğŒ©‘±‚¯‚éƒJƒƒ‰
+/// TODO:å®Ÿè£… ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’è¦‹ç¶šã‘ã‚‹ã‚«ãƒ¡ãƒ©
 /// </summary>
 class LookTargetCamera
 {
