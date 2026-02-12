@@ -5,6 +5,7 @@
 #include "GlobalConstants.h"
 #include "VirtualCamera.h"
 #include "HardLockCamera.h"
+#include "LookTargetCamera.h"
 #include "VirtualCameraManager.h"
 #include "Player.h"
 #include "Input.h"
@@ -31,6 +32,7 @@ namespace
 	// カメラ位置
 	const static VECTOR	CameraPos1		= VGet(10.0f, 10.0f, -20.0f);
 	const static VECTOR	CameraPos2		= VGet(-10.0f, -10.0f, -20.0f);
+	const static VECTOR	CameraPos3		= VGet(0.0f, 0.0f, -10.0f);
 }
 
 /// <summary>
@@ -95,12 +97,14 @@ void Player::Initialize(VirtualCameraManager& virtualCameraManager)
 	MV1SetRotationXYZ(modelHandle, VGet(rotateX, rotateY, rotateZ));
 
 	// カメラ初期化
-	camera1 = std::make_shared<HardLockCamera>(CameraPos1, VGet(0, 0, 0), 60.0f, 1, true);
+	camera1 = std::make_shared<HardLockCamera>(CameraPos1, VGet(0, 0, 0), 60.0f, 3, true);
 	camera2 = std::make_shared<HardLockCamera>(CameraPos2, VGet(0, 0, 0), 60.0f, 2, true);
+	camera3 = std::make_shared<LookTargetCamera>(CameraPos3, VGet(0, 0, 0), 60.0f, 1, true);
 
 	// カメラ登録
 	virtualCameraManager.Register(camera1);
 	virtualCameraManager.Register(camera2);
+	virtualCameraManager.Register(camera3);
 }
 
 /// <summary>
@@ -110,8 +114,10 @@ void Player::Finalize(VirtualCameraManager& virtualCameraManager)
 {
 	virtualCameraManager.Remove(camera1);
 	virtualCameraManager.Remove(camera2);
+	virtualCameraManager.Remove(camera3);
 	camera1 = nullptr;
 	camera2 = nullptr;
+	camera3 = nullptr;
 	isFinalized = true;
 }
 
@@ -188,16 +194,30 @@ void Player::Update(const Input& input)
 	{
 		camera1->SetActive(true);
 		camera2->SetActive(false);
+		camera3->SetActive(false);
 	}
 	else if (CheckHitKey(KEY_INPUT_2) == 1)
 	{
 		camera1->SetActive(false);
 		camera2->SetActive(true);
+		camera3->SetActive(false);
 	}
+	else if (CheckHitKey(KEY_INPUT_3) == 1)
+	{
+		camera1->SetActive(false);
+		camera2->SetActive(false);
+		camera3->SetActive(true);
+	}
+
+	// プレイヤーのポジションをターゲットとして渡す
+	// このように、インスタンスの保持者（カメラマン）は
+	// 自由に設定ができる
+	camera3->UpdateTarget(pos);
 
 	// カメラ更新
 	camera1->Update();
 	camera2->Update();
+	camera3->Update();
 
 	// 位置合わせ後にヒットポジションを補正
 	hitCenterPos = VAdd(pos, HitFixPos);

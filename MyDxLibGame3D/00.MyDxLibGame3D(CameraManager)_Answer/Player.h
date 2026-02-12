@@ -2,6 +2,7 @@
 
 class Input;	// プロトタイプ宣言
 class HardLockCamera;
+class LookTargetCamera;
 
 /// <summary>
 /// プレイヤークラス
@@ -45,4 +46,5 @@ private:
 	// HardLockCameraの１と２
 	std::shared_ptr<HardLockCamera> camera1;
 	std::shared_ptr<HardLockCamera> camera2;
+	std::shared_ptr<LookTargetCamera> camera3;
 };

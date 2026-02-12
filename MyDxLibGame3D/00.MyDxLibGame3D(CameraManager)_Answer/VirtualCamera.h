@@ -19,7 +19,7 @@ public:
 
 	virtual void Update() abstract;
 
-private:
+protected:
 	VECTOR	pos;
 	VECTOR	target;
 	float	fovDegree;

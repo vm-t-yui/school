@@ -47,5 +47,6 @@ void Camera::Update(const VirtualCameraManager& virtualCameraManager)
 	// カメラのターゲットは３Dスクリーンの中心
 	VECTOR pos = virtualCameraManager.GetResultPos();
 	VECTOR target = virtualCameraManager.GetResultTarget();
+
 	SetCameraPositionAndTarget_UpVecY(pos, target);
 }

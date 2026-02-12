@@ -67,7 +67,7 @@ void VirtualCameraManager::Update()
 
 	// 計算に最も優先されるカメラの更新
 	topPriorityCamera = nullptr;
-	int size = virtualCameras.size();
+	int size = static_cast<int>(virtualCameras.size());
 	for (int i = 0; i < size; i++)
 	{
 		if(virtualCameras[i]->IsActive())
