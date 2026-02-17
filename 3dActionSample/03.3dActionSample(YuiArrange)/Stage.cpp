@@ -131,7 +131,7 @@ void Stage::AnalyzeWallAndFloor(MV1_COLL_RESULT_POLY_DIM hitDim, const VECTOR& c
 /// <summary>
 /// 壁ポリゴンとの当たりをチェックし、補正すべき移動ベクトルを返す
 /// </summary>
-VECTOR Stage::CheckHitWithWall(Player& player, const VECTOR& checkPosition)
+VECTOR Stage::CheckHitWithWall(const Player& player, const VECTOR& checkPosition) const
 {
 	VECTOR fixedPos = checkPosition;
 

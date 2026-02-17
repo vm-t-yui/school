@@ -43,7 +43,7 @@ private:
 	void AnalyzeWallAndFloor(MV1_COLL_RESULT_POLY_DIM hitDim, const VECTOR& checkPosition);
 
 	// 壁ポリゴンとの当たりをチェックし、補正すべき移動ベクトルを返す
-	VECTOR CheckHitWithWall(Player& player, const VECTOR& checkPosition);
+	VECTOR CheckHitWithWall(const Player& player, const VECTOR& checkPosition) const;
 
 	// 床ポリゴンとの当たりをチェックし、補正すべき移動ベクトルを返す
 	VECTOR CheckHitWithFloor(Player& player, const VECTOR& checkPosition);
