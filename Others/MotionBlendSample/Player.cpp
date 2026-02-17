@@ -5,6 +5,12 @@
 #include "YuiLib.h"
 #include "Player.h"
 
+namespace
+{
+    // アニメーションブレンド時に、毎フレーム進めるブレンド率スピード
+    static const float AnimationChangeInterpolateSpeed = 0.1f;
+}
+
 /// <summary>
 /// コンストラクタ
 /// </summary>
@@ -14,6 +20,8 @@ Player::Player()
     , currentAnimTotalTime      (0)
     , currentAnimAttachIndex    (-1)
     , currentAnimTime           (0)
+    , prevAnimAttachIndex       (-1)
+    , animationChangeRate       (1.0f)
     , currentAnim               (AnimKind::Num)
 {
     // ３Ｄモデルの読み込み
@@ -55,8 +63,26 @@ void Player::Update()
         currentAnimTime = 0.0f;
     }
 
-    // 再生時間をセットする
+    // 旧アニメーションの切り替えレートが1以下の場合、1になるまで緩やかに増やし続ける
+    // 1になったら旧アニメーションをデタッチする
+    if(prevAnimAttachIndex >= 0)
+    {
+        animationChangeRate += AnimationChangeInterpolateSpeed;
+        if (animationChangeRate > 1.0f)
+        {
+            MV1DetachAnim(modelHandle, prevAnimAttachIndex);
+            prevAnimAttachIndex = -1;
+            animationChangeRate = 1.0f;
+        }
+        // 旧アニメーションの再生時間をセットする
+        // 旧アニメの最終ポーズフレームはとまったまま
+        // 新アニメと逆のブレンド率
+        MV1SetAttachAnimBlendRate(modelHandle, prevAnimAttachIndex, 1.0f - animationChangeRate);
+    }
+
+    // 現在のアニメーションの再生時間をセットする
     MV1SetAttachAnimTime(modelHandle, currentAnimAttachIndex, currentAnimTime);
+    MV1SetAttachAnimBlendRate(modelHandle, currentAnimAttachIndex, animationChangeRate);
 }
 
 /// <summary>
@@ -75,15 +101,21 @@ void Player::SetAnimation(AnimKind kind, int animIndex)
 {
     currentAnim = kind;
 
-    // TODO: ブレンド
-
-    // 再生しているものがあればでタッチする
+    // 再生しているものがあれば、デタッチするのではなくブレンド開始する
     if (currentAnimAttachIndex >= 0)
     {
-         MV1DetachAnim(modelHandle, currentAnimAttachIndex);
+        // 旧アニメーションからの補完がまだある状態で呼ばれたら、旧アニメはデタッチする
+        if (animationChangeRate < 1.0f)
+        {
+            // デタッチしたらアニメーションが止まってしまう
+                // ※あまり良くはないが、どこかで切らないといけない
+            MV1DetachAnim(modelHandle, prevAnimAttachIndex);
+        }
+        animationChangeRate = 0.0f;
     }
     
     // アニメーションをアタッチする
+    prevAnimAttachIndex = currentAnimAttachIndex;
     currentAnimAttachIndex = MV1AttachAnim(modelHandle, animIndex, animHandle[static_cast<int>(kind)], TRUE);
 
     // アタッチしたアニメーションの総再生時間を取得する

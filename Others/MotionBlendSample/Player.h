@@ -19,10 +19,15 @@ public:
 
 private:
 	void SetAnimation(AnimKind kind, int animIndex);
-	int modelHandle;
-	int animHandle[(int)AnimKind::Num];
-	float currentAnimTotalTime;
-	int currentAnimAttachIndex;
-	float currentAnimTime;
-	AnimKind currentAnim;
+
+	int		modelHandle;
+	int		animHandle[(int)AnimKind::Num];
+
+	float		currentAnimTotalTime;
+	int			currentAnimAttachIndex;
+	float		currentAnimTime;
+	int			prevAnimAttachIndex;
+	float		animationChangeRate;	// アニメーションの切り替えレート
+
+	AnimKind	currentAnim;
 };
