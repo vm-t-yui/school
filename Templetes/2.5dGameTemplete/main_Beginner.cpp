@@ -22,6 +22,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     static const int ScreenWidth  = 1600;
     static const int ScreenHeight = 900;
 
+    // LogicalSizeは2Dゲーム上の大きさ、ModelScaleは3Dモデルの見た目の大きさ
     static const float PlayerSpeed             = 3.0f;
     static const int   PlayerLife              = 10;
     static const float PlayerLogicalWidth      = 50.0f;
@@ -56,6 +57,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     static const float EnemyShotLogicalHeight  = 24.0f;
     static const float EnemyShotModelScale     = 0.002f;
 
+    // ダメージ表示時間と背景スクロールはフレーム単位で調整する
     static const int   DamageDisplayFrames   = 5;
     static const float BackgroundScrollSpeed = 2.0f;
     static const int   BackgroundCount       = 3;
@@ -113,6 +115,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     // -------------------------------------------------------------------------
     // Shotの変数
     // -------------------------------------------------------------------------
+    // 同じ番号のX / Y / IsVisibleを組み合わせて、1発分の弾として扱う
     int   playerShotModelHandle                 = -1;
     float playerShotX[PlayerShotCount]          = {};
     float playerShotY[PlayerShotCount]          = {};
@@ -120,6 +123,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     float playerShotWidth                       = 0.0f;
     float playerShotHeight                      = 0.0f;
 
+    // Enemy ShotもPlayer Shotと同じ考え方で管理する
     int   enemyShotModelHandle                  = -1;
     float enemyShotX[EnemyShotCount]            = {};
     float enemyShotY[EnemyShotCount]            = {};
@@ -192,6 +196,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     // -------------------------------------------------------------------------
     // Enemyモデルの準備
     // -------------------------------------------------------------------------
+    // EnemyもPlayerと同じ考え方で論理サイズと見た目を設定する
     enemyModelHandle = LoadModel2D("data/model/Enemy/Enemy.mv1");
     SetModelSize2D(enemyModelHandle, EnemyLogicalWidth, EnemyLogicalHeight);
     SetModelScale2D(enemyModelHandle, EnemyModelScale);
@@ -210,6 +215,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     // -------------------------------------------------------------------------
     // Shotモデルの準備
     // -------------------------------------------------------------------------
+    // 同じモデルを複数の弾で使い回すため、モデル自体は1回だけ読み込む
     playerShotModelHandle = LoadModel2D("data/model/Shot/SpikyBall.mv1");
     SetModelSize2D(playerShotModelHandle, PlayerShotLogicalWidth, PlayerShotLogicalHeight);
     SetModelScale2D(playerShotModelHandle, PlayerShotModelScale);
@@ -229,6 +235,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     // 幅は使用しないが、画像サイズを取得するために変数を用意する
     int backgroundWidth       = 0;
     int backgroundImageHeight = 0;
+    // 背景を途切れなく並べ直すため、画像1枚分の高さを取得する
     GetGraphSize(backgroundGraphHandle, &backgroundWidth, &backgroundImageHeight);
     backgroundHeight = static_cast<float>(backgroundImageHeight);
 
@@ -241,6 +248,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     // -------------------------------------------------------------------------
     // ゲームデータの初期化
     // -------------------------------------------------------------------------
+    // Playerは画面中央の下寄りから開始する
     playerX                   = ScreenWidth / 2.0f;
     playerY                   = ScreenHeight - PlayerStartBottomOffset;
     playerLife                = PlayerLife;
@@ -248,6 +256,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     playerDamageCounter       = 0;
     playerShotIntervalCounter = 0;
 
+    // 座標は中心基準なので、幅の半分だけ右へ置くとEnemyの左端が画面端に揃う
     enemyX                   = enemyWidth / 2.0f;
     enemyY                   = EnemyStartTopOffset + enemyHeight / 2.0f;
     enemyLife                = EnemyLife;
@@ -270,6 +279,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         enemyShotIsVisible[i] = false;
     }
 
+    // 背景を上下に並べ、スクロールしても隙間が出ないようにする
     for (int i = 0; i < BackgroundCount; i++)
     {
         backgroundY[i] =
@@ -295,6 +305,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         // ---------------------------------------------------------------------
         // Playerの更新
         // ---------------------------------------------------------------------
+        // ゲーム中だけPlayer / Enemy / Shot / Backgroundを更新する
         if (ruleState == GameState::Game)
         {
             if (CheckHitKey(KEY_INPUT_LEFT) == 1)
@@ -309,6 +320,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
             if (CheckHitKey(KEY_INPUT_SPACE) == 1 && playerShotIntervalCounter == 0)
             {
+                // 画面に出ていない弾を探し、その弾を再利用する
                 for (int i = 0; i < PlayerShotCount; i++)
                 {
                     if (!playerShotIsVisible[i])
@@ -321,6 +333,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                     }
                 }
 
+                // 連続発射にならないよう、次に撃てるまでの待ち時間を入れる
                 playerShotIntervalCounter = PlayerShotIntervalFrames;
             }
 
@@ -339,6 +352,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 playerX = ScreenWidth - playerWidth / 2.0f;
             }
 
+            // ダメージ表示は一定フレーム経過したら元に戻す
             if (playerIsDamaged)
             {
                 ++playerDamageCounter;
@@ -361,6 +375,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 enemyX -= EnemySpeed;
             }
 
+            // 画面端に到達したら、はみ出さない位置へ戻して移動方向を反転する
             if (enemyX > ScreenWidth - enemyWidth / 2.0f)
             {
                 enemyX             = ScreenWidth - enemyWidth / 2.0f;
@@ -374,6 +389,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
             if (enemyShotIntervalCounter == 0)
             {
+                // Player Shotと同じく、使われていない弾を再利用する
                 for (int i = 0; i < EnemyShotCount; i++)
                 {
                     if (!enemyShotIsVisible[i])
@@ -393,6 +409,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 --enemyShotIntervalCounter;
             }
 
+            // ダメージ表示は一定フレーム経過したら元に戻す
             if (enemyIsDamaged)
             {
                 ++enemyDamageCounter;
@@ -412,6 +429,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 {
                     playerShotY[i] -= PlayerShotSpeed;
 
+                    // 弾全体が画面外へ出たら、次に再利用できる状態へ戻す
                     if (playerShotY[i] < -playerShotHeight / 2.0f)
                     {
                         playerShotIsVisible[i] = false;
@@ -430,6 +448,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                         const float enemyTop    = enemyY - enemyHeight / 2.0f;
                         const float enemyBottom = enemyY + enemyHeight / 2.0f;
 
+                        // 横方向と縦方向の両方で範囲が重なっていれば当たっている
                         const bool isHit =
                             shotLeft < enemyRight &&
                             shotRight > enemyLeft &&
@@ -460,6 +479,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 {
                     enemyShotY[i] += EnemyShotSpeed;
 
+                    // 弾全体が画面外へ出たら、次に再利用できる状態へ戻す
                     if (enemyShotY[i] > ScreenHeight + enemyShotHeight / 2.0f)
                     {
                         enemyShotIsVisible[i] = false;
@@ -513,6 +533,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         // Ruleの更新
         // ---------------------------------------------------------------------
         const bool isSpaceKeyPressed = CheckHitKey(KEY_INPUT_SPACE) == 1;
+
+        // 前フレームでは押されていて、今は押されていなければ「離した瞬間」
         ruleIsSpaceKeyReleased = ruleWasSpaceKeyPressed && !isSpaceKeyPressed;
         ruleWasSpaceKeyPressed = isSpaceKeyPressed;
 
@@ -530,7 +552,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 ruleState              = GameState::Game;
                 ruleGameStartTime      = GetNowCount();
 
-                // ゲーム開始時の状態を初期化する
+                // タイトルからゲームを開始するたびに、ゲーム中の状態を最初へ戻す
                 playerX                   = ScreenWidth / 2.0f;
                 playerY                   = ScreenHeight - PlayerStartBottomOffset;
                 playerLife                = PlayerLife;
@@ -572,6 +594,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         case GameState::Game:
             if (enemyLife <= 0)
             {
+                // 画面が一瞬で切り替わる違和感を減らすため、少しだけ待つ
+                // 本来はフェードイン・フェードアウトなどの演出を入れる方が望ましい
                 WaitTimer(StateChangeWaitMilliseconds);
 
                 ruleWasSpaceKeyPressed = false;
@@ -606,6 +630,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         // ---------------------------------------------------------------------
         if (ruleState == GameState::Game)
         {
+            // 奥にあるものから順に描く
             // Background
             for (int i = 0; i < BackgroundCount; i++)
             {
@@ -639,6 +664,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             // Enemy
             if (enemyLife > 0)
             {
+                // ダメージ中だけ別モデルへ切り替える
                 if (enemyIsDamaged)
                 {
                     DrawModel2D(enemyX, enemyY, enemyDamageModelHandle);
@@ -672,6 +698,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         char timeNumberText[256];
         char lifeText[256];
 
+        // 中央揃えする文字は、文字幅の半分を画面中央から引いて描画位置を決める
         switch (ruleState)
         {
         case GameState::Title:
@@ -705,6 +732,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 TimeText,
                 GetColor(255, 0, 0));
 
+            // 開始からの経過時間を制限時間から引いて残り時間を求める
             const int remainingSeconds =
                 TimeLimitSeconds - (GetNowCount() - ruleGameStartTime) / 1000;
 
@@ -749,6 +777,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 uiHpBackgroundGraphHandle,
                 TRUE);
 
+            // 現在HPの割合に合わせて、前景のHPバーだけ横幅を変える
             DrawExtendGraph(
                 hpGraphStartX,
                 enemyHpTextPositionY,
@@ -826,7 +855,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         }
     }
 
-    // 初学者用テンプレートでは個別のリソース解放を扱わずDxLib_Endに任せる
     DxLib_End();
     return 0;
 }
