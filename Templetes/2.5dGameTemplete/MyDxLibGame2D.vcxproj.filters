@@ -9,57 +9,51 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="ソース ファイル\System">
+      <UniqueIdentifier>{0c3bf6cf-d31b-4fe9-918a-dabea6260c9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\BeginnerSupport">
+      <UniqueIdentifier>{9d232e14-6a5e-4d50-bb60-2e6a556408ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="System\Animation.cpp">
+      <Filter>ソース ファイル\System</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="System\Camera.cpp">
+      <Filter>ソース ファイル\System</Filter>
     </ClCompile>
-    <ClCompile Include="Shot.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="System\Model.cpp">
+      <Filter>ソース ファイル\System</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="System\WorldSprite.cpp">
+      <Filter>ソース ファイル\System</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Background.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="WorldSprite.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="BeginnerSupport\Beginner2D3D.cpp">
+      <Filter>ソース ファイル\BeginnerSupport</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Input.h">
-      <Filter>ソース ファイル</Filter>
+    <ClInclude Include="System\Animation.h">
+      <Filter>ソース ファイル\System</Filter>
     </ClInclude>
-    <ClInclude Include="GlobalConstants.h">
-      <Filter>ソース ファイル</Filter>
+    <ClInclude Include="System\Camera.h">
+      <Filter>ソース ファイル\System</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>ソース ファイル</Filter>
+    <ClInclude Include="System\Model.h">
+      <Filter>ソース ファイル\System</Filter>
     </ClInclude>
-    <ClInclude Include="Shot.h">
-      <Filter>ソース ファイル</Filter>
+    <ClInclude Include="System\SystemConfig.h">
+      <Filter>ソース ファイル\System</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>ソース ファイル</Filter>
+    <ClInclude Include="System\WorldSprite.h">
+      <Filter>ソース ファイル\System</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Background.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="WorldSprite.h">
-      <Filter>ソース ファイル</Filter>
+    <ClInclude Include="BeginnerSupport\Beginner2D3D.h">
+      <Filter>ソース ファイル\BeginnerSupport</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

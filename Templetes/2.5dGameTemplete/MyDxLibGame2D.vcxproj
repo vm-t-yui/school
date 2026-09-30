@@ -35,7 +35,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -169,24 +169,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Background.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="BeginnerSupport\Beginner2D3D.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Shot.cpp" />
-    <ClCompile Include="WorldSprite.cpp" />
+    <ClCompile Include="System\Animation.cpp" />
+    <ClCompile Include="System\Camera.cpp" />
+    <ClCompile Include="System\Model.cpp" />
+    <ClCompile Include="System\WorldSprite.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Background.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="GlobalConstants.h" />
-    <ClInclude Include="Input.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="Shot.h" />
-    <ClInclude Include="WorldSprite.h" />
+    <ClInclude Include="BeginnerSupport\Beginner2D3D.h" />
+    <ClInclude Include="System\Animation.h" />
+    <ClInclude Include="System\Camera.h" />
+    <ClInclude Include="System\Model.h" />
+    <ClInclude Include="System\SystemConfig.h" />
+    <ClInclude Include="System\WorldSprite.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

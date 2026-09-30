@@ -1,0 +1,45 @@
+﻿# 2026 Takeru Yui All rights reserved.
+
+# Visual Studio user-specific files
+.vs/
+*.user
+*.userosscache
+*.suo
+*.VC.db
+*.VC.VC.opendb
+
+# Build output
+Debug/
+Release/
+x64/
+x86/
+Win32/
+build/
+out/
+
+# Intermediate files
+ipch/
+*.obj
+*.pch
+*.pdb
+*.idb
+*.ilk
+*.tlog
+*.lastbuildstate
+*.log
+
+# Generated binaries
+*.exe
+*.dll
+*.lib
+*.exp
+
+# Editor temporary files
+.vscode/
+*.tmp
+*.temp
+*~
+
+# Windows system files
+Thumbs.db
+Desktop.ini
