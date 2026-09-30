@@ -17,9 +17,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="System\Animation.cpp">
       <Filter>ソース ファイル\System</Filter>
     </ClCompile>
@@ -34,6 +31,9 @@
     </ClCompile>
     <ClCompile Include="BeginnerSupport\Beginner2D3D.cpp">
       <Filter>ソース ファイル\BeginnerSupport</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

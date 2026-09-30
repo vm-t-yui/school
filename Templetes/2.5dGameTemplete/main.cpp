@@ -14,18 +14,17 @@
 // -----------------------------------------------------------------------------
 // 定数
 // -----------------------------------------------------------------------------
-static const int       ScreenWidth          = 1600;
-static const int       ScreenHeight         = 900;
-static const int       ScreenColorBit       = 32;
-static const long long OneFrameMicroseconds = 16667;
+static const int ScreenWidth  = 1600;
+static const int ScreenHeight = 900;
 
-static const float PlayerSpeed         = 3.0f;
-static const int   PlayerLife          = 10;
-static const float PlayerLogicalWidth  = 50.0f;
-static const float PlayerLogicalHeight = 50.0f;
-static const float PlayerModelScale    = 0.005f;
-static const float PlayerModelOffsetX  = 0.0f;
-static const float PlayerModelOffsetY  = 30.0f;
+static const float PlayerSpeed             = 3.0f;
+static const int   PlayerLife              = 10;
+static const float PlayerLogicalWidth      = 50.0f;
+static const float PlayerLogicalHeight     = 50.0f;
+static const float PlayerModelScale        = 0.005f;
+static const float PlayerModelOffsetX      = 0.0f;
+static const float PlayerModelOffsetY      = 30.0f;
+static const float PlayerStartBottomOffset = 100.0f;
 
 static const int   PlayerShotCount          = 3;
 static const int   PlayerShotPower          = 1;
@@ -35,13 +34,14 @@ static const float PlayerShotLogicalWidth   = 24.0f;
 static const float PlayerShotLogicalHeight  = 24.0f;
 static const float PlayerShotModelScale     = 0.002f;
 
-static const float EnemySpeed         = 3.0f;
-static const int   EnemyLife          = 10;
-static const float EnemyLogicalWidth  = 50.0f;
-static const float EnemyLogicalHeight = 50.0f;
-static const float EnemyModelScale    = 0.003f;
-static const float EnemyModelOffsetX  = 0.0f;
-static const float EnemyModelOffsetY  = 22.0f;
+static const float EnemySpeed          = 3.0f;
+static const int   EnemyLife           = 10;
+static const float EnemyLogicalWidth   = 50.0f;
+static const float EnemyLogicalHeight  = 50.0f;
+static const float EnemyModelScale     = 0.003f;
+static const float EnemyModelOffsetX   = 0.0f;
+static const float EnemyModelOffsetY   = 22.0f;
+static const float EnemyStartTopOffset = 50.0f;
 
 static const int   EnemyShotCount          = 3;
 static const int   EnemyShotPower          = 1;
@@ -59,29 +59,12 @@ static const int TimeLimitSeconds            = 30;
 static const int StateChangeWaitMilliseconds = 500;
 
 // UIに使う文字列
-static const char* const TitleText       = "シューティング";
-static const char* const GameOverText    = "ゲームオーバー";
-static const char* const GameClearText   = "ゲームクリア！";
-static const char* const StartButtonText = "スペースキーでスタート";
-static const char* const ReturnTitleText = "スペースキーでタイトルへ";
-static const char* const TimeText        = "残り：";
-
-// UI用の位置とサイズ
-static const int TitleTextOffsetY     = -100;
-static const int PressTextOffsetY     = 100;
-static const int TimeTextOffsetX      = -100;
-static const int TimeTextPositionY    = 25;
-static const int TitleFontSize        = 64;
-static const int PressTextFontSize    = 24;
-static const int TimeTextFontSize     = 24;
-static const int TimeNumberFontSize   = 40;
-static const int EnemyHpTextFontSize  = 24;
-static const int EnemyHpTextPositionY = 2;
-static const int EnemyHpTextPositionX = 10;
-static const int EnemyHpLeftOffsetX   = 80;
-static const int EnemyHpRightOffsetX  = 30;
-static const int EnemyHpHeight        = 15;
-static const int PlayerHpOffsetY      = 5;
+static const char TitleText[]       = "シューティング";
+static const char GameOverText[]    = "ゲームオーバー";
+static const char GameClearText[]   = "ゲームクリア！";
+static const char StartButtonText[] = "スペースキーでスタート";
+static const char ReturnTitleText[] = "スペースキーでタイトルへ";
+static const char TimeText[]        = "残り：";
 
 // -----------------------------------------------------------------------------
 // ゲームデータ
@@ -131,9 +114,7 @@ class Background
 {
 public:
     int   graphHandle = -1;
-    float x           = 0.0f;
     float y           = 0.0f;
-    float width       = 0.0f;
     float height      = 0.0f;
 };
 
@@ -174,6 +155,7 @@ int        hpBackgroundGraphHandle = -1;
 /// </summary>
 void InitializePlayer()
 {
+    // モデルの読み込みと表示設定は最初の1回だけ行う
     if (player.modelHandle < 0)
     {
         player.modelHandle = LoadModel2D("data/model/Player/Player_Model.mv1");
@@ -194,10 +176,11 @@ void InitializePlayer()
         SetModelRotation2D(player.modelHandle, 0.0f, 0.0f, 0.0f);
     }
 
+    // ゲーム開始時の状態は毎回初期化する
     GetModelSize2D(player.modelHandle, &player.width, &player.height);
 
     player.x                   = ScreenWidth / 2.0f;
-    player.y                   = ScreenHeight - 100.0f;
+    player.y                   = ScreenHeight - PlayerStartBottomOffset;
     player.life                = PlayerLife;
     player.isDamaged           = false;
     player.damageCounter       = 0;
@@ -250,14 +233,6 @@ void UpdatePlayer()
     {
         player.x = ScreenWidth - player.width / 2.0f;
     }
-    if (player.y < player.height / 2.0f)
-    {
-        player.y = player.height / 2.0f;
-    }
-    if (player.y > ScreenHeight - player.height / 2.0f)
-    {
-        player.y = ScreenHeight - player.height / 2.0f;
-    }
 
     if (player.isDamaged)
     {
@@ -290,6 +265,7 @@ void DrawPlayer()
 /// </summary>
 void InitializeEnemy()
 {
+    // モデルの読み込みと表示設定は最初の1回だけ行う
     if (enemy.modelHandle < 0)
     {
         enemy.modelHandle = LoadModel2D("data/model/Enemy/Enemy.mv1");
@@ -316,10 +292,11 @@ void InitializeEnemy()
         SetModelRotation2D(enemy.damageModelHandle, 0.0f, 0.0f, 0.0f);
     }
 
+    // ゲーム開始時の状態は毎回初期化する
     GetModelSize2D(enemy.modelHandle, &enemy.width, &enemy.height);
 
     enemy.x                   = enemy.width / 2.0f;
-    enemy.y                   = 50.0f + enemy.height / 2.0f;
+    enemy.y                   = EnemyStartTopOffset + enemy.height / 2.0f;
     enemy.life                = EnemyLife;
     enemy.isDamaged           = false;
     enemy.damageCounter       = 0;
@@ -412,6 +389,7 @@ void DrawEnemy()
 /// </summary>
 void InitializeShots()
 {
+    // モデルの読み込みと表示設定は最初の1回だけ行う
     int playerShotModelHandle = playerShots[0].modelHandle;
     if (playerShotModelHandle < 0)
     {
@@ -576,6 +554,7 @@ void DrawShots()
 /// </summary>
 void InitializeBackground()
 {
+    // 背景画像の読み込みは最初の1回だけ行う
     if (backgrounds[0].graphHandle < 0)
     {
         const int backgroundGraphHandle = LoadGraph("data/texture/FancyBG_back.png");
@@ -587,7 +566,6 @@ void InitializeBackground()
         for (int i = 0; i < BackgroundCount; i++)
         {
             backgrounds[i].graphHandle = backgroundGraphHandle;
-            backgrounds[i].width       = static_cast<float>(backgroundWidth);
             backgrounds[i].height      = static_cast<float>(backgroundHeight);
         }
     }
@@ -595,8 +573,9 @@ void InitializeBackground()
     // 1枚を画面中央、残りを上下に並べて途切れないスクロールにする
     for (int i = 0; i < BackgroundCount; i++)
     {
-        backgrounds[i].x = ScreenWidth / 2.0f;
-        backgrounds[i].y = ScreenHeight / 2.0f + (i - 1) * backgrounds[i].height;
+        backgrounds[i].y =
+            ScreenHeight / 2.0f +
+            (i - BackgroundCount / 2) * backgrounds[i].height;
     }
 }
 
@@ -624,7 +603,7 @@ void DrawBackground()
 {
     for (int i = 0; i < BackgroundCount; i++)
     {
-        DrawGraph3D(backgrounds[i].x, backgrounds[i].y, backgrounds[i].graphHandle);
+        DrawGraph3D(ScreenWidth / 2.0f, backgrounds[i].y, backgrounds[i].graphHandle);
     }
 }
 
@@ -653,111 +632,127 @@ void InitializeUI()
 /// </summary>
 void DrawUI()
 {
+    const int titleTextOffsetY     = -100;
+    const int pressTextOffsetY     = 100;
+    const int timeTextOffsetX      = -100;
+    const int timeTextPositionY    = 25;
+    const int titleFontSize        = 64;
+    const int pressTextFontSize    = 24;
+    const int timeTextFontSize     = 24;
+    const int timeNumberFontSize   = 40;
+    const int enemyHpTextFontSize  = 24;
+    const int enemyHpTextPositionY = 2;
+    const int enemyHpTextPositionX = 10;
+    const int enemyHpLeftOffsetX   = 80;
+    const int enemyHpRightOffsetX  = 30;
+    const int enemyHpHeight        = 15;
+    const int playerHpOffsetY      = 5;
+
     char timeNumberText[256];
     char lifeText[256];
 
     switch (rule.state)
     {
     case GameState::Title:
-        SetFontSize(TitleFontSize);
+        SetFontSize(titleFontSize);
         DrawString(
             ScreenWidth / 2 - GetFullStringWidth(TitleText) / 2,
-            ScreenHeight / 2 + TitleTextOffsetY,
+            ScreenHeight / 2 + titleTextOffsetY,
             TitleText,
             GetColor(255, 255, 255));
 
-        SetFontSize(PressTextFontSize);
+        SetFontSize(pressTextFontSize);
         DrawString(
             ScreenWidth / 2 - GetFullStringWidth(StartButtonText) / 2,
-            ScreenHeight / 2 + PressTextOffsetY,
+            ScreenHeight / 2 + pressTextOffsetY,
             StartButtonText,
             GetColor(255, 255, 255));
         break;
 
     case GameState::Game:
     {
-        SetFontSize(TimeTextFontSize);
+        SetFontSize(timeTextFontSize);
         DrawString(
-            ScreenWidth / 2 + TimeTextOffsetX,
-            TimeTextPositionY,
+            ScreenWidth / 2 + timeTextOffsetX,
+            timeTextPositionY,
             TimeText,
             GetColor(255, 0, 0));
 
         const int remainingSeconds = TimeLimitSeconds - (GetNowCount() - rule.gameStartTime) / 1000;
         sprintf_s(timeNumberText, "%d", remainingSeconds);
 
-        SetFontSize(TimeNumberFontSize);
+        SetFontSize(timeNumberFontSize);
         DrawString(
             ScreenWidth / 2 - GetFullStringWidth(timeNumberText) / 2,
-            TimeTextPositionY,
+            timeTextPositionY,
             timeNumberText,
             GetColor(255, 0, 0));
 
         sprintf_s(lifeText, "HP:%d", player.life);
-        SetFontSize(TimeTextFontSize);
+        SetFontSize(timeTextFontSize);
         DrawString(
             static_cast<int>(player.x) - GetFullStringWidth(lifeText) / 2,
-            static_cast<int>(player.y + player.height / 2.0f) + PlayerHpOffsetY,
+            static_cast<int>(player.y + player.height / 2.0f) + playerHpOffsetY,
             lifeText,
             GetColor(255, 0, 0));
 
-        SetFontSize(EnemyHpTextFontSize);
+        SetFontSize(enemyHpTextFontSize);
         DrawString(
-            EnemyHpTextPositionX,
-            EnemyHpTextPositionY,
+            enemyHpTextPositionX,
+            enemyHpTextPositionY,
             "Enemy",
             GetColor(255, 0, 0));
 
-        const int hpGraphStartX = EnemyHpTextPositionX + EnemyHpLeftOffsetX;
+        const int hpGraphStartX = enemyHpTextPositionX + enemyHpLeftOffsetX;
 
         DrawExtendGraph(
             hpGraphStartX,
-            EnemyHpTextPositionY,
-            ScreenWidth - EnemyHpRightOffsetX,
-            EnemyHpTextPositionY + EnemyHpHeight,
+            enemyHpTextPositionY,
+            ScreenWidth - enemyHpRightOffsetX,
+            enemyHpTextPositionY + enemyHpHeight,
             hpBackgroundGraphHandle,
             TRUE);
 
         DrawExtendGraph(
             hpGraphStartX,
-            EnemyHpTextPositionY,
+            enemyHpTextPositionY,
             hpGraphStartX + static_cast<int>(
-                (ScreenWidth - hpGraphStartX - EnemyHpRightOffsetX) *
+                (ScreenWidth - hpGraphStartX - enemyHpRightOffsetX) *
                 (static_cast<float>(enemy.life) / EnemyLife)),
-            EnemyHpTextPositionY + EnemyHpHeight,
+            enemyHpTextPositionY + enemyHpHeight,
             hpBarGraphHandle,
             TRUE);
         break;
     }
 
     case GameState::Clear:
-        SetFontSize(TitleFontSize);
+        SetFontSize(titleFontSize);
         DrawString(
             ScreenWidth / 2 - GetFullStringWidth(GameClearText) / 2,
-            ScreenHeight / 2 + TitleTextOffsetY,
+            ScreenHeight / 2 + titleTextOffsetY,
             GameClearText,
             GetColor(255, 255, 0));
 
-        SetFontSize(PressTextFontSize);
+        SetFontSize(pressTextFontSize);
         DrawString(
             ScreenWidth / 2 - GetFullStringWidth(ReturnTitleText) / 2,
-            ScreenHeight / 2 + PressTextOffsetY,
+            ScreenHeight / 2 + pressTextOffsetY,
             ReturnTitleText,
             GetColor(255, 255, 255));
         break;
 
     case GameState::GameOver:
-        SetFontSize(TitleFontSize);
+        SetFontSize(titleFontSize);
         DrawString(
             ScreenWidth / 2 - GetFullStringWidth(GameOverText) / 2,
-            ScreenHeight / 2 + TitleTextOffsetY,
+            ScreenHeight / 2 + titleTextOffsetY,
             GameOverText,
             GetColor(255, 0, 0));
 
-        SetFontSize(PressTextFontSize);
+        SetFontSize(pressTextFontSize);
         DrawString(
             ScreenWidth / 2 - GetFullStringWidth(ReturnTitleText) / 2,
-            ScreenHeight / 2 + PressTextOffsetY,
+            ScreenHeight / 2 + pressTextOffsetY,
             ReturnTitleText,
             GetColor(255, 255, 255));
         break;
@@ -859,7 +854,9 @@ void UpdateRule()
 /// </summary>
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-    SetGraphMode(ScreenWidth, ScreenHeight, ScreenColorBit);
+    const int screenColorBit = 32;
+
+    SetGraphMode(ScreenWidth, ScreenHeight, screenColorBit);
     ChangeWindowMode(TRUE);
 
     // このテンプレートではゲームロジックを分かりやすくするため60FPS固定で動かす
@@ -885,7 +882,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     InitializeBackground();
     InitializeUI();
 
-    long long lastScreenFlipTime = GetNowHiPerformanceCount();
+    const long long oneFrameMicroseconds = 16667;
+    long long lastScreenFlipTime         = GetNowHiPerformanceCount();
 
     while (true)
     {
@@ -911,7 +909,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
         // 前回の画面更新から約1/60秒経過するまで待つ
         // ChangeStateなどで長く停止した場合は、遅れを取り戻そうとせず次のフレームから測り直す
-        while (GetNowHiPerformanceCount() - lastScreenFlipTime < OneFrameMicroseconds)
+        while (GetNowHiPerformanceCount() - lastScreenFlipTime < oneFrameMicroseconds)
         {
             // 処理なし
         }
